@@ -1,6 +1,6 @@
 {
-  "generatedAt": "2026-07-27T15:26:31.652Z",
-  "durationMs": 5021,
+  "generatedAt": "2026-07-27T15:28:56.085Z",
+  "durationMs": 14446,
   "candidate": {
     "name": "Emily Griffioen",
     "headline": "QA Specialist — HTML email & digital marketing content",
@@ -21,23 +21,23 @@
     "minMatchScore": 20
   },
   "counts": {
-    "fetched": 559,
-    "unique": 297,
-    "published": 11,
+    "fetched": 1297,
+    "unique": 945,
+    "published": 55,
     "dropped": {
-      "location": 127,
-      "stale": 0,
-      "lowMatch": 159,
-      "excluded": 0
+      "location": 232,
+      "stale": 15,
+      "lowMatch": 636,
+      "excluded": 7
     }
   },
   "tiers": {
-    "strong": 0,
-    "good": 2,
-    "possible": 4,
-    "stretch": 5
+    "strong": 3,
+    "good": 5,
+    "possible": 10,
+    "stretch": 37
   },
-  "freshLast48h": 1,
+  "freshLast48h": 12,
   "sources": [
     {
       "id": "companyboards",
@@ -61,33 +61,33 @@
       "status": "ok",
       "fetched": 288,
       "warnings": [],
-      "ms": 586
+      "ms": 443
     },
     {
       "id": "weworkremotely",
       "label": "We Work Remotely",
-      "status": "error",
-      "fetched": 0,
-      "warnings": [],
-      "detail": "HTTP 301 Moved Permanently",
-      "ms": 217
+      "status": "ok",
+      "fetched": 339,
+      "warnings": [
+        "remote-marketing-jobs.rss: HTTP 301 Moved Permanently"
+      ],
+      "ms": 2163
     },
     {
       "id": "himalayas",
       "label": "Himalayas",
       "status": "ok",
-      "fetched": 20,
+      "fetched": 240,
       "warnings": [],
-      "ms": 327
+      "ms": 2163
     },
     {
       "id": "jobicy",
       "label": "Jobicy",
-      "status": "error",
-      "fetched": 0,
+      "status": "ok",
+      "fetched": 179,
       "warnings": [],
-      "detail": "HTTP 400 Bad Request",
-      "ms": 2240
+      "ms": 6755
     },
     {
       "id": "remoteok",
@@ -95,7 +95,7 @@
       "status": "ok",
       "fetched": 100,
       "warnings": [],
-      "ms": 508
+      "ms": 686
     },
     {
       "id": "workingnomads",
@@ -103,7 +103,7 @@
       "status": "ok",
       "fetched": 41,
       "warnings": [],
-      "ms": 671
+      "ms": 880
     },
     {
       "id": "arbeitnow",
@@ -111,7 +111,7 @@
       "status": "ok",
       "fetched": 110,
       "warnings": [],
-      "ms": 235
+      "ms": 119
     }
   ]
 }
