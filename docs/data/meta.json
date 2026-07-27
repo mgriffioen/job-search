@@ -1,6 +1,6 @@
 {
-  "generatedAt": "2026-07-27T16:22:17.421Z",
-  "durationMs": 32613,
+  "generatedAt": "2026-07-27T16:25:30.643Z",
+  "durationMs": 58092,
   "candidate": {
     "name": "Emily Griffioen",
     "headline": "QA Specialist — HTML email & digital marketing content",
@@ -26,9 +26,9 @@
     "minMatchScore": 20
   },
   "counts": {
-    "fetched": 1576,
-    "unique": 952,
-    "published": 83,
+    "fetched": 1575,
+    "unique": 951,
+    "published": 82,
     "dropped": {
       "location": 304,
       "stale": 15,
@@ -37,7 +37,7 @@
     }
   },
   "tiers": {
-    "strong": 3,
+    "strong": 2,
     "good": 13,
     "possible": 19,
     "stretch": 48
@@ -56,9 +56,9 @@
       "id": "jsearch",
       "label": "Google Jobs",
       "status": "ok",
-      "fetched": 8,
+      "fetched": 7,
       "warnings": [],
-      "ms": 17702
+      "ms": 45858
     },
     {
       "id": "adzuna",
@@ -66,7 +66,7 @@
       "status": "ok",
       "fetched": 0,
       "warnings": [],
-      "ms": 1617
+      "ms": 1994
     },
     {
       "id": "jooble",
@@ -74,7 +74,7 @@
       "status": "ok",
       "fetched": 80,
       "warnings": [],
-      "ms": 1040
+      "ms": 724
     },
     {
       "id": "remotive",
@@ -82,7 +82,7 @@
       "status": "ok",
       "fetched": 576,
       "warnings": [],
-      "ms": 696
+      "ms": 658
     },
     {
       "id": "weworkremotely",
@@ -92,7 +92,7 @@
       "warnings": [
         "remote-marketing-jobs.rss: HTTP 301 Moved Permanently"
       ],
-      "ms": 1879
+      "ms": 1555
     },
     {
       "id": "himalayas",
@@ -100,7 +100,7 @@
       "status": "ok",
       "fetched": 240,
       "warnings": [],
-      "ms": 2396
+      "ms": 1115
     },
     {
       "id": "jobicy",
@@ -108,7 +108,7 @@
       "status": "ok",
       "fetched": 76,
       "warnings": [],
-      "ms": 4565
+      "ms": 3590
     },
     {
       "id": "remoteok",
@@ -116,7 +116,7 @@
       "status": "ok",
       "fetched": 100,
       "warnings": [],
-      "ms": 506
+      "ms": 497
     },
     {
       "id": "workingnomads",
@@ -124,7 +124,7 @@
       "status": "ok",
       "fetched": 41,
       "warnings": [],
-      "ms": 843
+      "ms": 544
     },
     {
       "id": "arbeitnow",
@@ -132,7 +132,7 @@
       "status": "ok",
       "fetched": 110,
       "warnings": [],
-      "ms": 110
+      "ms": 203
     }
   ]
 }
