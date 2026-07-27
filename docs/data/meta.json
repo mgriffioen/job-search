@@ -1,6 +1,6 @@
 {
-  "generatedAt": "2026-07-27T16:10:16.913Z",
-  "durationMs": 29580,
+  "generatedAt": "2026-07-27T16:12:18.234Z",
+  "durationMs": 33363,
   "candidate": {
     "name": "Emily Griffioen",
     "headline": "QA Specialist — HTML email & digital marketing content",
@@ -25,18 +25,18 @@
   "counts": {
     "fetched": 1412,
     "unique": 1057,
-    "published": 86,
+    "published": 85,
     "dropped": {
       "location": 306,
       "stale": 15,
-      "lowMatch": 643,
+      "lowMatch": 644,
       "excluded": 7
     }
   },
   "tiers": {
     "strong": 9,
     "good": 22,
-    "possible": 18,
+    "possible": 17,
     "stretch": 37
   },
   "freshLast48h": 20,
@@ -55,7 +55,7 @@
       "status": "ok",
       "fetched": 30,
       "warnings": [],
-      "ms": 22563
+      "ms": 24054
     },
     {
       "id": "adzuna",
@@ -71,7 +71,7 @@
       "status": "ok",
       "fetched": 80,
       "warnings": [],
-      "ms": 1115
+      "ms": 661
     },
     {
       "id": "remotive",
@@ -79,7 +79,7 @@
       "status": "ok",
       "fetched": 288,
       "warnings": [],
-      "ms": 420
+      "ms": 354
     },
     {
       "id": "weworkremotely",
@@ -89,7 +89,7 @@
       "warnings": [
         "remote-marketing-jobs.rss: HTTP 301 Moved Permanently"
       ],
-      "ms": 1624
+      "ms": 1852
     },
     {
       "id": "himalayas",
@@ -97,7 +97,7 @@
       "status": "ok",
       "fetched": 240,
       "warnings": [],
-      "ms": 1061
+      "ms": 3136
     },
     {
       "id": "jobicy",
@@ -105,7 +105,7 @@
       "status": "ok",
       "fetched": 179,
       "warnings": [],
-      "ms": 312
+      "ms": 292
     },
     {
       "id": "remoteok",
@@ -113,7 +113,7 @@
       "status": "ok",
       "fetched": 100,
       "warnings": [],
-      "ms": 425
+      "ms": 531
     },
     {
       "id": "workingnomads",
@@ -121,7 +121,7 @@
       "status": "ok",
       "fetched": 41,
       "warnings": [],
-      "ms": 315
+      "ms": 910
     },
     {
       "id": "arbeitnow",
@@ -129,7 +129,7 @@
       "status": "ok",
       "fetched": 110,
       "warnings": [],
-      "ms": 194
+      "ms": 141
     }
   ]
 }
