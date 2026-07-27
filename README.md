@@ -22,15 +22,21 @@ database, no accounts, nothing to pay for.
 Repo **Settings → Pages → Build and deployment**
 
 - Source: **Deploy from a branch**
-- Branch: **`main`**, folder: **`/docs`** → **Save**
+- Branch: **your default branch**, folder: **`/docs`** → **Save**
 
 The URL appears at the top of that page a minute later.
 
-### 2. Allow the Action to commit
+### 2. Make sure Actions is enabled
 
-Repo **Settings → Actions → General → Workflow permissions**
+Repo **Settings → Actions → General**
 
-- Select **Read and write permissions** → **Save**
+- **Actions permissions**: *Allow all actions and reusable workflows*
+- **Workflow permissions**: *Read and write permissions* → **Save**
+
+The second one lets the workflow commit updated listings back to the repo. If
+**Update job listings** is missing from the Actions tab, this setting is the
+first thing to check — GitHub does not register workflow files at all while
+Actions is disabled for the repository.
 
 ### 3. Run it once by hand
 
@@ -38,6 +44,13 @@ Repo **Actions → Update job listings → Run workflow**
 
 It takes a minute or two. When it finishes, the site has jobs on it. From then
 on it runs itself at roughly 2am and noon Eastern.
+
+> **Note on branches.** GitHub registers scheduled and manually-run workflows
+> only from the repository's **default branch**. This project was pushed to
+> `claude/job-search-qa-specialist-ny8k3g`, which GitHub made the default
+> because it was the first branch in an empty repo. Renaming it to `main`
+> (**Settings → Branches → pencil icon**) is worth doing — the `push` trigger
+> below already accepts both names.
 
 ---
 
