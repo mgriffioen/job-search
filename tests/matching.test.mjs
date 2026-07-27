@@ -432,8 +432,29 @@ test('RapidAPI status codes are explained in terms of what to actually do', () =
 test('both JSearch response shapes yield the jobs array', () => {
   assert.equal(extractJobs({ data: [{ job_id: '1' }] }).length, 1, 'v1: data is the array');
   assert.equal(extractJobs({ data: { jobs: [{ job_id: '1' }, { job_id: '2' }] } }).length, 2, 'v5: data.jobs');
-  assert.deepEqual(extractJobs({ data: { cursor: 'abc' } }), [], 'no array anywhere');
-  assert.deepEqual(extractJobs(null), []);
+  assert.deepEqual(extractJobs({ data: { jobs: [] } }), [], 'empty result set is an empty array, not a fault');
+  assert.equal(extractJobs({ data: { cursor: 'abc' } }), null, 'no array anywhere is reportable');
+  assert.equal(extractJobs(null), null);
+});
+
+test('a reposting site listing itself as the employer is flagged', () => {
+  const reposted = normalizeJob(
+    { sourceId: '1', title: 'Email Marketing Specialist', company: 'remote click jobs', url: 'https://x.com/1', publisher: 'Remote Click Jobs', remoteFlag: true },
+    { source: 'jsearch', sourceLabel: 'Google Jobs' }
+  );
+  assert.equal(reposted.employerUnknown, true);
+
+  const named = normalizeJob(
+    { sourceId: '2', title: 'Email Marketing Specialist', company: 'Sierra Solutions', url: 'https://x.com/2', publisher: 'LinkedIn', remoteFlag: true },
+    { source: 'jsearch', sourceLabel: 'Google Jobs' }
+  );
+  assert.equal(named.employerUnknown, false);
+
+  const noPublisher = normalizeJob(
+    { sourceId: '3', title: 'Proofreader', company: 'Acme', url: 'https://x.com/3', remoteFlag: true },
+    { source: 'remotive', sourceLabel: 'Remotive' }
+  );
+  assert.equal(noPublisher.employerUnknown, false);
 });
 
 test('JSearch field mapping accepts the prefixed and unprefixed spellings', () => {

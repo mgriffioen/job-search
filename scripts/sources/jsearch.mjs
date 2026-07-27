@@ -55,7 +55,9 @@ export function extractJobs(payload) {
   for (const candidate of candidates) {
     if (Array.isArray(candidate)) return candidate;
   }
-  return [];
+  // null, not [] — "no array anywhere" is a shape change worth reporting,
+  // whereas a query that legitimately matched nothing returns an empty array.
+  return null;
 }
 
 /**
@@ -169,10 +171,11 @@ export async function fetchJobs({ warn }) {
     }
 
     const rows = extractJobs(payload);
-    if (!rows.length && payload) {
-      warn(`"${query}": 200 OK but no jobs array found (top-level keys: ${Object.keys(payload).join(', ')})`);
+    if (rows === null) {
+      warn(`"${query}": 200 OK but no jobs array found (top-level keys: ${Object.keys(payload || {}).join(', ')})`);
       continue;
     }
+    if (!rows.length) continue; // a query that matched nothing is not a fault
 
     const mapped = rows.map(mapJob);
     const usable = mapped.filter((job) => job.title && job.company);

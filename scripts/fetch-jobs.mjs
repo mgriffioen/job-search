@@ -131,6 +131,13 @@ async function main() {
     // The full description is only needed for scoring — keep the file small.
     const { description, ...rest } = job;
 
+    // The role may match perfectly, but a posting that will not say who is
+    // hiring is worth less than an identical one that will. This adjusts
+    // where it sorts, not how well it matched.
+    const rank = job.employerUnknown
+      ? Math.round(score.rank * (1 - (profile.ranking.unnamedEmployerPenalty ?? 0.25)) * 10) / 10
+      : score.rank;
+
     scored.push({
       ...rest,
       locationScope: location.scope,
@@ -138,7 +145,7 @@ async function main() {
       match: score.match,
       matchTier: matchTier(score.match),
       recency: score.recency,
-      rank: score.rank,
+      rank,
       ageDays: score.ageDays,
       ageAssumed: score.ageAssumed,
       reasons: score.reasons,

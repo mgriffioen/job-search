@@ -274,6 +274,8 @@
     "matchWeight": 0.72,
     "recencyWeight": 0.28,
     "recencyHalfLifeDays": 14,
-    "assumedAgeDaysWhenUnknown": 21
+    "assumedAgeDaysWhenUnknown": 21,
+    "_unnamedEmployerComment": "Reposting sites list themselves as the employer, so you cannot tell who is actually hiring. Those postings still appear, but sort lower by this fraction. Set to 0 to treat them like any other listing.",
+    "unnamedEmployerPenalty": 0.25
   }
 }

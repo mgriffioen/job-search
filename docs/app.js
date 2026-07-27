@@ -212,6 +212,11 @@ function renderCard(job) {
     if (type !== 'unspecified') chips.append(makeChip(type));
   }
   if (job.salary) chips.append(makeChip(job.salary, 'salary'));
+  if (job.employerUnknown) {
+    const chip = makeChip('Employer not named', 'caution');
+    chip.title = 'This listing was reposted by a job site that lists itself as the employer, so who is actually hiring is not stated. It sorts lower for that reason.';
+    chips.append(chip);
+  }
   chips.append(makeChip(job.sources.join(' · '), 'source'));
 
   $('[data-excerpt]', node).textContent = job.excerpt || '';

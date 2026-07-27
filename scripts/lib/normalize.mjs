@@ -84,6 +84,11 @@ export function normalizeJob(raw, meta) {
     ? [meta.sourceLabel, publisher]
     : [meta.sourceLabel];
 
+  // Reposting sites list themselves as the employer, so the company field
+  // comes back as "Remote Click Jobs" and you cannot tell who is hiring.
+  // Detecting that generically beats maintaining a blocklist of site names.
+  const employerUnknown = Boolean(publisher) && slugify(company) === slugify(publisher);
+
   return {
     id: `${meta.source}:${raw.sourceId || slugify(`${company}-${title}`)}`,
     source: meta.source,
@@ -91,6 +96,7 @@ export function normalizeJob(raw, meta) {
     sources,
     title,
     company,
+    employerUnknown,
     companyLogo: cleanUrl(raw.companyLogo),
     url,
     applyUrl: cleanUrl(raw.applyUrl) || url,

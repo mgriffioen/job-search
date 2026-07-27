@@ -500,6 +500,12 @@ textarea { resize: vertical; }
 .chip--tier { background: var(--tier-soft); color: var(--tier); border-color: transparent; font-weight: 650; }
 .chip--salary { color: var(--strong); border-color: color-mix(in srgb, var(--strong) 40%, transparent); }
 .chip--source { color: var(--text-faint); }
+.chip--caution {
+  color: var(--possible);
+  background: var(--possible-soft);
+  border-color: transparent;
+  cursor: help;
+}
 
 .card__excerpt {
   margin: 0 0 10px;
