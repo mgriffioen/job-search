@@ -354,6 +354,19 @@ test('a good email role survives mentioning video in passing', () => {
   assert.ok(result.match >= 50, `scored ${result.match}; an incidental video mention should not sink a real match`);
 });
 
+test('localization QA in a language she lacks loses to the same role in Spanish', () => {
+  // These score well on every other signal, so the language is the only thing
+  // that distinguishes a fit from a non-fit.
+  const body = 'Linguistic QA testing of apps and content. Native-level fluency required. Remote, part-time.';
+  const spanish = scoreJob(job({ title: 'Spanish Linguistic QA Tester (Remote - US Based)', description: body }), profile, NOW);
+
+  for (const language of ['Indonesian', 'Tagalog', 'Bengali', 'Swahili', 'Korean']) {
+    const other = scoreJob(job({ title: `${language} Part-Time Linguistic QA Tester (Remote - US Based)`, description: body }), profile, NOW);
+    assert.ok(other.match < spanish.match, `${language} scored ${other.match}, Spanish ${spanish.match}`);
+    assert.notEqual(matchTier(other.match), 'strong', `${language} should not read as a strong match (${other.match})`);
+  }
+});
+
 test('roles requiring a language she does not have are pushed down', () => {
   const spanish = scoreJob(
     job({ title: 'Bilingual Copy Editor', description: 'Review Spanish marketing copy for accuracy and tone.' }),
