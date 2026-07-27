@@ -1,6 +1,6 @@
 {
-  "generatedAt": "2026-07-27T16:14:42.591Z",
-  "durationMs": 21753,
+  "generatedAt": "2026-07-27T16:22:17.421Z",
+  "durationMs": 32613,
   "candidate": {
     "name": "Emily Griffioen",
     "headline": "QA Specialist — HTML email & digital marketing content",
@@ -15,6 +15,9 @@
     "recencyWeight": 0.28,
     "recencyHalfLifeDays": 14,
     "assumedAgeDaysWhenUnknown": 21,
+    "_bullseyeComment": "Some sources return only a snippet, so a posting whose title names one of her exact roles cannot earn skill points it deserves. Such a title floors the match here, provided nothing in the posting counts against it. Raise bullseyeTitleWeight to make the floor apply to fewer title groups.",
+    "bullseyeTitleFloor": 72,
+    "bullseyeTitleWeight": 45,
     "_unnamedEmployerComment": "Reposting sites list themselves as the employer, so you cannot tell who is actually hiring. Those postings still appear, but sort lower by this fraction. Set to 0 to treat them like any other listing.",
     "unnamedEmployerPenalty": 0.25
   },
@@ -23,23 +26,23 @@
     "minMatchScore": 20
   },
   "counts": {
-    "fetched": 1412,
-    "unique": 1057,
-    "published": 87,
+    "fetched": 1576,
+    "unique": 952,
+    "published": 83,
     "dropped": {
-      "location": 301,
+      "location": 304,
       "stale": 15,
-      "lowMatch": 647,
-      "excluded": 7
+      "lowMatch": 544,
+      "excluded": 6
     }
   },
   "tiers": {
-    "strong": 9,
-    "good": 22,
-    "possible": 18,
-    "stretch": 38
+    "strong": 3,
+    "good": 13,
+    "possible": 19,
+    "stretch": 48
   },
-  "freshLast48h": 21,
+  "freshLast48h": 26,
   "sources": [
     {
       "id": "companyboards",
@@ -53,17 +56,17 @@
       "id": "jsearch",
       "label": "Google Jobs",
       "status": "ok",
-      "fetched": 30,
+      "fetched": 8,
       "warnings": [],
-      "ms": 15446
+      "ms": 17702
     },
     {
       "id": "adzuna",
       "label": "Adzuna",
-      "status": "skipped",
+      "status": "ok",
       "fetched": 0,
       "warnings": [],
-      "detail": "ADZUNA_APP_ID / ADZUNA_APP_KEY not set — see README"
+      "ms": 1617
     },
     {
       "id": "jooble",
@@ -71,25 +74,25 @@
       "status": "ok",
       "fetched": 80,
       "warnings": [],
-      "ms": 899
+      "ms": 1040
     },
     {
       "id": "remotive",
       "label": "Remotive",
       "status": "ok",
-      "fetched": 288,
+      "fetched": 576,
       "warnings": [],
-      "ms": 345
+      "ms": 696
     },
     {
       "id": "weworkremotely",
       "label": "We Work Remotely",
       "status": "ok",
-      "fetched": 344,
+      "fetched": 345,
       "warnings": [
         "remote-marketing-jobs.rss: HTTP 301 Moved Permanently"
       ],
-      "ms": 1474
+      "ms": 1879
     },
     {
       "id": "himalayas",
@@ -97,15 +100,15 @@
       "status": "ok",
       "fetched": 240,
       "warnings": [],
-      "ms": 598
+      "ms": 2396
     },
     {
       "id": "jobicy",
       "label": "Jobicy",
       "status": "ok",
-      "fetched": 179,
+      "fetched": 76,
       "warnings": [],
-      "ms": 242
+      "ms": 4565
     },
     {
       "id": "remoteok",
@@ -113,7 +116,7 @@
       "status": "ok",
       "fetched": 100,
       "warnings": [],
-      "ms": 467
+      "ms": 506
     },
     {
       "id": "workingnomads",
@@ -121,7 +124,7 @@
       "status": "ok",
       "fetched": 41,
       "warnings": [],
-      "ms": 554
+      "ms": 843
     },
     {
       "id": "arbeitnow",
@@ -129,7 +132,7 @@
       "status": "ok",
       "fetched": 110,
       "warnings": [],
-      "ms": 158
+      "ms": 110
     }
   ]
 }
