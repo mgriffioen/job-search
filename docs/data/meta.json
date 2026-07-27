@@ -1,0 +1,117 @@
+{
+  "generatedAt": "2026-07-27T15:26:09.938Z",
+  "durationMs": 5879,
+  "candidate": {
+    "name": "Emily Griffioen",
+    "headline": "QA Specialist — HTML email & digital marketing content",
+    "yearsExperience": 10,
+    "homeCity": "Kalamazoo",
+    "homeState": "Michigan",
+    "homeStateCode": "MI"
+  },
+  "ranking": {
+    "_comment": "Default blend used for the 'Best overall' sort in the UI. The UI can override these live.",
+    "matchWeight": 0.72,
+    "recencyWeight": 0.28,
+    "recencyHalfLifeDays": 14,
+    "assumedAgeDaysWhenUnknown": 21
+  },
+  "filters": {
+    "maxAgeDays": 45,
+    "minMatchScore": 20
+  },
+  "counts": {
+    "fetched": 559,
+    "unique": 297,
+    "published": 11,
+    "dropped": {
+      "location": 127,
+      "stale": 0,
+      "lowMatch": 159,
+      "excluded": 0
+    }
+  },
+  "tiers": {
+    "strong": 0,
+    "good": 2,
+    "possible": 4,
+    "stretch": 5
+  },
+  "freshLast48h": 1,
+  "sources": [
+    {
+      "id": "companyboards",
+      "label": "Company career page",
+      "status": "skipped",
+      "fetched": 0,
+      "warnings": [],
+      "detail": "No companies listed in config/company-boards.json"
+    },
+    {
+      "id": "adzuna",
+      "label": "Adzuna",
+      "status": "skipped",
+      "fetched": 0,
+      "warnings": [],
+      "detail": "ADZUNA_APP_ID / ADZUNA_APP_KEY not set — see README"
+    },
+    {
+      "id": "remotive",
+      "label": "Remotive",
+      "status": "ok",
+      "fetched": 288,
+      "warnings": [],
+      "ms": 527
+    },
+    {
+      "id": "weworkremotely",
+      "label": "We Work Remotely",
+      "status": "error",
+      "fetched": 0,
+      "warnings": [],
+      "detail": "HTTP 301 Moved Permanently",
+      "ms": 163
+    },
+    {
+      "id": "himalayas",
+      "label": "Himalayas",
+      "status": "ok",
+      "fetched": 20,
+      "warnings": [],
+      "ms": 211
+    },
+    {
+      "id": "jobicy",
+      "label": "Jobicy",
+      "status": "error",
+      "fetched": 0,
+      "warnings": [],
+      "detail": "HTTP 400 Bad Request",
+      "ms": 3123
+    },
+    {
+      "id": "remoteok",
+      "label": "RemoteOK",
+      "status": "ok",
+      "fetched": 100,
+      "warnings": [],
+      "ms": 600
+    },
+    {
+      "id": "workingnomads",
+      "label": "Working Nomads",
+      "status": "ok",
+      "fetched": 41,
+      "warnings": [],
+      "ms": 862
+    },
+    {
+      "id": "arbeitnow",
+      "label": "Arbeitnow",
+      "status": "ok",
+      "fetched": 110,
+      "warnings": [],
+      "ms": 164
+    }
+  ]
+}
