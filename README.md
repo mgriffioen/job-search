@@ -53,6 +53,42 @@ on it runs itself at roughly 2am and noon Eastern.
 
 ---
 
+## Getting LinkedIn, Indeed and ZipRecruiter listings
+
+None of those three offer a public feed. Indeed closed its Publisher API to
+non-partners and retired its RSS feeds; LinkedIn has no public jobs API at all
+(theirs is partner-only, for *posting* jobs); ZipRecruiter's is partner-gated.
+Scraping them breaches their terms and gets blocked quickly.
+
+What does work is going through an aggregator that licenses their content.
+Google for Jobs indexes all three, and **JSearch** serves Google for Jobs
+results with the originating board named — so a LinkedIn posting arrives
+labelled *LinkedIn*, both on the card and in the board filter.
+
+1. Sign up at [JSearch on RapidAPI](https://rapidapi.com/letscrape-6bRBa3QguO5/api/jsearch)
+2. Subscribe to the **Basic (free)** plan — roughly 200 requests/month
+3. Add the key as the `RAPIDAPI_KEY` repository secret
+
+The adapter uses 4 requests per run, 8 per day, which sits inside the free tier
+with room to spare. Widen `QUERIES` in `scripts/sources/jsearch.mjs` if you move
+to a paid plan.
+
+**[Jooble](https://jooble.org/api/about)** is worth adding alongside it — free
+key on request, broader but patchier, and it also reports which board each
+posting came from. Add it as `JOOBLE_API_KEY`. Running both and letting
+de-duplication merge them beats either alone; a job found in three places shows
+all three names on one card rather than appearing three times.
+
+Coverage is partial either way, which is why the site keeps a panel of
+pre-built searches for those boards. Two things close the rest of the gap:
+
+- **Job alert emails.** Alerts you subscribe to on LinkedIn, Indeed and
+  ZipRecruiter are sent to you legitimately. Point them at a dedicated address
+  and they become a feed nobody can cut off. Not wired up here — ask if you
+  want it built.
+- **Company career pages.** For employers she actually wants, the ATS adapters
+  below beat every aggregator: same-day, complete, and free.
+
 ## Optional: wider remote coverage with Adzuna
 
 The other sources are remote-job boards, so they only see companies that post
@@ -131,13 +167,13 @@ Michigan employers (Stryker, Kellanova, Perrigo, Whirlpool, WMU).
 | [Working Nomads](https://www.workingnomads.com/) | no | Remote, curated |
 | [Arbeitnow](https://www.arbeitnow.com/) | no | Mostly EU; occasional US remote |
 | [Adzuna](https://www.adzuna.com/) | **yes** (free) | Broad US remote, beyond the remote-only boards |
+| [JSearch](https://rapidapi.com/letscrape-6bRBa3QguO5/api/jsearch) | **yes** (free tier) | **Google for Jobs — LinkedIn, Indeed, ZipRecruiter, Glassdoor** |
+| [Jooble](https://jooble.org/api/about) | **yes** (free) | Broad aggregation, names the origin board |
 | Company career pages | no | Greenhouse / Lever / Ashby boards you list |
 
-**LinkedIn, Indeed and ZipRecruiter are deliberately absent.** None of them offer
-a free public feed, and scraping them violates their terms and gets blocked
-quickly. Instead the site's *"Search the boards that can't be aggregated"* section
-holds pre-built searches for those sites with the same criteria — one click each,
-worth doing a couple of times a week.
+Postings that arrive via an aggregator carry the board they came from, so the
+card shows *Google Jobs · LinkedIn* and both names appear in the board filter.
+A job found on several boards collapses to one card listing all of them.
 
 The **"Where these came from"** strip at the bottom of the page shows which
 sources answered on the last run. A red dot means that board was down or

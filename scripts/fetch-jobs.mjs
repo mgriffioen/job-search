@@ -22,11 +22,15 @@ import * as weworkremotely from './sources/weworkremotely.mjs';
 import * as workingnomads from './sources/workingnomads.mjs';
 import * as arbeitnow from './sources/arbeitnow.mjs';
 import * as adzuna from './sources/adzuna.mjs';
+import * as jsearch from './sources/jsearch.mjs';
+import * as jooble from './sources/jooble.mjs';
 import * as companyboards from './sources/companyboards.mjs';
 
 const SOURCES = [
   companyboards,
+  jsearch,
   adzuna,
+  jooble,
   remotive,
   weworkremotely,
   himalayas,

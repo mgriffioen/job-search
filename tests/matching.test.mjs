@@ -358,6 +358,44 @@ test('part-time is inferred from the text when the source omits it', () => {
   assert.ok(result.employmentTypes.includes('part-time'));
 });
 
+test('an aggregator records the board a posting actually came from', () => {
+  const result = normalizeJob(
+    {
+      sourceId: 'x1',
+      title: 'Email Marketing Specialist',
+      company: 'Acme',
+      url: 'https://example.com/1',
+      publisher: 'LinkedIn',
+      remoteFlag: true,
+    },
+    { source: 'jsearch', sourceLabel: 'Google Jobs' }
+  );
+  assert.deepEqual(result.sources, ['Google Jobs', 'LinkedIn']);
+});
+
+test('a publisher matching the adapter name is not duplicated', () => {
+  const result = normalizeJob(
+    { sourceId: 'x2', title: 'Proofreader', company: 'Acme', url: 'https://example.com/2', publisher: 'Jooble' },
+    { source: 'jooble', sourceLabel: 'Jooble' }
+  );
+  assert.deepEqual(result.sources, ['Jooble']);
+});
+
+test('the same job from an aggregator and a job board collapses into one card', () => {
+  const viaLinkedIn = normalizeJob(
+    { sourceId: 'a', title: 'Email QA Specialist', company: 'Acme', url: 'https://li.com/a', publisher: 'LinkedIn', description: 'x', remoteFlag: true },
+    { source: 'jsearch', sourceLabel: 'Google Jobs' }
+  );
+  const viaRemotive = normalizeJob(
+    { sourceId: 'b', title: 'Email QA Specialist', company: 'Acme', url: 'https://rm.com/b', description: 'x', remoteFlag: true },
+    { source: 'remotive', sourceLabel: 'Remotive' }
+  );
+
+  const merged = dedupeJobs([viaLinkedIn, viaRemotive], ['jsearch', 'remotive']);
+  assert.equal(merged.length, 1);
+  assert.deepEqual(merged[0].sources.sort(), ['Google Jobs', 'LinkedIn', 'Remotive']);
+});
+
 test('dedupeKey ignores seniority and posting suffixes', () => {
   assert.equal(
     dedupeKey({ company: 'Acme Inc', title: 'Email QA Specialist (Remote)' }),

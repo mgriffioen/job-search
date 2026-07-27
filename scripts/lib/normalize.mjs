@@ -75,11 +75,20 @@ export function normalizeJob(raw, meta) {
     remoteFlag: raw.remoteFlag,
   });
 
+  // Aggregators report which board a posting actually came from. Recording it
+  // alongside the adapter name puts "LinkedIn" / "Indeed" / "ZipRecruiter" on
+  // the card and into the board filter, rather than hiding them behind the
+  // name of the API that fetched them.
+  const publisher = stripHtml(raw.publisher || '').replace(/\s+/g, ' ').trim();
+  const sources = publisher && publisher !== meta.sourceLabel
+    ? [meta.sourceLabel, publisher]
+    : [meta.sourceLabel];
+
   return {
     id: `${meta.source}:${raw.sourceId || slugify(`${company}-${title}`)}`,
     source: meta.source,
     sourceLabel: meta.sourceLabel,
-    sources: [meta.sourceLabel],
+    sources,
     title,
     company,
     companyLogo: cleanUrl(raw.companyLogo),

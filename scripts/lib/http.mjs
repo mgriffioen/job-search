@@ -15,6 +15,8 @@ export async function request(url, options = {}) {
     retries = 2,
     accept = 'application/json, text/plain, */*',
     headers = {},
+    method = 'GET',
+    body,
   } = options;
 
   let lastError;
@@ -23,6 +25,8 @@ export async function request(url, options = {}) {
     const timer = setTimeout(() => controller.abort(), timeoutMs);
     try {
       const res = await fetch(url, {
+        method,
+        body,
         signal: controller.signal,
         redirect: 'follow',
         headers: { 'User-Agent': DEFAULT_UA, Accept: accept, ...headers },
