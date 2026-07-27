@@ -35,6 +35,29 @@ const QUERIES = [
   'email production coordinator',
 ];
 
+/**
+ * RapidAPI answers with bare status codes that mean something specific here.
+ * A 404 in particular does not mean the endpoint moved — it means the gateway
+ * could not route the request to a subscription, which is what happens when a
+ * key is created but the Basic plan was never subscribed to.
+ */
+export function explain(err) {
+  const message = String(err?.message || err);
+  if (message.includes('404')) {
+    return 'RapidAPI returned 404 — the key works but this app is not subscribed to JSearch. ' +
+      'Open the JSearch page on RapidAPI and subscribe to the Basic (free) plan.';
+  }
+  if (message.includes('401') || message.includes('403')) {
+    return 'RapidAPI rejected the key (401/403) — check RAPIDAPI_KEY is the X-RapidAPI-Key value ' +
+      'for an app subscribed to JSearch.';
+  }
+  if (message.includes('429')) {
+    return 'RapidAPI monthly quota exhausted (429) — reduce QUERIES in scripts/sources/jsearch.mjs ' +
+      'or upgrade the plan.';
+  }
+  return message;
+}
+
 export async function fetchJobs({ warn }) {
   const jobs = [];
 
@@ -57,8 +80,7 @@ export async function fetchJobs({ warn }) {
         },
       });
     } catch (err) {
-      // A blown monthly quota returns 429; report it rather than failing the run.
-      warn(`"${query}": ${err.message}`);
+      warn(`"${query}": ${explain(err)}`);
       continue;
     }
 

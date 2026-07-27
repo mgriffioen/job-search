@@ -7,6 +7,7 @@ import { evaluateLocation, detectWorkType } from '../scripts/lib/location.mjs';
 import { scoreJob, matchTier, recencyScore } from '../scripts/lib/score.mjs';
 import { normalizeJob, dedupeJobs, dedupeKey } from '../scripts/lib/normalize.mjs';
 import { parseRssItems } from '../scripts/lib/xml.mjs';
+import { explain as explainJsearch } from '../scripts/sources/jsearch.mjs';
 
 const profile = JSON.parse(await readFile(new URL('../config/profile.json', import.meta.url), 'utf8'));
 const NOW = new Date('2026-07-27T12:00:00Z');
@@ -417,6 +418,15 @@ test('duplicates collapse and record every board they appeared on', () => {
   assert.equal(merged.length, 1);
   assert.deepEqual(merged[0].sources.sort(), ['Jobicy', 'Remotive']);
   assert.equal(merged[0].postedAt, '2026-07-18T00:00:00.000Z', 'keeps the earliest known posting date');
+});
+
+/* ----------------------------------------------------------- error messages */
+
+test('RapidAPI status codes are explained in terms of what to actually do', () => {
+  assert.match(explainJsearch(new Error('HTTP 404 Not Found')), /not subscribed to JSearch/);
+  assert.match(explainJsearch(new Error('HTTP 403 Forbidden')), /rejected the key/);
+  assert.match(explainJsearch(new Error('HTTP 429 Too Many Requests')), /quota exhausted/);
+  assert.equal(explainJsearch(new Error('socket hang up')), 'socket hang up');
 });
 
 /* --------------------------------------------------------------------- rss */
