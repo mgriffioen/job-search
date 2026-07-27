@@ -1,6 +1,6 @@
 {
-  "generatedAt": "2026-07-27T15:26:09.938Z",
-  "durationMs": 5879,
+  "generatedAt": "2026-07-27T15:26:31.652Z",
+  "durationMs": 5021,
   "candidate": {
     "name": "Emily Griffioen",
     "headline": "QA Specialist — HTML email & digital marketing content",
@@ -61,7 +61,7 @@
       "status": "ok",
       "fetched": 288,
       "warnings": [],
-      "ms": 527
+      "ms": 586
     },
     {
       "id": "weworkremotely",
@@ -70,7 +70,7 @@
       "fetched": 0,
       "warnings": [],
       "detail": "HTTP 301 Moved Permanently",
-      "ms": 163
+      "ms": 217
     },
     {
       "id": "himalayas",
@@ -78,7 +78,7 @@
       "status": "ok",
       "fetched": 20,
       "warnings": [],
-      "ms": 211
+      "ms": 327
     },
     {
       "id": "jobicy",
@@ -87,7 +87,7 @@
       "fetched": 0,
       "warnings": [],
       "detail": "HTTP 400 Bad Request",
-      "ms": 3123
+      "ms": 2240
     },
     {
       "id": "remoteok",
@@ -95,7 +95,7 @@
       "status": "ok",
       "fetched": 100,
       "warnings": [],
-      "ms": 600
+      "ms": 508
     },
     {
       "id": "workingnomads",
@@ -103,7 +103,7 @@
       "status": "ok",
       "fetched": 41,
       "warnings": [],
-      "ms": 862
+      "ms": 671
     },
     {
       "id": "arbeitnow",
@@ -111,7 +111,7 @@
       "status": "ok",
       "fetched": 110,
       "warnings": [],
-      "ms": 164
+      "ms": 235
     }
   ]
 }
