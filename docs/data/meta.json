@@ -1,6 +1,6 @@
 {
-  "generatedAt": "2026-07-27T16:05:38.566Z",
-  "durationMs": 26917,
+  "generatedAt": "2026-07-27T16:10:16.913Z",
+  "durationMs": 29580,
   "candidate": {
     "name": "Emily Griffioen",
     "headline": "QA Specialist — HTML email & digital marketing content",
@@ -14,7 +14,9 @@
     "matchWeight": 0.72,
     "recencyWeight": 0.28,
     "recencyHalfLifeDays": 14,
-    "assumedAgeDaysWhenUnknown": 21
+    "assumedAgeDaysWhenUnknown": 21,
+    "_unnamedEmployerComment": "Reposting sites list themselves as the employer, so you cannot tell who is actually hiring. Those postings still appear, but sort lower by this fraction. Set to 0 to treat them like any other listing.",
+    "unnamedEmployerPenalty": 0.25
   },
   "filters": {
     "maxAgeDays": 45,
@@ -25,16 +27,16 @@
     "unique": 1057,
     "published": 86,
     "dropped": {
-      "location": 304,
+      "location": 306,
       "stale": 15,
-      "lowMatch": 645,
+      "lowMatch": 643,
       "excluded": 7
     }
   },
   "tiers": {
-    "strong": 10,
+    "strong": 9,
     "good": 22,
-    "possible": 17,
+    "possible": 18,
     "stretch": 37
   },
   "freshLast48h": 20,
@@ -52,10 +54,8 @@
       "label": "Google Jobs",
       "status": "ok",
       "fetched": 30,
-      "warnings": [
-        "\"email production coordinator\": 200 OK but no jobs array found (top-level keys: status, request_id, parameters, data)"
-      ],
-      "ms": 19788
+      "warnings": [],
+      "ms": 22563
     },
     {
       "id": "adzuna",
@@ -71,7 +71,7 @@
       "status": "ok",
       "fetched": 80,
       "warnings": [],
-      "ms": 882
+      "ms": 1115
     },
     {
       "id": "remotive",
@@ -79,7 +79,7 @@
       "status": "ok",
       "fetched": 288,
       "warnings": [],
-      "ms": 365
+      "ms": 420
     },
     {
       "id": "weworkremotely",
@@ -89,7 +89,7 @@
       "warnings": [
         "remote-marketing-jobs.rss: HTTP 301 Moved Permanently"
       ],
-      "ms": 1510
+      "ms": 1624
     },
     {
       "id": "himalayas",
@@ -97,7 +97,7 @@
       "status": "ok",
       "fetched": 240,
       "warnings": [],
-      "ms": 1746
+      "ms": 1061
     },
     {
       "id": "jobicy",
@@ -105,7 +105,7 @@
       "status": "ok",
       "fetched": 179,
       "warnings": [],
-      "ms": 278
+      "ms": 312
     },
     {
       "id": "remoteok",
@@ -113,7 +113,7 @@
       "status": "ok",
       "fetched": 100,
       "warnings": [],
-      "ms": 416
+      "ms": 425
     },
     {
       "id": "workingnomads",
@@ -121,7 +121,7 @@
       "status": "ok",
       "fetched": 41,
       "warnings": [],
-      "ms": 311
+      "ms": 315
     },
     {
       "id": "arbeitnow",
@@ -129,7 +129,7 @@
       "status": "ok",
       "fetched": 110,
       "warnings": [],
-      "ms": 164
+      "ms": 194
     }
   ]
 }
