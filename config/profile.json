@@ -31,6 +31,17 @@
       "marketing operations",
       "digital content"
     ],
+    "_broadQueriesComment": "Sources that index the whole job market (Adzuna) or filter a small index by tag (Jobicy) return nothing for a hyper-specific phrase like 'lifecycle marketing qa'. They use these broader terms instead; the specific list above is for keyword-search sources that reward precision.",
+    "broadQueries": [
+      "quality assurance",
+      "email marketing",
+      "proofreader",
+      "copy editor",
+      "marketing coordinator",
+      "marketing operations",
+      "content specialist",
+      "email specialist"
+    ],
     "_jsearchComment": "JSearch is metered on the free tier, so it runs a rotating window of the query list rather than all of it, cycling through everything over a few runs.",
     "jsearchQueriesPerRun": 3,
     "maxAgeDays": 45,

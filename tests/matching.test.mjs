@@ -285,6 +285,23 @@ test('a QA title with no marketing discipline does not get the combination bonus
   assert.ok(hers.match > generic.match, `${hers.match} should beat ${generic.match}`);
 });
 
+test('the profile supplies both a specific and a broad query list', () => {
+  // Whole-market and tag-filtered sources need broad terms; keyword-search
+  // sources reward the specific ones. Regressing either starves a source.
+  assert.ok(profile.search.queries.length >= 10);
+  assert.ok(profile.search.broadQueries.length >= 5);
+
+  const specific = profile.search.queries.slice(0, 7);
+  assert.ok(
+    specific.every((q) => /qa/.test(q)),
+    'the specific list must lead with her QA niche, since capped sources take from the front'
+  );
+  assert.ok(
+    profile.search.broadQueries.every((q) => q.split(' ').length <= 2),
+    'broad terms must stay short enough to match a general index'
+  );
+});
+
 test('JSearch rotates through the query list across runs at a fixed cost', () => {
   const all = ['a', 'b', 'c', 'd', 'e', 'f', 'g'];
   const run = (hoursFromNow) => selectQueries(all, 3, new Date(Date.parse('2026-07-27T00:00:00Z') + hoursFromNow * 3600000));

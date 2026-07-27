@@ -16,7 +16,9 @@ export const enabled = true;
  */
 function buildUrls(profile) {
   const urls = ['https://jobicy.com/api/v2/remote-jobs?count=50&geo=usa'];
-  for (const query of profile.search.queries.slice(0, 6)) {
+  // `tag` filters a small index, so specific phrases match nothing there.
+  const queries = profile.search.broadQueries || profile.search.queries.slice(0, 6);
+  for (const query of queries) {
     urls.push(`https://jobicy.com/api/v2/remote-jobs?count=50&geo=usa&tag=${encodeURIComponent(query)}`);
   }
   return urls;

@@ -32,7 +32,9 @@ export async function fetchJobs({ profile, warn }) {
   const appId = process.env.ADZUNA_APP_ID;
   const appKey = process.env.ADZUNA_APP_KEY;
   const jobs = [];
-  const queries = profile.search.queries.slice(0, 6);
+  // Adzuna indexes the entire job market, so a narrow phrase returns nothing.
+  // Broad terms plus the remote-only location gate is the productive pairing.
+  const queries = profile.search.broadQueries || profile.search.queries.slice(0, 6);
   const remoteOnly = profile.location.remoteOnly !== false;
 
   for (const search of SEARCHES) {
@@ -58,7 +60,14 @@ export async function fetchJobs({ profile, warn }) {
         continue;
       }
 
-      for (const job of payload?.results || []) {
+      // Distinguishes "this term matched nothing" from "the API is answering
+      // but we are reading the response wrong" — both otherwise look like 0.
+      const results = payload?.results || [];
+      if (!results.length) {
+        warn(`${search.label} "${query}": 0 results (Adzuna reports ${payload?.count ?? 'no'} total matches)`);
+      }
+
+      for (const job of results) {
         const area = job.location?.display_name || '';
         jobs.push({
           sourceId: String(job.id),
