@@ -1,6 +1,6 @@
 {
-  "generatedAt": "2026-07-27T15:57:18.569Z",
-  "durationMs": 6349,
+  "generatedAt": "2026-07-27T15:59:12.180Z",
+  "durationMs": 9234,
   "candidate": {
     "name": "Emily Griffioen",
     "headline": "QA Specialist — HTML email & digital marketing content",
@@ -21,23 +21,23 @@
     "minMatchScore": 20
   },
   "counts": {
-    "fetched": 1297,
-    "unique": 945,
-    "published": 47,
+    "fetched": 1377,
+    "unique": 1023,
+    "published": 59,
     "dropped": {
-      "location": 232,
+      "location": 296,
       "stale": 15,
-      "lowMatch": 644,
+      "lowMatch": 646,
       "excluded": 7
     }
   },
   "tiers": {
-    "strong": 1,
-    "good": 4,
-    "possible": 7,
+    "strong": 2,
+    "good": 10,
+    "possible": 12,
     "stretch": 35
   },
-  "freshLast48h": 12,
+  "freshLast48h": 15,
   "sources": [
     {
       "id": "companyboards",
@@ -53,12 +53,12 @@
       "status": "ok",
       "fetched": 0,
       "warnings": [
-        "\"email marketing specialist\": HTTP 404 Not Found",
-        "\"quality assurance specialist\": HTTP 404 Not Found",
-        "\"proofreader\": HTTP 404 Not Found",
-        "\"email production coordinator\": HTTP 404 Not Found"
+        "\"email marketing specialist\": RapidAPI returned 404 — the key works but this app is not subscribed to JSearch. Open the JSearch page on RapidAPI and subscribe to the Basic (free) plan.",
+        "\"quality assurance specialist\": RapidAPI returned 404 — the key works but this app is not subscribed to JSearch. Open the JSearch page on RapidAPI and subscribe to the Basic (free) plan.",
+        "\"proofreader\": RapidAPI returned 404 — the key works but this app is not subscribed to JSearch. Open the JSearch page on RapidAPI and subscribe to the Basic (free) plan.",
+        "\"email production coordinator\": RapidAPI returned 404 — the key works but this app is not subscribed to JSearch. Open the JSearch page on RapidAPI and subscribe to the Basic (free) plan."
       ],
-      "ms": 852
+      "ms": 833
     },
     {
       "id": "adzuna",
@@ -71,10 +71,10 @@
     {
       "id": "jooble",
       "label": "Jooble",
-      "status": "skipped",
-      "fetched": 0,
+      "status": "ok",
+      "fetched": 80,
       "warnings": [],
-      "detail": "JOOBLE_API_KEY not set — see README"
+      "ms": 1348
     },
     {
       "id": "remotive",
@@ -82,7 +82,7 @@
       "status": "ok",
       "fetched": 288,
       "warnings": [],
-      "ms": 386
+      "ms": 577
     },
     {
       "id": "weworkremotely",
@@ -92,7 +92,7 @@
       "warnings": [
         "remote-marketing-jobs.rss: HTTP 301 Moved Permanently"
       ],
-      "ms": 1577
+      "ms": 1631
     },
     {
       "id": "himalayas",
@@ -100,7 +100,7 @@
       "status": "ok",
       "fetched": 240,
       "warnings": [],
-      "ms": 977
+      "ms": 1567
     },
     {
       "id": "jobicy",
@@ -108,7 +108,7 @@
       "status": "ok",
       "fetched": 179,
       "warnings": [],
-      "ms": 214
+      "ms": 439
     },
     {
       "id": "remoteok",
@@ -116,7 +116,7 @@
       "status": "ok",
       "fetched": 100,
       "warnings": [],
-      "ms": 436
+      "ms": 737
     },
     {
       "id": "workingnomads",
@@ -124,7 +124,7 @@
       "status": "ok",
       "fetched": 41,
       "warnings": [],
-      "ms": 347
+      "ms": 586
     },
     {
       "id": "arbeitnow",
@@ -132,7 +132,7 @@
       "status": "ok",
       "fetched": 110,
       "warnings": [],
-      "ms": 151
+      "ms": 247
     }
   ]
 }
