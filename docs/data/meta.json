@@ -1,6 +1,6 @@
 {
-  "generatedAt": "2026-07-27T15:59:12.180Z",
-  "durationMs": 9234,
+  "generatedAt": "2026-07-27T16:01:50.647Z",
+  "durationMs": 14387,
   "candidate": {
     "name": "Emily Griffioen",
     "headline": "QA Specialist — HTML email & digital marketing content",
@@ -58,7 +58,7 @@
         "\"proofreader\": RapidAPI returned 404 — the key works but this app is not subscribed to JSearch. Open the JSearch page on RapidAPI and subscribe to the Basic (free) plan.",
         "\"email production coordinator\": RapidAPI returned 404 — the key works but this app is not subscribed to JSearch. Open the JSearch page on RapidAPI and subscribe to the Basic (free) plan."
       ],
-      "ms": 833
+      "ms": 1219
     },
     {
       "id": "adzuna",
@@ -74,7 +74,7 @@
       "status": "ok",
       "fetched": 80,
       "warnings": [],
-      "ms": 1348
+      "ms": 1063
     },
     {
       "id": "remotive",
@@ -82,7 +82,7 @@
       "status": "ok",
       "fetched": 288,
       "warnings": [],
-      "ms": 577
+      "ms": 321
     },
     {
       "id": "weworkremotely",
@@ -92,7 +92,7 @@
       "warnings": [
         "remote-marketing-jobs.rss: HTTP 301 Moved Permanently"
       ],
-      "ms": 1631
+      "ms": 7342
     },
     {
       "id": "himalayas",
@@ -100,7 +100,7 @@
       "status": "ok",
       "fetched": 240,
       "warnings": [],
-      "ms": 1567
+      "ms": 1231
     },
     {
       "id": "jobicy",
@@ -108,7 +108,7 @@
       "status": "ok",
       "fetched": 179,
       "warnings": [],
-      "ms": 439
+      "ms": 256
     },
     {
       "id": "remoteok",
@@ -116,7 +116,7 @@
       "status": "ok",
       "fetched": 100,
       "warnings": [],
-      "ms": 737
+      "ms": 507
     },
     {
       "id": "workingnomads",
@@ -124,7 +124,7 @@
       "status": "ok",
       "fetched": 41,
       "warnings": [],
-      "ms": 586
+      "ms": 908
     },
     {
       "id": "arbeitnow",
@@ -132,7 +132,7 @@
       "status": "ok",
       "fetched": 110,
       "warnings": [],
-      "ms": 247
+      "ms": 130
     }
   ]
 }
