@@ -41,7 +41,22 @@ const QUERIES = [
  * hard-code one path and 404 forever, probe on the first query of a run and
  * reuse whatever answered — costing at most two extra requests, once.
  */
-const CANDIDATE_PATHS = ['/search', '/search-v2', '/job-search'];
+// Ordered by what this account's API version actually answers on, so the
+// common case costs no probe requests at all.
+const CANDIDATE_PATHS = ['/search-v2', '/search', '/job-search'];
+
+/**
+ * v1 returns `data: [...]`; v5's /search-v2 returns `data: { jobs: [...] }`.
+ * Accept either rather than assuming, since the version is chosen in the
+ * RapidAPI dashboard and can change without any code change here.
+ */
+export function extractJobs(payload) {
+  const candidates = [payload?.data, payload?.data?.jobs, payload?.jobs, payload?.data?.results];
+  for (const candidate of candidates) {
+    if (Array.isArray(candidate)) return candidate;
+  }
+  return [];
+}
 
 /**
  * RapidAPI answers with bare status codes that mean something specific here.
@@ -84,27 +99,34 @@ function call(path, query) {
   });
 }
 
-function mapJob(job) {
-  const city = [job.job_city, job.job_state].filter(Boolean).join(', ');
+// v5 dropped the `job_` prefix on several fields; accept both spellings so a
+// version flip degrades into missing extras rather than an empty board.
+const pick = (job, ...names) => names.map((n) => job?.[n]).find((v) => v !== undefined && v !== null && v !== '');
+
+export function mapJob(job) {
+  const city = [pick(job, 'job_city', 'city'), pick(job, 'job_state', 'state')].filter(Boolean).join(', ');
+  const isRemote = pick(job, 'job_is_remote', 'is_remote') === true;
+  const publisher = pick(job, 'job_publisher', 'publisher');
+
   return {
-    sourceId: job.job_id,
-    title: job.job_title,
-    company: job.employer_name,
-    companyLogo: job.employer_logo,
-    url: job.job_apply_link || job.job_google_link,
-    applyUrl: job.job_apply_link,
-    description: job.job_description,
-    location: job.job_is_remote ? `Remote${city ? ` (${city})` : ''}` : city,
-    locationRestriction: job.job_is_remote ? city || 'USA' : city,
-    employmentTypes: [job.job_employment_type].filter(Boolean),
-    salaryMin: job.job_min_salary,
-    salaryMax: job.job_max_salary,
-    currency: job.job_salary_currency,
-    postedAt: job.job_posted_at_datetime_utc || job.job_posted_at_timestamp,
-    remoteFlag: job.job_is_remote === true,
+    sourceId: pick(job, 'job_id', 'id'),
+    title: pick(job, 'job_title', 'title'),
+    company: pick(job, 'employer_name', 'company_name', 'company'),
+    companyLogo: pick(job, 'employer_logo', 'company_logo'),
+    url: pick(job, 'job_apply_link', 'apply_link', 'job_google_link', 'url'),
+    applyUrl: pick(job, 'job_apply_link', 'apply_link'),
+    description: pick(job, 'job_description', 'description'),
+    location: isRemote ? `Remote${city ? ` (${city})` : ''}` : city,
+    locationRestriction: isRemote ? city || 'USA' : city,
+    employmentTypes: [pick(job, 'job_employment_type', 'employment_type')].filter(Boolean),
+    salaryMin: pick(job, 'job_min_salary', 'min_salary'),
+    salaryMax: pick(job, 'job_max_salary', 'max_salary'),
+    currency: pick(job, 'job_salary_currency', 'salary_currency'),
+    postedAt: pick(job, 'job_posted_at_datetime_utc', 'posted_at_datetime_utc', 'job_posted_at_timestamp', 'posted_at'),
+    remoteFlag: isRemote,
     // "LinkedIn", "Indeed", "ZipRecruiter", "Glassdoor", a company site…
-    publisher: job.job_publisher,
-    tags: [job.job_publisher].filter(Boolean),
+    publisher,
+    tags: [publisher].filter(Boolean),
   };
 }
 
@@ -146,7 +168,19 @@ export async function fetchJobs({ warn }) {
       }
     }
 
-    for (const job of payload?.data || []) jobs.push(mapJob(job));
+    const rows = extractJobs(payload);
+    if (!rows.length && payload) {
+      warn(`"${query}": 200 OK but no jobs array found (top-level keys: ${Object.keys(payload).join(', ')})`);
+      continue;
+    }
+
+    const mapped = rows.map(mapJob);
+    const usable = mapped.filter((job) => job.title && job.company);
+    if (rows.length && !usable.length) {
+      warn(`"${query}": ${rows.length} rows returned but none had a title/company — field names have changed (row keys: ${Object.keys(rows[0]).slice(0, 12).join(', ')})`);
+    }
+
+    jobs.push(...usable);
   }
 
   return jobs;

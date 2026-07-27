@@ -7,7 +7,7 @@ import { evaluateLocation, detectWorkType } from '../scripts/lib/location.mjs';
 import { scoreJob, matchTier, recencyScore } from '../scripts/lib/score.mjs';
 import { normalizeJob, dedupeJobs, dedupeKey } from '../scripts/lib/normalize.mjs';
 import { parseRssItems } from '../scripts/lib/xml.mjs';
-import { explain as explainJsearch } from '../scripts/sources/jsearch.mjs';
+import { explain as explainJsearch, extractJobs, mapJob as mapJsearchJob } from '../scripts/sources/jsearch.mjs';
 
 const profile = JSON.parse(await readFile(new URL('../config/profile.json', import.meta.url), 'utf8'));
 const NOW = new Date('2026-07-27T12:00:00Z');
@@ -427,6 +427,45 @@ test('RapidAPI status codes are explained in terms of what to actually do', () =
   assert.match(explainJsearch(new Error('HTTP 403 Forbidden')), /rejected the key/);
   assert.match(explainJsearch(new Error('HTTP 429 Too Many Requests')), /quota exhausted/);
   assert.equal(explainJsearch(new Error('socket hang up')), 'socket hang up');
+});
+
+test('both JSearch response shapes yield the jobs array', () => {
+  assert.equal(extractJobs({ data: [{ job_id: '1' }] }).length, 1, 'v1: data is the array');
+  assert.equal(extractJobs({ data: { jobs: [{ job_id: '1' }, { job_id: '2' }] } }).length, 2, 'v5: data.jobs');
+  assert.deepEqual(extractJobs({ data: { cursor: 'abc' } }), [], 'no array anywhere');
+  assert.deepEqual(extractJobs(null), []);
+});
+
+test('JSearch field mapping accepts the prefixed and unprefixed spellings', () => {
+  const v1 = mapJsearchJob({
+    job_id: 'a',
+    job_title: 'Email QA Specialist',
+    employer_name: 'Acme',
+    job_apply_link: 'https://example.com/a',
+    job_publisher: 'LinkedIn',
+    job_is_remote: true,
+    job_city: 'Chicago',
+    job_state: 'IL',
+  });
+  const v5 = mapJsearchJob({
+    id: 'a',
+    title: 'Email QA Specialist',
+    company_name: 'Acme',
+    apply_link: 'https://example.com/a',
+    publisher: 'LinkedIn',
+    is_remote: true,
+    city: 'Chicago',
+    state: 'IL',
+  });
+
+  for (const [name, m] of [['v1', v1], ['v5', v5]]) {
+    assert.equal(m.title, 'Email QA Specialist', name);
+    assert.equal(m.company, 'Acme', name);
+    assert.equal(m.url, 'https://example.com/a', name);
+    assert.equal(m.publisher, 'LinkedIn', name);
+    assert.equal(m.location, 'Remote (Chicago, IL)', name);
+    assert.equal(m.remoteFlag, true, name);
+  }
 });
 
 /* --------------------------------------------------------------------- rss */
