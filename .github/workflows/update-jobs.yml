@@ -1,0 +1,61 @@
+name: Update job listings
+
+on:
+  schedule:
+    # 06:10 and 16:10 UTC ≈ 2:10am and 12:10pm Eastern.
+    - cron: '10 6,16 * * *'
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - 'config/**'
+      - 'scripts/**'
+      - '.github/workflows/update-jobs.yml'
+
+concurrency:
+  group: update-jobs
+  cancel-in-progress: false
+
+permissions:
+  contents: write
+
+jobs:
+  update:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Run unit tests
+        run: npm test
+
+      - name: Fetch and score job postings
+        env:
+          ADZUNA_APP_ID: ${{ secrets.ADZUNA_APP_ID }}
+          ADZUNA_APP_KEY: ${{ secrets.ADZUNA_APP_KEY }}
+        run: npm run fetch
+
+      - name: Commit updated listings
+        run: |
+          git config user.name  "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add docs/data/jobs.json docs/data/meta.json
+          if git diff --staged --quiet; then
+            echo "No change in listings."
+            exit 0
+          fi
+          COUNT=$(node -e "console.log(require('./docs/data/meta.json').counts.published)")
+          git commit -m "Update job listings (${COUNT} matches)"
+          for attempt in 1 2 3 4; do
+            if git push; then exit 0; fi
+            echo "Push failed, retrying in $((2 ** attempt))s…"
+            sleep $((2 ** attempt))
+            git pull --rebase --autostash origin "${GITHUB_REF_NAME}" || true
+          done
+          echo "Could not push updated listings." >&2
+          exit 1

@@ -1,0 +1,4 @@
+{
+  "_readme": "Companies whose career pages should be checked directly. These are the highest-signal postings — no aggregator delay. Add entries as you find companies worth watching. Each needs: ats (greenhouse | lever | ashby), token, and an optional display name. Find the token in the company's careers URL, e.g. job-boards.greenhouse.io/ACMECORP → { \"ats\": \"greenhouse\", \"token\": \"acmecorp\" }. Marketing agencies, email service providers (Klaviyo, Braze, Iterable…), retail/e-commerce brands with in-house email teams, and Michigan employers (Stryker, Kellanova, Perrigo, Whirlpool, WMU) are all good candidates.",
+  "boards": []
+}

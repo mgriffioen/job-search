@@ -1,0 +1,201 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="description" content="Ranked job matches for Emily Griffioen — QA, email marketing, editorial.">
+<meta name="color-scheme" content="light dark">
+<meta name="theme-color" content="#0f172a">
+<title>Emily's Job Board</title>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🔎</text></svg>">
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+<a class="skip-link" href="#results">Skip to results</a>
+
+<header class="masthead">
+  <div class="masthead__inner">
+    <div class="masthead__title">
+      <h1>Emily's Job Board</h1>
+      <p class="masthead__sub" id="tagline">QA · email marketing · editorial — remote anywhere in the US, or near Kalamazoo</p>
+    </div>
+    <div class="masthead__meta">
+      <button type="button" class="icon-btn" id="theme-toggle" title="Switch theme" aria-label="Switch theme">◐</button>
+      <p class="updated" id="updated">Loading…</p>
+    </div>
+  </div>
+
+  <div class="statbar" id="statbar" hidden>
+    <button type="button" class="stat" data-tier-filter="strong">
+      <span class="stat__num" id="stat-strong">0</span>
+      <span class="stat__label">Strong match</span>
+    </button>
+    <button type="button" class="stat" data-tier-filter="good">
+      <span class="stat__num" id="stat-good">0</span>
+      <span class="stat__label">Good match</span>
+    </button>
+    <button type="button" class="stat" data-age-filter="2">
+      <span class="stat__num" id="stat-fresh">0</span>
+      <span class="stat__label">New in 48h</span>
+    </button>
+    <button type="button" class="stat" data-view="saved">
+      <span class="stat__num" id="stat-saved">0</span>
+      <span class="stat__label">Saved</span>
+    </button>
+    <button type="button" class="stat" data-view="applied">
+      <span class="stat__num" id="stat-applied">0</span>
+      <span class="stat__label">Applied</span>
+    </button>
+  </div>
+</header>
+
+<nav class="tabs" id="tabs" aria-label="Views">
+  <button type="button" class="tab is-active" data-view="all">All matches</button>
+  <button type="button" class="tab" data-view="saved">★ Saved</button>
+  <button type="button" class="tab" data-view="applied">✓ Applied</button>
+  <button type="button" class="tab" data-view="hidden">Hidden</button>
+</nav>
+
+<main>
+  <form class="controls" id="controls" role="search" aria-label="Filter jobs">
+    <div class="controls__row">
+      <label class="field field--grow">
+        <span class="field__label">Search</span>
+        <input type="search" id="q" placeholder="Title, company, keyword…" autocomplete="off" spellcheck="false">
+      </label>
+
+      <label class="field">
+        <span class="field__label">Sort by</span>
+        <select id="sort">
+          <option value="rank">Best overall</option>
+          <option value="match">Highest match</option>
+          <option value="new">Most recent</option>
+          <option value="company">Company A–Z</option>
+        </select>
+      </label>
+    </div>
+
+    <details class="filters" id="filters">
+      <summary>Filters <span class="filters__count" id="filters-count"></span></summary>
+
+      <div class="filters__grid">
+        <fieldset class="filterset">
+          <legend>Work setup</legend>
+          <label><input type="checkbox" name="workType" value="remote" checked> Remote</label>
+          <label><input type="checkbox" name="workType" value="hybrid" checked> Hybrid (local)</label>
+          <label><input type="checkbox" name="workType" value="onsite" checked> On-site (local)</label>
+          <label><input type="checkbox" name="workType" value="unknown" checked> Unspecified</label>
+        </fieldset>
+
+        <fieldset class="filterset">
+          <legend>Schedule</legend>
+          <label><input type="checkbox" name="employment" value="full-time" checked> Full-time</label>
+          <label><input type="checkbox" name="employment" value="part-time" checked> Part-time</label>
+          <label><input type="checkbox" name="employment" value="contract" checked> Contract</label>
+          <label><input type="checkbox" name="employment" value="unspecified" checked> Unspecified</label>
+        </fieldset>
+
+        <fieldset class="filterset">
+          <legend>Job boards</legend>
+          <div id="source-filters" class="filterset__scroll"></div>
+        </fieldset>
+
+        <fieldset class="filterset">
+          <legend>Thresholds</legend>
+          <label class="range">
+            Minimum match: <output id="min-match-out">0</output>
+            <input type="range" id="min-match" min="0" max="90" step="5" value="0">
+          </label>
+          <label class="range">
+            Posted within: <output id="max-age-out">any time</output>
+            <input type="range" id="max-age" min="1" max="46" step="1" value="46">
+          </label>
+          <label><input type="checkbox" id="hide-hidden" checked> Hide dismissed jobs</label>
+          <label><input type="checkbox" id="hide-applied"> Hide jobs already applied to</label>
+        </fieldset>
+      </div>
+
+      <div class="filters__actions">
+        <button type="button" class="btn btn--ghost" id="reset-filters">Reset filters</button>
+        <button type="button" class="btn btn--ghost" id="export-csv">Export saved + applied to CSV</button>
+      </div>
+    </details>
+  </form>
+
+  <p class="resultline" id="resultline" aria-live="polite"></p>
+
+  <section id="results" class="results" aria-label="Job results"></section>
+
+  <p class="empty" id="empty" hidden></p>
+
+  <section class="elsewhere">
+    <h2>Search the boards that can't be aggregated</h2>
+    <p class="elsewhere__note">
+      LinkedIn, Indeed and ZipRecruiter don't offer a free public feed, so their postings can't be pulled
+      into this list automatically. These links open pre-built searches with the same criteria — worth a
+      click-through a couple of times a week.
+    </p>
+    <div class="elsewhere__grid" id="elsewhere"></div>
+  </section>
+
+  <section class="sourcehealth">
+    <h2>Where these came from</h2>
+    <div id="source-health" class="sourcehealth__grid"></div>
+  </section>
+</main>
+
+<footer class="foot">
+  <p>
+    Updated automatically twice a day. Postings link back to their original board —
+    always apply on the source site.
+  </p>
+  <p class="foot__keys">
+    Keyboard: <kbd>/</kbd> search · <kbd>j</kbd>/<kbd>k</kbd> move · <kbd>s</kbd> save ·
+    <kbd>a</kbd> applied · <kbd>x</kbd> dismiss · <kbd>Enter</kbd> open
+  </p>
+</footer>
+
+<template id="job-template">
+  <article class="card" tabindex="0">
+    <div class="card__scorecol">
+      <div class="ring" data-ring>
+        <span class="ring__num" data-match>0</span>
+        <span class="ring__cap">match</span>
+      </div>
+      <span class="freshness" data-age></span>
+    </div>
+
+    <div class="card__body">
+      <div class="card__head">
+        <h3 class="card__title"><a data-link target="_blank" rel="noopener noreferrer"></a></h3>
+        <p class="card__company"><span data-company></span> <span class="dot">·</span> <span data-location></span></p>
+      </div>
+
+      <ul class="chips" data-chips></ul>
+
+      <p class="card__excerpt" data-excerpt></p>
+
+      <details class="why">
+        <summary data-why-summary>Why it matched</summary>
+        <ul class="why__list" data-reasons></ul>
+      </details>
+
+      <div class="card__actions">
+        <a class="btn btn--primary" data-apply target="_blank" rel="noopener noreferrer">Open posting →</a>
+        <button type="button" class="btn btn--ghost" data-action="save">★ Save</button>
+        <button type="button" class="btn btn--ghost" data-action="applied">✓ Applied</button>
+        <button type="button" class="btn btn--ghost" data-action="hide">Dismiss</button>
+      </div>
+
+      <label class="note">
+        <span class="note__label">Notes</span>
+        <textarea data-note rows="2" placeholder="Contact name, follow-up date, tailored résumé version…"></textarea>
+      </label>
+    </div>
+  </article>
+</template>
+
+<script src="app.js" type="module"></script>
+</body>
+</html>

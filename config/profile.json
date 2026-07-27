@@ -1,0 +1,269 @@
+{
+  "_readme": "This file is the brain of the matcher. Editing it changes which jobs float to the top. Weights are additive points; see docs in README.md > Tuning the match score. Every 'phrases' entry is matched on whole words, case-insensitively.",
+
+  "candidate": {
+    "name": "Emily Griffioen",
+    "headline": "QA Specialist — HTML email & digital marketing content",
+    "yearsExperience": 10,
+    "homeCity": "Kalamazoo",
+    "homeState": "Michigan",
+    "homeStateCode": "MI"
+  },
+
+  "search": {
+    "_comment": "Free-text queries sent to sources that support keyword search.",
+    "queries": [
+      "quality assurance",
+      "qa specialist",
+      "email marketing",
+      "email production",
+      "proofreader",
+      "copy editor",
+      "content quality",
+      "marketing operations",
+      "digital content"
+    ],
+    "maxAgeDays": 45,
+    "minMatchScore": 20,
+    "maxJobsStored": 800
+  },
+
+  "location": {
+    "_comment": "A job is eligible if it is remote and open to US/anywhere candidates, OR if it is on-site/hybrid within commuting range of Kalamazoo.",
+    "acceptRemoteAnywhere": true,
+    "acceptRemoteUS": true,
+    "commuteCities": [
+      "kalamazoo",
+      "portage",
+      "battle creek",
+      "paw paw",
+      "mattawan",
+      "richland",
+      "schoolcraft",
+      "vicksburg",
+      "plainwell",
+      "otsego",
+      "allegan",
+      "three rivers",
+      "south haven",
+      "gobles",
+      "galesburg",
+      "augusta",
+      "comstock",
+      "oshtemo",
+      "texas township"
+    ],
+    "commuteStates": ["michigan", "mi"],
+    "usAliases": [
+      "usa",
+      "u.s.",
+      "u.s.a.",
+      "us",
+      "united states",
+      "united states of america",
+      "north america",
+      "americas",
+      "anywhere",
+      "worldwide",
+      "global",
+      "remote",
+      "any",
+      "us only",
+      "usa only",
+      "us-based",
+      "nationwide"
+    ]
+  },
+
+  "titles": [
+    {
+      "label": "Email QA",
+      "weight": 45,
+      "phrases": [
+        "email qa",
+        "qa email",
+        "email quality",
+        "email quality assurance",
+        "email production qa"
+      ]
+    },
+    {
+      "label": "QA specialist / analyst",
+      "weight": 42,
+      "phrases": [
+        "qa specialist",
+        "quality assurance specialist",
+        "quality specialist",
+        "qa analyst",
+        "quality analyst",
+        "quality assurance analyst",
+        "qa associate",
+        "quality assurance associate",
+        "qa coordinator",
+        "quality assurance coordinator",
+        "qa reviewer",
+        "manual qa",
+        "qa tester",
+        "quality assurance tester",
+        "digital qa",
+        "content qa",
+        "creative qa",
+        "marketing qa",
+        "web qa"
+      ]
+    },
+    {
+      "label": "Proofreading / copy editing",
+      "weight": 40,
+      "phrases": [
+        "proofreader",
+        "proofreading",
+        "copy editor",
+        "copyeditor",
+        "copy editing",
+        "content editor",
+        "editorial specialist",
+        "editorial assistant",
+        "editorial coordinator",
+        "editor",
+        "quality editor"
+      ]
+    },
+    {
+      "label": "Email marketing / production",
+      "weight": 38,
+      "phrases": [
+        "email marketing specialist",
+        "email marketing coordinator",
+        "email marketing associate",
+        "email specialist",
+        "email production specialist",
+        "email production coordinator",
+        "email campaign specialist",
+        "email campaign manager",
+        "email deployment specialist",
+        "email operations",
+        "campaign operations",
+        "crm specialist",
+        "lifecycle marketing specialist",
+        "marketing automation specialist",
+        "email developer",
+        "email designer"
+      ]
+    },
+    {
+      "label": "Content / digital production",
+      "weight": 32,
+      "phrases": [
+        "digital content specialist",
+        "content specialist",
+        "content coordinator",
+        "content operations",
+        "web content specialist",
+        "digital production",
+        "production coordinator",
+        "production specialist",
+        "traffic coordinator",
+        "project coordinator",
+        "marketing coordinator",
+        "marketing specialist",
+        "marketing operations specialist",
+        "campaign coordinator",
+        "campaign specialist",
+        "digital marketing specialist"
+      ]
+    },
+    {
+      "label": "Localization / bilingual",
+      "weight": 34,
+      "phrases": [
+        "localization qa",
+        "localization specialist",
+        "localization tester",
+        "spanish translator",
+        "spanish reviewer",
+        "bilingual specialist",
+        "linguistic qa",
+        "translation reviewer",
+        "spanish content"
+      ]
+    },
+    {
+      "label": "Adjacent detail-work",
+      "weight": 22,
+      "phrases": [
+        "data quality",
+        "documentation specialist",
+        "compliance reviewer",
+        "content moderator",
+        "catalog specialist",
+        "merchandising specialist",
+        "website coordinator",
+        "cms specialist",
+        "publishing specialist",
+        "accessibility specialist"
+      ]
+    }
+  ],
+
+  "skills": [
+    { "label": "HTML email", "weight": 10, "phrases": ["html email", "email html", "email template", "email templates", "responsive email", "email rendering"] },
+    { "label": "Email testing tools", "weight": 9, "phrases": ["litmus", "email on acid", "emailonacid", "inbox preview", "rendering test"] },
+    { "label": "Email platforms (ESP)", "weight": 9, "phrases": ["salesforce marketing cloud", "marketing cloud", "exacttarget", "braze", "klaviyo", "mailchimp", "iterable", "marketo", "eloqua", "responsys", "hubspot", "sailthru", "cordial", "attentive", "constant contact", "campaign monitor", "esp"] },
+    { "label": "Quality assurance", "weight": 9, "phrases": ["quality assurance", "qa process", "qa testing", "manual testing", "test cases", "test plans", "regression testing", "defect tracking", "bug tracking", "acceptance testing", "uat"] },
+    { "label": "Proofreading / editorial", "weight": 9, "phrases": ["proofread", "proofreading", "copy edit", "copyediting", "copy editing", "editorial review", "grammar", "ap style", "chicago manual", "style guide", "editorial accuracy"] },
+    { "label": "Attention to detail", "weight": 6, "phrases": ["attention to detail", "detail oriented", "detail-oriented", "eye for detail", "meticulous", "high standards", "pixel perfect", "pixel-perfect"] },
+    { "label": "Brand consistency", "weight": 7, "phrases": ["brand consistency", "brand standards", "brand guidelines", "brand voice", "on-brand", "brand compliance"] },
+    { "label": "Cross-browser / device testing", "weight": 8, "phrases": ["cross-browser", "cross browser", "browser testing", "device testing", "cross-device", "rendering issues", "browserstack"] },
+    { "label": "HTML / CSS", "weight": 6, "phrases": ["html", "css", "html/css", "basic html", "html and css"] },
+    { "label": "Accessibility", "weight": 6, "phrases": ["accessibility", "wcag", "alt text", "ada compliance", "screen reader", "a11y"] },
+    { "label": "Link / asset validation", "weight": 6, "phrases": ["link checking", "broken links", "utm", "tracking links", "asset management", "asset integrity"] },
+    { "label": "Project tools", "weight": 5, "phrases": ["jira", "asana", "workfront", "wrike", "monday.com", "basecamp", "trello", "smartsheet", "confluence", "airtable", "notion"] },
+    { "label": "Design tools", "weight": 4, "phrases": ["figma", "adobe", "photoshop", "indesign", "illustrator", "sketch", "invision", "creative suite"] },
+    { "label": "CMS / web content", "weight": 5, "phrases": ["cms", "content management system", "wordpress", "drupal", "contentful", "sitecore", "adobe experience manager", "aem"] },
+    { "label": "Marketing campaigns", "weight": 6, "phrases": ["marketing campaign", "digital campaign", "campaign execution", "campaign management", "a/b test", "ab testing", "split test", "personalization", "dynamic content", "segmentation", "deliverability"] },
+    { "label": "Spanish / bilingual", "weight": 7, "phrases": ["spanish", "bilingual", "translation", "localization", "multilingual"] },
+    { "label": "Agency / client work", "weight": 5, "phrases": ["agency", "client brands", "multiple clients", "client-facing", "account team", "creative team"] },
+    { "label": "Remote-team communication", "weight": 4, "phrases": ["remote team", "distributed team", "asynchronous", "slack", "written communication", "clear communication", "cross-functional"] },
+    { "label": "Teaching / training", "weight": 4, "phrases": ["training", "onboarding", "documentation", "mentoring", "curriculum", "instructional"] },
+    { "label": "Ecommerce / retail marketing", "weight": 4, "phrases": ["ecommerce", "e-commerce", "retail marketing", "direct to consumer", "dtc", "merchandising"] }
+  ],
+
+  "context": [
+    { "label": "Marketing domain", "weight": 5, "phrases": ["marketing", "advertising", "creative services", "brand", "campaigns"] },
+    { "label": "Entry-friendly seniority", "weight": 4, "phrases": ["2+ years", "3+ years", "2-4 years", "3-5 years", "mid-level", "associate", "specialist", "coordinator"] },
+    { "label": "Part-time friendly", "weight": 3, "phrases": ["part-time", "part time", "flexible hours", "flexible schedule", "20 hours", "25 hours", "30 hours"] },
+    { "label": "Fully remote", "weight": 4, "phrases": ["fully remote", "100% remote", "work from home", "remote-first", "remote first", "wfh"] }
+  ],
+
+  "penalties": [
+    { "label": "Test-automation engineering (not her track)", "weight": -16, "phrases": ["sdet", "software development engineer in test", "test automation engineer", "automation engineer", "selenium", "cypress", "playwright", "appium", "junit", "testng", "pytest", "webdriver", "automated test framework", "ci/cd pipeline", "jenkins"] },
+    { "label": "Heavy software engineering", "weight": -14, "phrases": ["software engineer", "backend", "back-end developer", "full stack", "full-stack", "devops", "kubernetes", "microservices", "java developer", "c#", ".net", "golang", "rust", "react native", "machine learning", "data engineer"] },
+    { "label": "Senior leadership scope", "weight": -12, "phrases": ["vice president", "vp of", "head of", "director of", "chief ", "principal ", "staff engineer", "10+ years of management", "people manager"] },
+    { "label": "Unrelated field", "weight": -25, "phrases": ["registered nurse", "phlebotomy", "cdl", "truck driver", "warehouse associate", "forklift", "security clearance", "welder", "hvac", "pharmacy technician", "medical assistant", "caregiver", "physical therapy", "dental", "construction", "electrician", "line cook", "server position"] },
+    { "label": "Manufacturing/lab QA (different discipline)", "weight": -18, "phrases": ["iso 9001", "iso 13485", "gmp", "haccp", "calipers", "shop floor", "production line", "supplier quality", "clinical trial", "fda submission", "capa", "six sigma black belt", "food safety"] },
+    { "label": "Commission-only / high-pressure sales", "weight": -14, "phrases": ["commission only", "commission-only", "uncapped commission", "cold calling", "door to door", "door-to-door", "sales quota", "100% commission"] },
+    { "label": "Unpaid or internship", "weight": -10, "phrases": ["unpaid", "internship", "intern position", "volunteer position"] }
+  ],
+
+  "excludeTitlePhrases": [
+    "registered nurse",
+    "truck driver",
+    "cdl driver",
+    "sdet",
+    "software development engineer in test",
+    "warehouse",
+    "line cook",
+    "security engineer",
+    "sales representative",
+    "insurance agent"
+  ],
+
+  "ranking": {
+    "_comment": "Default blend used for the 'Best overall' sort in the UI. The UI can override these live.",
+    "matchWeight": 0.72,
+    "recencyWeight": 0.28,
+    "recencyHalfLifeDays": 14,
+    "assumedAgeDaysWhenUnknown": 21
+  }
+}

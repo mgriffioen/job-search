@@ -1,0 +1,17 @@
+{
+  "name": "job-search",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "description": "Aggregates and ranks job postings matched to Emily Griffioen's QA / email-marketing background.",
+  "engines": {
+    "node": ">=20"
+  },
+  "scripts": {
+    "fetch": "node scripts/fetch-jobs.mjs",
+    "serve": "node scripts/serve.mjs",
+    "start": "node scripts/fetch-jobs.mjs && node scripts/serve.mjs",
+    "test": "node --test tests/"
+  },
+  "license": "UNLICENSED"
+}
