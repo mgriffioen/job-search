@@ -36,6 +36,27 @@ jobs:
       - name: Run unit tests
         run: npm test
 
+      # Reports only whether each name is set, never its value. Catches the
+      # usual misconfigurations: a typo'd secret name, or a value added under
+      # the Variables tab / as an Environment secret, where the job cannot
+      # reach it.
+      - name: Check optional API keys
+        run: |
+          {
+            echo "### Optional API keys"
+            echo ""
+            echo "| Key | Secret set | Also found as a Variable |"
+            echo "| --- | --- | --- |"
+            echo "| RAPIDAPI_KEY | ${{ secrets.RAPIDAPI_KEY != '' }} | ${{ vars.RAPIDAPI_KEY != '' }} |"
+            echo "| JOOBLE_API_KEY | ${{ secrets.JOOBLE_API_KEY != '' }} | ${{ vars.JOOBLE_API_KEY != '' }} |"
+            echo "| ADZUNA_APP_ID | ${{ secrets.ADZUNA_APP_ID != '' }} | ${{ vars.ADZUNA_APP_ID != '' }} |"
+            echo "| ADZUNA_APP_KEY | ${{ secrets.ADZUNA_APP_KEY != '' }} | ${{ vars.ADZUNA_APP_KEY != '' }} |"
+            echo ""
+            echo "A key that is \`false\` in both columns is not visible to this workflow."
+            echo "\`true\` under Variables but \`false\` under Secret means it was saved on the"
+            echo "wrong tab — Actions secrets and Actions variables are separate stores."
+          } >> "$GITHUB_STEP_SUMMARY"
+
       - name: Fetch and score job postings
         env:
           ADZUNA_APP_ID: ${{ secrets.ADZUNA_APP_ID }}
