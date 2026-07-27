@@ -9,15 +9,31 @@ export const id = 'jobicy';
 export const label = 'Jobicy';
 export const enabled = true;
 
-// Jobicy filters by industry slug; these are the ones adjacent to her work.
-const INDUSTRIES = ['marketing', 'copywriting', 'design-multimedia', 'business', 'administration'];
+/**
+ * The unfiltered US feed, then keyword passes. Jobicy answers 400 for an
+ * industry slug it does not recognise and its slug list changes, so the broad
+ * feed carries the source and the keyword passes only add to it.
+ */
+function buildUrls(profile) {
+  const urls = ['https://jobicy.com/api/v2/remote-jobs?count=50&geo=usa'];
+  for (const query of profile.search.queries.slice(0, 6)) {
+    urls.push(`https://jobicy.com/api/v2/remote-jobs?count=50&geo=usa&tag=${encodeURIComponent(query)}`);
+  }
+  return urls;
+}
 
-export async function fetchJobs() {
+export async function fetchJobs({ profile, warn }) {
   const jobs = [];
 
-  for (const industry of INDUSTRIES) {
-    const url = `https://jobicy.com/api/v2/remote-jobs?count=50&industry=${encodeURIComponent(industry)}&geo=usa`;
-    const payload = await getJson(url);
+  for (const url of buildUrls(profile)) {
+    let payload;
+    try {
+      payload = await getJson(url);
+    } catch (err) {
+      warn(`${new URL(url).search}: ${err.message}`);
+      continue;
+    }
+
     for (const job of payload?.jobs || []) {
       jobs.push({
         sourceId: String(job.id),

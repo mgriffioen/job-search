@@ -10,11 +10,13 @@ export const id = 'weworkremotely';
 export const label = 'We Work Remotely';
 export const enabled = true;
 
+// The site-wide feed first: it is the one URL that has never moved, so the run
+// still returns jobs even when a category slug gets renamed underneath us.
 const FEEDS = [
+  'https://weworkremotely.com/remote-jobs.rss',
   'https://weworkremotely.com/categories/remote-marketing-jobs.rss',
   'https://weworkremotely.com/categories/remote-customer-support-jobs.rss',
   'https://weworkremotely.com/categories/remote-design-jobs.rss',
-  'https://weworkremotely.com/categories/remote-product-jobs.rss',
   'https://weworkremotely.com/categories/all-other-remote-jobs.rss',
 ];
 
@@ -26,11 +28,19 @@ function splitTitle(rawTitle) {
   return { company: '', title: rawTitle.trim() };
 }
 
-export async function fetchJobs() {
+export async function fetchJobs({ warn }) {
   const jobs = [];
 
   for (const feed of FEEDS) {
-    const xml = await getText(feed);
+    let xml;
+    try {
+      xml = await getText(feed);
+    } catch (err) {
+      // A renamed or retired category must not cost us the other feeds.
+      warn(`${feed.split('/').pop()}: ${err.message}`);
+      continue;
+    }
+
     for (const item of parseRssItems(xml)) {
       const { company, title } = splitTitle(item.title || '');
       if (!title) continue;

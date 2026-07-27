@@ -12,13 +12,21 @@ export const id = 'remotive';
 export const label = 'Remotive';
 export const enabled = true;
 
-export async function fetchJobs({ profile }) {
+export async function fetchJobs({ profile, warn }) {
   const jobs = [];
   const queries = profile.search.queries.slice(0, 8);
 
   for (const query of queries) {
     const url = `https://remotive.com/api/remote-jobs?search=${encodeURIComponent(query)}&limit=60`;
-    const payload = await getJson(url);
+    let payload;
+    try {
+      payload = await getJson(url);
+    } catch (err) {
+      // Rate limiting on one term should not cost us the other seven.
+      warn(`"${query}": ${err.message}`);
+      continue;
+    }
+
     for (const job of payload?.jobs || []) {
       jobs.push({
         sourceId: String(job.id),

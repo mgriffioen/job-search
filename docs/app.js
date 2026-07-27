@@ -520,7 +520,12 @@ function renderSourceControls() {
             : 'off';
 
     row.append(dot, name, count);
-    if (source.detail) row.title = source.detail;
+
+    const tooltip = [source.detail, ...(source.warnings || [])].filter(Boolean);
+    if (tooltip.length) row.title = tooltip.join('\n');
+    if (!source.detail && source.warnings?.length) {
+      count.textContent = `${source.fetched} ⚠`;
+    }
     grid.append(row);
   }
 }

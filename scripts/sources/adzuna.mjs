@@ -28,7 +28,7 @@ const SEARCHES = [
   { where: '', distance: 0, extra: 'remote', label: 'us-remote' },
 ];
 
-export async function fetchJobs({ profile }) {
+export async function fetchJobs({ profile, warn }) {
   const appId = process.env.ADZUNA_APP_ID;
   const appKey = process.env.ADZUNA_APP_KEY;
   const jobs = [];
@@ -50,7 +50,13 @@ export async function fetchJobs({ profile }) {
       if (search.distance) params.set('distance', String(search.distance));
 
       const url = `https://api.adzuna.com/v1/api/jobs/us/search/1?${params}`;
-      const payload = await getJson(url);
+      let payload;
+      try {
+        payload = await getJson(url);
+      } catch (err) {
+        warn(`${search.label} "${query}": ${err.message}`);
+        continue;
+      }
 
       for (const job of payload?.results || []) {
         const area = job.location?.display_name || '';

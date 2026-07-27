@@ -9,15 +9,23 @@ export const id = 'himalayas';
 export const label = 'Himalayas';
 export const enabled = true;
 
-const PAGES = 4;
-const LIMIT = 100;
+// Himalayas caps the page size at 20 regardless of what you ask for, so the
+// only way to get depth here is more pages.
+const PAGES = 12;
+const LIMIT = 20;
 
-export async function fetchJobs() {
+export async function fetchJobs({ warn }) {
   const jobs = [];
 
   for (let page = 0; page < PAGES; page += 1) {
     const url = `https://himalayas.app/jobs/api?limit=${LIMIT}&offset=${page * LIMIT}`;
-    const payload = await getJson(url);
+    let payload;
+    try {
+      payload = await getJson(url);
+    } catch (err) {
+      warn(`page ${page + 1}: ${err.message}`);
+      break;
+    }
     const rows = payload?.jobs || [];
     if (!rows.length) break;
 
