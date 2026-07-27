@@ -116,6 +116,7 @@
     {
       "label": "Proofreading / copy editing",
       "weight": 40,
+      "_comment": "Never list a bare 'editor' here — it matches video/photo/audio editor titles, which are a different craft entirely. Spell out the editorial ones.",
       "phrases": [
         "proofreader",
         "proofreading",
@@ -126,7 +127,13 @@
         "editorial specialist",
         "editorial assistant",
         "editorial coordinator",
-        "editor",
+        "managing editor",
+        "associate editor",
+        "assistant editor",
+        "production editor",
+        "digital editor",
+        "web editor",
+        "newsletter editor",
         "quality editor"
       ]
     },
@@ -244,7 +251,9 @@
     { "label": "Unrelated field", "weight": -25, "phrases": ["registered nurse", "phlebotomy", "cdl", "truck driver", "warehouse associate", "forklift", "security clearance", "welder", "hvac", "pharmacy technician", "medical assistant", "caregiver", "physical therapy", "dental", "construction", "electrician", "line cook", "server position"] },
     { "label": "Manufacturing/lab QA (different discipline)", "weight": -18, "phrases": ["iso 9001", "iso 13485", "gmp", "haccp", "calipers", "shop floor", "production line", "supplier quality", "clinical trial", "fda submission", "capa", "six sigma black belt", "food safety"] },
     { "label": "Commission-only / high-pressure sales", "weight": -14, "phrases": ["commission only", "commission-only", "uncapped commission", "cold calling", "door to door", "door-to-door", "sales quota", "100% commission"] },
-    { "label": "Unpaid or internship", "weight": -10, "phrases": ["unpaid", "internship", "intern position", "volunteer position"] }
+    { "label": "Unpaid or internship", "weight": -10, "phrases": ["unpaid", "internship", "intern position", "volunteer position"] },
+    { "label": "Video / photo / audio editing (a different craft)", "weight": -14, "phrases": ["video editor", "video editing", "video producer", "videographer", "photo editor", "photo editing", "film editor", "audio editor", "podcast editor", "motion graphics", "premiere pro", "after effects", "davinci resolve", "final cut", "short form video", "short-form video"] },
+    { "label": "Requires a language she does not have", "weight": -9, "phrases": ["hebrew", "mandarin", "cantonese", "japanese", "korean", "german", "french", "portuguese", "arabic", "russian", "italian", "dutch", "polish", "hindi", "urdu", "vietnamese", "tagalog", "thai", "turkish", "swedish", "norwegian", "danish", "finnish", "greek", "czech", "hungarian", "romanian", "ukrainian"] }
   ],
 
   "excludeTitlePhrases": [

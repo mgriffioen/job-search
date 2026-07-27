@@ -203,6 +203,55 @@ test('test-automation roles are penalised, not promoted', () => {
   assert.ok(sdet.reasons.some((r) => r.points < 0), 'SDET posting should carry penalties');
 });
 
+test('video editing roles do not ride in on the word "editor"', () => {
+  const copyEditor = scoreJob(
+    job({ title: 'Copy Editor, Email & Web', description: 'Proofread marketing email copy, AP style, brand voice.' }),
+    profile,
+    NOW
+  );
+  const videoEditor = scoreJob(
+    job({
+      title: 'Video Editing Specialist',
+      description: 'Edit short-form video in Premiere Pro and After Effects for direct-response marketing campaigns.',
+    }),
+    profile,
+    NOW
+  );
+
+  assert.ok(
+    copyEditor.match > videoEditor.match + 25,
+    `copy editor ${copyEditor.match} should clearly beat video editor ${videoEditor.match}`
+  );
+  assert.ok(videoEditor.match < 30, `video editor scored ${videoEditor.match}, expected well under 30`);
+});
+
+test('a good email role survives mentioning video in passing', () => {
+  const result = scoreJob(
+    job({
+      title: 'Email Marketing Specialist',
+      description:
+        'Own HTML email production in Klaviyo, proofread all copy, test rendering in Litmus. Occasionally source video assets for campaigns.',
+    }),
+    profile,
+    NOW
+  );
+  assert.ok(result.match >= 50, `scored ${result.match}; an incidental video mention should not sink a real match`);
+});
+
+test('roles requiring a language she does not have are pushed down', () => {
+  const spanish = scoreJob(
+    job({ title: 'Bilingual Copy Editor', description: 'Review Spanish marketing copy for accuracy and tone.' }),
+    profile,
+    NOW
+  );
+  const hebrew = scoreJob(
+    job({ title: 'Hebrew Freelance Translator & Copy Editor', description: 'Translate and copy edit Hebrew marketing content.' }),
+    profile,
+    NOW
+  );
+  assert.ok(spanish.match > hebrew.match, `Spanish ${spanish.match} should beat Hebrew ${hebrew.match}`);
+});
+
 test('titles on the hard-exclude list are forced to the bottom', () => {
   const result = scoreJob(
     job({ title: 'Registered Nurse', description: 'Quality assurance of patient charts, attention to detail required.' }),
