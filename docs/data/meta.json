@@ -1,6 +1,6 @@
 {
-  "generatedAt": "2026-07-27T16:03:25.599Z",
-  "durationMs": 16124,
+  "generatedAt": "2026-07-27T16:05:38.566Z",
+  "durationMs": 26917,
   "candidate": {
     "name": "Emily Griffioen",
     "headline": "QA Specialist — HTML email & digital marketing content",
@@ -21,23 +21,23 @@
     "minMatchScore": 20
   },
   "counts": {
-    "fetched": 1382,
-    "unique": 1028,
-    "published": 59,
+    "fetched": 1412,
+    "unique": 1057,
+    "published": 86,
     "dropped": {
-      "location": 301,
+      "location": 304,
       "stale": 15,
-      "lowMatch": 646,
+      "lowMatch": 645,
       "excluded": 7
     }
   },
   "tiers": {
-    "strong": 2,
-    "good": 10,
-    "possible": 12,
-    "stretch": 35
+    "strong": 10,
+    "good": 22,
+    "possible": 17,
+    "stretch": 37
   },
-  "freshLast48h": 15,
+  "freshLast48h": 20,
   "sources": [
     {
       "id": "companyboards",
@@ -50,13 +50,12 @@
     {
       "id": "jsearch",
       "label": "Google Jobs",
-      "status": "error",
-      "fetched": 0,
+      "status": "ok",
+      "fetched": 30,
       "warnings": [
-        "Using /search-v2 — JSearch has moved off /search; make it the first candidate to save two requests per run."
+        "\"email production coordinator\": 200 OK but no jobs array found (top-level keys: status, request_id, parameters, data)"
       ],
-      "detail": "object is not iterable (cannot read property Symbol(Symbol.iterator))",
-      "ms": 4401
+      "ms": 19788
     },
     {
       "id": "adzuna",
@@ -72,7 +71,7 @@
       "status": "ok",
       "fetched": 80,
       "warnings": [],
-      "ms": 612
+      "ms": 882
     },
     {
       "id": "remotive",
@@ -80,7 +79,7 @@
       "status": "ok",
       "fetched": 288,
       "warnings": [],
-      "ms": 333
+      "ms": 365
     },
     {
       "id": "weworkremotely",
@@ -90,7 +89,7 @@
       "warnings": [
         "remote-marketing-jobs.rss: HTTP 301 Moved Permanently"
       ],
-      "ms": 5178
+      "ms": 1510
     },
     {
       "id": "himalayas",
@@ -98,7 +97,7 @@
       "status": "ok",
       "fetched": 240,
       "warnings": [],
-      "ms": 2433
+      "ms": 1746
     },
     {
       "id": "jobicy",
@@ -106,7 +105,7 @@
       "status": "ok",
       "fetched": 179,
       "warnings": [],
-      "ms": 225
+      "ms": 278
     },
     {
       "id": "remoteok",
@@ -114,7 +113,7 @@
       "status": "ok",
       "fetched": 100,
       "warnings": [],
-      "ms": 543
+      "ms": 416
     },
     {
       "id": "workingnomads",
@@ -122,7 +121,7 @@
       "status": "ok",
       "fetched": 41,
       "warnings": [],
-      "ms": 856
+      "ms": 311
     },
     {
       "id": "arbeitnow",
@@ -130,7 +129,7 @@
       "status": "ok",
       "fetched": 110,
       "warnings": [],
-      "ms": 118
+      "ms": 164
     }
   ]
 }
