@@ -13,7 +13,7 @@
 
 import { normalizeForMatch, containsPhrase, daysBetween } from './text.mjs';
 
-const TITLE_CAP = 45;
+const TITLE_CAP = 50;
 const SKILL_CAP = 35;
 const CONTEXT_CAP = 10;
 const PENALTY_FLOOR = -38;
@@ -31,11 +31,35 @@ function matchGroup(group, normalizedText) {
 }
 
 /**
+ * Combination groups need one hit from every list, in any order and anywhere
+ * in the text. "QA Analyst, Lifecycle Marketing" and "Lifecycle Marketing QA"
+ * are the same job; contiguous phrase matching only catches the second.
+ */
+export function matchCombinations(groups, normalizedText) {
+  const hits = [];
+  for (const group of groups || []) {
+    const matched = [];
+    for (const set of group.all) {
+      const found = set.find((phrase) => containsPhrase(normalizedText, phrase));
+      if (!found) break;
+      matched.push(found);
+    }
+    if (matched.length === group.all.length) {
+      hits.push({ label: group.label, weight: group.weight, phrase: matched.join(' + ') });
+    }
+  }
+  return hits;
+}
+
+/**
  * Title signal: the strongest single title family dominates, with partial
  * credit for a second family (e.g. "Email Marketing QA Specialist").
  */
 function scoreTitle(profile, normTitle, normDescription) {
-  const titleHits = matchGroup(profile.titles, normTitle).sort((a, b) => b.weight - a.weight);
+  const titleHits = [
+    ...matchGroup(profile.titles, normTitle),
+    ...matchCombinations(profile.titleCombinations, normTitle),
+  ].sort((a, b) => b.weight - a.weight);
   const reasons = [];
   let score = 0;
 
@@ -49,7 +73,10 @@ function scoreTitle(profile, normTitle, normDescription) {
     }
   } else {
     // The title missed, but the role family may still show up in the body.
-    const bodyHits = matchGroup(profile.titles, normDescription).sort((a, b) => b.weight - a.weight);
+    const bodyHits = [
+      ...matchGroup(profile.titles, normDescription),
+      ...matchCombinations(profile.titleCombinations, normDescription),
+    ].sort((a, b) => b.weight - a.weight);
     if (bodyHits.length) {
       const credit = Math.min(9, Math.round(bodyHits[0].weight * 0.2));
       score = credit;
@@ -57,7 +84,13 @@ function scoreTitle(profile, normTitle, normDescription) {
     }
   }
 
-  return { score: clamp(score, 0, TITLE_CAP), reasons };
+  return {
+    score: clamp(score, 0, TITLE_CAP),
+    reasons,
+    // Whether the strongest signal came from the title itself, and how strong.
+    fromTitle: titleHits.length > 0,
+    topWeight: titleHits.length ? titleHits[0].weight : 0,
+  };
 }
 
 /** Skills use diminishing returns so a keyword-stuffed posting cannot run away with it. */
@@ -132,6 +165,23 @@ export function scoreJob(job, profile, now = new Date()) {
 
   const raw = title.score + skills.score + context.score + penalties.score;
   let match = clamp(Math.round((raw / MAX_RAW) * 100), 0, 100);
+
+  /**
+   * Several sources give only a snippet — Jooble and the RSS feeds in
+   * particular — so scoring leans on the description more than those postings
+   * can support. When the title alone names one of her exact roles and nothing
+   * in the posting argues against it, that is sufficient evidence on its own;
+   * without this a bullseye title with a two-line body loses to a verbose
+   * posting for a job she does not want.
+   *
+   * Deliberately conditional on there being no penalties, so it cannot rescue
+   * "QA Automation Engineer, Marketing".
+   */
+  const flooredAt = profile.ranking.bullseyeTitleFloor ?? 72;
+  const bullseyeWeight = profile.ranking.bullseyeTitleWeight ?? 45;
+  const bullseye = !excluded && penalties.score === 0 && title.fromTitle && title.topWeight >= bullseyeWeight;
+  if (bullseye && match < flooredAt) match = flooredAt;
+
   if (excluded) match = Math.min(match, 5);
 
   const recency = recencyScore(job.postedAt, profile, now);

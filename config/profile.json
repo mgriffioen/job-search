@@ -12,7 +12,15 @@
 
   "search": {
     "_comment": "Free-text queries sent to sources that support keyword search.",
+    "_queriesComment": "Ordered most-specific first. Sources that cap how many queries they run take them from the top, so her exact niche is always covered.",
     "queries": [
+      "email qa",
+      "marketing qa",
+      "crm qa",
+      "lifecycle marketing qa",
+      "campaign qa",
+      "digital production qa",
+      "marketing operations qa",
       "quality assurance",
       "qa specialist",
       "email marketing",
@@ -23,6 +31,8 @@
       "marketing operations",
       "digital content"
     ],
+    "_jsearchComment": "JSearch is metered on the free tier, so it runs a rotating window of the query list rather than all of it, cycling through everything over a few runs.",
+    "jsearchQueriesPerRun": 3,
     "maxAgeDays": 45,
     "minMatchScore": 20,
     "maxJobsStored": 800
@@ -76,6 +86,35 @@
     ]
   },
 
+  "_titleCombinationsComment": "Matches when the title carries a QA word AND a marketing-discipline word, in any order and any distance apart. Plain phrase matching is contiguous, so it would catch 'Email QA Specialist' but miss 'QA Analyst, Lifecycle Marketing' — these roles get titled both ways. Scores above every single-phrase title group, because this combination is precisely her job.",
+  "titleCombinations": [
+    {
+      "label": "QA in a marketing discipline",
+      "weight": 48,
+      "all": [
+        ["qa", "q.a", "quality assurance", "quality", "qc"],
+        [
+          "email",
+          "marketing",
+          "crm",
+          "lifecycle",
+          "lifecycle marketing",
+          "campaign",
+          "campaigns",
+          "digital production",
+          "production",
+          "marketing operations",
+          "martech",
+          "creative",
+          "brand",
+          "content",
+          "web",
+          "digital"
+        ]
+      ]
+    }
+  ],
+
   "titles": [
     {
       "label": "Email QA",
@@ -85,7 +124,16 @@
         "qa email",
         "email quality",
         "email quality assurance",
-        "email production qa"
+        "email production qa",
+        "crm qa",
+        "qa crm",
+        "campaign qa",
+        "qa campaign",
+        "lifecycle marketing qa",
+        "digital production qa",
+        "marketing operations qa",
+        "marketing qa",
+        "qa marketing"
       ]
     },
     {
@@ -275,6 +323,9 @@
     "recencyWeight": 0.28,
     "recencyHalfLifeDays": 14,
     "assumedAgeDaysWhenUnknown": 21,
+    "_bullseyeComment": "Some sources return only a snippet, so a posting whose title names one of her exact roles cannot earn skill points it deserves. Such a title floors the match here, provided nothing in the posting counts against it. Raise bullseyeTitleWeight to make the floor apply to fewer title groups.",
+    "bullseyeTitleFloor": 72,
+    "bullseyeTitleWeight": 45,
     "_unnamedEmployerComment": "Reposting sites list themselves as the employer, so you cannot tell who is actually hiring. Those postings still appear, but sort lower by this fraction. Set to 0 to treat them like any other listing.",
     "unnamedEmployerPenalty": 0.25
   }

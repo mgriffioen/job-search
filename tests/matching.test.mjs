@@ -7,7 +7,7 @@ import { evaluateLocation, detectWorkType } from '../scripts/lib/location.mjs';
 import { scoreJob, matchTier, recencyScore } from '../scripts/lib/score.mjs';
 import { normalizeJob, dedupeJobs, dedupeKey } from '../scripts/lib/normalize.mjs';
 import { parseRssItems } from '../scripts/lib/xml.mjs';
-import { explain as explainJsearch, extractJobs, mapJob as mapJsearchJob } from '../scripts/sources/jsearch.mjs';
+import { explain as explainJsearch, extractJobs, mapJob as mapJsearchJob, selectQueries } from '../scripts/sources/jsearch.mjs';
 
 const profile = JSON.parse(await readFile(new URL('../config/profile.json', import.meta.url), 'utf8'));
 const NOW = new Date('2026-07-27T12:00:00Z');
@@ -202,6 +202,104 @@ test('test-automation roles are penalised, not promoted', () => {
   );
   assert.ok(manual.match > sdet.match, `manual ${manual.match} should beat SDET ${sdet.match}`);
   assert.ok(sdet.reasons.some((r) => r.points < 0), 'SDET posting should carry penalties');
+});
+
+const TARGET_TITLES = [
+  'Marketing QA Specialist',
+  'Email QA Analyst',
+  'CRM QA Specialist',
+  'Lifecycle Marketing QA Analyst',
+  'Digital Production QA Coordinator',
+  'Campaign QA Specialist',
+  'Marketing Operations QA Analyst',
+];
+
+// What one of these postings actually reads like.
+const REALISTIC_BODY =
+  'We are seeking a detail-oriented QA specialist to review email and web campaigns before ' +
+  'deployment. You will proofread copy for editorial accuracy, verify links and tracking ' +
+  'parameters, test rendering across email clients and browsers, and confirm brand consistency ' +
+  'against our style guide. Experience with Litmus, Salesforce Marketing Cloud and Jira preferred.';
+
+test('her target QA roles score as strong matches', () => {
+  for (const title of TARGET_TITLES) {
+    const result = scoreJob(job({ title, description: REALISTIC_BODY }), profile, NOW);
+    assert.equal(matchTier(result.match), 'strong', `"${title}" scored ${result.match}`);
+  }
+});
+
+test('her target QA roles stay strong even from a snippet-only posting', () => {
+  // Jooble and the RSS feeds return a couple of lines, not a full description.
+  // A bullseye title must not lose to a verbose posting for a worse job.
+  for (const title of TARGET_TITLES) {
+    const result = scoreJob(job({ title, description: 'Review campaigns before launch.' }), profile, NOW);
+    assert.equal(matchTier(result.match), 'strong', `"${title}" scored only ${result.match} on title alone`);
+  }
+});
+
+test('the title floor cannot rescue a posting that argues against itself', () => {
+  const automation = scoreJob(
+    job({
+      title: 'Marketing QA Automation Engineer',
+      description: 'Build Selenium and Cypress suites in Java, own the Jenkins CI/CD pipeline.',
+    }),
+    profile,
+    NOW
+  );
+  assert.ok(automation.match < 72, `scored ${automation.match}; penalties must defeat the floor`);
+});
+
+test('the title floor does not apply on a description-only match', () => {
+  const mentioned = scoreJob(
+    job({ title: 'Operations Associate', description: 'You will support our email QA process from time to time.' }),
+    profile,
+    NOW
+  );
+  assert.ok(mentioned.match < 72, `scored ${mentioned.match}; a passing mention is not a bullseye title`);
+});
+
+test('the same QA roles score just as well when the discipline comes after "QA"', () => {
+  // Real postings title these both ways round; contiguous phrase matching
+  // only catches one order, which is what titleCombinations exists for.
+  const pairs = [
+    ['Lifecycle Marketing QA Analyst', 'QA Analyst, Lifecycle Marketing'],
+    ['Marketing Operations QA Specialist', 'QA Specialist - Marketing Operations'],
+    ['CRM QA Analyst', 'Quality Assurance Analyst, CRM'],
+    ['Campaign QA Specialist', 'QA Specialist (Campaign Operations)'],
+  ];
+
+  for (const [forward, reversed] of pairs) {
+    const a = scoreJob(job({ title: forward, description: REALISTIC_BODY }), profile, NOW);
+    const b = scoreJob(job({ title: reversed, description: REALISTIC_BODY }), profile, NOW);
+    assert.equal(matchTier(b.match), 'strong', `"${reversed}" scored ${b.match}`);
+    assert.ok(
+      Math.abs(a.match - b.match) <= 6,
+      `word order should not matter: "${forward}" ${a.match} vs "${reversed}" ${b.match}`
+    );
+  }
+});
+
+test('a QA title with no marketing discipline does not get the combination bonus', () => {
+  const generic = scoreJob(job({ title: 'QA Analyst, Medical Devices', description: 'ISO 13485 and CAPA experience.' }), profile, NOW);
+  const hers = scoreJob(job({ title: 'QA Analyst, Email Marketing' }), profile, NOW);
+  assert.ok(hers.match > generic.match, `${hers.match} should beat ${generic.match}`);
+});
+
+test('JSearch rotates through the query list across runs at a fixed cost', () => {
+  const all = ['a', 'b', 'c', 'd', 'e', 'f', 'g'];
+  const run = (hoursFromNow) => selectQueries(all, 3, new Date(Date.parse('2026-07-27T00:00:00Z') + hoursFromNow * 3600000));
+
+  const first = run(0);
+  assert.equal(first.length, 3, 'per-run cost stays fixed');
+  assert.notDeepEqual(run(12), first, 'the window advances between runs');
+
+  // Every query is reached within a few runs rather than the tail never running.
+  const seen = new Set();
+  for (let i = 0; i < 12; i += 1) run(i * 12).forEach((q) => seen.add(q));
+  assert.equal(seen.size, all.length, 'the whole list gets covered');
+
+  assert.deepEqual(selectQueries(all, 99), all, 'a generous budget just runs everything');
+  assert.deepEqual(selectQueries([], 3), []);
 });
 
 test('video editing roles do not ride in on the word "editor"', () => {

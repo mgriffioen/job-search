@@ -14,7 +14,8 @@ export const enabled = true;
 
 export async function fetchJobs({ profile, warn }) {
   const jobs = [];
-  const queries = profile.search.queries.slice(0, 8);
+  // Unmetered, so run the whole list rather than a slice of it.
+  const queries = profile.search.queries.slice(0, 16);
 
   for (const query of queries) {
     const url = `https://remotive.com/api/remote-jobs?search=${encodeURIComponent(query)}&limit=60`;

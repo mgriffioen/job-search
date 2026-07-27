@@ -27,13 +27,23 @@ export function isConfigured() {
 
 export const skipReason = 'RAPIDAPI_KEY not set — see README (this is what brings in LinkedIn/Indeed/ZipRecruiter)';
 
-// Keep this list short: each entry costs one request against the free quota.
-const QUERIES = [
-  'email marketing specialist',
-  'quality assurance specialist',
-  'proofreader',
-  'email production coordinator',
-];
+/**
+ * Every query costs a request against a ~200/month quota, so running the whole
+ * keyword list twice a day is not affordable. Instead each run takes a moving
+ * window of it, advancing every run, so the full list is covered over a couple
+ * of days at a fixed cost per run.
+ *
+ * The window is derived from the clock rather than stored state, so it keeps
+ * advancing without anything to persist between runs.
+ */
+export function selectQueries(all, perRun, now = new Date()) {
+  if (!all.length || perRun <= 0) return [];
+  if (perRun >= all.length) return [...all];
+
+  const runIndex = Math.floor(now.getTime() / (12 * 3600 * 1000)); // one per scheduled run
+  const start = ((runIndex * perRun) % all.length + all.length) % all.length;
+  return [...all, ...all].slice(start, start + perRun);
+}
 
 /**
  * JSearch has renamed its search endpoint across API versions, and the version
@@ -132,11 +142,13 @@ export function mapJob(job) {
   };
 }
 
-export async function fetchJobs({ warn }) {
+export async function fetchJobs({ profile, warn }) {
   const jobs = [];
   let path = null;
 
-  for (const query of QUERIES) {
+  const queries = selectQueries(profile.search.queries, profile.search.jsearchQueriesPerRun ?? 3);
+
+  for (const query of queries) {
     let payload;
 
     if (path) {

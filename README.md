@@ -69,9 +69,11 @@ labelled *LinkedIn*, both on the card and in the board filter.
 2. Subscribe to the **Basic (free)** plan — roughly 200 requests/month
 3. Add the key as the `RAPIDAPI_KEY` repository secret
 
-The adapter uses 4 requests per run, 8 per day, which sits inside the free tier
-with room to spare. Widen `QUERIES` in `scripts/sources/jsearch.mjs` if you move
-to a paid plan.
+Because the free tier is metered, this source runs a **moving window** of
+`search.queries` rather than the whole list — `search.jsearchQueriesPerRun`
+(3) per run, advancing each run, so the full keyword list is covered over a
+couple of days at about 180 requests/month. Raise that number if you move to
+a paid plan; every other source runs the full list every time.
 
 **[Jooble](https://jooble.org/api/about)** is worth adding alongside it — free
 key on request, broader but patchier, and it also reports which board each
@@ -190,7 +192,7 @@ Each posting gets two independent scores.
 
 | Component | Max | What it measures |
 | --- | --- | --- |
-| Title | 45 | The strongest job-title family that matches, plus partial credit for a second |
+| Title | 50 | The strongest job-title family that matches, plus partial credit for a second |
 | Skills | 35 | Résumé skills found anywhere in the posting, with diminishing returns per additional hit |
 | Context | 10 | Domain and seniority fit — marketing, mid-level, part-time-friendly, fully remote |
 | Penalties | −38 | Signals this is the wrong kind of role, doubled when they appear in the title |
@@ -199,6 +201,21 @@ Diminishing returns matter: a posting that lists thirty tools cannot out-score a
 posting that genuinely describes her job. Penalties are what keep "QA Automation
 Engineer" from ranking alongside "QA Specialist" — they share a title prefix but
 almost nothing else.
+
+Two rules sit on top of the title component:
+
+- **Combination titles.** Phrase matching is contiguous, so `lifecycle marketing qa`
+  would catch *"Lifecycle Marketing QA Analyst"* and miss *"QA Analyst, Lifecycle
+  Marketing"* — the same job, titled the other way round. `titleCombinations` in
+  `config/profile.json` instead requires one QA word **and** one marketing-discipline
+  word anywhere in the title, in any order. That covers Marketing QA, Email QA, CRM QA,
+  Lifecycle Marketing QA, Digital Production QA, Campaign QA and Marketing Operations QA
+  however they are worded, and scores above every single-phrase group.
+- **Bullseye title floor.** Jooble and the RSS feeds return a snippet rather than a
+  full description, so those postings cannot earn the skill points they deserve. A title
+  naming one of her exact roles floors the match at `ranking.bullseyeTitleFloor` (72),
+  but only when nothing in the posting counts against it — so *"Marketing QA Automation
+  Engineer"* is still held down by the automation penalties.
 
 **Recency (0–100)** — halves every 14 days. A posting with no date is treated as
 three weeks old rather than brand new, so undated listings don't crowd out real
