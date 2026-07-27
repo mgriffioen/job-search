@@ -2,11 +2,16 @@
  * Decides whether a posting is realistically open to a candidate living in
  * Kalamazoo, Michigan.
  *
- * Two ways to qualify:
- *   1. Remote, with no restriction or a restriction that includes the US.
- *   2. On-site/hybrid within commuting range of Kalamazoo.
+ * With `location.remoteOnly` set (the default), a job qualifies only if it is
+ * stated remote *and* a Michigan resident could hold it. That means three
+ * things get dropped:
+ *   - on-site and hybrid roles, wherever they are;
+ *   - postings with no positive indication of being remote;
+ *   - remote roles fenced to a region or state list that excludes Michigan,
+ *     e.g. "Remote — Europe" or "Remote (California, New York)".
  *
- * Anything else (remote but EU-only, on-site in Austin, …) is filtered out.
+ * Turning `remoteOnly` off restores the earlier behaviour, where on-site and
+ * hybrid roles within commuting range of Kalamazoo also qualify.
  */
 
 import { normalizeForMatch, containsPhrase } from './text.mjs';
@@ -53,12 +58,36 @@ export function detectWorkType({ location = '', title = '', description = '', re
   return 'unknown';
 }
 
+/** Phrases that mean "the whole country", so a state list is not a fence. */
+const NATIONWIDE_HINTS = [
+  'usa', 'u.s', 'u.s.a', 'us', 'united states', 'united states of america',
+  'nationwide', 'anywhere', 'worldwide', 'global', 'north america', 'americas',
+  'any state', 'all states', 'us only', 'usa only', 'us based',
+  // Deliberately not "remote": that describes the work arrangement, not the
+  // geographic scope, and "Remote — California" is still a California fence.
+];
+
+/**
+ * Catches "Remote (California, New York)" — a US-eligible posting that a
+ * Michigan resident still cannot take. Only triggers when specific states are
+ * named and no nationwide phrasing is present.
+ */
+function isFencedToOtherStates(normLocation) {
+  const named = US_STATE_NAMES.filter((state) => containsPhrase(normLocation, state));
+  if (!named.length) return false;
+  if (named.includes('michigan')) return false;
+  if (NATIONWIDE_HINTS.some((p) => containsPhrase(normLocation, p))) return false;
+  return named;
+}
+
 /**
  * @returns {{eligible: boolean, workType: string, scope: string, reason: string}}
- *   scope: 'remote-anywhere' | 'remote-us' | 'local' | 'out-of-range' | 'non-us'
+ *   scope: 'remote-anywhere' | 'remote-us' | 'local'
+ *        | 'not-remote' | 'out-of-range' | 'non-us' | 'state-restricted'
  */
 export function evaluateLocation(job, profile) {
   const cfg = profile.location;
+  const remoteOnly = cfg.remoteOnly !== false;
   const locationText = [job.location, job.locationRestriction].filter(Boolean).join(', ');
   const normLocation = normalizeForMatch(locationText);
   const workType = job.workType || 'unknown';
@@ -67,25 +96,23 @@ export function evaluateLocation(job, profile) {
     cfg.commuteCities.some((city) => containsPhrase(normLocation, city)) ||
     cfg.commuteStates.some((state) => containsPhrase(normLocation, state));
 
-  // On-site / hybrid: only workable if it is near home.
   if (workType === 'onsite' || workType === 'hybrid') {
-    if (isLocal) {
-      return {
-        eligible: true,
-        workType,
-        scope: 'local',
-        reason: `${workType === 'hybrid' ? 'Hybrid' : 'On-site'} near Kalamazoo`,
-      };
+    const kind = workType === 'hybrid' ? 'Hybrid' : 'On-site';
+
+    if (remoteOnly) {
+      return { eligible: false, workType, scope: 'not-remote', reason: `${kind} role` };
     }
-    return {
-      eligible: false,
-      workType,
-      scope: 'out-of-range',
-      reason: `${workType === 'hybrid' ? 'Hybrid' : 'On-site'} outside commuting range`,
-    };
+    if (isLocal) {
+      return { eligible: true, workType, scope: 'local', reason: `${kind} near Kalamazoo` };
+    }
+    return { eligible: false, workType, scope: 'out-of-range', reason: `${kind} outside commuting range` };
   }
 
-  // Remote (or unknown-but-remote-board): check the geographic restriction.
+  // Remote-only mode needs positive evidence, not just the absence of an office.
+  if (remoteOnly && workType !== 'remote') {
+    return { eligible: false, workType, scope: 'not-remote', reason: 'No indication the role is remote' };
+  }
+
   const hasNonUsHint = NON_US_HINTS.some((p) => containsPhrase(normLocation, p));
   const hasUsHint =
     cfg.usAliases.some((p) => containsPhrase(normLocation, p)) ||
@@ -94,6 +121,16 @@ export function evaluateLocation(job, profile) {
 
   if (hasNonUsHint && !hasUsHint) {
     return { eligible: false, workType, scope: 'non-us', reason: `Restricted to ${locationText}` };
+  }
+
+  const fenced = isFencedToOtherStates(normLocation);
+  if (fenced) {
+    return {
+      eligible: false,
+      workType,
+      scope: 'state-restricted',
+      reason: `Remote, but limited to ${fenced.join(', ')} — not Michigan`,
+    };
   }
 
   if (!locationText.trim()) {

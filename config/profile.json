@@ -29,7 +29,8 @@
   },
 
   "location": {
-    "_comment": "A job is eligible if it is remote and open to US/anywhere candidates, OR if it is on-site/hybrid within commuting range of Kalamazoo.",
+    "_comment": "Remote only. A job qualifies if it is stated remote AND open to candidates in Michigan. On-site and hybrid roles are dropped, as is anything with no positive indication that it is remote. Set remoteOnly to false to also allow on-site/hybrid work within commuting range of the cities listed below.",
+    "remoteOnly": true,
     "acceptRemoteAnywhere": true,
     "acceptRemoteUS": true,
     "commuteCities": [

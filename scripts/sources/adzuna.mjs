@@ -21,9 +21,9 @@ export function isConfigured() {
 
 export const skipReason = 'ADZUNA_APP_ID / ADZUNA_APP_KEY not set — see README';
 
-// Two passes: jobs near home, and US-wide remote jobs.
 const SEARCHES = [
-  { where: 'Kalamazoo, Michigan', distance: 50, label: 'local' },
+  // Only used when profile.location.remoteOnly is off.
+  { where: 'Kalamazoo, Michigan', distance: 50, label: 'local', localOnly: true },
   { where: 'Michigan', distance: 0, extra: 'remote', label: 'michigan-remote' },
   { where: '', distance: 0, extra: 'remote', label: 'us-remote' },
 ];
@@ -33,8 +33,10 @@ export async function fetchJobs({ profile }) {
   const appKey = process.env.ADZUNA_APP_KEY;
   const jobs = [];
   const queries = profile.search.queries.slice(0, 6);
+  const remoteOnly = profile.location.remoteOnly !== false;
 
   for (const search of SEARCHES) {
+    if (search.localOnly && remoteOnly) continue;
     for (const query of queries) {
       const params = new URLSearchParams({
         app_id: appId,

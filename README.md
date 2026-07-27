@@ -4,10 +4,11 @@ A self-updating job board tuned to one résumé: 10 years of QA on HTML email an
 web content for digital marketing campaigns, plus an editorial and teaching
 background, based in Kalamazoo, Michigan.
 
-Twice a day a GitHub Action pulls postings from every free job API that will
-talk to it, filters out anything that isn't workable from Kalamazoo, scores what
-remains against the résumé, and commits the result. The site is a static page —
-no server, no database, no accounts, nothing to pay for.
+**Remote roles only**, full-time or part-time. Twice a day a GitHub Action pulls
+postings from every free job API that will talk to it, drops anything that isn't
+remote or isn't open to a Michigan resident, scores what remains against the
+résumé, and commits the result. The site is a static page — no server, no
+database, no accounts, nothing to pay for.
 
 **Live site:** `https://<your-github-username>.github.io/job-search/`
 (after the one-time setup below)
@@ -40,18 +41,19 @@ on it runs itself at roughly 2am and noon Eastern.
 
 ---
 
-## Optional: add local Kalamazoo listings
+## Optional: wider remote coverage with Adzuna
 
-Every free source above is remote-only. **Adzuna** is the one that also indexes
-local postings, and it needs a free key.
+The other sources are remote-job boards, so they only see companies that post
+there. **Adzuna** indexes a much broader slice of the market — including remote
+roles at companies that only advertise on their own site or on general job
+boards. It needs a free key.
 
 1. Register at <https://developer.adzuna.com/> (free, instant).
 2. Repo **Settings → Secrets and variables → Actions → New repository secret**:
    - `ADZUNA_APP_ID` — your Application ID
    - `ADZUNA_APP_KEY` — your Application Key
 
-The next run picks up jobs within 50 miles of Kalamazoo alongside the remote
-ones. Without the key, Adzuna quietly skips itself and everything else still works.
+Without the key, Adzuna quietly skips itself and everything else still works.
 
 ## Optional: watch specific companies
 
@@ -85,6 +87,8 @@ Michigan employers (Stryker, Kellanova, Perrigo, Whirlpool, WMU).
 
 ## Using the board
 
+- Everything on the board is remote and open to a Michigan resident — that gate
+  runs before scoring, so nothing on the page needs a location sanity-check.
 - **Best overall** blends match quality with how recently a job was posted, so a
   very good match from three weeks ago still outranks a mediocre one from today —
   but not by much. Switch to **Highest match** or **Most recent** to sort on one
@@ -114,7 +118,7 @@ Michigan employers (Stryker, Kellanova, Perrigo, Whirlpool, WMU).
 | [RemoteOK](https://remoteok.com/) | no | Remote, all categories |
 | [Working Nomads](https://www.workingnomads.com/) | no | Remote, curated |
 | [Arbeitnow](https://www.arbeitnow.com/) | no | Mostly EU; occasional US remote |
-| [Adzuna](https://www.adzuna.com/) | **yes** (free) | **Local Kalamazoo** + US remote |
+| [Adzuna](https://www.adzuna.com/) | **yes** (free) | Broad US remote, beyond the remote-only boards |
 | Company career pages | no | Greenhouse / Lever / Ashby boards you list |
 
 **LinkedIn, Indeed and ZipRecruiter are deliberately absent.** None of them offer
@@ -156,11 +160,21 @@ ones.
 
 Before any of that, two hard gates run:
 
-1. **Location.** Remote jobs must be open to US candidates — remote-but-EU-only is
-   dropped. On-site and hybrid jobs must be within commuting range of Kalamazoo
-   (the city list is in `config/profile.json`).
+1. **Remote and Michigan-eligible.** A posting has to clear all three:
+   - it must be *stated* remote — on-site and hybrid are dropped, and so is
+     anything with no positive sign of being remote, rather than being given the
+     benefit of the doubt;
+   - it must not be fenced to another country ("Remote — Europe");
+   - it must not be fenced to a state list that excludes Michigan
+     ("Remote (California, New York)"). A posting that says USA, nationwide or
+     anywhere passes even if it also names a city.
 2. **Relevance floor.** Anything scoring under 20, older than 45 days, or matching
    the hard-exclude title list never reaches the site.
+
+**If she ever wants local Kalamazoo jobs back**, set `location.remoteOnly` to
+`false` in `config/profile.json`. On-site and hybrid roles within commuting range
+of the cities listed there start qualifying again, and Adzuna adds a 50-mile
+local search.
 
 ## Tuning the match score
 

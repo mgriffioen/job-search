@@ -106,19 +106,54 @@ test('remote jobs listing the US alongside other regions are kept', () => {
   assert.equal(result.eligible, true);
 });
 
-test('on-site jobs are kept only near Kalamazoo', () => {
-  const local = evaluateLocation(job({ workType: 'onsite', location: 'Portage, MI' }), profile);
+test('on-site and hybrid jobs are rejected, including local ones', () => {
+  for (const where of ['Portage, MI', 'Kalamazoo, Michigan', 'Austin, TX']) {
+    for (const workType of ['onsite', 'hybrid']) {
+      const result = evaluateLocation(job({ workType, location: where }), profile);
+      assert.equal(result.eligible, false, `${workType} in ${where} should be rejected`);
+      assert.equal(result.scope, 'not-remote');
+    }
+  }
+});
+
+test('postings with no positive sign of being remote are rejected', () => {
+  const result = evaluateLocation(job({ workType: 'unknown', location: 'Chicago, IL' }), profile);
+  assert.equal(result.eligible, false);
+  assert.equal(result.scope, 'not-remote');
+});
+
+test('remote roles fenced to states other than Michigan are rejected', () => {
+  for (const where of ['Remote — California', 'Remote (New York, New Jersey)', 'Remote - Texas only']) {
+    const result = evaluateLocation(job({ location: where, locationRestriction: where }), profile);
+    assert.equal(result.eligible, false, `${where} should be rejected`);
+    assert.equal(result.scope, 'state-restricted');
+  }
+});
+
+test('state lists that include Michigan, or that sit inside a nationwide posting, are kept', () => {
+  const withMichigan = evaluateLocation(
+    job({ location: 'Remote — Michigan, Ohio, Indiana', locationRestriction: 'Remote — Michigan, Ohio, Indiana' }),
+    profile
+  );
+  assert.equal(withMichigan.eligible, true);
+
+  const nationwide = evaluateLocation(
+    job({ location: 'Remote (USA) — HQ in California', locationRestriction: 'USA' }),
+    profile
+  );
+  assert.equal(nationwide.eligible, true);
+});
+
+test('turning remoteOnly off restores local on-site matching', () => {
+  const localProfile = { ...profile, location: { ...profile.location, remoteOnly: false } };
+
+  const local = evaluateLocation(job({ workType: 'onsite', location: 'Portage, MI' }), localProfile);
   assert.equal(local.eligible, true);
   assert.equal(local.scope, 'local');
 
-  const faraway = evaluateLocation(job({ workType: 'onsite', location: 'Austin, TX' }), profile);
+  const faraway = evaluateLocation(job({ workType: 'onsite', location: 'Austin, TX' }), localProfile);
   assert.equal(faraway.eligible, false);
   assert.equal(faraway.scope, 'out-of-range');
-});
-
-test('hybrid jobs follow the same commuting rule', () => {
-  assert.equal(evaluateLocation(job({ workType: 'hybrid', location: 'Kalamazoo, Michigan' }), profile).eligible, true);
-  assert.equal(evaluateLocation(job({ workType: 'hybrid', location: 'Denver, Colorado' }), profile).eligible, false);
 });
 
 /* ---------------------------------------------------------------- scoring */
@@ -327,6 +362,7 @@ test('a realistic feed produces a sensible ranked list', () => {
     { sourceId: '2', title: 'Senior Software Engineer', company: 'Devshop', url: 'https://x.com/2', location: 'USA', description: 'Kubernetes, Go, microservices.', postedAt: NOW.toISOString(), remoteFlag: true },
     { sourceId: '3', title: 'Proofreader (Part-Time)', company: 'Word House', url: 'https://x.com/3', location: 'USA', description: 'Part-time proofreading of marketing copy, AP style, 20 hours per week.', postedAt: new Date(NOW.getTime() - 5 * 86400000).toISOString(), remoteFlag: true },
     { sourceId: '4', title: 'Marketing Specialist', company: 'Berlin GmbH', url: 'https://x.com/4', location: 'Germany', description: 'Email campaigns.', postedAt: NOW.toISOString(), remoteFlag: true },
+    { sourceId: '5', title: 'Email QA Coordinator', company: 'Local Agency', url: 'https://x.com/5', location: 'Kalamazoo, MI', description: 'On-site QA of HTML email campaigns, proofreading and Litmus testing.', postedAt: NOW.toISOString(), remoteFlag: false },
   ].map((r) => normalizeJob(r, { source: 'demo', sourceLabel: 'Demo' }));
 
   const ranked = raw
@@ -340,4 +376,9 @@ test('a realistic feed produces a sensible ranked list', () => {
   assert.ok(titles.includes('Proofreader (Part-Time)'));
   assert.ok(!titles.includes('Marketing Specialist'), 'Germany-only posting is filtered out');
   assert.ok(!titles.includes('Senior Software Engineer'), 'engineering posting falls below the threshold');
+  assert.ok(
+    !titles.includes('Email QA Coordinator'),
+    'a strong on-site match nearby is still filtered out — remote only'
+  );
+  assert.ok(ranked.every((r) => r.job.workType === 'remote'));
 });

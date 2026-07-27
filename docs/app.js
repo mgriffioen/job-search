@@ -80,16 +80,18 @@ function relativeDay(ageDays, assumed) {
   return `${Math.round(ageDays / 30)} months ago`;
 }
 
+const FILTERABLE_SCOPES = ['remote-anywhere', 'remote-us'];
+
 function workTypeLabel(job) {
-  switch (job.workType) {
-    case 'remote':
-      return job.locationScope === 'remote-anywhere' ? 'Remote (anywhere)' : 'Remote (US)';
-    case 'hybrid':
-      return 'Hybrid — local';
-    case 'onsite':
-      return 'On-site — local';
+  switch (job.locationScope) {
+    case 'remote-anywhere':
+      return 'Remote (anywhere)';
+    case 'remote-us':
+      return 'Remote (US)';
+    case 'local':
+      return job.workType === 'hybrid' ? 'Hybrid — local' : 'On-site — local';
     default:
-      return 'Setup unspecified';
+      return 'Remote';
   }
 }
 
@@ -109,7 +111,7 @@ function readFilters() {
   return {
     query: $('#q').value.trim().toLowerCase(),
     sort: $('#sort').value,
-    workTypes: checked('workType'),
+    scopes: checked('scope'),
     employment: checked('employment'),
     sources: $$('#source-filters input:checked').map((el) => el.value),
     minMatch: Number($('#min-match').value),
@@ -135,7 +137,9 @@ function applyFilters(jobs, f) {
       if (isApplied && f.hideApplied) return false;
     }
 
-    if (!f.workTypes.includes(job.workType)) return false;
+    // Scopes outside the filter's own vocabulary (only reachable when
+    // remoteOnly is turned off in the profile) are always let through.
+    if (FILTERABLE_SCOPES.includes(job.locationScope) && !f.scopes.includes(job.locationScope)) return false;
     if (!job.employmentTypes.some((t) => f.employment.includes(t))) return false;
     if (f.sources.length && !job.sources.some((s) => f.sources.includes(s))) return false;
     if (job.match < f.minMatch) return false;
@@ -319,7 +323,7 @@ function updateFilterBadge(f) {
   const active = [];
   if (f.minMatch > 0) active.push(`match ≥ ${f.minMatch}`);
   if (f.maxAge < 46) active.push(`≤ ${f.maxAge}d old`);
-  if (f.workTypes.length < 4) active.push('work setup');
+  if (f.scopes.length < FILTERABLE_SCOPES.length) active.push('remote scope');
   if (f.employment.length < 4) active.push('schedule');
   const allSources = $$('#source-filters input').length;
   if (f.sources.length && f.sources.length < allSources) active.push('boards');
@@ -404,9 +408,9 @@ const EXTERNAL_SEARCHES = [
     url: 'https://www.linkedin.com/jobs/search/?keywords=%22email%20marketing%22%20OR%20%22quality%20assurance%22%20OR%20proofreader&location=United%20States&f_WT=2&f_TPR=r604800&sortBy=DD',
   },
   {
-    name: 'LinkedIn — Kalamazoo area',
-    desc: 'Within 40 miles of home',
-    url: 'https://www.linkedin.com/jobs/search/?keywords=marketing%20OR%20%22quality%20assurance%22%20OR%20editor&location=Kalamazoo%2C%20Michigan&distance=40&f_TPR=r604800&sortBy=DD',
+    name: 'LinkedIn — part-time & contract',
+    desc: 'Remote US, part-time or contract',
+    url: 'https://www.linkedin.com/jobs/search/?keywords=%22email%20marketing%22%20OR%20proofreader%20OR%20%22quality%20assurance%22&location=United%20States&f_WT=2&f_JT=P%2CC&f_TPR=r604800&sortBy=DD',
   },
   {
     name: 'Indeed — remote email marketing',
@@ -414,9 +418,9 @@ const EXTERNAL_SEARCHES = [
     url: 'https://www.indeed.com/jobs?q=%22email+marketing%22+or+%22quality+assurance%22+or+proofreader&l=Remote&fromage=7&sort=date',
   },
   {
-    name: 'Indeed — Kalamazoo, MI',
-    desc: 'Within 35 miles, last 7 days',
-    url: 'https://www.indeed.com/jobs?q=marketing+or+%22quality+assurance%22+or+editor&l=Kalamazoo%2C+MI&radius=35&fromage=7&sort=date',
+    name: 'Indeed — remote proofreading',
+    desc: 'Editorial & copy roles, last 7 days',
+    url: 'https://www.indeed.com/jobs?q=proofreader+or+%22copy+editor%22+or+%22content+editor%22&l=Remote&fromage=7&sort=date',
   },
   {
     name: 'ZipRecruiter — remote QA',
@@ -439,9 +443,9 @@ const EXTERNAL_SEARCHES = [
     url: 'https://builtin.com/jobs/remote/marketing',
   },
   {
-    name: 'Michigan Works!',
-    desc: 'State job bank, Kalamazoo region',
-    url: 'https://www.michiganworks.org/',
+    name: 'Remote.co — marketing',
+    desc: 'Hand-screened remote roles',
+    url: 'https://remote.co/remote-jobs/marketing/',
   },
   {
     name: 'Idealist',
