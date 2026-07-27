@@ -10,8 +10,7 @@ remote or isn't open to a Michigan resident, scores what remains against the
 résumé, and commits the result. The site is a static page — no server, no
 database, no accounts, nothing to pay for.
 
-**Live site:** `https://<your-github-username>.github.io/job-search/`
-(after the one-time setup below)
+**Live site:** <https://mgriffioen.github.io/job-search/>
 
 ---
 
