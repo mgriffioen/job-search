@@ -11,7 +11,7 @@
  * deliberately frugal: one request per keyword per run, twice a day.
  *
  *   1. Sign up at https://rapidapi.com/letscrape-6bRBa3QguO5/api/jsearch
- *   2. Subscribe to the Basic (free) plan
+ *   2. Subscribe to the Basic (free) plan — the key alone is not enough
  *   3. Add the key as the RAPIDAPI_KEY repository secret
  */
 
@@ -36,16 +36,21 @@ const QUERIES = [
 ];
 
 /**
+ * JSearch has renamed its search endpoint across API versions, and the version
+ * a key is bound to is chosen in the RapidAPI dashboard, not by us. Rather than
+ * hard-code one path and 404 forever, probe on the first query of a run and
+ * reuse whatever answered — costing at most two extra requests, once.
+ */
+const CANDIDATE_PATHS = ['/search', '/search-v2', '/job-search'];
+
+/**
  * RapidAPI answers with bare status codes that mean something specific here.
- * A 404 in particular does not mean the endpoint moved — it means the gateway
- * could not route the request to a subscription, which is what happens when a
- * key is created but the Basic plan was never subscribed to.
  */
 export function explain(err) {
   const message = String(err?.message || err);
   if (message.includes('404')) {
-    return 'RapidAPI returned 404 — the key works but this app is not subscribed to JSearch. ' +
-      'Open the JSearch page on RapidAPI and subscribe to the Basic (free) plan.';
+    return 'RapidAPI returned 404 — the request did not reach a subscribed endpoint. ' +
+      'Either the app is not subscribed to JSearch, or this API version uses a path not in CANDIDATE_PATHS.';
   }
   if (message.includes('401') || message.includes('403')) {
     return 'RapidAPI rejected the key (401/403) — check RAPIDAPI_KEY is the X-RapidAPI-Key value ' +
@@ -58,55 +63,90 @@ export function explain(err) {
   return message;
 }
 
+function searchUrl(path, query) {
+  const params = new URLSearchParams({
+    query: `${query} in USA`,
+    page: '1',
+    num_pages: '1',
+    country: 'us',
+    date_posted: 'month',
+    work_from_home: 'true',
+  });
+  return `https://jsearch.p.rapidapi.com${path}?${params}`;
+}
+
+function call(path, query) {
+  return getJson(searchUrl(path, query), {
+    headers: {
+      'X-RapidAPI-Key': process.env.RAPIDAPI_KEY,
+      'X-RapidAPI-Host': 'jsearch.p.rapidapi.com',
+    },
+  });
+}
+
+function mapJob(job) {
+  const city = [job.job_city, job.job_state].filter(Boolean).join(', ');
+  return {
+    sourceId: job.job_id,
+    title: job.job_title,
+    company: job.employer_name,
+    companyLogo: job.employer_logo,
+    url: job.job_apply_link || job.job_google_link,
+    applyUrl: job.job_apply_link,
+    description: job.job_description,
+    location: job.job_is_remote ? `Remote${city ? ` (${city})` : ''}` : city,
+    locationRestriction: job.job_is_remote ? city || 'USA' : city,
+    employmentTypes: [job.job_employment_type].filter(Boolean),
+    salaryMin: job.job_min_salary,
+    salaryMax: job.job_max_salary,
+    currency: job.job_salary_currency,
+    postedAt: job.job_posted_at_datetime_utc || job.job_posted_at_timestamp,
+    remoteFlag: job.job_is_remote === true,
+    // "LinkedIn", "Indeed", "ZipRecruiter", "Glassdoor", a company site…
+    publisher: job.job_publisher,
+    tags: [job.job_publisher].filter(Boolean),
+  };
+}
+
 export async function fetchJobs({ warn }) {
   const jobs = [];
+  let path = null;
 
   for (const query of QUERIES) {
-    const params = new URLSearchParams({
-      query: `${query} in USA`,
-      page: '1',
-      num_pages: '1',
-      country: 'us',
-      date_posted: 'month',
-      work_from_home: 'true',
-    });
-
     let payload;
-    try {
-      payload = await getJson(`https://jsearch.p.rapidapi.com/search?${params}`, {
-        headers: {
-          'X-RapidAPI-Key': process.env.RAPIDAPI_KEY,
-          'X-RapidAPI-Host': 'jsearch.p.rapidapi.com',
-        },
-      });
-    } catch (err) {
-      warn(`"${query}": ${explain(err)}`);
-      continue;
+
+    if (path) {
+      try {
+        payload = await call(path, query);
+      } catch (err) {
+        warn(`"${query}": ${explain(err)}`);
+        continue;
+      }
+    } else {
+      const failures = [];
+      for (const candidate of CANDIDATE_PATHS) {
+        try {
+          payload = await call(candidate, query);
+          path = candidate;
+          break;
+        } catch (err) {
+          failures.push(`${candidate} → ${err.message}`);
+        }
+      }
+
+      if (!path) {
+        // Nothing will work this run; report every path tried and stop
+        // rather than spending the quota on three more doomed attempts.
+        warn(`No endpoint responded. Tried ${failures.join(', ')}. ${explain(new Error(failures[0] || ''))}`);
+        return jobs;
+      }
+
+      if (path !== CANDIDATE_PATHS[0]) {
+        warn(`Using ${path} — JSearch has moved off ${CANDIDATE_PATHS[0]}; make it the first candidate to save two requests per run.`);
+      }
     }
 
-    for (const job of payload?.data || []) {
-      const city = [job.job_city, job.job_state].filter(Boolean).join(', ');
-      jobs.push({
-        sourceId: job.job_id,
-        title: job.job_title,
-        company: job.employer_name,
-        companyLogo: job.employer_logo,
-        url: job.job_apply_link || job.job_google_link,
-        applyUrl: job.job_apply_link,
-        description: job.job_description,
-        location: job.job_is_remote ? `Remote${city ? ` (${city})` : ''}` : city,
-        locationRestriction: job.job_is_remote ? city || 'USA' : city,
-        employmentTypes: [job.job_employment_type].filter(Boolean),
-        salaryMin: job.job_min_salary,
-        salaryMax: job.job_max_salary,
-        currency: job.job_salary_currency,
-        postedAt: job.job_posted_at_datetime_utc || job.job_posted_at_timestamp,
-        remoteFlag: job.job_is_remote === true,
-        // "LinkedIn", "Indeed", "ZipRecruiter", "Glassdoor", a company site…
-        publisher: job.job_publisher,
-        tags: [job.job_publisher].filter(Boolean),
-      });
-    }
+    for (const job of payload?.data || []) jobs.push(mapJob(job));
   }
 
   return jobs;

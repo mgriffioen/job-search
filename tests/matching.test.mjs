@@ -423,7 +423,7 @@ test('duplicates collapse and record every board they appeared on', () => {
 /* ----------------------------------------------------------- error messages */
 
 test('RapidAPI status codes are explained in terms of what to actually do', () => {
-  assert.match(explainJsearch(new Error('HTTP 404 Not Found')), /not subscribed to JSearch/);
+  assert.match(explainJsearch(new Error('HTTP 404 Not Found')), /not subscribed to JSearch|path not in CANDIDATE_PATHS/);
   assert.match(explainJsearch(new Error('HTTP 403 Forbidden')), /rejected the key/);
   assert.match(explainJsearch(new Error('HTTP 429 Too Many Requests')), /quota exhausted/);
   assert.equal(explainJsearch(new Error('socket hang up')), 'socket hang up');
