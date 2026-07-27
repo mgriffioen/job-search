@@ -1,6 +1,6 @@
 {
-  "generatedAt": "2026-07-27T15:28:56.085Z",
-  "durationMs": 14446,
+  "generatedAt": "2026-07-27T15:32:01.138Z",
+  "durationMs": 11669,
   "candidate": {
     "name": "Emily Griffioen",
     "headline": "QA Specialist — HTML email & digital marketing content",
@@ -23,19 +23,19 @@
   "counts": {
     "fetched": 1297,
     "unique": 945,
-    "published": 55,
+    "published": 47,
     "dropped": {
       "location": 232,
       "stale": 15,
-      "lowMatch": 636,
+      "lowMatch": 644,
       "excluded": 7
     }
   },
   "tiers": {
-    "strong": 3,
-    "good": 5,
-    "possible": 10,
-    "stretch": 37
+    "strong": 1,
+    "good": 4,
+    "possible": 7,
+    "stretch": 35
   },
   "freshLast48h": 12,
   "sources": [
@@ -61,7 +61,7 @@
       "status": "ok",
       "fetched": 288,
       "warnings": [],
-      "ms": 443
+      "ms": 430
     },
     {
       "id": "weworkremotely",
@@ -71,7 +71,7 @@
       "warnings": [
         "remote-marketing-jobs.rss: HTTP 301 Moved Permanently"
       ],
-      "ms": 2163
+      "ms": 1555
     },
     {
       "id": "himalayas",
@@ -79,7 +79,7 @@
       "status": "ok",
       "fetched": 240,
       "warnings": [],
-      "ms": 2163
+      "ms": 2265
     },
     {
       "id": "jobicy",
@@ -87,7 +87,7 @@
       "status": "ok",
       "fetched": 179,
       "warnings": [],
-      "ms": 6755
+      "ms": 4717
     },
     {
       "id": "remoteok",
@@ -95,7 +95,7 @@
       "status": "ok",
       "fetched": 100,
       "warnings": [],
-      "ms": 686
+      "ms": 471
     },
     {
       "id": "workingnomads",
@@ -103,7 +103,7 @@
       "status": "ok",
       "fetched": 41,
       "warnings": [],
-      "ms": 880
+      "ms": 543
     },
     {
       "id": "arbeitnow",
@@ -111,7 +111,7 @@
       "status": "ok",
       "fetched": 110,
       "warnings": [],
-      "ms": 119
+      "ms": 197
     }
   ]
 }
