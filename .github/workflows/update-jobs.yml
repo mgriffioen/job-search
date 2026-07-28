@@ -41,20 +41,46 @@ jobs:
       # the Variables tab / as an Environment secret, where the job cannot
       # reach it.
       - name: Check optional API keys
+        env:
+          # Booleans only — a secret's value is never exposed here.
+          SECRET_RAPIDAPI_KEY: ${{ secrets.RAPIDAPI_KEY != '' }}
+          SECRET_JOOBLE_API_KEY: ${{ secrets.JOOBLE_API_KEY != '' }}
+          SECRET_ADZUNA_APP_ID: ${{ secrets.ADZUNA_APP_ID != '' }}
+          SECRET_ADZUNA_APP_KEY: ${{ secrets.ADZUNA_APP_KEY != '' }}
+          VAR_RAPIDAPI_KEY: ${{ vars.RAPIDAPI_KEY != '' }}
+          VAR_JOOBLE_API_KEY: ${{ vars.JOOBLE_API_KEY != '' }}
+          VAR_ADZUNA_APP_ID: ${{ vars.ADZUNA_APP_ID != '' }}
+          VAR_ADZUNA_APP_KEY: ${{ vars.ADZUNA_APP_KEY != '' }}
         run: |
+          keys="RAPIDAPI_KEY JOOBLE_API_KEY ADZUNA_APP_ID ADZUNA_APP_KEY"
+          missing=""
+          for key in $keys; do
+            eval "is_secret=\$SECRET_${key}"
+            [ "$is_secret" = "true" ] || missing="$missing $key"
+          done
+
+          # Report by exception: a healthy run says one line, a broken one
+          # says which key is missing and whether it landed on the wrong tab.
+          if [ -z "$missing" ]; then
+            echo "All optional API keys are configured." >> "$GITHUB_STEP_SUMMARY"
+            exit 0
+          fi
+
           {
-            echo "### Optional API keys"
+            echo "### Optional API keys not visible to this workflow"
             echo ""
-            echo "| Key | Secret set | Also found as a Variable |"
+            echo "| Key | Saved as a Secret | Saved as a Variable instead |"
             echo "| --- | --- | --- |"
-            echo "| RAPIDAPI_KEY | ${{ secrets.RAPIDAPI_KEY != '' }} | ${{ vars.RAPIDAPI_KEY != '' }} |"
-            echo "| JOOBLE_API_KEY | ${{ secrets.JOOBLE_API_KEY != '' }} | ${{ vars.JOOBLE_API_KEY != '' }} |"
-            echo "| ADZUNA_APP_ID | ${{ secrets.ADZUNA_APP_ID != '' }} | ${{ vars.ADZUNA_APP_ID != '' }} |"
-            echo "| ADZUNA_APP_KEY | ${{ secrets.ADZUNA_APP_KEY != '' }} | ${{ vars.ADZUNA_APP_KEY != '' }} |"
+            for key in $missing; do
+              eval "as_var=\$VAR_${key}"
+              echo "| $key | false | $as_var |"
+            done
             echo ""
-            echo "A key that is \`false\` in both columns is not visible to this workflow."
-            echo "\`true\` under Variables but \`false\` under Secret means it was saved on the"
-            echo "wrong tab — Actions secrets and Actions variables are separate stores."
+            echo "Add each under **Settings → Secrets and variables → Actions → Secrets**."
+            echo "A \`true\` in the last column means the value exists but was saved on the"
+            echo "Variables tab — that is a separate store the workflow cannot read."
+            echo ""
+            echo "The affected source skips itself; every other source still runs."
           } >> "$GITHUB_STEP_SUMMARY"
 
       - name: Fetch and score job postings
