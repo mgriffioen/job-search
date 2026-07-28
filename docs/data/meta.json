@@ -1,6 +1,6 @@
 {
-  "generatedAt": "2026-07-28T08:49:29.932Z",
-  "durationMs": 30332,
+  "generatedAt": "2026-07-28T14:43:49.993Z",
+  "durationMs": 37571,
   "candidate": {
     "name": "Emily Griffioen",
     "headline": "QA Specialist — HTML email & digital marketing content",
@@ -26,23 +26,23 @@
     "minMatchScore": 20
   },
   "counts": {
-    "fetched": 1943,
-    "unique": 1156,
-    "published": 132,
+    "fetched": 1959,
+    "unique": 1162,
+    "published": 142,
     "dropped": {
-      "location": 280,
-      "stale": 14,
-      "lowMatch": 725,
-      "excluded": 5
+      "location": 292,
+      "stale": 13,
+      "lowMatch": 712,
+      "excluded": 3
     }
   },
   "tiers": {
-    "strong": 6,
-    "good": 27,
-    "possible": 39,
-    "stretch": 60
+    "strong": 4,
+    "good": 33,
+    "possible": 42,
+    "stretch": 63
   },
-  "freshLast48h": 21,
+  "freshLast48h": 26,
   "sources": [
     {
       "id": "companyboards",
@@ -56,9 +56,9 @@
       "id": "jsearch",
       "label": "Google Jobs",
       "status": "ok",
-      "fetched": 15,
+      "fetched": 30,
       "warnings": [],
-      "ms": 10447
+      "ms": 14584
     },
     {
       "id": "adzuna",
@@ -73,7 +73,7 @@
         "michigan-remote \"marketing operations\": 0 results (Adzuna reports 0 total matches)",
         "michigan-remote \"email specialist\": 0 results (Adzuna reports 0 total matches)"
       ],
-      "ms": 7834
+      "ms": 5354
     },
     {
       "id": "jooble",
@@ -81,7 +81,7 @@
       "status": "ok",
       "fetched": 80,
       "warnings": [],
-      "ms": 1238
+      "ms": 974
     },
     {
       "id": "remotive",
@@ -89,17 +89,17 @@
       "status": "ok",
       "fetched": 576,
       "warnings": [],
-      "ms": 711
+      "ms": 741
     },
     {
       "id": "weworkremotely",
       "label": "We Work Remotely",
       "status": "ok",
-      "fetched": 347,
+      "fetched": 346,
       "warnings": [
         "remote-marketing-jobs.rss: HTTP 301 Moved Permanently"
       ],
-      "ms": 1130
+      "ms": 1871
     },
     {
       "id": "himalayas",
@@ -107,7 +107,7 @@
       "status": "ok",
       "fetched": 240,
       "warnings": [],
-      "ms": 764
+      "ms": 1778
     },
     {
       "id": "jobicy",
@@ -115,7 +115,7 @@
       "status": "ok",
       "fetched": 232,
       "warnings": [],
-      "ms": 5367
+      "ms": 8871
     },
     {
       "id": "remoteok",
@@ -123,15 +123,15 @@
       "status": "ok",
       "fetched": 100,
       "warnings": [],
-      "ms": 424
+      "ms": 749
     },
     {
       "id": "workingnomads",
       "label": "Working Nomads",
       "status": "ok",
-      "fetched": 41,
+      "fetched": 43,
       "warnings": [],
-      "ms": 371
+      "ms": 719
     },
     {
       "id": "arbeitnow",
@@ -139,7 +139,7 @@
       "status": "ok",
       "fetched": 110,
       "warnings": [],
-      "ms": 123
+      "ms": 154
     }
   ]
 }
