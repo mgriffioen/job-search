@@ -1,6 +1,6 @@
 {
-  "generatedAt": "2026-07-28T14:48:04.614Z",
-  "durationMs": 26743,
+  "generatedAt": "2026-07-28T17:44:25.453Z",
+  "durationMs": 43816,
   "candidate": {
     "name": "Emily Griffioen",
     "headline": "QA Specialist — HTML email & digital marketing content",
@@ -26,13 +26,13 @@
     "minMatchScore": 20
   },
   "counts": {
-    "fetched": 1959,
-    "unique": 1162,
-    "published": 142,
+    "fetched": 2025,
+    "unique": 1222,
+    "published": 148,
     "dropped": {
-      "location": 291,
-      "stale": 13,
-      "lowMatch": 713,
+      "location": 340,
+      "stale": 12,
+      "lowMatch": 719,
       "excluded": 3,
       "blockedDomain": 0
     }
@@ -41,9 +41,9 @@
     "strong": 4,
     "good": 34,
     "possible": 41,
-    "stretch": 63
+    "stretch": 69
   },
-  "freshLast48h": 26,
+  "freshLast48h": 34,
   "sources": [
     {
       "id": "companyboards",
@@ -59,7 +59,7 @@
       "status": "ok",
       "fetched": 30,
       "warnings": [],
-      "ms": 14268
+      "ms": 23034
     },
     {
       "id": "adzuna",
@@ -74,7 +74,7 @@
         "michigan-remote \"marketing operations\": 0 results (Adzuna reports 0 total matches)",
         "michigan-remote \"email specialist\": 0 results (Adzuna reports 0 total matches)"
       ],
-      "ms": 3403
+      "ms": 6865
     },
     {
       "id": "jooble",
@@ -82,7 +82,7 @@
       "status": "ok",
       "fetched": 80,
       "warnings": [],
-      "ms": 626
+      "ms": 1184
     },
     {
       "id": "remotive",
@@ -90,7 +90,7 @@
       "status": "ok",
       "fetched": 576,
       "warnings": [],
-      "ms": 1061
+      "ms": 537
     },
     {
       "id": "weworkremotely",
@@ -100,7 +100,7 @@
       "warnings": [
         "remote-marketing-jobs.rss: HTTP 301 Moved Permanently"
       ],
-      "ms": 1916
+      "ms": 2204
     },
     {
       "id": "himalayas",
@@ -108,15 +108,15 @@
       "status": "ok",
       "fetched": 240,
       "warnings": [],
-      "ms": 1782
+      "ms": 797
     },
     {
       "id": "jobicy",
       "label": "Jobicy",
       "status": "ok",
-      "fetched": 232,
+      "fetched": 233,
       "warnings": [],
-      "ms": 489
+      "ms": 6118
     },
     {
       "id": "remoteok",
@@ -124,7 +124,7 @@
       "status": "ok",
       "fetched": 100,
       "warnings": [],
-      "ms": 514
+      "ms": 430
     },
     {
       "id": "workingnomads",
@@ -132,15 +132,15 @@
       "status": "ok",
       "fetched": 43,
       "warnings": [],
-      "ms": 761
+      "ms": 587
     },
     {
       "id": "arbeitnow",
       "label": "Arbeitnow",
       "status": "ok",
-      "fetched": 110,
+      "fetched": 175,
       "warnings": [],
-      "ms": 154
+      "ms": 111
     }
   ]
 }
