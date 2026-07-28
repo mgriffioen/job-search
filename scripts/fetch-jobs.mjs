@@ -10,7 +10,7 @@
 
 import { readFile, writeFile, mkdir } from 'node:fs/promises';
 
-import { normalizeJob, dedupeJobs } from './lib/normalize.mjs';
+import { normalizeJob, dedupeJobs, hostOf } from './lib/normalize.mjs';
 import { evaluateLocation } from './lib/location.mjs';
 import { scoreJob, matchTier } from './lib/score.mjs';
 
@@ -103,10 +103,23 @@ async function main() {
   const maxAgeDays = profile.search.maxAgeDays;
   const minMatch = profile.search.minMatchScore;
 
-  const dropped = { location: 0, stale: 0, lowMatch: 0, excluded: 0 };
+  const dropped = { location: 0, stale: 0, lowMatch: 0, excluded: 0, blockedDomain: 0 };
   const scored = [];
 
+  const blockedDomains = (profile.search.blockedDomains || []).map((d) => d.toLowerCase());
+  const isBlocked = (url) => {
+    const host = hostOf(url);
+    return host ? blockedDomains.some((d) => host === d || host.endsWith(`.${d}`)) : false;
+  };
+
   for (const job of deduped) {
+    // Checked before scoring: a posting you cannot actually reach is worth
+    // nothing regardless of how well it matches.
+    if (isBlocked(job.url) && isBlocked(job.applyUrl)) {
+      dropped.blockedDomain += 1;
+      continue;
+    }
+
     const location = evaluateLocation(job, profile);
     if (!location.eligible) {
       dropped.location += 1;

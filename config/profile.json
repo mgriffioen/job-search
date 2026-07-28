@@ -44,6 +44,8 @@
     ],
     "_jsearchComment": "JSearch is metered on the free tier, so it runs a rotating window of the query list rather than all of it, cycling through everything over a few runs.",
     "jsearchQueriesPerRun": 3,
+    "_blockedDomainsComment": "Sites whose postings are not worth clicking — the link does not lead to the job, or the listing is lead-generation rather than a real vacancy. This cannot be detected automatically without following every link, so add a domain here whenever you hit one. Matching covers subdomains.",
+    "blockedDomains": ["mysmartpros.com"],
     "maxAgeDays": 45,
     "minMatchScore": 20,
     "maxJobsStored": 800

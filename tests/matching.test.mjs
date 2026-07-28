@@ -5,7 +5,7 @@ import { readFile } from 'node:fs/promises';
 import { normalizeForMatch, containsPhrase, toIsoDate, stripHtml, excerpt, slugify } from '../scripts/lib/text.mjs';
 import { evaluateLocation, detectWorkType } from '../scripts/lib/location.mjs';
 import { scoreJob, matchTier, recencyScore } from '../scripts/lib/score.mjs';
-import { normalizeJob, dedupeJobs, dedupeKey } from '../scripts/lib/normalize.mjs';
+import { normalizeJob, dedupeJobs, dedupeKey, isSameOrganisation, hostOf } from '../scripts/lib/normalize.mjs';
 import { parseRssItems } from '../scripts/lib/xml.mjs';
 import { explain as explainJsearch, extractJobs, mapJob as mapJsearchJob, selectQueries } from '../scripts/sources/jsearch.mjs';
 
@@ -563,6 +563,27 @@ test('both JSearch response shapes yield the jobs array', () => {
   assert.deepEqual(extractJobs({ data: { jobs: [] } }), [], 'empty result set is an empty array, not a fault');
   assert.equal(extractJobs({ data: { cursor: 'abc' } }), null, 'no array anywhere is reportable');
   assert.equal(extractJobs(null), null);
+});
+
+test('a reposting site is recognised even when it mangles its own name', () => {
+  // The real case: publisher "MySmartPros" arrived as company "vmysmartpros",
+  // and an equality check let it through to the top of the board.
+  assert.equal(isSameOrganisation('vmysmartpros', 'MySmartPros'), true);
+  assert.equal(isSameOrganisation('remote click jobs', 'Remote Click Jobs'), true);
+  assert.equal(isSameOrganisation('Lensa', 'Lensa.com'), true);
+
+  // …without swallowing genuinely different employers.
+  assert.equal(isSameOrganisation('Sierra Solutions', 'LinkedIn'), false);
+  assert.equal(isSameOrganisation('Ziff Davis', 'Google Jobs'), false);
+  assert.equal(isSameOrganisation('Indeed Technologies Ltd', 'Zip'), false, 'short names must not match by substring');
+  assert.equal(isSameOrganisation('Acme', ''), false);
+});
+
+test('hostOf normalises hosts and survives junk', () => {
+  assert.equal(hostOf('https://www.MySmartPros.com/tuition/job/x'), 'mysmartpros.com');
+  assert.equal(hostOf('https://jobs.example.co.uk/a'), 'jobs.example.co.uk');
+  assert.equal(hostOf('not a url'), '');
+  assert.equal(hostOf(''), '');
 });
 
 test('a reposting site listing itself as the employer is flagged', () => {

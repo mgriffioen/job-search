@@ -34,6 +34,33 @@ function detectEmploymentTypes(rawTypes, title, description) {
   return found.size ? [...found] : ['unspecified'];
 }
 
+/**
+ * Whether a company name and a publisher name refer to the same outfit.
+ * Substring rather than equality, because reposting sites mangle their own
+ * name in the employer field. Guarded on length so short publisher names
+ * cannot swallow unrelated companies.
+ */
+export function isSameOrganisation(company, publisher) {
+  if (!company || !publisher) return false;
+  const a = slugify(company).replace(/-/g, '');
+  const b = slugify(publisher).replace(/-/g, '');
+  if (!a || !b) return false;
+  if (a === b) return true;
+  // Short names ("Zip") would match unrelated companies by substring; five
+  // characters is low enough to still catch "Lensa" vs "Lensa.com".
+  if (Math.min(a.length, b.length) < 5) return false;
+  return a.includes(b) || b.includes(a);
+}
+
+/** Hostname of a URL without the www prefix, or '' if it cannot be parsed. */
+export function hostOf(url) {
+  try {
+    return new URL(url).hostname.replace(/^www\./i, '').toLowerCase();
+  } catch {
+    return '';
+  }
+}
+
 function cleanUrl(url) {
   if (!url) return null;
   const value = String(url).trim();
@@ -87,7 +114,11 @@ export function normalizeJob(raw, meta) {
   // Reposting sites list themselves as the employer, so the company field
   // comes back as "Remote Click Jobs" and you cannot tell who is hiring.
   // Detecting that generically beats maintaining a blocklist of site names.
-  const employerUnknown = Boolean(publisher) && slugify(company) === slugify(publisher);
+  //
+  // Compared by containment, not equality: these sites rarely echo their own
+  // name exactly — "MySmartPros" arrives in the company field as
+  // "vmysmartpros", which an equality check lets straight through.
+  const employerUnknown = isSameOrganisation(company, publisher);
 
   return {
     id: `${meta.source}:${raw.sourceId || slugify(`${company}-${title}`)}`,
