@@ -1,6 +1,6 @@
 {
-  "generatedAt": "2026-08-04T18:02:22.277Z",
-  "durationMs": 97090,
+  "generatedAt": "2026-08-05T08:50:02.695Z",
+  "durationMs": 46789,
   "candidate": {
     "name": "Emily Griffioen",
     "headline": "QA Specialist — HTML email & digital marketing content",
@@ -26,24 +26,24 @@
     "minMatchScore": 20
   },
   "counts": {
-    "fetched": 1896,
-    "unique": 1226,
-    "published": 167,
+    "fetched": 1926,
+    "unique": 1209,
+    "published": 156,
     "dropped": {
-      "location": 362,
+      "location": 347,
       "stale": 18,
-      "lowMatch": 669,
+      "lowMatch": 677,
       "excluded": 8,
-      "blockedDomain": 2
+      "blockedDomain": 3
     }
   },
   "tiers": {
-    "strong": 3,
-    "good": 30,
-    "possible": 49,
-    "stretch": 85
+    "strong": 1,
+    "good": 25,
+    "possible": 42,
+    "stretch": 88
   },
-  "freshLast48h": 65,
+  "freshLast48h": 59,
   "sources": [
     {
       "id": "companyboards",
@@ -57,25 +57,25 @@
       "id": "jsearch",
       "label": "Google Jobs",
       "status": "ok",
-      "fetched": 10,
+      "fetched": 12,
       "warnings": [],
-      "ms": 35064
+      "ms": 22464
     },
     {
       "id": "adzuna",
       "label": "Adzuna",
       "status": "ok",
-      "fetched": 157,
+      "fetched": 152,
       "warnings": [
-        "michigan-remote \"email marketing\": HTTP 503 Service Temporarily Unavailable",
+        "michigan-remote \"email marketing\": 0 results (Adzuna reports 0 total matches)",
         "michigan-remote \"proofreader\": 0 results (Adzuna reports 0 total matches)",
         "michigan-remote \"copy editor\": 0 results (Adzuna reports 0 total matches)",
         "michigan-remote \"marketing coordinator\": 0 results (Adzuna reports 0 total matches)",
         "michigan-remote \"marketing operations\": 0 results (Adzuna reports 0 total matches)",
         "michigan-remote \"content specialist\": 0 results (Adzuna reports 0 total matches)",
-        "us-remote \"email marketing\": HTTP 503 Service Temporarily Unavailable"
+        "michigan-remote \"email specialist\": 0 results (Adzuna reports 0 total matches)"
       ],
-      "ms": 49900
+      "ms": 13389
     },
     {
       "id": "jooble",
@@ -83,7 +83,7 @@
       "status": "ok",
       "fetched": 80,
       "warnings": [],
-      "ms": 1117
+      "ms": 950
     },
     {
       "id": "remotive",
@@ -91,17 +91,17 @@
       "status": "ok",
       "fetched": 512,
       "warnings": [],
-      "ms": 680
+      "ms": 556
     },
     {
       "id": "weworkremotely",
       "label": "We Work Remotely",
       "status": "ok",
-      "fetched": 385,
+      "fetched": 414,
       "warnings": [
         "remote-marketing-jobs.rss: HTTP 301 Moved Permanently"
       ],
-      "ms": 1364
+      "ms": 1496
     },
     {
       "id": "himalayas",
@@ -109,15 +109,15 @@
       "status": "ok",
       "fetched": 240,
       "warnings": [],
-      "ms": 942
+      "ms": 255
     },
     {
       "id": "jobicy",
       "label": "Jobicy",
       "status": "ok",
-      "fetched": 209,
+      "fetched": 213,
       "warnings": [],
-      "ms": 5368
+      "ms": 5053
     },
     {
       "id": "remoteok",
@@ -125,7 +125,7 @@
       "status": "ok",
       "fetched": 100,
       "warnings": [],
-      "ms": 431
+      "ms": 467
     },
     {
       "id": "workingnomads",
@@ -133,7 +133,7 @@
       "status": "ok",
       "fetched": 28,
       "warnings": [],
-      "ms": 331
+      "ms": 332
     },
     {
       "id": "arbeitnow",
@@ -141,7 +141,7 @@
       "status": "ok",
       "fetched": 175,
       "warnings": [],
-      "ms": 177
+      "ms": 126
     }
   ]
 }
