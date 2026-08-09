@@ -1,6 +1,6 @@
 {
-  "generatedAt": "2026-08-09T07:13:52.173Z",
-  "durationMs": 40310,
+  "generatedAt": "2026-08-09T16:52:09.084Z",
+  "durationMs": 25894,
   "candidate": {
     "name": "Emily Griffioen",
     "headline": "QA Specialist — HTML email & digital marketing content",
@@ -26,24 +26,24 @@
     "minMatchScore": 20
   },
   "counts": {
-    "fetched": 1833,
-    "unique": 1207,
-    "published": 159,
+    "fetched": 1757,
+    "unique": 1208,
+    "published": 149,
     "dropped": {
-      "location": 324,
+      "location": 315,
       "stale": 17,
-      "lowMatch": 701,
+      "lowMatch": 721,
       "excluded": 4,
       "blockedDomain": 2
     }
   },
   "tiers": {
-    "strong": 2,
-    "good": 35,
-    "possible": 50,
-    "stretch": 72
+    "strong": 3,
+    "good": 33,
+    "possible": 45,
+    "stretch": 68
   },
-  "freshLast48h": 44,
+  "freshLast48h": 41,
   "sources": [
     {
       "id": "companyboards",
@@ -57,15 +57,15 @@
       "id": "jsearch",
       "label": "Google Jobs",
       "status": "ok",
-      "fetched": 22,
+      "fetched": 9,
       "warnings": [],
-      "ms": 20363
+      "ms": 5657
     },
     {
       "id": "adzuna",
       "label": "Adzuna",
       "status": "ok",
-      "fetched": 175,
+      "fetched": 178,
       "warnings": [
         "michigan-remote \"email marketing\": 0 results (Adzuna reports 0 total matches)",
         "michigan-remote \"proofreader\": 0 results (Adzuna reports 0 total matches)",
@@ -74,7 +74,7 @@
         "michigan-remote \"content specialist\": 0 results (Adzuna reports 0 total matches)",
         "michigan-remote \"email specialist\": 0 results (Adzuna reports 0 total matches)"
       ],
-      "ms": 5618
+      "ms": 6634
     },
     {
       "id": "jooble",
@@ -82,15 +82,15 @@
       "status": "ok",
       "fetched": 80,
       "warnings": [],
-      "ms": 1188
+      "ms": 998
     },
     {
       "id": "remotive",
       "label": "Remotive",
       "status": "ok",
-      "fetched": 368,
+      "fetched": 304,
       "warnings": [],
-      "ms": 650
+      "ms": 515
     },
     {
       "id": "weworkremotely",
@@ -100,7 +100,7 @@
       "warnings": [
         "remote-marketing-jobs.rss: HTTP 301 Moved Permanently"
       ],
-      "ms": 1946
+      "ms": 1729
     },
     {
       "id": "himalayas",
@@ -108,15 +108,15 @@
       "status": "ok",
       "fetched": 240,
       "warnings": [],
-      "ms": 391
+      "ms": 303
     },
     {
       "id": "jobicy",
       "label": "Jobicy",
       "status": "ok",
-      "fetched": 222,
+      "fetched": 221,
       "warnings": [],
-      "ms": 7180
+      "ms": 7022
     },
     {
       "id": "remoteok",
@@ -124,23 +124,23 @@
       "status": "ok",
       "fetched": 100,
       "warnings": [],
-      "ms": 530
+      "ms": 502
     },
     {
       "id": "workingnomads",
       "label": "Working Nomads",
       "status": "ok",
-      "fetched": 44,
+      "fetched": 42,
       "warnings": [],
-      "ms": 626
+      "ms": 523
     },
     {
       "id": "arbeitnow",
       "label": "Arbeitnow",
       "status": "ok",
-      "fetched": 175,
+      "fetched": 176,
       "warnings": [],
-      "ms": 168
+      "ms": 122
     }
   ]
 }
