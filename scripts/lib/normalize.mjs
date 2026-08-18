@@ -9,7 +9,17 @@ import { detectWorkType } from './location.mjs';
 const EMPLOYMENT_PATTERNS = [
   { type: 'part-time', phrases: ['part-time', 'part time', 'parttime'] },
   { type: 'full-time', phrases: ['full-time', 'full time', 'fulltime'] },
-  { type: 'contract', phrases: ['contract', 'contractor', 'freelance', 'temporary', 'temp-to-hire', 'seasonal'] },
+  // Project- and deliverable-shaped work is contract work however it is worded;
+  // without these, a "statement of work" or "per-project" listing fell through
+  // to 'unspecified' and missed the contract filter entirely.
+  {
+    type: 'contract',
+    phrases: [
+      'contract', 'contractor', 'independent contractor', 'freelance', 'freelancer', 'temporary',
+      'temp-to-hire', 'contract-to-hire', 'seasonal', '1099', 'fixed-term', 'project-based',
+      'project based', 'per project', 'statement of work', 'scope of work', 'retainer', 'ad hoc',
+    ],
+  },
   { type: 'internship', phrases: ['internship', 'intern'] },
 ];
 
@@ -20,7 +30,10 @@ function detectEmploymentTypes(rawTypes, title, description) {
     const t = String(raw).toLowerCase().replace(/[_\s]+/g, '-');
     if (t.includes('part')) found.add('part-time');
     else if (t.includes('full')) found.add('full-time');
-    else if (t.includes('contract') || t.includes('freelance') || t.includes('temporary')) found.add('contract');
+    else if (
+      t.includes('contract') || t.includes('freelance') || t.includes('temporary') ||
+      t.includes('project') || t.includes('1099')
+    ) found.add('contract');
     else if (t.includes('intern')) found.add('internship');
   }
 

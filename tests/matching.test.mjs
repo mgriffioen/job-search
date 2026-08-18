@@ -418,193 +418,19 @@ test('RapidAPI quota headers are read off a response', () => {
   assert.equal(readQuotaHeaders(new Headers({})), null, 'an API that reports no meter is not a meter reading zero');
 });
 
-test('ability outranks job title: an unfamiliar title with her skills beats a familiar one without them', () => {
-  // The whole reason the scoring was rebalanced. A posting that describes what
-  // she does, under a name she never searched, must not lose to a posting that
-  // merely borrows a word from her current title.
-  const unfamiliarButRight = scoreJob(
-    job({
-      title: 'Documentation Specialist',
-      description:
-        'Maintain product documentation to a published style guide. Verify accuracy, catch inconsistencies ' +
-        'and typos, work to deadlines across multiple projects, and give clear written feedback to developers.',
-    }),
-    profile,
-    NOW
-  );
-
-  const familiarButWrong = scoreJob(
-    job({
-      title: 'Quality Analyst',
-      description: 'Inspect production line output against ISO 9001. Calipers, shop floor, supplier quality, CAPA.',
-    }),
-    profile,
-    NOW
-  );
-
-  assert.ok(
-    unfamiliarButRight.match > familiarButWrong.match,
-    `ability match (${unfamiliarButRight.match}) must beat title-only match (${familiarButWrong.match})`
-  );
-  assert.ok(unfamiliarButRight.discovery, 'and it is flagged as a direction she was not searching');
-});
-
-test('a new direction arrives with the reason it was suggested', () => {
-  const result = scoreJob(
-    job({
-      title: 'Instructional Designer',
-      description:
-        'Build curriculum aligned to learning objectives, develop training materials and job aids, ' +
-        'collaborate with stakeholders. Strong writing and attention to detail.',
-    }),
-    profile,
-    NOW
-  );
-
-  assert.ok(result.discovery, 'flagged as a new direction');
-  assert.equal(result.family?.id, 'instructional-design');
-  // The card is useless without this: an unfamiliar title needs its rationale.
-  assert.ok(result.family.why.length > 40, 'the family carries a human explanation');
-});
-
-test('her own role is not mislabelled as a new direction', () => {
-  const core = scoreJob(
-    job({
-      title: 'Email QA Specialist',
-      description: 'QA HTML email campaigns, check rendering across clients, proofread copy, enforce brand standards.',
-    }),
-    profile,
-    NOW
-  );
-
-  assert.equal(core.discovery, false, 'the job she already has is business as usual, not a discovery');
-  assert.ok(core.match >= 70, 'and still scores as a strong match');
-});
-
-test('a generic word in the title does not disguise a new direction', () => {
-  // "Localization Project Coordinator" matches the generic incumbent phrase
-  // "project coordinator". Filing it as business-as-usual would bury exactly
-  // the kind of role this board exists to surface.
-  const result = scoreJob(
-    job({
-      title: 'Localization Project Coordinator',
-      description:
-        'Coordinate Spanish translation projects, run linguistic QA, review translations for accuracy ' +
-        'against style guides, manage concurrent deadlines.',
-    }),
-    profile,
-    NOW
-  );
-
-  assert.ok(result.discovery, 'the more specific family name wins over the generic incumbent phrase');
-  assert.equal(result.family?.id, 'localization');
-});
-
-test('a wrong-field posting is not rescued by the discovery floor', () => {
-  const wrong = scoreJob(
-    job({
-      title: 'Test Automation Engineer',
-      description: 'Selenium, Cypress, CI/CD pipeline, Java. Build automated test frameworks.',
-    }),
-    profile,
-    NOW
-  );
-
-  assert.equal(wrong.discovery, false, 'penalties disqualify a posting from being suggested as a direction');
-  assert.ok(wrong.match < 32, `should stay out of the list, got ${wrong.match}`);
-});
-
-test('discovery needs several abilities, not one stock phrase', () => {
-  // Every posting on earth says "attention to detail". One such phrase must not
-  // be enough to put an unrelated job in front of her.
-  const thin = scoreJob(
-    job({
-      title: 'Warehouse Operations Associate',
-      description: 'Attention to detail required. Pick and pack orders in a fast-paced environment.',
-    }),
-    profile,
-    NOW
-  );
-
-  assert.equal(thin.discovery, false, 'one generic phrase is not an ability match');
-});
-
-test('the résumé signals the old profile ignored are actually scored', () => {
-  // Each of these is drawn from her résumé and was previously unscored or
-  // barely scored: graduate Spanish, teaching, and regulated-environment work.
-  const spanish = scoreJob(
-    job({ title: 'Localization QA Reviewer', description: 'Review Spanish translations for linguistic accuracy and consistency.' }),
-    profile,
-    NOW
-  );
-  const teaching = scoreJob(
-    job({ title: 'Training Coordinator', description: 'Develop curriculum and training materials, facilitate onboarding sessions.' }),
-    profile,
-    NOW
-  );
-  const regulated = scoreJob(
-    job({ title: 'Compliance Specialist', description: 'Review materials against regulatory requirements, maintain records and audit trails.' }),
-    profile,
-    NOW
-  );
-
-  // Asserting the *right* capability fires, not merely that some number did —
-  // a count would pass for the wrong reason.
-  const expectations = [
-    ['spanish', spanish, 'Spanish at graduate level'],
-    ['teaching', teaching, 'Teaching, training and curriculum'],
-    ['regulated', regulated, 'Working in a regulated, compliance-sensitive setting'],
-  ];
-
-  for (const [name, result, capability] of expectations) {
-    assert.ok(
-      result.capabilityLabels.includes(capability),
-      `${name}: expected “${capability}”, got ${JSON.stringify(result.capabilityLabels)}`
-    );
-    assert.ok(result.match >= 32, `${name}: should clear the display threshold, got ${result.match}`);
-  }
-});
-
-test('role family queries reach the searches', async () => {
-  const { expandQueries } = await import('../scripts/fetch-jobs.mjs');
-  const expanded = expandQueries(profile);
-
-  assert.ok(expanded.length > profile.search.queries.length, 'the family terms widen the list');
-  assert.equal(new Set(expanded).size, expanded.length, 'no duplicates');
-  // Her own niche stays at the top: sources that cap the list take from there.
-  assert.equal(expanded[0], profile.search.queries[0]);
-  for (const family of profile.roleFamilies) {
-    for (const query of family.queries) {
-      assert.ok(expanded.includes(query), `"${query}" (${family.id}) must be searched`);
-    }
-  }
-});
-
-test('every role family is usable by the board', () => {
-  for (const family of profile.roleFamilies) {
-    assert.ok(family.id && family.label, 'needs an id and a label');
-    assert.ok(family.why && family.why.length > 40, `${family.id}: needs a human rationale for the card`);
-    assert.ok(family.queries?.length, `${family.id}: needs search terms`);
-    assert.ok(family.titles?.length, `${family.id}: needs titles so its postings are recognised`);
-  }
-});
-
-test('every hand-added search term is both searched and recognised', async () => {
-  // Terms added by hand are the easiest thing to half-wire: added to the search
-  // list but invisible to the scorer, so the postings they find arrive and then
-  // score near zero. Each one has to survive the whole round trip.
-  const { expandQueries } = await import('../scripts/fetch-jobs.mjs');
+test('every hand-added search term is both searched and recognised', () => {
+  // Terms added by hand are easy to half-wire: added to the search list but
+  // invisible to the scorer, so the postings they find arrive and then score
+  // near zero — which looks identical to the term not working at all.
   const searched = new Set(
-    [...expandQueries(profile), ...profile.search.broadQueries].map((q) => q.toLowerCase())
+    [...profile.search.queries, ...profile.search.broadQueries].map((q) => q.toLowerCase())
   );
 
-  const contentQuality = [
+  const terms = [
     'Content Quality Specialist', 'Content QA Specialist', 'Digital Content QA', 'Content Auditor',
+    'E-commerce Content Specialist', 'Product Content Specialist', 'Catalog Specialist', 'Catalog Quality',
     'Content Integrity Specialist', 'Editorial QA', 'Production Editor', 'Web Content Specialist',
     'Digital Production Specialist', 'Campaign Operations Specialist',
-  ];
-  const catalog = [
-    'E-commerce Content Specialist', 'Product Content Specialist', 'Catalog Specialist', 'Catalog Quality',
   ];
 
   const body =
@@ -612,25 +438,94 @@ test('every hand-added search term is both searched and recognised', async () =>
     'assets and formatting. Work to deadlines across multiple concurrent projects and give clear ' +
     'written feedback to designers.';
 
-  for (const title of [...contentQuality, ...catalog]) {
+  for (const title of terms) {
     assert.ok(searched.has(title.toLowerCase()), `"${title}" must actually be searched for`);
-
     const result = scoreJob(job({ title, description: body }), profile, NOW);
-    assert.ok(result.match >= 50, `"${title}" should score as a real match, got ${result.match}`);
+    assert.ok(
+      result.match >= profile.search.minMatchScore,
+      `"${title}" must clear the publish threshold, got ${result.match}`
+    );
   }
+});
 
-  // Catalog and product-content work is a different field, so it should arrive
-  // explained as a new direction rather than as more of the same.
-  for (const title of catalog) {
-    const result = scoreJob(job({ title, description: body }), profile, NOW);
-    assert.ok(result.discovery, `"${title}" is a new direction, not business as usual`);
-    assert.ok(result.family?.why, `"${title}" must carry the reason it fits`);
+test('contract, freelance and project-based work outranks the same role permanent', () => {
+  const body =
+    'Review web and email content for accuracy against brand and style guidelines, ' +
+    'verify links and assets, and report findings.';
+
+  const permanent = scoreJob(job({ title: 'Content QA Specialist', description: body }), profile, NOW);
+  const freelance = scoreJob(
+    job({
+      title: 'Content QA Specialist',
+      description: `${body} This is a freelance, project-based engagement with defined deliverables and a statement of work.`,
+    }),
+    profile,
+    NOW
+  );
+
+  assert.ok(freelance.match > permanent.match, 'the contract framing is what is being looked for');
+  assert.ok(freelance.projectBased, 'and is flagged for the board filter');
+  assert.equal(permanent.projectBased, false);
+});
+
+test('the engagement bonus does not dock permanent roles', () => {
+  // Scoring engagement as a bonus rather than widening the denominator is what
+  // keeps a settled match where it was. If this regresses, every permanent
+  // posting silently loses a tier for no reason of its own.
+  const permanent = scoreJob(
+    job({
+      title: 'Email QA Specialist',
+      description: 'QA HTML email campaigns, check rendering, proofread copy, enforce brand standards. Litmus.',
+    }),
+    profile,
+    NOW
+  );
+  assert.ok(permanent.match >= 70, `a bullseye permanent role must stay strong, got ${permanent.match}`);
+});
+
+test('project-shaped work is recognised as contract however it is worded', () => {
+  // These reach the board's contract filter through employment type, so a
+  // posting that says "statement of work" but never "contract" still qualifies.
+  for (const wording of ['project-based', 'statement of work', '1099', 'per project', 'retainer']) {
+    const normalized = normalizeJob(
+      {
+        title: 'Content Auditor',
+        company: 'Example Co',
+        url: 'https://example.com/1',
+        description: `A ${wording} assignment reviewing site content.`,
+        location: 'Remote',
+      },
+      { source: 'test', sourceLabel: 'Test' }
+    );
+    assert.ok(
+      normalized.employmentTypes.includes('contract'),
+      `"${wording}" should register as contract work, got ${JSON.stringify(normalized.employmentTypes)}`
+    );
   }
+});
 
-  // Content QA under another name is the job she already does.
-  for (const title of ['Content QA Specialist', 'Editorial QA', 'Digital Content QA']) {
-    const result = scoreJob(job({ title, description: body }), profile, NOW);
-    assert.equal(result.discovery, false, `"${title}" is her own role under another name`);
+test('lead-generation listings do not ride the contract signals to the top', () => {
+  // Recruiting mills advertise flexible, no-experience work — exactly what the
+  // engagement signals reward. Ten such listings sat on the board at 59 and the
+  // bonus lifted one to 72 before this was added.
+  const spam = scoreJob(
+    job({
+      title: 'Remote Email Marketing Specialist – Flexible Hours – Call Now (405) 801-9601',
+      description: 'Flexible hours, no experience needed, weekly pay. Start immediately.',
+    }),
+    profile,
+    NOW
+  );
+  assert.ok(spam.match <= 5, `should be excluded outright, got ${spam.match}`);
+});
+
+test('the engagement vocabulary avoids words every posting uses', () => {
+  // "engagement", "as needed" and "ad hoc" appear in permanent postings and,
+  // in law and marketing, constantly — they pulled an Immigration Attorney and
+  // a professorship onto the board.
+  const phrases = profile.engagement.flatMap((group) => group.phrases);
+  for (const filler of ['engagement', 'as needed', 'ad hoc', 'on demand']) {
+    assert.ok(!phrases.includes(filler), `"${filler}" is too generic to signal contract work`);
   }
 });
 

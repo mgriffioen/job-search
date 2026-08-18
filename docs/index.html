@@ -35,9 +35,9 @@
       <span class="stat__num" id="stat-good">0</span>
       <span class="stat__label">Good match</span>
     </button>
-    <button type="button" class="stat" data-newdir-filter="1">
-      <span class="stat__num" id="stat-newdir">0</span>
-      <span class="stat__cap">new directions</span>
+    <button type="button" class="stat" data-project-filter="1">
+      <span class="stat__num" id="stat-project">0</span>
+      <span class="stat__cap">contract / freelance</span>
     </button>
     <button type="button" class="stat" data-age-filter="2">
       <span class="stat__num" id="stat-fresh">0</span>
@@ -113,7 +113,7 @@
             Posted within: <output id="max-age-out">any time</output>
             <input type="range" id="max-age" min="1" max="46" step="1" value="46">
           </label>
-          <label><input type="checkbox" id="only-newdir"> Only roles outside her current title</label>
+          <label><input type="checkbox" id="only-project"> Only contract, freelance or project-based</label>
           <label><input type="checkbox" id="hide-hidden" checked> Hide dismissed jobs</label>
           <label><input type="checkbox" id="hide-applied"> Hide jobs already applied to</label>
         </fieldset>
@@ -177,10 +177,6 @@
       </div>
 
       <ul class="chips" data-chips></ul>
-
-      <!-- Only rendered for roles outside her current title. An unfamiliar job
-           name is useless without the reason it is being suggested. -->
-      <p class="card__newdir" data-newdir hidden></p>
 
       <p class="card__excerpt" data-excerpt></p>
 
