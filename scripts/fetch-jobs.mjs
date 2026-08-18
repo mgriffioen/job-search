@@ -14,6 +14,8 @@ import { fileURLToPath } from 'node:url';
 import { normalizeJob, dedupeJobs, hostOf } from './lib/normalize.mjs';
 import { evaluateLocation } from './lib/location.mjs';
 import { scoreJob, matchTier } from './lib/score.mjs';
+import { scoreJob as scoreJobV2 } from './lib/score-v2.mjs';
+import { buildV2Profile } from './lib/profiles.mjs';
 
 import * as remotive from './sources/remotive.mjs';
 import * as remoteok from './sources/remoteok.mjs';
@@ -64,6 +66,11 @@ async function main() {
   // The last run's meta.json is the only state that survives between runs, and
   // it is committed with every update. A metered source reads its own previous
   // report from it to know what quota it has left before spending anything.
+  // v2 is an overlay on the same profile, so both boards search identically and
+  // differ only in scoring. Absent overlay simply means no v2 board.
+  const v2Overlay = await readJsonIfPresent(new URL('profile.v2.json', CONFIG_DIR));
+  const v2Profile = buildV2Profile(profile, v2Overlay);
+
   const previousMeta = await readJsonIfPresent(new URL('meta.json', DATA_DIR));
   const previousReports = new Map((previousMeta?.sources ?? []).map((report) => [report.id, report]));
 
@@ -124,9 +131,79 @@ async function main() {
   console.log(`${deduped.length} unique postings.`);
 
   const now = new Date();
+
+  // Both boards are built from this one fetch. Scoring is pure CPU, so the
+  // second model costs nothing at the APIs — which matters, because JSearch is
+  // billed per request and running the pipeline twice would double every call.
+  const boards = [
+    { id: 'v1', label: 'Title-driven', profile, scoreJob, dir: DATA_DIR },
+    v2Profile && {
+      id: 'v2',
+      label: 'Ability-based',
+      profile: v2Profile,
+      scoreJob: scoreJobV2,
+      dir: new URL('v2/', DATA_DIR),
+    },
+  ].filter(Boolean);
+
+  let primary = null;
+
+  for (const board of boards) {
+    const built = buildBoard(deduped, board.profile, board.scoreJob, now);
+    const meta = {
+      generatedAt: startedAt.toISOString(),
+      durationMs: Date.now() - startedAt.getTime(),
+      model: { id: board.id, label: board.label },
+      candidate: board.profile.candidate,
+      ranking: board.profile.ranking,
+      filters: {
+        maxAgeDays: board.profile.search.maxAgeDays,
+        minMatchScore: board.profile.search.minMatchScore,
+      },
+      counts: {
+        fetched: raw.length,
+        unique: deduped.length,
+        published: built.jobs.length,
+        dropped: built.dropped,
+      },
+      tiers: built.tiers,
+      freshLast48h: built.jobs.filter((j) => j.ageDays !== null && !j.ageAssumed && j.ageDays <= 2).length,
+      projectBased: built.jobs.filter((j) => j.projectBased).length,
+      discoveries: built.jobs.filter((j) => j.discovery).length,
+      sources: sourceReports,
+    };
+
+    await mkdir(board.dir, { recursive: true });
+    await writeFile(new URL('jobs.json', board.dir), `${JSON.stringify(built.jobs, null, 0)}\n`);
+    await writeFile(new URL('meta.json', board.dir), `${JSON.stringify(meta, null, 2)}\n`);
+
+    console.log(
+      `\n[${board.id}] ${board.label}: published ${built.jobs.length} jobs\n` +
+        `  dropped: ${built.dropped.location} out-of-area, ${built.dropped.stale} stale, ` +
+        `${built.dropped.lowMatch} below match threshold, ${built.dropped.excluded} excluded\n` +
+        `  tiers: ${meta.tiers.strong} strong / ${meta.tiers.good} good / ` +
+        `${meta.tiers.possible} possible / ${meta.tiers.stretch} stretch` +
+        (meta.discoveries ? `\n  new directions: ${meta.discoveries}` : '')
+    );
+
+    if (board.id === 'v1') primary = { meta, jobs: built.jobs };
+  }
+
+  if (primary) await writeStepSummary(primary.meta, primary.jobs);
+}
+
+
+/**
+ * Scores and filters the deduplicated postings under one matching model.
+ *
+ * Taken out of main() so both models can run over the same postings without the
+ * pipeline being duplicated — the gates (blocked domain, location, staleness,
+ * threshold) must stay identical between boards or a difference in the results
+ * would say more about the plumbing than about the models.
+ */
+export function buildBoard(deduped, profile, score, now) {
   const maxAgeDays = profile.search.maxAgeDays;
   const minMatch = profile.search.minMatchScore;
-
   const dropped = { location: 0, stale: 0, lowMatch: 0, excluded: 0, blockedDomain: 0 };
   const scored = [];
 
@@ -150,17 +227,17 @@ async function main() {
       continue;
     }
 
-    const score = scoreJob(job, profile, now);
+    const result = score(job, profile, now);
 
-    if (score.excluded) {
+    if (result.excluded) {
       dropped.excluded += 1;
       continue;
     }
-    if (score.ageDays !== null && score.ageDays > maxAgeDays) {
+    if (result.ageDays !== null && result.ageDays > maxAgeDays) {
       dropped.stale += 1;
       continue;
     }
-    if (score.match < minMatch) {
+    if (result.match < minMatch) {
       dropped.lowMatch += 1;
       continue;
     }
@@ -172,65 +249,39 @@ async function main() {
     // hiring is worth less than an identical one that will. This adjusts
     // where it sorts, not how well it matched.
     const rank = job.employerUnknown
-      ? Math.round(score.rank * (1 - (profile.ranking.unnamedEmployerPenalty ?? 0.25)) * 10) / 10
-      : score.rank;
+      ? Math.round(result.rank * (1 - (profile.ranking.unnamedEmployerPenalty ?? 0.25)) * 10) / 10
+      : result.rank;
 
     scored.push({
       ...rest,
       locationScope: location.scope,
       locationReason: location.reason,
-      match: score.match,
-      matchTier: matchTier(score.match),
+      match: result.match,
+      matchTier: matchTier(result.match),
       // Contract / freelance / project-shaped work, which the board filters on.
-      projectBased: score.projectBased,
-      recency: score.recency,
+      projectBased: result.projectBased,
+      // v2 only: a role outside her current title, and why it was suggested.
+      ...(result.discovery !== undefined ? { discovery: result.discovery, family: result.family } : {}),
+      recency: result.recency,
       rank,
-      ageDays: score.ageDays,
-      ageAssumed: score.ageAssumed,
-      reasons: score.reasons,
-      breakdown: score.breakdown,
+      ageDays: result.ageDays,
+      ageAssumed: result.ageAssumed,
+      reasons: result.reasons,
+      breakdown: result.breakdown,
     });
   }
 
   scored.sort((a, b) => b.rank - a.rank);
-  const jobs = scored.slice(0, profile.search.maxJobsStored);
-
-  const meta = {
-    generatedAt: startedAt.toISOString(),
-    durationMs: Date.now() - startedAt.getTime(),
-    candidate: profile.candidate,
-    ranking: profile.ranking,
-    filters: { maxAgeDays, minMatchScore: minMatch },
-    counts: {
-      fetched: raw.length,
-      unique: deduped.length,
-      published: jobs.length,
-      dropped,
-    },
+  return {
+    jobs: scored.slice(0, profile.search.maxJobsStored),
+    dropped,
     tiers: {
-      strong: jobs.filter((j) => j.matchTier === 'strong').length,
-      good: jobs.filter((j) => j.matchTier === 'good').length,
-      possible: jobs.filter((j) => j.matchTier === 'possible').length,
-      stretch: jobs.filter((j) => j.matchTier === 'stretch').length,
+      strong: scored.filter((j) => j.matchTier === 'strong').length,
+      good: scored.filter((j) => j.matchTier === 'good').length,
+      possible: scored.filter((j) => j.matchTier === 'possible').length,
+      stretch: scored.filter((j) => j.matchTier === 'stretch').length,
     },
-    freshLast48h: jobs.filter((j) => j.ageDays !== null && !j.ageAssumed && j.ageDays <= 2).length,
-    projectBased: jobs.filter((j) => j.projectBased).length,
-    sources: sourceReports,
   };
-
-  await mkdir(DATA_DIR, { recursive: true });
-  await writeFile(new URL('jobs.json', DATA_DIR), `${JSON.stringify(jobs, null, 0)}\n`);
-  await writeFile(new URL('meta.json', DATA_DIR), `${JSON.stringify(meta, null, 2)}\n`);
-
-  console.log(
-    `\nPublished ${jobs.length} jobs → docs/data/jobs.json\n` +
-      `  dropped: ${dropped.location} out-of-area, ${dropped.stale} stale, ` +
-      `${dropped.lowMatch} below match threshold, ${dropped.excluded} excluded\n` +
-      `  tiers: ${meta.tiers.strong} strong / ${meta.tiers.good} good / ` +
-      `${meta.tiers.possible} possible / ${meta.tiers.stretch} stretch`
-  );
-
-  await writeStepSummary(meta, jobs);
 }
 
 /** Nice-to-have: surface the top new matches in the GitHub Actions run summary. */

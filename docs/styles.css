@@ -676,3 +676,44 @@ textarea { resize: vertical; }
   border-color: transparent;
   font-weight: 650;
 }
+
+/* ---------------------------------------------------------------
+   Board switcher — two matching models over the same postings
+   --------------------------------------------------------------- */
+
+.boardswitch { display: inline-flex; border: 1px solid var(--line); border-radius: 8px; overflow: hidden; }
+
+.boardswitch__btn {
+  appearance: none;
+  border: 0;
+  padding: 5px 10px;
+  font: inherit;
+  font-size: .78rem;
+  background: transparent;
+  color: var(--text-faint);
+  cursor: pointer;
+}
+
+.boardswitch__btn + .boardswitch__btn { border-left: 1px solid var(--line); }
+.boardswitch__btn:hover { color: var(--text); }
+.boardswitch__btn[aria-pressed="true"] { background: var(--accent-soft); color: var(--accent-text); font-weight: 650; }
+
+/* v2 only: a role outside her current title, with the reason it was suggested.
+   Quiet rather than alarming — these are suggestions to weigh, sitting beside
+   listings she already recognises. */
+.card__newdir {
+  margin: 0 0 10px;
+  padding: .55rem .7rem;
+  border-left: 3px solid var(--accent);
+  border-radius: 0 6px 6px 0;
+  background: var(--accent-soft);
+  color: var(--text);
+  font-size: .86rem;
+  line-height: 1.45;
+}
+
+.card__newdir strong { font-weight: 650; color: var(--accent-text); }
+
+.chip--newdir { background: var(--accent-soft); color: var(--accent-text); border-color: transparent; font-weight: 650; }
+
+.hint { color: var(--text-faint); font-size: .8em; }

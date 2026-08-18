@@ -223,6 +223,38 @@ rate-limited that time; it does not affect the others.
 
 ---
 
+## Two boards: v1 and v2
+
+The board runs **two matching models over the same postings**, switchable in the
+header (`?board=v2` in the URL, so a board can be linked or bookmarked).
+
+| | v1 — title-driven | v2 — ability-based |
+| --- | --- | --- |
+| What carries the score | The job title (max 50 of 95) | What she can do (max 46 of 100) |
+| Title weight | 50 | 22 |
+| Finds | Roles named like hers | Roles that want her abilities under any name |
+| Extras | — | **New direction** badges, role families, the reason each fits |
+| Data | `docs/data/` | `docs/data/v2/` |
+
+**One fetch feeds both.** Scoring is pure CPU, so the second model costs nothing
+at the APIs — which matters, because JSearch is billed per request and running
+the pipeline twice would double every call.
+
+**v2 is an overlay, not a copy.** `config/profile.v2.json` holds only what
+defines its matching model: capabilities, role families, its ranking knobs, and
+the title groups it moves into families. Search terms, engagement signals,
+skills, penalties and the location gate are all inherited from
+`config/profile.json`. That is deliberate — if the two boards differed in what
+they searched for as well as how they scored, a difference between them would
+not be attributable to the model. **Put shared changes in `profile.json`; put
+only model-defining changes in `profile.v2.json`.**
+
+The two scorers are separate files (`scripts/lib/score.mjs`,
+`scripts/lib/score-v2.mjs`) and duplicate some helpers. That is also deliberate:
+the models differ in their caps and in the shape of the title signal, so sharing
+would mean parameterising v1 — and v1 is the live board, which should not move
+because an experiment beside it changed.
+
 ## How the ranking works
 
 Each posting gets two independent scores.

@@ -21,6 +21,12 @@
       <p class="masthead__sub" id="tagline">QA · email marketing · editorial — remote roles open to Michigan, full- or part-time</p>
     </div>
     <div class="masthead__meta">
+      <!-- Two matching models over the same postings. The choice is in the URL
+           so a particular board can be linked or bookmarked. -->
+      <div class="boardswitch" role="group" aria-label="Matching model">
+        <button type="button" class="boardswitch__btn" data-board="v1" aria-pressed="true">v1 · title</button>
+        <button type="button" class="boardswitch__btn" data-board="v2" aria-pressed="false">v2 · ability</button>
+      </div>
       <button type="button" class="icon-btn" id="theme-toggle" title="Switch theme" aria-label="Switch theme">◐</button>
       <p class="updated" id="updated">Loading…</p>
     </div>
@@ -35,9 +41,13 @@
       <span class="stat__num" id="stat-good">0</span>
       <span class="stat__label">Good match</span>
     </button>
+    <button type="button" class="stat" id="stat-newdir-tile" data-newdir-filter="1" hidden>
+      <span class="stat__num" id="stat-newdir">0</span>
+      <span class="stat__label">New directions</span>
+    </button>
     <button type="button" class="stat" data-project-filter="1">
       <span class="stat__num" id="stat-project">0</span>
-      <span class="stat__cap">contract / freelance</span>
+      <span class="stat__label">Contract / freelance</span>
     </button>
     <button type="button" class="stat" data-age-filter="2">
       <span class="stat__num" id="stat-fresh">0</span>
@@ -114,6 +124,7 @@
             <input type="range" id="max-age" min="1" max="46" step="1" value="46">
           </label>
           <label><input type="checkbox" id="only-project"> Only contract, freelance or project-based</label>
+          <label id="only-newdir-row" hidden><input type="checkbox" id="only-newdir"> Only roles outside her current title <span class="hint">(v2)</span></label>
           <label><input type="checkbox" id="hide-hidden" checked> Hide dismissed jobs</label>
           <label><input type="checkbox" id="hide-applied"> Hide jobs already applied to</label>
         </fieldset>
@@ -177,6 +188,10 @@
       </div>
 
       <ul class="chips" data-chips></ul>
+
+      <!-- v2 only: an unfamiliar job title is useless without the reason it is
+           being suggested, so the reason travels with it. -->
+      <p class="card__newdir" data-newdir hidden></p>
 
       <p class="card__excerpt" data-excerpt></p>
 

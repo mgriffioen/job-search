@@ -8,9 +8,13 @@ import { scoreJob, matchTier, recencyScore } from '../scripts/lib/score.mjs';
 import { normalizeJob, dedupeJobs, dedupeKey, isSameOrganisation, hostOf } from '../scripts/lib/normalize.mjs';
 import { parseRssItems } from '../scripts/lib/xml.mjs';
 import { explain as explainJsearch, extractJobs, mapJob as mapJsearchJob, selectQueries } from '../scripts/sources/jsearch.mjs';
+import { scoreJob as scoreJobV2 } from '../scripts/lib/score-v2.mjs';
+import { buildV2Profile } from '../scripts/lib/profiles.mjs';
 import { planRunBudget, readQuotaHeaders, describeQuota } from '../scripts/lib/quota.mjs';
 
 const profile = JSON.parse(await readFile(new URL('../config/profile.json', import.meta.url), 'utf8'));
+const v2Overlay = JSON.parse(await readFile(new URL('../config/profile.v2.json', import.meta.url), 'utf8'));
+const profileV2 = buildV2Profile(profile, v2Overlay);
 const NOW = new Date('2026-07-27T12:00:00Z');
 
 const job = (overrides = {}) => ({
@@ -526,6 +530,80 @@ test('the engagement vocabulary avoids words every posting uses', () => {
   const phrases = profile.engagement.flatMap((group) => group.phrases);
   for (const filler of ['engagement', 'as needed', 'ad hoc', 'on demand']) {
     assert.ok(!phrases.includes(filler), `"${filler}" is too generic to signal contract work`);
+  }
+});
+
+test('v2 inherits everything from v1 except the matching model', () => {
+  // The two boards must search identically. If they drifted, a difference
+  // between them would say nothing about the models being compared.
+  assert.deepEqual(profileV2.search.queries, profile.search.queries, 'same search terms');
+  assert.deepEqual(profileV2.search.broadQueries, profile.search.broadQueries);
+  assert.deepEqual(profileV2.engagement, profile.engagement, 'same contract targeting');
+  assert.deepEqual(profileV2.penalties, profile.penalties, 'same penalties');
+  assert.deepEqual(profileV2.excludeTitlePhrases, profile.excludeTitlePhrases, 'same exclusions');
+  assert.deepEqual(profileV2.location, profile.location, 'same location gate');
+
+  // …and differs where it is supposed to.
+  assert.ok(profileV2.capabilities.length > 0, 'v2 adds the capability model');
+  assert.ok(profileV2.roleFamilies.length > 0, 'v2 adds role families');
+  assert.equal(profile.capabilities, undefined, 'v1 stays title-driven');
+});
+
+test('v2 title edits do not discard search terms added to v1', () => {
+  // The overlay expresses title changes as edits, not a replacement list, so a
+  // term added to v1 keeps working on v2. A wholesale copy would silently lose
+  // every term added after the copy was taken.
+  const v1QA = profile.titles.find((g) => g.label === 'QA specialist / analyst');
+  const v2QA = profileV2.titles.find((g) => g.label === 'QA specialist / analyst');
+  assert.deepEqual(v2QA.phrases, v1QA.phrases);
+  assert.ok(!profileV2.titles.some((g) => g.label === 'Localization / bilingual'), 'moved to a role family in v2');
+});
+
+test('both models score the same posting, and only v2 flags new directions', () => {
+  const posting = job({
+    title: 'Instructional Designer',
+    description:
+      'Build curriculum aligned to learning objectives, develop training materials and job aids, ' +
+      'collaborate with stakeholders. Strong writing and attention to detail.',
+  });
+
+  const a = scoreJob(posting, profile, NOW);
+  const b = scoreJobV2(posting, profileV2, NOW);
+
+  assert.equal(a.discovery, undefined, 'v1 has no concept of a new direction');
+  assert.ok(b.discovery, 'v2 recognises the adjacent family');
+  assert.ok(b.match > a.match, 'and scores the ability match higher');
+});
+
+test('both models treat contract framing identically', () => {
+  // Engagement is a shared target, not a model difference. If only one board
+  // scored it, a comparison would confound the two changes.
+  const body = 'Review web content for accuracy against brand guidelines and report findings.';
+  const permanent = job({ title: 'Content QA Specialist', description: body });
+  const freelance = job({
+    title: 'Content QA Specialist',
+    description: `${body} A freelance, project-based engagement with defined deliverables and a statement of work.`,
+  });
+
+  for (const [name, scorer, prof] of [['v1', scoreJob, profile], ['v2', scoreJobV2, profileV2]]) {
+    const p = scorer(permanent, prof, NOW);
+    const f = scorer(freelance, prof, NOW);
+    assert.ok(f.match > p.match, `${name}: contract framing must rank higher`);
+    assert.ok(f.projectBased && !p.projectBased, `${name}: must flag project work`);
+  }
+});
+
+test('recruiting-mill listings are kept off both boards', () => {
+  // Ten identical listings from one employer reached the top of the board:
+  // the engagement bonus rewards their "independent contractor / 1099 /
+  // work anytime" wording. Data entry is also the opposite of the stated
+  // target — high-judgment, detail-intensive work.
+  const mill = job({
+    title: 'Remote Data Entry & Email Marketing Specialist NYC, NY',
+    description: 'Independent Contractor / 1099. 100% Remote. Flexible — work anytime, day or night. Computer-savvy.',
+  });
+  for (const [name, scorer, prof] of [['v1', scoreJob, profile], ['v2', scoreJobV2, profileV2]]) {
+    assert.ok(scorer(mill, prof, NOW).match <= 5, `${name}: should be excluded, not promoted`);
   }
 });
 
