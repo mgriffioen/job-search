@@ -16,6 +16,15 @@ import { normalizeForMatch, containsPhrase, daysBetween } from './text.mjs';
 const TITLE_CAP = 50;
 const SKILL_CAP = 35;
 const CONTEXT_CAP = 10;
+// Engagement shape — contract, freelance, project- and deliverable-based work —
+// is a deliberate target, so it earns points on top of the fit score.
+//
+// Deliberately NOT part of MAX_RAW. Widening the denominator would have docked
+// every permanent posting ~11% for no reason of its own, dropping settled
+// matches a whole tier ("Email Marketing Specialist" 67 → 59) purely because a
+// new axis existed. Scoring it as a bonus leaves every other posting exactly
+// where it was and lifts only the work being looked for.
+const ENGAGEMENT_CAP = 12;
 const PENALTY_FLOOR = -38;
 const MAX_RAW = TITLE_CAP + SKILL_CAP + CONTEXT_CAP;
 
@@ -110,6 +119,24 @@ function scoreSkills(profile, normText) {
   return { score: clamp(score, 0, SKILL_CAP), reasons, hitCount: hits.length };
 }
 
+/**
+ * How the work is packaged: a contract, a freelance brief, a project with
+ * deliverables. Scored separately from context because it is a target in its
+ * own right — a six-week content audit is the shape of work being sought, not a
+ * lesser version of a permanent job.
+ */
+function scoreEngagement(profile, normText) {
+  const hits = matchGroup(profile.engagement || [], normText).sort((a, b) => b.weight - a.weight);
+  const reasons = [];
+  let score = 0;
+  hits.forEach((hit, index) => {
+    const points = hit.weight * 0.85 ** index;
+    score += points;
+    reasons.push({ kind: 'engagement', label: hit.label, detail: `“${hit.phrase}”`, points: Math.round(points * 10) / 10 });
+  });
+  return { score: clamp(score, 0, ENGAGEMENT_CAP), reasons, hitCount: hits.length };
+}
+
 function scoreContext(profile, normText) {
   const hits = matchGroup(profile.context, normText);
   const reasons = [];
@@ -161,9 +188,10 @@ export function scoreJob(job, profile, now = new Date()) {
   const title = scoreTitle(profile, normTitle, normDescription);
   const skills = scoreSkills(profile, normAll);
   const context = scoreContext(profile, normAll);
+  const engagement = scoreEngagement(profile, normAll);
   const penalties = scorePenalties(profile, normTitle, normAll);
 
-  const raw = title.score + skills.score + context.score + penalties.score;
+  const raw = title.score + skills.score + context.score + engagement.score + penalties.score;
   let match = clamp(Math.round((raw / MAX_RAW) * 100), 0, 100);
 
   /**
@@ -189,7 +217,7 @@ export function scoreJob(job, profile, now = new Date()) {
   const { matchWeight, recencyWeight } = profile.ranking;
   const rank = Math.round((match * matchWeight + recency.score * recencyWeight) * 10) / 10;
 
-  const reasons = [...title.reasons, ...skills.reasons, ...context.reasons, ...penalties.reasons]
+  const reasons = [...title.reasons, ...skills.reasons, ...engagement.reasons, ...context.reasons, ...penalties.reasons]
     .sort((a, b) => Math.abs(b.points) - Math.abs(a.points));
 
   return {
@@ -201,10 +229,14 @@ export function scoreJob(job, profile, now = new Date()) {
     excluded: Boolean(excluded),
     excludedBy: excluded || null,
     reasons: reasons.slice(0, 12),
+    // Whether this is contract / freelance / project-shaped work, which the
+    // board surfaces as its own filter and count.
+    projectBased: engagement.hitCount > 0,
     breakdown: {
       title: Math.round(title.score * 10) / 10,
       skills: Math.round(skills.score * 10) / 10,
       context: Math.round(context.score * 10) / 10,
+      engagement: Math.round(engagement.score * 10) / 10,
       penalty: Math.round(penalties.score * 10) / 10,
     },
   };

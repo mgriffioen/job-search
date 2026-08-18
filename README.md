@@ -235,6 +235,7 @@ Each posting gets two independent scores.
 | Title | 50 | The strongest job-title family that matches, plus partial credit for a second |
 | Skills | 35 | Résumé skills found anywhere in the posting, with diminishing returns per additional hit |
 | Context | 10 | Domain and seniority fit — marketing, mid-level, part-time-friendly, fully remote |
+| Engagement | +12 | Contract, freelance, project- and deliverable-based framing. A bonus, not part of the denominator |
 | Penalties | −38 | Signals this is the wrong kind of role, doubled when they appear in the title |
 
 Diminishing returns matter: a posting that lists thirty tools cannot out-score a
@@ -256,6 +257,40 @@ Two rules sit on top of the title component:
   naming one of her exact roles floors the match at `ranking.bullseyeTitleFloor` (72),
   but only when nothing in the posting counts against it — so *"Marketing QA Automation
   Engineer"* is still held down by the automation penalties.
+
+### Contract, freelance and project work
+
+The target is not only a permanent remote job: it is **high-judgment,
+detail-intensive, project- or deliverable-based content/brand/e-commerce QA and
+auditing work, remote**. Contract framing is therefore scored in its own right —
+`engagement` in `config/profile.json`, worth up to 12 points for contract,
+freelance, project- and deliverable-based language, plus flexible capacity.
+
+Those points are a **bonus on top of** the fit score rather than part of its
+denominator. That distinction matters: widening the denominator would have
+docked every permanent posting about 11% for no reason of its own, dropping
+settled matches a whole tier. As a bonus, permanent roles stay exactly where they
+were and only the work being sought moves up.
+
+Postings are flagged `projectBased`, get their own **contract / freelance**
+counter and filter on the board, and a *project-based* chip where the source did
+not already label them contract. Employment-type detection also treats
+"statement of work", "per project", "1099" and "retainer" as contract work, so
+those listings reach the contract filter even when they never use the word.
+
+Two cautions learned by measuring:
+
+- The engagement vocabulary deliberately excludes *engagement*, *as needed*,
+  *ad hoc* and *on demand*. Permanent postings use them constantly — and in law
+  and marketing especially — and they pulled an immigration attorney and a
+  professorship onto the board.
+- Recruiting mills advertise flexible, no-experience work, which is exactly what
+  these signals reward. Ten such listings sat on the board and the bonus lifted
+  one into the strong band, so lead-generation markers are now penalised and
+  "call now" is an outright exclusion.
+
+Remote is still a hard gate (`location.remoteOnly`). Contract work is an
+addition to the target, not a replacement for it.
 
 **Recency (0–100)** — halves every 14 days. A posting with no date is treated as
 three weeks old rather than brand new, so undated listings don't crowd out real

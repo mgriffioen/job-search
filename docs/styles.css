@@ -667,3 +667,12 @@ textarea { resize: vertical; }
 @media (prefers-reduced-motion: reduce) {
   * { transition: none !important; animation: none !important; }
 }
+
+/* Contract / freelance / project-shaped work — a deliberate target, so it is
+   marked on the card as well as being filterable. */
+.chip--project {
+  background: var(--accent-soft);
+  color: var(--accent-text);
+  border-color: transparent;
+  font-weight: 650;
+}

@@ -448,6 +448,87 @@ test('every hand-added search term is both searched and recognised', () => {
   }
 });
 
+test('contract, freelance and project-based work outranks the same role permanent', () => {
+  const body =
+    'Review web and email content for accuracy against brand and style guidelines, ' +
+    'verify links and assets, and report findings.';
+
+  const permanent = scoreJob(job({ title: 'Content QA Specialist', description: body }), profile, NOW);
+  const freelance = scoreJob(
+    job({
+      title: 'Content QA Specialist',
+      description: `${body} This is a freelance, project-based engagement with defined deliverables and a statement of work.`,
+    }),
+    profile,
+    NOW
+  );
+
+  assert.ok(freelance.match > permanent.match, 'the contract framing is what is being looked for');
+  assert.ok(freelance.projectBased, 'and is flagged for the board filter');
+  assert.equal(permanent.projectBased, false);
+});
+
+test('the engagement bonus does not dock permanent roles', () => {
+  // Scoring engagement as a bonus rather than widening the denominator is what
+  // keeps a settled match where it was. If this regresses, every permanent
+  // posting silently loses a tier for no reason of its own.
+  const permanent = scoreJob(
+    job({
+      title: 'Email QA Specialist',
+      description: 'QA HTML email campaigns, check rendering, proofread copy, enforce brand standards. Litmus.',
+    }),
+    profile,
+    NOW
+  );
+  assert.ok(permanent.match >= 70, `a bullseye permanent role must stay strong, got ${permanent.match}`);
+});
+
+test('project-shaped work is recognised as contract however it is worded', () => {
+  // These reach the board's contract filter through employment type, so a
+  // posting that says "statement of work" but never "contract" still qualifies.
+  for (const wording of ['project-based', 'statement of work', '1099', 'per project', 'retainer']) {
+    const normalized = normalizeJob(
+      {
+        title: 'Content Auditor',
+        company: 'Example Co',
+        url: 'https://example.com/1',
+        description: `A ${wording} assignment reviewing site content.`,
+        location: 'Remote',
+      },
+      { source: 'test', sourceLabel: 'Test' }
+    );
+    assert.ok(
+      normalized.employmentTypes.includes('contract'),
+      `"${wording}" should register as contract work, got ${JSON.stringify(normalized.employmentTypes)}`
+    );
+  }
+});
+
+test('lead-generation listings do not ride the contract signals to the top', () => {
+  // Recruiting mills advertise flexible, no-experience work — exactly what the
+  // engagement signals reward. Ten such listings sat on the board at 59 and the
+  // bonus lifted one to 72 before this was added.
+  const spam = scoreJob(
+    job({
+      title: 'Remote Email Marketing Specialist – Flexible Hours – Call Now (405) 801-9601',
+      description: 'Flexible hours, no experience needed, weekly pay. Start immediately.',
+    }),
+    profile,
+    NOW
+  );
+  assert.ok(spam.match <= 5, `should be excluded outright, got ${spam.match}`);
+});
+
+test('the engagement vocabulary avoids words every posting uses', () => {
+  // "engagement", "as needed" and "ad hoc" appear in permanent postings and,
+  // in law and marketing, constantly — they pulled an Immigration Attorney and
+  // a professorship onto the board.
+  const phrases = profile.engagement.flatMap((group) => group.phrases);
+  for (const filler of ['engagement', 'as needed', 'ad hoc', 'on demand']) {
+    assert.ok(!phrases.includes(filler), `"${filler}" is too generic to signal contract work`);
+  }
+});
+
 test('video editing roles do not ride in on the word "editor"', () => {
   const copyEditor = scoreJob(
     job({ title: 'Copy Editor, Email & Web', description: 'Proofread marketing email copy, AP style, brand voice.' }),

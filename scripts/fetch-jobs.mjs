@@ -181,6 +181,8 @@ async function main() {
       locationReason: location.reason,
       match: score.match,
       matchTier: matchTier(score.match),
+      // Contract / freelance / project-shaped work, which the board filters on.
+      projectBased: score.projectBased,
       recency: score.recency,
       rank,
       ageDays: score.ageDays,
@@ -212,6 +214,7 @@ async function main() {
       stretch: jobs.filter((j) => j.matchTier === 'stretch').length,
     },
     freshLast48h: jobs.filter((j) => j.ageDays !== null && !j.ageAssumed && j.ageDays <= 2).length,
+    projectBased: jobs.filter((j) => j.projectBased).length,
     sources: sourceReports,
   };
 
