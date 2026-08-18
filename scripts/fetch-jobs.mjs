@@ -9,6 +9,7 @@
  */
 
 import { readFile, writeFile, mkdir } from 'node:fs/promises';
+import { fileURLToPath } from 'node:url';
 
 import { normalizeJob, dedupeJobs, hostOf } from './lib/normalize.mjs';
 import { evaluateLocation } from './lib/location.mjs';
@@ -56,9 +57,34 @@ async function readJsonIfPresent(url) {
   }
 }
 
+/**
+ * Role families each bring their own search terms. Rather than maintaining the
+ * same phrases in two places, the keyword list is assembled here: her own niche
+ * first (sources that cap the list take from the top), then the adjacent
+ * families, de-duplicated.
+ *
+ * Only `queries` is widened. `broadQueries` stays hand-picked, because the
+ * sources that use it spend one API call per term per run.
+ */
+export function expandQueries(profile) {
+  const seen = new Set();
+  const ordered = [];
+  const add = (query) => {
+    const key = query.trim().toLowerCase();
+    if (!key || seen.has(key)) return;
+    seen.add(key);
+    ordered.push(query);
+  };
+
+  (profile.search.queries || []).forEach(add);
+  for (const family of profile.roleFamilies || []) (family.queries || []).forEach(add);
+  return ordered;
+}
+
 async function main() {
   const startedAt = new Date();
   const profile = JSON.parse(await readFile(new URL('profile.json', CONFIG_DIR), 'utf8'));
+  profile.search.queries = expandQueries(profile);
 
   // The last run's meta.json is the only state that survives between runs, and
   // it is committed with every update. A metered source reads its own previous
@@ -180,6 +206,11 @@ async function main() {
       locationReason: location.reason,
       match: score.match,
       matchTier: matchTier(score.match),
+      // Carried to the board so a role outside her current title can be shown
+      // as one, with the reason it was suggested.
+      discovery: score.discovery,
+      family: score.family,
+      capabilityLabels: score.capabilityLabels,
       recency: score.recency,
       rank,
       ageDays: score.ageDays,
@@ -211,6 +242,8 @@ async function main() {
       stretch: jobs.filter((j) => j.matchTier === 'stretch').length,
     },
     freshLast48h: jobs.filter((j) => j.ageDays !== null && !j.ageAssumed && j.ageDays <= 2).length,
+    // How much of the board is work she was not already searching for.
+    discoveries: jobs.filter((j) => j.discovery).length,
     sources: sourceReports,
   };
 
@@ -279,7 +312,17 @@ async function writeStepSummary(meta, jobs) {
   await writeFile(path, `${lines.join('\n')}\n`, { flag: 'a' });
 }
 
-main().catch((err) => {
-  console.error('Fatal:', err);
-  process.exit(1);
-});
+/**
+ * Only fetch when run as a command. The helpers above are imported by the test
+ * suite, and a module that fetches on import would mean `npm test` hitting every
+ * job board and overwriting docs/data — including in CI, where the test step
+ * runs before the real fetch.
+ */
+const invokedDirectly = process.argv[1] && fileURLToPath(import.meta.url) === process.argv[1];
+
+if (invokedDirectly) {
+  main().catch((err) => {
+    console.error('Fatal:', err);
+    process.exit(1);
+  });
+}

@@ -18,7 +18,8 @@
  */
 
 import { getJsonWithHeaders } from '../lib/http.mjs';
-import { describeQuota, planRunBudget, readQuotaHeaders, runIndex } from '../lib/quota.mjs';
+import { describeQuota, planRunBudget, readQuotaHeaders } from '../lib/quota.mjs';
+import { selectRotating } from '../lib/rotate.mjs';
 
 export const id = 'jsearch';
 export const label = 'Google Jobs';
@@ -42,14 +43,7 @@ export const skipReason = 'RAPIDAPI_KEY not set — see README (this is what bri
  * The window is derived from the clock rather than stored state, so it keeps
  * advancing without anything to persist between runs.
  */
-export function selectQueries(all, perRun, now = new Date(), runsPerDay = 2) {
-  if (!all.length || perRun <= 0) return [];
-  if (perRun >= all.length) return [...all];
-
-  const index = runIndex(now, runsPerDay);
-  const start = ((index * perRun) % all.length + all.length) % all.length;
-  return [...all, ...all].slice(start, start + perRun);
-}
+export const selectQueries = selectRotating;
 
 /**
  * JSearch has renamed its search endpoint across API versions, and the version

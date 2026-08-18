@@ -4,6 +4,7 @@
  */
 
 import { getJson } from '../lib/http.mjs';
+import { selectRotating } from '../lib/rotate.mjs';
 
 export const id = 'jobicy';
 export const label = 'Jobicy';
@@ -17,7 +18,13 @@ export const enabled = true;
 function buildUrls(profile) {
   const urls = ['https://jobicy.com/api/v2/remote-jobs?count=50&geo=usa'];
   // `tag` filters a small index, so specific phrases match nothing there.
-  const queries = profile.search.broadQueries || profile.search.queries.slice(0, 6);
+  // Rotated, not truncated: the broad list is longer than one run should
+  // send, because each term costs an API call here, but every term still
+  // gets its turn over the next few runs.
+  const queries = selectRotating(
+    profile.search.broadQueries || profile.search.queries,
+    profile.search.broadQueriesPerRun ?? 12
+  );
   for (const query of queries) {
     urls.push(`https://jobicy.com/api/v2/remote-jobs?count=50&geo=usa&tag=${encodeURIComponent(query)}`);
   }
