@@ -1,6 +1,6 @@
 {
-  "generatedAt": "2026-08-18T16:46:31.483Z",
-  "durationMs": 43078,
+  "generatedAt": "2026-08-18T22:52:51.741Z",
+  "durationMs": 24831,
   "candidate": {
     "name": "Emily Griffioen",
     "headline": "QA Specialist — HTML email & digital marketing content",
@@ -26,24 +26,25 @@
     "minMatchScore": 20
   },
   "counts": {
-    "fetched": 1744,
-    "unique": 1254,
-    "published": 189,
+    "fetched": 1753,
+    "unique": 1223,
+    "published": 201,
     "dropped": {
-      "location": 368,
-      "stale": 16,
-      "lowMatch": 674,
-      "excluded": 6,
-      "blockedDomain": 1
+      "location": 323,
+      "stale": 14,
+      "lowMatch": 672,
+      "excluded": 13,
+      "blockedDomain": 0
     }
   },
   "tiers": {
-    "strong": 1,
-    "good": 43,
-    "possible": 52,
-    "stretch": 93
+    "strong": 0,
+    "good": 22,
+    "possible": 60,
+    "stretch": 119
   },
-  "freshLast48h": 78,
+  "freshLast48h": 68,
+  "projectBased": 102,
   "sources": [
     {
       "id": "companyboards",
@@ -57,23 +58,38 @@
       "id": "jsearch",
       "label": "Google Jobs",
       "status": "ok",
-      "fetched": 14,
+      "fetched": 0,
       "warnings": [],
-      "ms": 22869
+      "quota": null,
+      "budget": {
+        "allowed": 0,
+        "spent": 0,
+        "reserve": 12,
+        "reason": "not a scheduled run — holding the metered quota for the next one"
+      },
+      "ms": 0
     },
     {
       "id": "adzuna",
       "label": "Adzuna",
       "status": "ok",
-      "fetched": 223,
+      "fetched": 133,
       "warnings": [
-        "michigan-remote \"proofreader\": 0 results (Adzuna reports 0 total matches)",
-        "michigan-remote \"copy editor\": 0 results (Adzuna reports 0 total matches)",
         "michigan-remote \"marketing coordinator\": 0 results (Adzuna reports 0 total matches)",
         "michigan-remote \"content specialist\": 0 results (Adzuna reports 0 total matches)",
-        "michigan-remote \"email specialist\": 0 results (Adzuna reports 0 total matches)"
+        "michigan-remote \"email specialist\": 0 results (Adzuna reports 0 total matches)",
+        "michigan-remote \"content quality\": 0 results (Adzuna reports 0 total matches)",
+        "michigan-remote \"content auditor\": 0 results (Adzuna reports 0 total matches)",
+        "michigan-remote \"catalog specialist\": 0 results (Adzuna reports 0 total matches)",
+        "michigan-remote \"product content\": 0 results (Adzuna reports 0 total matches)",
+        "michigan-remote \"web content\": 0 results (Adzuna reports 0 total matches)",
+        "michigan-remote \"production editor\": 0 results (Adzuna reports 0 total matches)",
+        "michigan-remote \"campaign operations\": 0 results (Adzuna reports 0 total matches)",
+        "michigan-remote \"digital production\": 0 results (Adzuna reports 0 total matches)",
+        "us-remote \"content auditor\": 0 results (Adzuna reports 0 total matches)",
+        "us-remote \"catalog specialist\": 0 results (Adzuna reports 0 total matches)"
       ],
-      "ms": 5077
+      "ms": 8299
     },
     {
       "id": "jooble",
@@ -81,7 +97,7 @@
       "status": "ok",
       "fetched": 80,
       "warnings": [],
-      "ms": 1163
+      "ms": 1168
     },
     {
       "id": "remotive",
@@ -89,17 +105,17 @@
       "status": "ok",
       "fetched": 272,
       "warnings": [],
-      "ms": 494
+      "ms": 493
     },
     {
       "id": "weworkremotely",
       "label": "We Work Remotely",
       "status": "ok",
-      "fetched": 362,
+      "fetched": 367,
       "warnings": [
         "remote-marketing-jobs.rss: HTTP 301 Moved Permanently"
       ],
-      "ms": 4491
+      "ms": 3573
     },
     {
       "id": "himalayas",
@@ -107,15 +123,17 @@
       "status": "ok",
       "fetched": 240,
       "warnings": [],
-      "ms": 403
+      "ms": 346
     },
     {
       "id": "jobicy",
       "label": "Jobicy",
       "status": "ok",
-      "fetched": 226,
-      "warnings": [],
-      "ms": 5002
+      "fetched": 336,
+      "warnings": [
+        "?count=50&geo=usa&tag=digital%20production: HTTP 429 Too Many Requests"
+      ],
+      "ms": 7650
     },
     {
       "id": "remoteok",
@@ -123,7 +141,7 @@
       "status": "ok",
       "fetched": 100,
       "warnings": [],
-      "ms": 748
+      "ms": 489
     },
     {
       "id": "workingnomads",
@@ -131,15 +149,15 @@
       "status": "ok",
       "fetched": 51,
       "warnings": [],
-      "ms": 881
+      "ms": 339
     },
     {
       "id": "arbeitnow",
       "label": "Arbeitnow",
       "status": "ok",
-      "fetched": 176,
+      "fetched": 175,
       "warnings": [],
-      "ms": 214
+      "ms": 160
     }
   ]
 }
