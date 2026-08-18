@@ -642,31 +642,60 @@ test('a good email role survives mentioning video in passing', () => {
   assert.ok(result.match >= 50, `scored ${result.match}; an incidental video mention should not sink a real match`);
 });
 
-test('localization QA in a language she lacks loses to the same role in Spanish', () => {
-  // These score well on every other signal, so the language is the only thing
-  // that distinguishes a fit from a non-fit.
-  const body = 'Linguistic QA testing of apps and content. Native-level fluency required. Remote, part-time.';
-  const spanish = scoreJob(job({ title: 'Spanish Linguistic QA Tester (Remote - US Based)', description: body }), profile, NOW);
+test('language-focused roles are kept off both boards', () => {
+  // She is fluent in Spanish and holds a graduate degree in it, but does not
+  // want work that is *about* the language. These used to be actively promoted:
+  // a "Localization / bilingual" title group worth 34, a Spanish skill in v1,
+  // and in v2 a graduate-Spanish capability plus a whole localisation family.
+  const languageRoles = [
+    'Spanish Linguistic QA Tester (Remote - US Based)',
+    'Bilingual Copy Editor',
+    'Localization Specialist',
+    'Spanish Translator',
+    'Translation Project Coordinator',
+    'Multilingual Content Reviewer',
+  ];
 
-  for (const language of ['Indonesian', 'Tagalog', 'Bengali', 'Swahili', 'Korean']) {
-    const other = scoreJob(job({ title: `${language} Part-Time Linguistic QA Tester (Remote - US Based)`, description: body }), profile, NOW);
-    assert.ok(other.match < spanish.match, `${language} scored ${other.match}, Spanish ${spanish.match}`);
-    assert.notEqual(matchTier(other.match), 'strong', `${language} should not read as a strong match (${other.match})`);
+  for (const title of languageRoles) {
+    const posting = job({ title, description: 'Review content for accuracy and consistency. Remote.' });
+    for (const [name, scorer, prof] of [['v1', scoreJob, profile], ['v2', scoreJobV2, profileV2]]) {
+      const result = scorer(posting, prof, NOW);
+      assert.ok(result.match <= 5, `${name}: "${title}" should be excluded, got ${result.match}`);
+    }
   }
 });
 
-test('roles requiring a language she does not have are pushed down', () => {
-  const spanish = scoreJob(
-    job({ title: 'Bilingual Copy Editor', description: 'Review Spanish marketing copy for accuracy and tone.' }),
+test('a job that merely requires Spanish is pushed down, one where it is a bonus is not', () => {
+  // The distinction that matters: a role built around the language is not for
+  // her, but a role she would want that happens to list Spanish as a nice-to-have
+  // should not be punished for a skill she actually has.
+  const body = 'QA marketing content for accuracy against brand and style guidelines.';
+
+  const requiresIt = scoreJob(
+    job({ title: 'Content QA Specialist', description: `${body} Must be bilingual; fluent in Spanish required.` }),
     profile,
     NOW
   );
-  const hebrew = scoreJob(
-    job({ title: 'Hebrew Freelance Translator & Copy Editor', description: 'Translate and copy edit Hebrew marketing content.' }),
+  const bonus = scoreJob(
+    job({ title: 'Content QA Specialist', description: `${body} Spanish a plus.` }),
     profile,
     NOW
   );
-  assert.ok(spanish.match > hebrew.match, `Spanish ${spanish.match} should beat Hebrew ${hebrew.match}`);
+
+  assert.ok(bonus.match > requiresIt.match, 'a requirement costs, a nice-to-have does not');
+  assert.ok(bonus.match >= 50, `a good role mentioning Spanish in passing stays a good role, got ${bonus.match}`);
+});
+
+test('no model still rewards the language itself', () => {
+  // Removing the promotion matters as much as adding the exclusion: while
+  // Spanish earned points, every language-adjacent posting drifted upward.
+  const v1Signals = JSON.stringify([profile.skills, profile.titles, profile.context]).toLowerCase();
+  assert.ok(!v1Signals.includes('spanish'), 'v1 must not score Spanish as a positive');
+  assert.ok(!v1Signals.includes('bilingual'), 'v1 must not score bilingual as a positive');
+
+  const v2Signals = JSON.stringify([profileV2.capabilities, profileV2.roleFamilies]).toLowerCase();
+  assert.ok(!v2Signals.includes('spanish'), 'v2 must not score Spanish as a positive');
+  assert.ok(!profileV2.roleFamilies.some((f) => f.id === 'localization'), 'v2 must not suggest localisation as a direction');
 });
 
 test('titles on the hard-exclude list are forced to the bottom', () => {

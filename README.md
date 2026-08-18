@@ -255,6 +255,23 @@ the models differ in their caps and in the shape of the title signal, so sharing
 would mean parameterising v1 — and v1 is the live board, which should not move
 because an experiment beside it changed.
 
+### Work she can do but does not want
+
+She is fluent in Spanish and holds a graduate degree in it. She does not want a
+job that is *about* the language, so bilingual, translation and localisation
+work is kept off both boards:
+
+- Titles naming a language are on `excludeTitlePhrases` — a hard exclusion, not
+  a low score.
+- Nothing scores the language as a positive any more. That half matters as much
+  as the exclusion: while Spanish earned points, every language-adjacent posting
+  drifted upward. v1 had a *Localization / bilingual* title group worth 34 and a
+  Spanish skill; v2 had a graduate-Spanish capability and a whole localisation
+  role family. All removed.
+- A posting that *requires* Spanish is penalised even when its title is silent,
+  but one where Spanish is "a plus" is left alone — she has the skill, and a role
+  she would otherwise want should not be punished for mentioning it.
+
 ## How the ranking works
 
 Each posting gets two independent scores.

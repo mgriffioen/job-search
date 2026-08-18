@@ -1,5 +1,5 @@
 {
-  "_readme": "Model v2 — the ability-based matcher, run alongside v1 for comparison. This is an OVERLAY on config/profile.json, not a copy: only the fields that define the matching model live here, and everything else — search terms, engagement, skills, penalties, location, ranking defaults — is inherited. That is deliberate. If the two boards differed in their search terms as well as their scoring, a difference between them would not be attributable to the model. Keep it that way: put shared changes in profile.json, and only model-defining changes here.",
+  "_readme": "Model v2 — the ability-based matcher, run alongside v1 for comparison. This is an OVERLAY on config/profile.json, not a copy: only the fields that define the matching model live here, and everything else — search terms, engagement, skills, penalties, location, ranking defaults — is inherited. That is deliberate. If the two boards differed in their search terms as well as their scoring, a difference between them would not be attributable to the model. Keep it that way: put shared changes in profile.json, and only model-defining changes here. Language-focused work is out of scope on both boards: the Spanish capability and the localisation role family were removed here, and profile.json excludes bilingual/translation titles outright.",
   "_capabilitiesComment": "THE PRIMARY MATCH AXIS — what she can do, independent of what a job is called. Each entry is an ability evidenced by her résumé, and the phrases are how a posting asks for that ability. This is what lets the board find work under titles she would never have searched for; see README > Matching on ability, not title. Weights are additive with gentle diminishing returns, so a posting wanting six of these outranks one wanting two.",
   "capabilities": [
     {
@@ -129,32 +129,6 @@
         "release readiness",
         "qa process",
         "test scripts"
-      ]
-    },
-    {
-      "label": "Spanish at graduate level",
-      "_comment": "MA in Spanish Language & Literature (Honors), doctoral coursework, study abroad in Seville, and three years teaching university Spanish. Far beyond conversational — this is a credential, and localisation QA is the rare role that wants it alongside her QA discipline.",
-      "weight": 10,
-      "phrases": [
-        "spanish",
-        "bilingual",
-        "espanol",
-        "español",
-        "translation",
-        "translator",
-        "localization",
-        "localisation",
-        "multilingual",
-        "language quality",
-        "linguistic",
-        "interpreter",
-        "latin american",
-        "es-la",
-        "es-us",
-        "native spanish",
-        "fluent in spanish",
-        "spanish-speaking",
-        "transcreation"
       ]
     },
     {
@@ -407,43 +381,6 @@
       ]
     },
     {
-      "id": "localization",
-      "label": "Localization & bilingual quality",
-      "why": "A master's in Spanish plus a decade of QA is an unusual pair. Localization QA and translation review want both at once, and most applicants have only one.",
-      "queries": [
-        "localization specialist",
-        "localization qa",
-        "translation reviewer",
-        "bilingual content specialist",
-        "spanish content specialist",
-        "language quality specialist"
-      ],
-      "titles": [
-        "localization specialist",
-        "localization qa",
-        "localization project manager",
-        "localization coordinator",
-        "translation reviewer",
-        "translation quality",
-        "linguistic qa",
-        "linguistic reviewer",
-        "language quality",
-        "bilingual specialist",
-        "bilingual content",
-        "spanish content",
-        "spanish reviewer",
-        "spanish translator",
-        "transcreation",
-        "localization",
-        "localisation",
-        "localization project coordinator",
-        "translation",
-        "translation project",
-        "bilingual",
-        "spanish"
-      ]
-    },
-    {
       "id": "compliance-review",
       "label": "Compliance & document review",
       "why": "You supervised a teller line while ensuring compliance with federal banking regulations. Checking documents against rules, at volume, without missing things, is a career of its own — and the QA habit transfers directly.",
@@ -589,9 +526,7 @@
     }
   ],
   "_titlesComment": "v2 moves some title groups into roleFamilies so they are presented as new directions with a rationale rather than as business as usual. Expressed as edits to v1's groups rather than a replacement list, so search terms added to v1 keep working here.",
-  "dropTitleGroups": [
-    "Localization / bilingual"
-  ],
+  "dropTitleGroups": [],
   "overrideTitlePhrases": {
     "Adjacent detail-work": [
       "content moderator",
