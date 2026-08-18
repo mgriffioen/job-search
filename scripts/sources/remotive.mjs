@@ -16,8 +16,8 @@ export const enabled = true;
 export async function fetchJobs({ profile, warn }) {
   const jobs = [];
   // Unmetered but rate-limited, so a fixed number of terms per run — rotated,
-  // because the list now runs well past 16 and a plain slice would mean the
-  // adjacent role families were never searched here at all.
+  // because the list runs well past 16 and a plain slice would mean the terms
+  // at the bottom were never searched here at all.
   const queries = selectRotating(profile.search.queries, 16);
 
   for (const query of queries) {

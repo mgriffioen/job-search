@@ -1,6 +1,6 @@
 {
-  "generatedAt": "2026-08-18T20:09:41.667Z",
-  "durationMs": 27899,
+  "generatedAt": "2026-08-18T16:46:31.483Z",
+  "durationMs": 43078,
   "candidate": {
     "name": "Emily Griffioen",
     "headline": "QA Specialist — HTML email & digital marketing content",
@@ -19,37 +19,31 @@
     "bullseyeTitleFloor": 72,
     "bullseyeTitleWeight": 45,
     "_unnamedEmployerComment": "Reposting sites list themselves as the employer, so you cannot tell who is actually hiring. Those postings still appear, but sort lower by this fraction. Set to 0 to treat them like any other listing.",
-    "unnamedEmployerPenalty": 0.25,
-    "_discoveryComment": "Controls the 'new directions' feature — roles outside her current title. A posting whose title names a roleFamily always qualifies. A posting with no recognisable title must instead evidence discoveryMinCapabilities distinct abilities, which is what keeps keyword coincidences out. discoveryFloor lifts these clear of the 'possible' band so they are actually seen; incumbentTitleWeight is how core an existing title must be to outrank a new-direction label, and roleFamilyTitleWeight is what a family title is worth on its own.",
-    "discoveryMinCapabilities": 5,
-    "discoveryFloor": 52,
-    "incumbentTitleWeight": 38,
-    "roleFamilyTitleWeight": 30
+    "unnamedEmployerPenalty": 0.25
   },
   "filters": {
     "maxAgeDays": 45,
     "minMatchScore": 20
   },
   "counts": {
-    "fetched": 1857,
-    "unique": 1301,
-    "published": 677,
+    "fetched": 1744,
+    "unique": 1254,
+    "published": 189,
     "dropped": {
-      "location": 359,
+      "location": 368,
       "stale": 16,
-      "lowMatch": 242,
-      "excluded": 7,
-      "blockedDomain": 0
+      "lowMatch": 674,
+      "excluded": 6,
+      "blockedDomain": 1
     }
   },
   "tiers": {
-    "strong": 44,
-    "good": 216,
-    "possible": 249,
-    "stretch": 168
+    "strong": 1,
+    "good": 43,
+    "possible": 52,
+    "stretch": 93
   },
-  "freshLast48h": 230,
-  "discoveries": 165,
+  "freshLast48h": 78,
   "sources": [
     {
       "id": "companyboards",
@@ -63,34 +57,23 @@
       "id": "jsearch",
       "label": "Google Jobs",
       "status": "ok",
-      "fetched": 0,
+      "fetched": 14,
       "warnings": [],
-      "quota": null,
-      "budget": {
-        "allowed": 0,
-        "spent": 0,
-        "reserve": 12,
-        "reason": "not a scheduled run — holding the metered quota for the next one"
-      },
-      "ms": 0
+      "ms": 22869
     },
     {
       "id": "adzuna",
       "label": "Adzuna",
       "status": "ok",
-      "fetched": 242,
+      "fetched": 223,
       "warnings": [
-        "michigan-remote \"production editor\": 0 results (Adzuna reports 0 total matches)",
-        "michigan-remote \"content quality\": 0 results (Adzuna reports 0 total matches)",
-        "michigan-remote \"campaign operations\": 0 results (Adzuna reports 0 total matches)",
-        "michigan-remote \"digital production\": 0 results (Adzuna reports 0 total matches)",
         "michigan-remote \"proofreader\": 0 results (Adzuna reports 0 total matches)",
         "michigan-remote \"copy editor\": 0 results (Adzuna reports 0 total matches)",
         "michigan-remote \"marketing coordinator\": 0 results (Adzuna reports 0 total matches)",
         "michigan-remote \"content specialist\": 0 results (Adzuna reports 0 total matches)",
         "michigan-remote \"email specialist\": 0 results (Adzuna reports 0 total matches)"
       ],
-      "ms": 8066
+      "ms": 5077
     },
     {
       "id": "jooble",
@@ -98,7 +81,7 @@
       "status": "ok",
       "fetched": 80,
       "warnings": [],
-      "ms": 1068
+      "ms": 1163
     },
     {
       "id": "remotive",
@@ -106,17 +89,17 @@
       "status": "ok",
       "fetched": 272,
       "warnings": [],
-      "ms": 921
+      "ms": 494
     },
     {
       "id": "weworkremotely",
       "label": "We Work Remotely",
       "status": "ok",
-      "fetched": 363,
+      "fetched": 362,
       "warnings": [
         "remote-marketing-jobs.rss: HTTP 301 Moved Permanently"
       ],
-      "ms": 3732
+      "ms": 4491
     },
     {
       "id": "himalayas",
@@ -124,15 +107,15 @@
       "status": "ok",
       "fetched": 240,
       "warnings": [],
-      "ms": 690
+      "ms": 403
     },
     {
       "id": "jobicy",
       "label": "Jobicy",
       "status": "ok",
-      "fetched": 334,
+      "fetched": 226,
       "warnings": [],
-      "ms": 8549
+      "ms": 5002
     },
     {
       "id": "remoteok",
@@ -140,7 +123,7 @@
       "status": "ok",
       "fetched": 100,
       "warnings": [],
-      "ms": 663
+      "ms": 748
     },
     {
       "id": "workingnomads",
@@ -148,7 +131,7 @@
       "status": "ok",
       "fetched": 51,
       "warnings": [],
-      "ms": 873
+      "ms": 881
     },
     {
       "id": "arbeitnow",
@@ -156,7 +139,7 @@
       "status": "ok",
       "fetched": 176,
       "warnings": [],
-      "ms": 272
+      "ms": 214
     }
   ]
 }

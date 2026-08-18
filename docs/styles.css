@@ -667,31 +667,3 @@ textarea { resize: vertical; }
 @media (prefers-reduced-motion: reduce) {
   * { transition: none !important; animation: none !important; }
 }
-
-
-/* ---------------------------------------------------------------
-   New directions — roles outside her current job title
-   --------------------------------------------------------------- */
-
-/* Deliberately quiet rather than alarming: these are suggestions to weigh, not
-   warnings, and they sit beside listings she already recognises. Uses the
-   existing accent tokens so it follows light and dark themes automatically. */
-.card__newdir {
-  margin: 0 0 10px;
-  padding: .55rem .7rem;
-  border-left: 3px solid var(--accent);
-  border-radius: 0 6px 6px 0;
-  background: var(--accent-soft);
-  color: var(--text);
-  font-size: .86rem;
-  line-height: 1.45;
-}
-
-.card__newdir strong { font-weight: 650; color: var(--accent-text); }
-
-.chip--newdir {
-  background: var(--accent-soft);
-  color: var(--accent-text);
-  border-color: transparent;
-  font-weight: 650;
-}

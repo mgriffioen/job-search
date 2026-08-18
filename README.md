@@ -105,11 +105,10 @@ allowance.
 
 Two places, and both matter:
 
-1. **`search.queries`** — what gets searched. Add the term here.
-2. **The matcher's vocabulary** — a `titles` group if it is her own role under
-   another name, or a `roleFamilies` entry if it is a different field. Skip this
-   and the search finds the postings but they score near nothing, which looks
-   identical to the term not working.
+1. **`search.queries`** — what gets searched.
+2. **A `titles` group** — so the matcher recognises it. Skip this and the search
+   finds the postings but they score near nothing, which looks identical to the
+   term not working.
 
 `broadQueries` is a separate, shorter list for Adzuna and Jobicy, which index the
 whole market and return nothing for a long phrase — keep those terms to two
@@ -228,14 +227,13 @@ rate-limited that time; it does not affect the others.
 
 Each posting gets two independent scores.
 
-**Match (0–100)** — five components, in
+**Match (0–100)** — four components, in
 [`scripts/lib/score.mjs`](scripts/lib/score.mjs):
 
 | Component | Max | What it measures |
 | --- | --- | --- |
-| **Capabilities** | **46** | **What she can do, whatever the job is called** — the primary axis |
-| Title | 22 | The strongest job-title family that matches, plus partial credit for a second |
-| Skills | 22 | Specific tools and platforms found anywhere in the posting, with diminishing returns |
+| Title | 50 | The strongest job-title family that matches, plus partial credit for a second |
+| Skills | 35 | Résumé skills found anywhere in the posting, with diminishing returns per additional hit |
 | Context | 10 | Domain and seniority fit — marketing, mid-level, part-time-friendly, fully remote |
 | Penalties | −38 | Signals this is the wrong kind of role, doubled when they appear in the title |
 
@@ -243,52 +241,6 @@ Diminishing returns matter: a posting that lists thirty tools cannot out-score a
 posting that genuinely describes her job. Penalties are what keep "QA Automation
 Engineer" from ranking alongside "QA Specialist" — they share a title prefix but
 almost nothing else.
-
-### Matching on ability, not title
-
-Titles used to carry more than half the score, which meant the board could only
-really find the job she already had. A posting describing her exact abilities
-under a name she had never searched for lost to any posting with "QA" in it.
-
-So the weighting now follows how a career counsellor reads a posting: what
-someone *can do* carries the score, and the title only corroborates it. Her core
-ability — checking complex material against a standard and finding what is wrong
-with it — is wanted by documentation, training, localisation, compliance,
-accessibility and data-quality teams, none of which advertise for a "QA
-Specialist".
-
-`capabilities` in `config/profile.json` is that inventory, drawn from her résumé
-rather than from job titles — including three things the old profile scored at
-almost nothing:
-
-- a **master's in Spanish** (plus doctoral coursework and three years teaching it
-  at university), not merely "bilingual"
-- **Instructor of Record** experience — curriculum built to course objectives,
-  which is instructional design under another name
-- **ensuring compliance with federal banking regulations** as a lead teller,
-  which is what qualifies her for document and compliance review
-
-### New directions
-
-`roleFamilies` names the adjacent fields her résumé supports — technical writing,
-instructional design, localisation, compliance review, accessibility, content
-operations, data quality, editorial production — each with the search terms that
-find them and, crucially, a `why` explaining the connection.
-
-A posting qualifies as a new direction one of two ways, with different burdens of
-proof. If its **title names a family**, it qualifies outright. If it has **no
-recognisable title at all**, it must evidence `discoveryMinCapabilities` (5)
-distinct abilities — the higher bar is what stops any posting that mentions
-deadlines and records from looking like a career move.
-
-Those listings are badged **New direction** on the board, carry the family's
-explanation on the card, and have their own filter and counter. An unfamiliar job
-title is useless without the reason it is being suggested, so the reason is
-always shown.
-
-Where a title matches both an incumbent role and a family, the more specific name
-wins: *"Localization Project Coordinator"* is a localisation role, not business as
-usual that happens to contain the generic words "project coordinator".
 
 Two rules sit on top of the title component:
 
@@ -303,9 +255,7 @@ Two rules sit on top of the title component:
   full description, so those postings cannot earn the skill points they deserve. A title
   naming one of her exact roles floors the match at `ranking.bullseyeTitleFloor` (72),
   but only when nothing in the posting counts against it — so *"Marketing QA Automation
-  Engineer"* is still held down by the automation penalties. New directions get the same
-  treatment at `ranking.discoveryFloor` (52), so they clear the "possible" band and are
-  actually seen rather than sorting beneath every routine title match.
+  Engineer"* is still held down by the automation penalties.
 
 **Recency (0–100)** — halves every 14 days. A posting with no date is treated as
 three weeks old rather than brand new, so undated listings don't crowd out real
