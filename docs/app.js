@@ -117,6 +117,7 @@ function readFilters() {
     minMatch: Number($('#min-match').value),
     maxAge: Number($('#max-age').value),
     onlyProject: $('#only-project').checked,
+    onlyNewDirections: $('#only-newdir').checked,
     hideHidden: $('#hide-hidden').checked,
     hideApplied: $('#hide-applied').checked,
   };
@@ -144,6 +145,7 @@ function applyFilters(jobs, f) {
     if (!job.employmentTypes.some((t) => f.employment.includes(t))) return false;
     if (f.sources.length && !job.sources.some((s) => f.sources.includes(s))) return false;
     if (f.onlyProject && !job.projectBased) return false;
+    if (f.onlyNewDirections && !job.discovery) return false;
     if (job.match < f.minMatch) return false;
     if (maxAgeActive && (job.ageDays === null || job.ageDays > f.maxAge)) return false;
 
@@ -213,6 +215,11 @@ function renderCard(job) {
   for (const type of job.employmentTypes) {
     if (type !== 'unspecified') chips.append(makeChip(type));
   }
+  if (job.discovery) {
+    const chip = makeChip('New direction', 'newdir');
+    chip.title = 'Outside the job titles she has been searching, but a match on what she can actually do.';
+    chips.append(chip);
+  }
   if (job.projectBased && !job.employmentTypes.includes('contract')) {
     // The employment-type chip already says "contract" when the source labelled
     // it; this covers postings that describe project work without saying so.
@@ -225,6 +232,14 @@ function renderCard(job) {
     chips.append(chip);
   }
   chips.append(makeChip(job.sources.join(' · '), 'source'));
+
+  const newdir = $('[data-newdir]', node);
+  if (job.discovery) {
+    newdir.hidden = false;
+    const lead = document.createElement('strong');
+    lead.textContent = job.family?.label ? `${job.family.label} — why this fits: ` : 'Different title, your skills: ';
+    newdir.append(lead, document.createTextNode(job.family?.why || 'this posting asks for several of your core abilities.'));
+  }
 
   $('[data-excerpt]', node).textContent = job.excerpt || '';
 
@@ -334,6 +349,7 @@ function boldText(text) {
 function updateFilterBadge(f) {
   const active = [];
   if (f.onlyProject) active.push('contract / freelance only');
+  if (f.onlyNewDirections) active.push('new directions only');
   if (f.minMatch > 0) active.push(`match ≥ ${f.minMatch}`);
   if (f.maxAge < 46) active.push(`≤ ${f.maxAge}d old`);
   if (f.scopes.length < FILTERABLE_SCOPES.length) active.push('remote scope');
@@ -657,7 +673,7 @@ function wireEvents() {
 
   $('#reset-filters').addEventListener('click', () => {
     $$('#controls input[type="checkbox"]').forEach((el) => {
-      el.checked = !['hide-applied', 'only-project'].includes(el.id);
+      el.checked = !['hide-applied', 'only-project', 'only-newdir'].includes(el.id);
     });
     $('#min-match').value = 0;
     $('#min-match-out').textContent = '0';
@@ -669,6 +685,19 @@ function wireEvents() {
 
   $('#export-csv').addEventListener('click', exportCsv);
   $('#theme-toggle').addEventListener('click', cycleTheme);
+
+  // A full navigation rather than a live swap: saved/applied/hidden state and
+  // filters are all keyed off the loaded board, and reloading keeps that honest.
+  for (const btn of $$('.boardswitch__btn')) {
+    btn.addEventListener('click', () => {
+      const board = btn.dataset.board;
+      if (board === currentBoard()) return;
+      const url = new URL(location.href);
+      if (board === 'v2') url.searchParams.set('board', 'v2');
+      else url.searchParams.delete('board');
+      location.assign(url.toString());
+    });
+  }
 
   $('#tabs').addEventListener('click', (event) => {
     const tab = event.target.closest('.tab');
@@ -737,11 +766,24 @@ function restorePrefs() {
   if (prefs.sort) $('#sort').value = prefs.sort;
 }
 
+/**
+ * Which matching model is being viewed. Kept in the URL so a board can be
+ * linked, bookmarked and shared, and so a reload does not silently switch it.
+ */
+function currentBoard() {
+  return new URLSearchParams(location.search).get('board') === 'v2' ? 'v2' : 'v1';
+}
+
+function boardDataPath() {
+  return currentBoard() === 'v2' ? 'data/v2' : 'data';
+}
+
 async function loadData() {
   const bust = `?t=${Date.now()}`;
+  const base = boardDataPath();
   const [jobs, meta] = await Promise.all([
-    fetch(`data/jobs.json${bust}`, { cache: 'no-store' }).then((r) => (r.ok ? r.json() : [])),
-    fetch(`data/meta.json${bust}`, { cache: 'no-store' }).then((r) => (r.ok ? r.json() : null)),
+    fetch(`${base}/jobs.json${bust}`, { cache: 'no-store' }).then((r) => (r.ok ? r.json() : [])),
+    fetch(`${base}/meta.json${bust}`, { cache: 'no-store' }).then((r) => (r.ok ? r.json() : null)),
   ]);
   state.jobs = Array.isArray(jobs) ? jobs : [];
   state.meta = meta;
@@ -760,6 +802,22 @@ function renderHeader() {
   $('#updated').textContent = `Updated ${freshness} · ${when.toLocaleString(undefined, { dateStyle: 'medium', timeStyle: 'short' })}`;
 
   $('#statbar').hidden = false;
+
+  // The new-directions tile and filter belong to v2 only; on v1 they would be
+  // controls that silently do nothing.
+  const hasDiscovery = Boolean(meta.discoveries !== undefined && state.jobs.some((j) => j.discovery !== undefined));
+  $('#stat-newdir-tile').hidden = !hasDiscovery;
+  $('#only-newdir-row').hidden = !hasDiscovery;
+  $('#stat-newdir').textContent = String(meta.discoveries ?? 0);
+
+  for (const btn of $$('.boardswitch__btn')) {
+    btn.setAttribute('aria-pressed', String(btn.dataset.board === currentBoard()));
+  }
+  if (meta.model?.label) {
+    $('#tagline').textContent =
+      `${meta.model.label} matching (${meta.model.id}) · ${meta.counts?.published ?? 0} matches — remote, open to Michigan`;
+  }
+
   $('#stat-project').textContent = String(meta.projectBased ?? 0);
   $('#stat-strong').textContent = String(meta.tiers?.strong ?? 0);
   $('#stat-good').textContent = String(meta.tiers?.good ?? 0);
@@ -776,7 +834,18 @@ async function init() {
   } catch (err) {
     $('#updated').textContent = 'Could not load job data.';
     $('#empty').hidden = false;
-    $('#empty').textContent = `Could not load data/jobs.json (${err.message}). If you are opening this file directly, run "npm run serve" instead — browsers block fetch on file:// URLs.`;
+    $('#empty').textContent = `Could not load ${boardDataPath()}/jobs.json (${err.message}). If you are opening this file directly, run "npm run serve" instead — browsers block fetch on file:// URLs.`;
+    return;
+  }
+
+  // The v2 board only exists once a run has produced it; until then say so
+  // plainly rather than showing an empty board that looks broken.
+  if (!state.meta && currentBoard() === 'v2') {
+    $('#updated').textContent = 'v2 board not generated yet.';
+    $('#empty').hidden = false;
+    $('#empty').textContent =
+      'The v2 (ability-based) board has not been generated yet — it appears after the next scheduled run. ' +
+      'Switch back to v1 in the header for the current board.';
     return;
   }
 
