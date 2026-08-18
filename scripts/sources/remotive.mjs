@@ -7,6 +7,7 @@
  */
 
 import { getJson } from '../lib/http.mjs';
+import { selectRotating } from '../lib/rotate.mjs';
 
 export const id = 'remotive';
 export const label = 'Remotive';
@@ -14,8 +15,10 @@ export const enabled = true;
 
 export async function fetchJobs({ profile, warn }) {
   const jobs = [];
-  // Unmetered, so run the whole list rather than a slice of it.
-  const queries = profile.search.queries.slice(0, 16);
+  // Unmetered but rate-limited, so a fixed number of terms per run — rotated,
+  // because the list now runs well past 16 and a plain slice would mean the
+  // adjacent role families were never searched here at all.
+  const queries = selectRotating(profile.search.queries, 16);
 
   for (const query of queries) {
     const url = `https://remotive.com/api/remote-jobs?search=${encodeURIComponent(query)}&limit=60`;

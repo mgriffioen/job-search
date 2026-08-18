@@ -116,6 +116,7 @@ function readFilters() {
     sources: $$('#source-filters input:checked').map((el) => el.value),
     minMatch: Number($('#min-match').value),
     maxAge: Number($('#max-age').value),
+    onlyNewDirections: $('#only-newdir').checked,
     hideHidden: $('#hide-hidden').checked,
     hideApplied: $('#hide-applied').checked,
   };
@@ -142,6 +143,7 @@ function applyFilters(jobs, f) {
     if (FILTERABLE_SCOPES.includes(job.locationScope) && !f.scopes.includes(job.locationScope)) return false;
     if (!job.employmentTypes.some((t) => f.employment.includes(t))) return false;
     if (f.sources.length && !job.sources.some((s) => f.sources.includes(s))) return false;
+    if (f.onlyNewDirections && !job.discovery) return false;
     if (job.match < f.minMatch) return false;
     if (maxAgeActive && (job.ageDays === null || job.ageDays > f.maxAge)) return false;
 
@@ -207,6 +209,11 @@ function renderCard(job) {
 
   const chips = $('[data-chips]', node);
   chips.append(makeChip(TIER_LABEL[job.matchTier], 'tier'));
+  if (job.discovery) {
+    const chip = makeChip('New direction', 'newdir');
+    chip.title = 'Outside the job titles she has been searching, but a match on what she can actually do.';
+    chips.append(chip);
+  }
   chips.append(makeChip(workTypeLabel(job)));
   for (const type of job.employmentTypes) {
     if (type !== 'unspecified') chips.append(makeChip(type));
@@ -218,6 +225,26 @@ function renderCard(job) {
     chips.append(chip);
   }
   chips.append(makeChip(job.sources.join(' · '), 'source'));
+
+  // A role outside her current title says so plainly, and says why — the whole
+  // value of suggesting it is lost if she has to guess why it is in the list.
+  const newdir = $('[data-newdir]', node);
+  if (job.discovery && job.family?.why) {
+    newdir.hidden = false;
+    const lead = document.createElement('strong');
+    lead.textContent = `${job.family.label} — why this fits: `;
+    newdir.append(lead, document.createTextNode(job.family.why));
+  } else if (job.discovery) {
+    newdir.hidden = false;
+    const lead = document.createElement('strong');
+    lead.textContent = 'Different title, your skills: ';
+    newdir.append(
+      lead,
+      document.createTextNode(
+        `this posting asks for ${(job.capabilityLabels || []).slice(0, 3).join(', ').toLowerCase() || 'several of your core abilities'}.`
+      )
+    );
+  }
 
   $('[data-excerpt]', node).textContent = job.excerpt || '';
 
@@ -326,6 +353,7 @@ function boldText(text) {
 
 function updateFilterBadge(f) {
   const active = [];
+  if (f.onlyNewDirections) active.push('new directions only');
   if (f.minMatch > 0) active.push(`match ≥ ${f.minMatch}`);
   if (f.maxAge < 46) active.push(`≤ ${f.maxAge}d old`);
   if (f.scopes.length < FILTERABLE_SCOPES.length) active.push('remote scope');
@@ -648,7 +676,9 @@ function wireEvents() {
   });
 
   $('#reset-filters').addEventListener('click', () => {
-    $$('#controls input[type="checkbox"]').forEach((el) => { el.checked = el.id !== 'hide-applied'; });
+    $$('#controls input[type="checkbox"]').forEach((el) => {
+      el.checked = !['hide-applied', 'only-newdir'].includes(el.id);
+    });
     $('#min-match').value = 0;
     $('#min-match-out').textContent = '0';
     $('#max-age').value = 46;
@@ -677,6 +707,10 @@ function wireEvents() {
       const min = stat.dataset.tierFilter === 'strong' ? 70 : 50;
       $('#min-match').value = String(min);
       $('#min-match-out').textContent = String(min);
+      $('#filters').open = true;
+    }
+    if (stat.dataset.newdirFilter) {
+      $('#only-newdir').checked = true;
       $('#filters').open = true;
     }
     if (stat.dataset.ageFilter) {
@@ -746,6 +780,7 @@ function renderHeader() {
   $('#updated').textContent = `Updated ${freshness} · ${when.toLocaleString(undefined, { dateStyle: 'medium', timeStyle: 'short' })}`;
 
   $('#statbar').hidden = false;
+  $('#stat-newdir').textContent = String(meta.discoveries ?? 0);
   $('#stat-strong').textContent = String(meta.tiers?.strong ?? 0);
   $('#stat-good').textContent = String(meta.tiers?.good ?? 0);
   $('#stat-fresh').textContent = String(meta.freshLast48h ?? 0);
