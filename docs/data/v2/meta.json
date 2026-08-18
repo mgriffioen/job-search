@@ -1,9 +1,9 @@
 {
   "generatedAt": "2026-08-18T23:15:32.310Z",
-  "durationMs": 25743,
+  "durationMs": 28941,
   "model": {
-    "id": "v1",
-    "label": "Title-driven"
+    "id": "v2",
+    "label": "Ability-based"
   },
   "candidate": {
     "name": "Emily Griffioen",
@@ -23,7 +23,11 @@
     "bullseyeTitleFloor": 72,
     "bullseyeTitleWeight": 45,
     "_unnamedEmployerComment": "Reposting sites list themselves as the employer, so you cannot tell who is actually hiring. Those postings still appear, but sort lower by this fraction. Set to 0 to treat them like any other listing.",
-    "unnamedEmployerPenalty": 0.25
+    "unnamedEmployerPenalty": 0.25,
+    "discoveryMinCapabilities": 5,
+    "discoveryFloor": 52,
+    "incumbentTitleWeight": 38,
+    "roleFamilyTitleWeight": 30
   },
   "filters": {
     "maxAgeDays": 45,
@@ -32,24 +36,24 @@
   "counts": {
     "fetched": 1778,
     "unique": 1237,
-    "published": 204,
+    "published": 686,
     "dropped": {
       "location": 321,
       "stale": 13,
-      "lowMatch": 683,
+      "lowMatch": 201,
       "excluded": 16,
       "blockedDomain": 0
     }
   },
   "tiers": {
-    "strong": 0,
-    "good": 22,
-    "possible": 62,
-    "stretch": 120
+    "strong": 62,
+    "good": 234,
+    "possible": 234,
+    "stretch": 156
   },
-  "freshLast48h": 69,
-  "projectBased": 104,
-  "discoveries": 0,
+  "freshLast48h": 263,
+  "projectBased": 273,
+  "discoveries": 158,
   "sources": [
     {
       "id": "companyboards",
