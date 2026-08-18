@@ -70,10 +70,36 @@ labelled *LinkedIn*, both on the card and in the board filter.
 3. Add the key as the `RAPIDAPI_KEY` repository secret
 
 Because the free tier is metered, this source runs a **moving window** of
-`search.queries` rather than the whole list — `search.jsearchQueriesPerRun`
+`search.queries` rather than the whole list — up to `search.jsearchQueriesPerRun`
 (3) per run, advancing each run, so the full keyword list is covered over a
-couple of days at about 180 requests/month. Raise that number if you move to
-a paid plan; every other source runs the full list every time.
+couple of days. Every other source runs the full list every time.
+
+### Staying inside the free quota
+
+RapidAPI bills for every request past the monthly allowance, so
+`jsearchQueriesPerRun` is a **ceiling, not a promise**. Before spending
+anything, each run reads how much quota is left and how long the period still
+has to run, and takes an even share of the remainder:
+
+- **The count comes from RapidAPI, not from us.** Every response carries the
+  meter in its headers; the reading is stored in `docs/data/meta.json` and
+  carried into the next run. Nothing to drift out of sync with the real bill.
+- **A reserve is never spent.** `jsearchQuota.reserve` (12) is the cushion that
+  absorbs unplanned requests — a manual run, an endpoint probe — without any of
+  them costing money. Runs stop dead when only the reserve is left.
+- **Spend early and later runs get less.** Burn the quota in week one and the
+  pacing thins out to one request every few runs rather than stopping outright,
+  so listings keep arriving until the meter resets.
+- **Pushes do not spend quota.** The workflow also runs on pushes that touch
+  `scripts/` or `config/`, which used to cost requests every time a file was
+  edited. JSearch now sits those out (`JSEARCH_ENABLED`); the free boards still
+  refresh, and the next scheduled run picks it back up within twelve hours. Use
+  **Run workflow** on the Actions tab if you need it immediately.
+
+Every run prints where the quota stands in its Actions summary, so you can see
+it without logging into RapidAPI. If you move to a paid plan, raise
+`jsearchQueriesPerRun` and set `jsearchQuota.monthlyLimit` to the new
+allowance.
 
 **[Jooble](https://jooble.org/api/about)** is worth adding alongside it — free
 key on request, broader but patchier, and it also reports which board each

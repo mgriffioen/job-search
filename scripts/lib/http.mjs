@@ -9,7 +9,11 @@ const DEFAULT_UA =
 
 const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
 
-export async function request(url, options = {}) {
+/**
+ * The full response: body plus headers. Metered APIs report what is left of the
+ * quota in the headers, which is worth more than a tally we keep ourselves.
+ */
+export async function requestWithHeaders(url, options = {}) {
   const {
     timeoutMs = 25000,
     retries = 2,
@@ -32,15 +36,17 @@ export async function request(url, options = {}) {
         headers: { 'User-Agent': DEFAULT_UA, Accept: accept, ...headers },
       });
       if (!res.ok) {
-        // 4xx (other than 429) will not get better by retrying.
-        if (res.status < 500 && res.status !== 429) {
-          throw new Error(`HTTP ${res.status} ${res.statusText}`);
-        }
-        throw Object.assign(new Error(`HTTP ${res.status} ${res.statusText}`), {
-          retryable: true,
+        // Carried on the error so a caller metering itself can still read the
+        // quota headers off a 429 — the one response where they matter most.
+        const failure = Object.assign(new Error(`HTTP ${res.status} ${res.statusText}`), {
+          status: res.status,
+          headers: res.headers,
         });
+        // 4xx (other than 429) will not get better by retrying.
+        if (res.status < 500 && res.status !== 429) throw failure;
+        throw Object.assign(failure, { retryable: true });
       }
-      return await res.text();
+      return { body: await res.text(), headers: res.headers, status: res.status };
     } catch (err) {
       lastError = err;
       const retryable = err.retryable || err.name === 'AbortError' || err.name === 'TypeError';
@@ -53,13 +59,27 @@ export async function request(url, options = {}) {
   throw lastError;
 }
 
-export async function getJson(url, options = {}) {
-  const body = await request(url, options);
+export async function request(url, options = {}) {
+  const { body } = await requestWithHeaders(url, options);
+  return body;
+}
+
+function parseJson(body, url) {
   try {
     return JSON.parse(body);
   } catch {
     throw new Error(`Response from ${url} was not valid JSON (got ${body.slice(0, 80)}…)`);
   }
+}
+
+export async function getJson(url, options = {}) {
+  return parseJson(await request(url, options), url);
+}
+
+/** As getJson, but keeps the response headers — see requestWithHeaders. */
+export async function getJsonWithHeaders(url, options = {}) {
+  const { body, headers } = await requestWithHeaders(url, options);
+  return { data: parseJson(body, url), headers };
 }
 
 export async function getText(url, options = {}) {

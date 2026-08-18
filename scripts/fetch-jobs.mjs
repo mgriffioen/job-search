@@ -47,9 +47,24 @@ const ROOT = new URL('../', import.meta.url);
 const CONFIG_DIR = new URL('config/', ROOT);
 const DATA_DIR = new URL('docs/data/', ROOT);
 
+/** Missing or unparseable is not an error here — the first run has neither. */
+async function readJsonIfPresent(url) {
+  try {
+    return JSON.parse(await readFile(url, 'utf8'));
+  } catch {
+    return null;
+  }
+}
+
 async function main() {
   const startedAt = new Date();
   const profile = JSON.parse(await readFile(new URL('profile.json', CONFIG_DIR), 'utf8'));
+
+  // The last run's meta.json is the only state that survives between runs, and
+  // it is committed with every update. A metered source reads its own previous
+  // report from it to know what quota it has left before spending anything.
+  const previousMeta = await readJsonIfPresent(new URL('meta.json', DATA_DIR));
+  const previousReports = new Map((previousMeta?.sources ?? []).map((report) => [report.id, report]));
 
   const raw = [];
   const sourceReports = [];
@@ -77,7 +92,15 @@ async function main() {
 
     const t0 = Date.now();
     try {
-      const rows = await source.fetchJobs({ profile, configDir: CONFIG_DIR, warn });
+      const rows = await source.fetchJobs({
+        profile,
+        configDir: CONFIG_DIR,
+        warn,
+        previous: previousReports.get(source.id) ?? null,
+        // Lets a source add its own fields to meta.json — the quota reading a
+        // metered source needs to hand forward to the next run.
+        record: (patch) => Object.assign(report, patch),
+      });
       for (const row of rows) {
         const job = normalizeJob(row, { source: source.id, sourceLabel: source.label });
         if (job) raw.push(job);
@@ -228,6 +251,24 @@ async function writeStepSummary(meta, jobs) {
       );
     }
     lines.push('');
+  }
+
+  // Metered sources report where they stand, so the quota is visible here on
+  // every run instead of only in a RapidAPI warning email once it is too late.
+  for (const source of meta.sources.filter((s) => s.quota || s.budget)) {
+    const used = typeof source.quota?.limit === 'number' && typeof source.quota?.remaining === 'number'
+      ? `**${source.quota.limit - source.quota.remaining} of ${source.quota.limit}** used this period`
+      : 'usage not reported';
+    const resetsIn = source.quota?.resetAt ? Date.parse(source.quota.resetAt) - Date.now() : NaN;
+    const resets = Number.isFinite(resetsIn) ? `, resets in ${Math.max(0, Math.round(resetsIn / 86400000))} days` : '';
+    lines.push(
+      `### ${source.label} API quota`,
+      '',
+      `${used}${resets} — spent ${source.budget?.spent ?? 0} of an allowed ${source.budget?.allowed ?? 0} this run.`,
+      '',
+      `_${source.budget?.reason ?? ''}_`,
+      ''
+    );
   }
 
   const failed = meta.sources.filter((s) => s.status === 'error');

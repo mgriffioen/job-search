@@ -44,6 +44,13 @@
     ],
     "_jsearchComment": "JSearch is metered on the free tier, so it runs a rotating window of the query list rather than all of it, cycling through everything over a few runs.",
     "jsearchQueriesPerRun": 3,
+    "_jsearchQuotaComment": "RapidAPI bills for every request past the monthly quota, so jsearchQueriesPerRun is a ceiling, not a promise: each run takes an even share of what the quota has left across the runs the period still has room for, and never touches the reserve. monthlyLimit and periodDays are only fallbacks for the first run — after that the real figures come from RapidAPI's response headers. Raise reserve if a run is ever billed anyway; lower it to trade cushion for coverage.",
+    "jsearchQuota": {
+      "monthlyLimit": 200,
+      "reserve": 12,
+      "runsPerDay": 2,
+      "periodDays": 31
+    },
     "_blockedDomainsComment": "Sites whose postings are not worth clicking — the link does not lead to the job, or the listing is lead-generation rather than a real vacancy. This cannot be detected automatically without following every link, so add a domain here whenever you hit one. Matching covers subdomains.",
     "blockedDomains": ["mysmartpros.com"],
     "maxAgeDays": 45,
