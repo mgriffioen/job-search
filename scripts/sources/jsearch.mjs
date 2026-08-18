@@ -7,15 +7,18 @@
  * in `job_publisher`. That publisher name is carried through to the card and
  * the board filter, so a LinkedIn posting shows up labelled LinkedIn.
  *
- * Free tier is roughly 200 requests/month, which is why this adapter is
- * deliberately frugal: one request per keyword per run, twice a day.
+ * Free tier is roughly 200 requests/month and RapidAPI bills for every request
+ * past it, so this adapter meters itself. Each run takes an even share of what
+ * the quota has left over the runs the period still has room for, and keeps a
+ * reserve back that nothing is allowed to touch — see scripts/lib/quota.mjs.
  *
  *   1. Sign up at https://rapidapi.com/letscrape-6bRBa3QguO5/api/jsearch
  *   2. Subscribe to the Basic (free) plan — the key alone is not enough
  *   3. Add the key as the RAPIDAPI_KEY repository secret
  */
 
-import { getJson } from '../lib/http.mjs';
+import { getJsonWithHeaders } from '../lib/http.mjs';
+import { describeQuota, planRunBudget, readQuotaHeaders, runIndex } from '../lib/quota.mjs';
 
 export const id = 'jsearch';
 export const label = 'Google Jobs';
@@ -31,17 +34,20 @@ export const skipReason = 'RAPIDAPI_KEY not set — see README (this is what bri
  * Every query costs a request against a ~200/month quota, so running the whole
  * keyword list twice a day is not affordable. Instead each run takes a moving
  * window of it, advancing every run, so the full list is covered over a couple
- * of days at a fixed cost per run.
+ * of days rather than the tail never running at all.
+ *
+ * `perRun` is whatever the quota budget allowed this run, so the window narrows
+ * as the quota tightens; the rotation keeps coverage broad either way.
  *
  * The window is derived from the clock rather than stored state, so it keeps
  * advancing without anything to persist between runs.
  */
-export function selectQueries(all, perRun, now = new Date()) {
+export function selectQueries(all, perRun, now = new Date(), runsPerDay = 2) {
   if (!all.length || perRun <= 0) return [];
   if (perRun >= all.length) return [...all];
 
-  const runIndex = Math.floor(now.getTime() / (12 * 3600 * 1000)); // one per scheduled run
-  const start = ((runIndex * perRun) % all.length + all.length) % all.length;
+  const index = runIndex(now, runsPerDay);
+  const start = ((index * perRun) % all.length + all.length) % all.length;
   return [...all, ...all].slice(start, start + perRun);
 }
 
@@ -84,8 +90,9 @@ export function explain(err) {
       'for an app subscribed to JSearch.';
   }
   if (message.includes('429')) {
-    return 'RapidAPI monthly quota exhausted (429) — reduce QUERIES in scripts/sources/jsearch.mjs ' +
-      'or upgrade the plan.';
+    return 'RapidAPI monthly quota exhausted, or its per-second rate limit was hit (429). ' +
+      'The budget in scripts/lib/quota.mjs paces against the quota headers, so an exhausted quota ' +
+      'here means search.jsearchQuota.reserve in config/profile.json is too small a cushion — raise it.';
   }
   return message;
 }
@@ -103,11 +110,15 @@ function searchUrl(path, query) {
 }
 
 function call(path, query) {
-  return getJson(searchUrl(path, query), {
+  return getJsonWithHeaders(searchUrl(path, query), {
     headers: {
       'X-RapidAPI-Key': process.env.RAPIDAPI_KEY,
       'X-RapidAPI-Host': 'jsearch.p.rapidapi.com',
     },
+    // Every attempt is a request the plan may be billed for, so a failed call
+    // is not retried here: the rotation brings the query back next run, twelve
+    // hours later, at no cost. Other sources are free and still retry.
+    retries: 0,
   });
 }
 
@@ -142,18 +153,85 @@ export function mapJob(job) {
   };
 }
 
-export async function fetchJobs({ profile, warn }) {
+/**
+ * Wraps a call so the meter is read from every response, success or failure —
+ * a 429 carries the most important reading of all, and a run that ends without
+ * updating the meter would leave the next run pacing off stale numbers.
+ */
+async function meteredCall(path, query, state) {
+  state.spent += 1;
+  try {
+    const { data, headers } = await call(path, query);
+    state.quota = readQuotaHeaders(headers) ?? state.quota;
+    return data;
+  } catch (err) {
+    state.quota = readQuotaHeaders(err?.headers) ?? state.quota;
+    throw err;
+  }
+}
+
+/** True once the reserve is all that is left — the hard stop, mid-run. */
+function reserveReached(state, reserve) {
+  return typeof state.quota?.remaining === 'number' && state.quota.remaining - reserve <= 0;
+}
+
+export async function fetchJobs({ profile, warn, previous, record = () => {} }) {
   const jobs = [];
   let path = null;
 
-  const queries = selectQueries(profile.search.queries, profile.search.jsearchQueriesPerRun ?? 3);
+  const settings = profile.search.jsearchQuota ?? {};
+  const reserve = settings.reserve ?? 0;
+  const runsPerDay = settings.runsPerDay ?? 2;
+  const maxPerRun = profile.search.jsearchQueriesPerRun ?? 3;
+
+  // The previous run's reading, carried in meta.json. The decision has to be
+  // made before the first request, which is the one moment no fresh reading of
+  // our own exists.
+  const state = { quota: previous?.quota ?? null, spent: 0 };
+
+  // JSEARCH_ENABLED=false spends nothing without pretending the source is
+  // unconfigured. The workflow sets it on push-triggered runs: editing a script
+  // should not cost requests from a metered quota, and the next scheduled run
+  // is at most twelve hours away.
+  const budget = process.env.JSEARCH_ENABLED === 'false'
+    ? { allowed: 0, remaining: state.quota?.remaining ?? null, reason: 'not a scheduled run — holding the metered quota for the next one' }
+    : planRunBudget(state.quota, {
+      maxPerRun,
+      reserve,
+      runsPerDay,
+      fallbackLimit: settings.monthlyLimit ?? null,
+      periodDays: settings.periodDays ?? 31,
+    });
+
+  const report = () => record({
+    quota: state.quota,
+    budget: { allowed: budget.allowed, spent: state.spent, reserve, reason: budget.reason },
+  });
+
+  if (budget.allowed <= 0) {
+    // Not a warning: declining to spend is this source working as designed, and
+    // flagging it red on the site would misreport a healthy run.
+    console.log(`  · ${label}: no requests this run — ${budget.reason}`);
+    report();
+    return jobs;
+  }
+
+  const queries = selectQueries(profile.search.queries, budget.allowed, new Date(), runsPerDay);
+  console.log(`  · ${label}: budget ${budget.allowed}/${maxPerRun} request(s) — ${budget.reason}`);
 
   for (const query of queries) {
+    if (reserveReached(state, reserve)) {
+      // Not a warning: stopping here is the budget working, and flagging it on
+      // the site would report a healthy run as a broken board.
+      console.log(`  · ${label}: stopping after ${state.spent} request(s) — ${describeQuota(state.quota)}, holding the ${reserve}-request reserve`);
+      break;
+    }
+
     let payload;
 
     if (path) {
       try {
-        payload = await call(path, query);
+        payload = await meteredCall(path, query, state);
       } catch (err) {
         warn(`"${query}": ${explain(err)}`);
         continue;
@@ -161,8 +239,11 @@ export async function fetchJobs({ profile, warn }) {
     } else {
       const failures = [];
       for (const candidate of CANDIDATE_PATHS) {
+        // Probing spends real requests, so it stops at the reserve like
+        // anything else rather than being treated as overhead that is free.
+        if (reserveReached(state, reserve)) break;
         try {
-          payload = await call(candidate, query);
+          payload = await meteredCall(candidate, query, state);
           path = candidate;
           break;
         } catch (err) {
@@ -174,6 +255,7 @@ export async function fetchJobs({ profile, warn }) {
         // Nothing will work this run; report every path tried and stop
         // rather than spending the quota on three more doomed attempts.
         warn(`No endpoint responded. Tried ${failures.join(', ')}. ${explain(new Error(failures[0] || ''))}`);
+        report();
         return jobs;
       }
 
@@ -198,5 +280,7 @@ export async function fetchJobs({ profile, warn }) {
     jobs.push(...usable);
   }
 
+  console.log(`  · ${label}: spent ${state.spent} request(s) — ${describeQuota(state.quota)}`);
+  report();
   return jobs;
 }

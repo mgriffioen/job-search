@@ -89,6 +89,12 @@ jobs:
           ADZUNA_APP_KEY: ${{ secrets.ADZUNA_APP_KEY }}
           RAPIDAPI_KEY: ${{ secrets.RAPIDAPI_KEY }}
           JOOBLE_API_KEY: ${{ secrets.JOOBLE_API_KEY }}
+          # JSearch is the one metered source, and RapidAPI bills for every
+          # request past the monthly quota. A push that edits a script should
+          # not cost listings quota: the free boards still refresh, and the
+          # next scheduled run picks JSearch back up within twelve hours.
+          # Run it by hand from the Actions tab if a push needs it immediately.
+          JSEARCH_ENABLED: ${{ github.event_name != 'push' }}
         run: npm run fetch
 
       - name: Commit updated listings

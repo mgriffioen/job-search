@@ -8,6 +8,7 @@ import { scoreJob, matchTier, recencyScore } from '../scripts/lib/score.mjs';
 import { normalizeJob, dedupeJobs, dedupeKey, isSameOrganisation, hostOf } from '../scripts/lib/normalize.mjs';
 import { parseRssItems } from '../scripts/lib/xml.mjs';
 import { explain as explainJsearch, extractJobs, mapJob as mapJsearchJob, selectQueries } from '../scripts/sources/jsearch.mjs';
+import { planRunBudget, readQuotaHeaders, describeQuota } from '../scripts/lib/quota.mjs';
 
 const profile = JSON.parse(await readFile(new URL('../config/profile.json', import.meta.url), 'utf8'));
 const NOW = new Date('2026-07-27T12:00:00Z');
@@ -317,6 +318,104 @@ test('JSearch rotates through the query list across runs at a fixed cost', () =>
 
   assert.deepEqual(selectQueries(all, 99), all, 'a generous budget just runs everything');
   assert.deepEqual(selectQueries([], 3), []);
+});
+
+test('the JSearch budget spreads what is left over the runs the period has left', () => {
+  const now = new Date('2026-08-18T00:00:00Z');
+  const plan = (remaining, resetDays) =>
+    planRunBudget(
+      { limit: 200, remaining, resetAt: new Date(now.getTime() + resetDays * 86400000).toISOString() },
+      { maxPerRun: 3, reserve: 12, runsPerDay: 2, now }
+    );
+
+  // Early in a period there is room for the full per-run allowance. Checked as
+  // an average, because the pacing carries fractions across runs — any single
+  // run may be one under while the rate over the period is what matters.
+  const fresh = [];
+  for (let i = 0; i < 20; i += 1) {
+    fresh.push(
+      planRunBudget({ limit: 200, remaining: 190, resetAt: '2026-09-17T00:00:00Z' }, {
+        maxPerRun: 3,
+        reserve: 12,
+        runsPerDay: 2,
+        now: new Date(now.getTime() + i * 12 * 3600000),
+      }).allowed
+    );
+  }
+  const rate = fresh.reduce((a, b) => a + b, 0) / fresh.length;
+  assert.ok(rate > 2.5, `a fresh period runs near full rate, got ${rate}/run`);
+  assert.ok(Math.max(...fresh) <= 3, 'and never exceeds the configured ceiling');
+
+  // The state that prompted this: 86% spent with nine days still to go. The old
+  // fixed 3-per-run would have spent 54 more against 28 left.
+  const squeezed = plan(28, 9);
+  assert.ok(squeezed.allowed <= 1, 'a nearly-spent quota throttles rather than overrunning');
+  assert.match(squeezed.reason, /\d+ spendable/);
+
+  // The reserve is untouchable, so the last requests never become billed ones.
+  assert.equal(plan(12, 5).allowed, 0, 'stops at the reserve');
+  assert.equal(plan(3, 5).allowed, 0, 'never spends below the reserve');
+  assert.match(plan(3, 5).reason, /reserve/);
+});
+
+test('the JSearch budget never plans more than the quota can pay for', () => {
+  // Property check across a period: whatever the pacing decides, run by run,
+  // total spend has to stay inside the quota. This is the guarantee that keeps
+  // RapidAPI from billing for overage, so it is checked by simulation rather
+  // than by trusting the arithmetic.
+  const LIMIT = 200;
+  const RESERVE = 12;
+  const periodStart = Date.parse('2026-09-01T00:00:00Z');
+  const resetAt = new Date(periodStart + 31 * 86400000).toISOString();
+
+  let remaining = LIMIT;
+  let spent = 0;
+
+  for (let run = 0; run < 31 * 2; run += 1) {
+    const now = new Date(periodStart + run * 12 * 3600000);
+    const { allowed } = planRunBudget({ limit: LIMIT, remaining, resetAt }, {
+      maxPerRun: 3,
+      reserve: RESERVE,
+      runsPerDay: 2,
+      now,
+    });
+    spent += allowed;
+    remaining -= allowed;
+  }
+
+  assert.ok(spent <= LIMIT - RESERVE, `spent ${spent}, which must stay within ${LIMIT - RESERVE}`);
+  assert.ok(spent > 100, `spent ${spent} — pacing must not be so timid that the source stops being useful`);
+});
+
+test('a quota reading from a finished period is treated as rolled over', () => {
+  const now = new Date('2026-09-05T00:00:00Z');
+  const stale = { limit: 200, remaining: 4, resetAt: '2026-09-01T00:00:00Z' };
+
+  const plan = planRunBudget(stale, { maxPerRun: 3, reserve: 12, runsPerDay: 2, now });
+  assert.equal(plan.allowed, 3, 'a new period starts spending again rather than staying throttled forever');
+});
+
+test('with no reading yet, the run proceeds and lets the headers set the pace', () => {
+  const plan = planRunBudget(null, { maxPerRun: 3, reserve: 12 });
+  assert.equal(plan.allowed, 3);
+  assert.match(plan.reason, /no quota reading/);
+});
+
+test('RapidAPI quota headers are read off a response', () => {
+  const now = new Date('2026-08-18T00:00:00Z');
+  const headers = new Headers({
+    'x-ratelimit-requests-limit': '200',
+    'x-ratelimit-requests-remaining': '28',
+    'x-ratelimit-requests-reset': String(9 * 86400),
+  });
+
+  const quota = readQuotaHeaders(headers, now);
+  assert.equal(quota.limit, 200);
+  assert.equal(quota.remaining, 28);
+  assert.equal(quota.resetAt, '2026-08-27T00:00:00.000Z', 'seconds-until-reset becomes an absolute time');
+  assert.match(describeQuota(quota), /172\/200 used/);
+
+  assert.equal(readQuotaHeaders(new Headers({})), null, 'an API that reports no meter is not a meter reading zero');
 });
 
 test('video editing roles do not ride in on the word "editor"', () => {
