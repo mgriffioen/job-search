@@ -589,6 +589,51 @@ test('every role family is usable by the board', () => {
   }
 });
 
+test('every hand-added search term is both searched and recognised', async () => {
+  // Terms added by hand are the easiest thing to half-wire: added to the search
+  // list but invisible to the scorer, so the postings they find arrive and then
+  // score near zero. Each one has to survive the whole round trip.
+  const { expandQueries } = await import('../scripts/fetch-jobs.mjs');
+  const searched = new Set(
+    [...expandQueries(profile), ...profile.search.broadQueries].map((q) => q.toLowerCase())
+  );
+
+  const contentQuality = [
+    'Content Quality Specialist', 'Content QA Specialist', 'Digital Content QA', 'Content Auditor',
+    'Content Integrity Specialist', 'Editorial QA', 'Production Editor', 'Web Content Specialist',
+    'Digital Production Specialist', 'Campaign Operations Specialist',
+  ];
+  const catalog = [
+    'E-commerce Content Specialist', 'Product Content Specialist', 'Catalog Specialist', 'Catalog Quality',
+  ];
+
+  const body =
+    'Review content for accuracy and consistency against brand and style guidelines. Verify links, ' +
+    'assets and formatting. Work to deadlines across multiple concurrent projects and give clear ' +
+    'written feedback to designers.';
+
+  for (const title of [...contentQuality, ...catalog]) {
+    assert.ok(searched.has(title.toLowerCase()), `"${title}" must actually be searched for`);
+
+    const result = scoreJob(job({ title, description: body }), profile, NOW);
+    assert.ok(result.match >= 50, `"${title}" should score as a real match, got ${result.match}`);
+  }
+
+  // Catalog and product-content work is a different field, so it should arrive
+  // explained as a new direction rather than as more of the same.
+  for (const title of catalog) {
+    const result = scoreJob(job({ title, description: body }), profile, NOW);
+    assert.ok(result.discovery, `"${title}" is a new direction, not business as usual`);
+    assert.ok(result.family?.why, `"${title}" must carry the reason it fits`);
+  }
+
+  // Content QA under another name is the job she already does.
+  for (const title of ['Content QA Specialist', 'Editorial QA', 'Digital Content QA']) {
+    const result = scoreJob(job({ title, description: body }), profile, NOW);
+    assert.equal(result.discovery, false, `"${title}" is her own role under another name`);
+  }
+});
+
 test('video editing roles do not ride in on the word "editor"', () => {
   const copyEditor = scoreJob(
     job({ title: 'Copy Editor, Email & Web', description: 'Proofread marketing email copy, AP style, brand voice.' }),

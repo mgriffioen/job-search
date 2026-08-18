@@ -26,8 +26,22 @@
       "proofreader",
       "copy editor",
       "content quality",
+      "content quality specialist",
+      "content qa specialist",
+      "digital content qa",
+      "editorial qa",
+      "content auditor",
+      "content integrity specialist",
+      "digital production specialist",
+      "campaign operations specialist",
+      "web content specialist",
+      "production editor",
       "marketing operations",
-      "digital content"
+      "digital content",
+      "e-commerce content specialist",
+      "product content specialist",
+      "catalog specialist",
+      "catalog quality"
     ],
     "_broadQueriesComment": "Sources that index the whole job market (Adzuna) or filter a small index by tag (Jobicy) return nothing for a hyper-specific phrase like 'lifecycle marketing qa'. They use these broader terms instead. Kept hand-picked and short: each term costs one API call per source per run, so this list does NOT expand with roleFamilies the way search.queries does — only the highest-yield family terms are added by hand.",
     "broadQueries": [
@@ -44,7 +58,15 @@
       "localization specialist",
       "compliance analyst",
       "data quality",
-      "accessibility specialist"
+      "accessibility specialist",
+      "content auditor",
+      "catalog specialist",
+      "product content",
+      "web content",
+      "production editor",
+      "content quality",
+      "campaign operations",
+      "digital production"
     ],
     "_jsearchComment": "JSearch is metered on the free tier, so it runs a rotating window of the query list rather than all of it, cycling through everything over a few runs.",
     "jsearchQueriesPerRun": 3,
@@ -61,7 +83,9 @@
     ],
     "maxAgeDays": 45,
     "minMatchScore": 20,
-    "maxJobsStored": 800
+    "maxJobsStored": 800,
+    "_broadQueriesPerRunComment": "Adzuna and Jobicy spend one API call per broad term per run, so the list rotates: each run takes this many, advancing every run, and the whole list is covered over a few runs at flat cost. Raise only if those APIs' rate limits allow it.",
+    "broadQueriesPerRun": 12
   },
   "location": {
     "_comment": "Remote only. A job qualifies if it is stated remote AND open to candidates in Michigan. On-site and hybrid roles are dropped, as is anything with no positive indication that it is remote. Set remoteOnly to false to also allow on-site/hybrid work within commuting range of the cities listed below.",
@@ -645,7 +669,9 @@
         "catalog specialist",
         "master data specialist",
         "data governance analyst",
-        "product data specialist"
+        "product data specialist",
+        "product content specialist",
+        "catalog quality"
       ],
       "titles": [
         "data quality",
@@ -662,7 +688,14 @@
         "data quality analyst",
         "data quality specialist",
         "catalog analyst",
-        "product information"
+        "product information",
+        "catalog quality",
+        "catalog coordinator",
+        "product content specialist",
+        "product content",
+        "e-commerce content specialist",
+        "ecommerce content specialist",
+        "content operations specialist"
       ]
     },
     {
@@ -721,7 +754,8 @@
           "brand",
           "content",
           "web",
-          "digital"
+          "digital",
+          "editorial"
         ]
       ]
     }
@@ -769,7 +803,16 @@
         "content qa",
         "creative qa",
         "marketing qa",
-        "web qa"
+        "web qa",
+        "editorial qa",
+        "qa editorial",
+        "content auditor",
+        "content integrity",
+        "content integrity specialist",
+        "content quality specialist",
+        "quality auditor",
+        "digital content qa",
+        "content qa specialist"
       ]
     },
     {

@@ -101,6 +101,21 @@ it without logging into RapidAPI. If you move to a paid plan, raise
 `jsearchQueriesPerRun` and set `jsearchQuota.monthlyLimit` to the new
 allowance.
 
+### Adding a search term
+
+Two places, and both matter:
+
+1. **`search.queries`** — what gets searched. Add the term here.
+2. **The matcher's vocabulary** — a `titles` group if it is her own role under
+   another name, or a `roleFamilies` entry if it is a different field. Skip this
+   and the search finds the postings but they score near nothing, which looks
+   identical to the term not working.
+
+`broadQueries` is a separate, shorter list for Adzuna and Jobicy, which index the
+whole market and return nothing for a long phrase — keep those terms to two
+words. It rotates `broadQueriesPerRun` (12) terms per run, so the list can grow
+without the per-run API cost growing with it.
+
 **[Jooble](https://jooble.org/api/about)** is worth adding alongside it — free
 key on request, broader but patchier, and it also reports which board each
 posting came from. Add it as `JOOBLE_API_KEY`. Running both and letting

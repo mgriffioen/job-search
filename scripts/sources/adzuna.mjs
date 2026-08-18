@@ -10,6 +10,7 @@
  */
 
 import { getJson } from '../lib/http.mjs';
+import { selectRotating } from '../lib/rotate.mjs';
 
 export const id = 'adzuna';
 export const label = 'Adzuna';
@@ -34,7 +35,13 @@ export async function fetchJobs({ profile, warn }) {
   const jobs = [];
   // Adzuna indexes the entire job market, so a narrow phrase returns nothing.
   // Broad terms plus the remote-only location gate is the productive pairing.
-  const queries = profile.search.broadQueries || profile.search.queries.slice(0, 6);
+  // Rotated, not truncated: the broad list is longer than one run should
+  // send, because each term costs an API call here, but every term still
+  // gets its turn over the next few runs.
+  const queries = selectRotating(
+    profile.search.broadQueries || profile.search.queries,
+    profile.search.broadQueriesPerRun ?? 12
+  );
   const remoteOnly = profile.location.remoteOnly !== false;
 
   for (const search of SEARCHES) {
