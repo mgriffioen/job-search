@@ -53,7 +53,13 @@
       "content audit",
       "brand compliance audit",
       "freelance content specialist",
-      "contract content specialist"
+      "contract content specialist",
+      "editorial qa specialist",
+      "content editor",
+      "digital content qa specialist",
+      "product content quality specialist",
+      "learning content editor",
+      "assessment editor"
     ],
     "_broadQueriesComment": "Sources that index the whole job market (Adzuna) or filter a small index by tag (Jobicy) return nothing for a hyper-specific phrase like 'lifecycle marketing qa'. They use these broader terms instead; the specific list above is for keyword-search sources that reward precision.",
     "broadQueries": [
@@ -76,7 +82,10 @@
       "freelance qa",
       "contract qa",
       "freelance editor",
-      "content audit"
+      "content audit",
+      "content editor",
+      "assessment editor",
+      "learning content"
     ],
     "_broadQueriesPerRunComment": "Adzuna and Jobicy spend one API call per broad term per run, so the list rotates: each run takes this many, advancing every run, covering the whole list over a few runs at flat cost. This is what makes a longer term list affordable.",
     "broadQueriesPerRun": 12,
@@ -250,7 +259,14 @@
         "digital editor",
         "web editor",
         "newsletter editor",
-        "quality editor"
+        "quality editor",
+        "assessment editor",
+        "learning content editor",
+        "curriculum editor",
+        "instructional editor",
+        "courseware editor",
+        "test development editor",
+        "editorial qa specialist"
       ]
     },
     {

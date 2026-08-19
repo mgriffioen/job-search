@@ -435,6 +435,13 @@ test('every hand-added search term is both searched and recognised', () => {
     'E-commerce Content Specialist', 'Product Content Specialist', 'Catalog Specialist', 'Catalog Quality',
     'Content Integrity Specialist', 'Editorial QA', 'Production Editor', 'Web Content Specialist',
     'Digital Production Specialist', 'Campaign Operations Specialist',
+    // Editorial and educational-editorial titles. "Assessment Editor" matched
+    // nothing at all when it was requested — searching for a title the scorer
+    // cannot recognise returns postings that then score near zero, which looks
+    // exactly like the search not working.
+    'Copy Editor', 'Proofreader', 'Editorial QA Specialist', 'Content Editor',
+    'Digital Content QA Specialist', 'Product Content Quality Specialist',
+    'Learning Content Editor', 'Assessment Editor',
   ];
 
   const body =
