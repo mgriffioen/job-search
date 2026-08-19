@@ -1,6 +1,6 @@
 {
-  "generatedAt": "2026-08-19T18:35:43.293Z",
-  "durationMs": 31662,
+  "generatedAt": "2026-08-19T19:07:31.319Z",
+  "durationMs": 34088,
   "model": {
     "id": "v2",
     "label": "Ability-based"
@@ -35,25 +35,25 @@
   },
   "counts": {
     "fetched": 1825,
-    "unique": 1258,
-    "published": 661,
+    "unique": 1265,
+    "published": 655,
     "dropped": {
-      "location": 334,
+      "location": 344,
       "stale": 12,
-      "lowMatch": 182,
-      "excluded": 69,
+      "lowMatch": 183,
+      "excluded": 71,
       "blockedDomain": 0
     }
   },
   "tiers": {
-    "strong": 62,
-    "good": 230,
-    "possible": 222,
-    "stretch": 147
+    "strong": 60,
+    "good": 218,
+    "possible": 237,
+    "stretch": 140
   },
-  "freshLast48h": 235,
-  "projectBased": 250,
-  "discoveries": 151,
+  "freshLast48h": 228,
+  "projectBased": 248,
+  "discoveries": 147,
   "sources": [
     {
       "id": "companyboards",
@@ -71,17 +71,17 @@
       "warnings": [],
       "quota": {
         "limit": 200,
-        "remaining": 24,
-        "observedAt": "2026-08-19T16:44:47.673Z",
-        "resetAt": "2026-08-27T15:52:25.673Z"
+        "remaining": 23,
+        "observedAt": "2026-08-19T19:07:34.079Z",
+        "resetAt": "2026-08-27T15:52:25.079Z"
       },
       "budget": {
-        "allowed": 0,
-        "spent": 0,
+        "allowed": 1,
+        "spent": 1,
         "reserve": 12,
-        "reason": "not a scheduled run — holding the metered quota for the next one"
+        "reason": "pacing 12 spendable requests across ~16 runs left this period (0.75/run)"
       },
-      "ms": 0
+      "ms": 2754
     },
     {
       "id": "adzuna",
@@ -101,7 +101,7 @@
         "us-remote \"content audit\": 0 results (Adzuna reports 0 total matches)",
         "us-remote \"assessment editor\": 0 results (Adzuna reports 0 total matches)"
       ],
-      "ms": 6718
+      "ms": 7560
     },
     {
       "id": "jooble",
@@ -109,7 +109,7 @@
       "status": "ok",
       "fetched": 80,
       "warnings": [],
-      "ms": 896
+      "ms": 960
     },
     {
       "id": "remotive",
@@ -117,7 +117,7 @@
       "status": "ok",
       "fetched": 272,
       "warnings": [],
-      "ms": 536
+      "ms": 424
     },
     {
       "id": "weworkremotely",
@@ -127,7 +127,7 @@
       "warnings": [
         "remote-marketing-jobs.rss: HTTP 301 Moved Permanently"
       ],
-      "ms": 3990
+      "ms": 4204
     },
     {
       "id": "himalayas",
@@ -135,7 +135,7 @@
       "status": "ok",
       "fetched": 240,
       "warnings": [],
-      "ms": 430
+      "ms": 330
     },
     {
       "id": "jobicy",
@@ -143,7 +143,7 @@
       "status": "ok",
       "fetched": 312,
       "warnings": [],
-      "ms": 11818
+      "ms": 10833
     },
     {
       "id": "remoteok",
@@ -151,7 +151,7 @@
       "status": "ok",
       "fetched": 100,
       "warnings": [],
-      "ms": 974
+      "ms": 774
     },
     {
       "id": "workingnomads",
@@ -159,7 +159,7 @@
       "status": "ok",
       "fetched": 50,
       "warnings": [],
-      "ms": 855
+      "ms": 834
     },
     {
       "id": "arbeitnow",
@@ -167,7 +167,7 @@
       "status": "ok",
       "fetched": 175,
       "warnings": [],
-      "ms": 179
+      "ms": 185
     }
   ]
 }
