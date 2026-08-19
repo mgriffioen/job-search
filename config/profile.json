@@ -53,7 +53,13 @@
       "content audit",
       "brand compliance audit",
       "freelance content specialist",
-      "contract content specialist"
+      "contract content specialist",
+      "editorial qa specialist",
+      "content editor",
+      "digital content qa specialist",
+      "product content quality specialist",
+      "learning content editor",
+      "assessment editor"
     ],
     "_broadQueriesComment": "Sources that index the whole job market (Adzuna) or filter a small index by tag (Jobicy) return nothing for a hyper-specific phrase like 'lifecycle marketing qa'. They use these broader terms instead; the specific list above is for keyword-search sources that reward precision.",
     "broadQueries": [
@@ -76,7 +82,10 @@
       "freelance qa",
       "contract qa",
       "freelance editor",
-      "content audit"
+      "content audit",
+      "content editor",
+      "assessment editor",
+      "learning content"
     ],
     "_broadQueriesPerRunComment": "Adzuna and Jobicy spend one API call per broad term per run, so the list rotates: each run takes this many, advancing every run, covering the whole list over a few runs at flat cost. This is what makes a longer term list affordable.",
     "broadQueriesPerRun": 12,
@@ -250,7 +259,14 @@
         "digital editor",
         "web editor",
         "newsletter editor",
-        "quality editor"
+        "quality editor",
+        "assessment editor",
+        "learning content editor",
+        "curriculum editor",
+        "instructional editor",
+        "courseware editor",
+        "test development editor",
+        "editorial qa specialist"
       ]
     },
     {
@@ -305,21 +321,6 @@
       ]
     },
     {
-      "label": "Localization / bilingual",
-      "weight": 34,
-      "phrases": [
-        "localization qa",
-        "localization specialist",
-        "localization tester",
-        "spanish translator",
-        "spanish reviewer",
-        "bilingual specialist",
-        "linguistic qa",
-        "translation reviewer",
-        "spanish content"
-      ]
-    },
-    {
       "label": "Adjacent detail-work",
       "weight": 22,
       "phrases": [
@@ -356,7 +357,6 @@
     { "label": "Design tools", "weight": 4, "phrases": ["figma", "adobe", "photoshop", "indesign", "illustrator", "sketch", "invision", "creative suite"] },
     { "label": "CMS / web content", "weight": 5, "phrases": ["cms", "content management system", "wordpress", "drupal", "contentful", "sitecore", "adobe experience manager", "aem"] },
     { "label": "Marketing campaigns", "weight": 6, "phrases": ["marketing campaign", "digital campaign", "campaign execution", "campaign management", "a/b test", "ab testing", "split test", "personalization", "dynamic content", "segmentation", "deliverability"] },
-    { "label": "Spanish / bilingual", "weight": 7, "phrases": ["spanish", "bilingual", "translation", "localization", "multilingual"] },
     { "label": "Agency / client work", "weight": 5, "phrases": ["agency", "client brands", "multiple clients", "client-facing", "account team", "creative team"] },
     { "label": "Remote-team communication", "weight": 4, "phrases": ["remote team", "distributed team", "asynchronous", "slack", "written communication", "clear communication", "cross-functional"] },
     { "label": "Teaching / training", "weight": 4, "phrases": ["training", "onboarding", "documentation", "mentoring", "curriculum", "instructional"] },
@@ -397,14 +397,25 @@
     { "label": "Manufacturing/lab QA (different discipline)", "weight": -18, "phrases": ["iso 9001", "iso 13485", "gmp", "haccp", "calipers", "shop floor", "production line", "supplier quality", "clinical trial", "fda submission", "capa", "six sigma black belt", "food safety"] },
     { "label": "Commission-only / high-pressure sales", "weight": -14, "phrases": ["commission only", "commission-only", "uncapped commission", "cold calling", "door to door", "door-to-door", "sales quota", "100% commission"] },
     { "label": "Lead-generation listing, not a real vacancy", "weight": -14, "_comment": "Recruiting-mill and work-from-home-scheme markers. These postings advertise flexible, no-experience work, which is precisely what the engagement signals reward, so without this the spam outranks the real freelance briefs.", "phrases": ["call now", "no experience necessary", "no experience needed", "no experience required", "earn up to", "weekly pay", "daily pay", "start immediately", "sign up today", "unlimited earning", "be your own boss", "apply today and start", "work anytime", "day or night", "computer-savvy", "no resume", "hiring hub"] },
+    { "label": "Job requires working in Spanish", "weight": -20, "_comment": "Matches a stated requirement, not a nice-to-have. A posting saying Spanish is 'a plus' is still a fine role and is left alone; one that requires fluency is a language job under another title.", "phrases": ["fluent in spanish", "spanish fluency", "fluency in spanish", "must be bilingual", "bilingual required", "bilingual candidates", "fully bilingual", "native spanish", "spanish speaking required", "spanish/english", "english/spanish", "spanish language required", "bilingual spanish"] },
     { "label": "Unpaid or internship", "weight": -10, "phrases": ["unpaid", "internship", "intern position", "volunteer position"] },
     { "label": "Video / photo / audio editing (a different craft)", "weight": -14, "phrases": ["video editor", "video editing", "video producer", "videographer", "photo editor", "photo editing", "film editor", "audio editor", "podcast editor", "motion graphics", "premiere pro", "after effects", "davinci resolve", "final cut", "short form video", "short-form video"] },
     { "label": "Requires a language she does not have", "weight": -9, "_comment": "Localization QA roles score well on every other signal, so a language requirement is the only thing separating a fit from a non-fit. Spanish is absent deliberately — she has it, and it counts as a skill.", "phrases": ["hebrew", "mandarin", "cantonese", "japanese", "korean", "german", "french", "portuguese", "arabic", "russian", "italian", "dutch", "polish", "hindi", "urdu", "vietnamese", "tagalog", "filipino", "thai", "turkish", "swedish", "norwegian", "danish", "finnish", "greek", "czech", "hungarian", "romanian", "ukrainian", "indonesian", "bahasa", "malay", "bengali", "punjabi", "tamil", "telugu", "marathi", "gujarati", "persian", "farsi", "swahili", "somali", "amharic", "nepali", "khmer", "burmese", "serbian", "croatian", "bosnian", "slovak", "slovenian", "lithuanian", "latvian", "estonian", "icelandic", "afrikaans", "zulu", "yoruba", "igbo", "hausa", "haitian creole"] }
   ],
 
+  "_excludeTitleComment": "Titles that make the job itself about something she does not want to do. The language entries are deliberate: she is fluent in Spanish and holds a graduate degree in it, but does not want work that is *about* the language, so bilingual, translation and localisation roles are excluded outright rather than merely un-rewarded.",
   "excludeTitlePhrases": [
     "call now",
     "data entry",
+    "bilingual",
+    "spanish",
+    "espanol",
+    "translator",
+    "translation",
+    "localization",
+    "localisation",
+    "interpreter",
+    "multilingual",
     "registered nurse",
     "truck driver",
     "cdl driver",
