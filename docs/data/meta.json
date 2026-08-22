@@ -1,6 +1,6 @@
 {
-  "generatedAt": "2026-08-22T21:54:55.441Z",
-  "durationMs": 22052,
+  "generatedAt": "2026-08-22T21:56:38.766Z",
+  "durationMs": 11990,
   "model": {
     "id": "v1",
     "label": "Title-driven",
@@ -39,13 +39,13 @@
     "minMatchScore": 20
   },
   "counts": {
-    "fetched": 1528,
-    "unique": 1006,
+    "fetched": 1517,
+    "unique": 1005,
     "published": 158,
     "dropped": {
       "location": 304,
       "stale": 11,
-      "lowMatch": 509,
+      "lowMatch": 508,
       "excluded": 24,
       "blockedDomain": 0
     }
@@ -84,9 +84,9 @@
         "allowed": 0,
         "spent": 0,
         "reserve": 12,
-        "reason": "not a scheduled run — holding the metered quota for the next one"
+        "reason": "pacing 8 spendable requests across ~10 runs left this period (0.80/run)"
       },
-      "ms": 1
+      "ms": 0
     },
     {
       "id": "adzuna",
@@ -114,7 +114,7 @@
         "us-remote \"freelance qa\": 0 results (Adzuna reports 0 total matches)",
         "us-remote \"editorial quality\": 0 results (Adzuna reports 0 total matches)"
       ],
-      "ms": 4365
+      "ms": 2293
     },
     {
       "id": "jooble",
@@ -122,7 +122,7 @@
       "status": "ok",
       "fetched": 80,
       "warnings": [],
-      "ms": 1008
+      "ms": 801
     },
     {
       "id": "remotive",
@@ -130,7 +130,7 @@
       "status": "ok",
       "fetched": 320,
       "warnings": [],
-      "ms": 395
+      "ms": 420
     },
     {
       "id": "weworkremotely",
@@ -140,7 +140,7 @@
       "warnings": [
         "remote-marketing-jobs.rss: HTTP 301 Moved Permanently"
       ],
-      "ms": 1721
+      "ms": 1422
     },
     {
       "id": "himalayas",
@@ -148,15 +148,17 @@
       "status": "ok",
       "fetched": 240,
       "warnings": [],
-      "ms": 482
+      "ms": 396
     },
     {
       "id": "jobicy",
       "label": "Jobicy",
       "status": "ok",
-      "fetched": 237,
-      "warnings": [],
-      "ms": 10446
+      "fetched": 226,
+      "warnings": [
+        "?count=50&geo=usa&tag=editorial%20quality: HTTP 429 Too Many Requests"
+      ],
+      "ms": 3319
     },
     {
       "id": "remoteok",
@@ -164,7 +166,7 @@
       "status": "ok",
       "fetched": 100,
       "warnings": [],
-      "ms": 840
+      "ms": 497
     },
     {
       "id": "workingnomads",
@@ -172,7 +174,7 @@
       "status": "ok",
       "fetched": 44,
       "warnings": [],
-      "ms": 760
+      "ms": 732
     },
     {
       "id": "arbeitnow",
@@ -180,7 +182,7 @@
       "status": "ok",
       "fetched": 175,
       "warnings": [],
-      "ms": 132
+      "ms": 133
     }
   ]
 }
