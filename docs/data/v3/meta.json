@@ -1,6 +1,6 @@
 {
-  "generatedAt": "2026-08-22T18:27:01.742Z",
-  "durationMs": 32280,
+  "generatedAt": "2026-08-22T21:54:55.441Z",
+  "durationMs": 31814,
   "model": {
     "id": "v3",
     "label": "Fit profile",
@@ -23,6 +23,20 @@
       "experience": 0.3,
       "qualification": 0.2,
       "lifestyle": 0.15
+    },
+    "workSignalLabels": {
+      "proofreading": "Proofreading and copy editing",
+      "final-review": "Review and sign-off before publication",
+      "accuracy": "Accuracy, verification and discrepancy detection",
+      "standards": "Working to a style guide and brand standards",
+      "audit": "Content audit and validation",
+      "customer-facing-channels": "Customer-facing email, web and campaign content",
+      "product-content": "Product, catalog and e-commerce content",
+      "visual-qa": "Layout, formatting and visual consistency",
+      "detail": "Attention to detail",
+      "collaboration": "Feedback to designers, developers and production teams",
+      "publishing-workflow": "Publishing workflow and production schedule",
+      "learning-content": "Educational, assessment and training content"
     }
   },
   "candidate": {
@@ -50,36 +64,36 @@
     "minMatchScore": 65
   },
   "counts": {
-    "fetched": 1526,
-    "unique": 1032,
-    "published": 114,
+    "fetched": 1528,
+    "unique": 1006,
+    "published": 97,
     "dropped": {
-      "location": 318,
-      "stale": 21,
-      "lowMatch": 554,
-      "excluded": 25,
+      "location": 304,
+      "stale": 22,
+      "lowMatch": 559,
+      "excluded": 24,
       "blockedDomain": 0
     }
   },
   "tiers": {
     "exceptional": 0,
     "strong": 2,
-    "good": 15,
-    "possible": 59,
-    "low": 38
+    "good": 10,
+    "possible": 54,
+    "low": 31
   },
   "verification": {
     "enabled": true,
     "checked": 60,
-    "live": 31,
+    "live": 43,
     "closed": 0,
-    "unknown": 29,
-    "skipped": 54,
-    "ms": 1791
+    "unknown": 17,
+    "skipped": 37,
+    "ms": 3977
   },
-  "freshLast48h": 43,
-  "projectBased": 50,
-  "discoveries": 37,
+  "freshLast48h": 26,
+  "projectBased": 33,
+  "discoveries": 29,
   "sources": [
     {
       "id": "companyboards",
@@ -107,7 +121,7 @@
         "reserve": 12,
         "reason": "not a scheduled run — holding the metered quota for the next one"
       },
-      "ms": 0
+      "ms": 1
     },
     {
       "id": "adzuna",
@@ -135,7 +149,7 @@
         "us-remote \"freelance qa\": 0 results (Adzuna reports 0 total matches)",
         "us-remote \"editorial quality\": 0 results (Adzuna reports 0 total matches)"
       ],
-      "ms": 9132
+      "ms": 4365
     },
     {
       "id": "jooble",
@@ -143,7 +157,7 @@
       "status": "ok",
       "fetched": 80,
       "warnings": [],
-      "ms": 1111
+      "ms": 1008
     },
     {
       "id": "remotive",
@@ -151,17 +165,17 @@
       "status": "ok",
       "fetched": 320,
       "warnings": [],
-      "ms": 541
+      "ms": 395
     },
     {
       "id": "weworkremotely",
       "label": "We Work Remotely",
       "status": "ok",
-      "fetched": 268,
+      "fetched": 267,
       "warnings": [
         "remote-marketing-jobs.rss: HTTP 301 Moved Permanently"
       ],
-      "ms": 1177
+      "ms": 1721
     },
     {
       "id": "himalayas",
@@ -169,15 +183,15 @@
       "status": "ok",
       "fetched": 240,
       "warnings": [],
-      "ms": 341
+      "ms": 482
     },
     {
       "id": "jobicy",
       "label": "Jobicy",
       "status": "ok",
-      "fetched": 234,
+      "fetched": 237,
       "warnings": [],
-      "ms": 8218
+      "ms": 10446
     },
     {
       "id": "remoteok",
@@ -185,7 +199,7 @@
       "status": "ok",
       "fetched": 100,
       "warnings": [],
-      "ms": 509
+      "ms": 840
     },
     {
       "id": "workingnomads",
@@ -193,7 +207,7 @@
       "status": "ok",
       "fetched": 44,
       "warnings": [],
-      "ms": 397
+      "ms": 760
     },
     {
       "id": "arbeitnow",
@@ -201,7 +215,7 @@
       "status": "ok",
       "fetched": 175,
       "warnings": [],
-      "ms": 159
+      "ms": 132
     }
   ]
 }
