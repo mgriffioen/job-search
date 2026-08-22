@@ -136,6 +136,18 @@
         <button type="button" class="btn btn--ghost" id="reset-filters">Reset filters</button>
         <button type="button" class="btn btn--ghost" id="export-csv">Export saved + applied to CSV</button>
       </div>
+
+      <!-- v3 only: what the 👍 / 👎 / 🚫 buttons have taught the ranking so far,
+           and the way to move it to another browser or start again. -->
+      <div class="tuning" id="tuning" hidden>
+        <p class="tuning__summary" id="tuning-summary"></p>
+        <div class="tuning__actions">
+          <button type="button" class="btn btn--ghost" id="export-ratings">Export ratings</button>
+          <label class="btn btn--ghost" for="import-ratings">Import ratings</label>
+          <input type="file" id="import-ratings" accept="application/json" hidden>
+          <button type="button" class="btn btn--ghost" id="reset-ratings">Start ratings again</button>
+        </div>
+      </div>
     </details>
   </form>
 
@@ -169,7 +181,8 @@
   </p>
   <p class="foot__keys">
     Keyboard: <kbd>/</kbd> search · <kbd>j</kbd>/<kbd>k</kbd> move · <kbd>s</kbd> save ·
-    <kbd>a</kbd> applied · <kbd>x</kbd> dismiss · <kbd>Enter</kbd> open
+    <kbd>a</kbd> applied · <kbd>x</kbd> dismiss · <kbd>Enter</kbd> open ·
+    <kbd>1</kbd>/<kbd>2</kbd>/<kbd>3</kbd> 👍/👎/🚫
   </p>
 </footer>
 
@@ -238,6 +251,21 @@
         <button type="button" class="btn btn--ghost" data-action="save">★ Save</button>
         <button type="button" class="btn btn--ghost" data-action="applied">✓ Applied</button>
         <button type="button" class="btn btn--ghost" data-action="hide">Dismiss</button>
+      </div>
+
+      <!-- v3 only: teaches the ranking rather than acting on this one posting.
+           The reason row appears after 👎, because "not for me" says a job was
+           wrong and "too technical" says which part of it was. -->
+      <div class="feedback" data-feedback hidden>
+        <span class="feedback__lead">Tune the ranking:</span>
+        <button type="button" class="vote" data-verdict="up" aria-label="More like this" title="More of this kind of work, higher up the list.">👍 <span>More like this</span></button>
+        <button type="button" class="vote" data-verdict="down" aria-label="Not for me" title="Push work like this down. You can say why.">👎 <span>Not for me</span></button>
+        <button type="button" class="vote vote--stop" data-verdict="wrong" aria-label="Wrong kind of work" title="Hide this and push work like it well down the list.">🚫 <span>Wrong kind of work</span></button>
+      </div>
+
+      <div class="reasons" data-reason-picker hidden>
+        <span class="reasons__lead">Why? <span class="hint">(optional — it makes the lesson more precise)</span></span>
+        <div class="reasons__chips" data-reason-chips></div>
       </div>
 
       <label class="note">

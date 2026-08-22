@@ -1232,6 +1232,12 @@
     "floors": { "core": 78, "priority": 72, "adjacent": 0 }
   },
 
+  "_seniorityComment": "Read off the job title only, and used by the board's 👍/👎 ranking model to make sense of a 'too senior' or 'too junior' rating. Descriptions mention senior stakeholders constantly; the title is what states the level of the job being advertised.",
+  "seniority": {
+    "senior": ["senior", "sr.", "sr", "lead", "principal", "staff", "head of", "director", "vp", "vice president", "manager", "chief", "executive"],
+    "junior": ["junior", "jr.", "jr", "entry level", "entry-level", "associate", "assistant", "coordinator", "apprentice", "trainee", "intern", "graduate"]
+  },
+
   "_discoveryComment": "The spec's instruction to flag unusual opportunities even when the score is lower, because they may reveal a career category she would not have searched. A posting qualifies when its title belongs to an adjacent family, or when it wants enough distinct abilities with no recognisable title at all.",
   "discovery": {
     "minWorkSignals": 6,

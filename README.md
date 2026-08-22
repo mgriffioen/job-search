@@ -198,6 +198,8 @@ Michigan employers (Stryker, Kellanova, Perrigo, Whirlpool, WMU).
 - **Why it matched** on each card shows exactly which phrases earned or lost
   points. If a job is ranked wrong, that panel tells you which keyword to fix in
   `config/profile.json`.
+- **👍 / 👎 / 🚫** under each v3 card tune the order — see *Teaching it what you
+  actually want* below. **Dismiss** just removes one listing and teaches nothing.
 - **★ Save**, **✓ Applied** and **Dismiss** track progress. A notes field opens on
   anything saved or applied — good for contact names and follow-up dates.
 - **Export saved + applied to CSV** produces an application tracker you can open
@@ -345,6 +347,53 @@ automation requirements, or a score read off a two-line snippet.
 `search.minMatchScore` in `config/profile.v3.json` (65) is the single knob for
 that. Six jobs worth applying to beat a hundred vaguely related ones — and v1 is
 still one click away in the header when you want the wide view.
+
+### Teaching it what you actually want — 👍 / 👎 / 🚫
+
+The four axes score a posting against a written specification. The rating
+buttons on each v3 card score it against what she has actually said:
+
+| Button | What it does |
+| --- | --- |
+| 👍 **More like this** | Lifts postings in the same categories |
+| 👎 **Not for me** | Pushes them down, and offers a reason |
+| 🚫 **Wrong kind of work** | Hides this one and pushes its kind well down |
+
+After 👎 a row of reasons appears — *too much writing, too technical, wrong
+industry, too senior, too junior, poor pay, not flexible, other*. It is
+optional, and it is worth using: "not for me" says a posting was wrong, while
+"too technical" says **which part** was wrong, and that is what lets one rating
+generalise correctly instead of quietly marking down the industry and the
+employer for a fault that belonged to neither. A stated reason redirects the
+blame rather than adding to it.
+
+Five rules keep it from doing more harm than good
+([`docs/preferences.mjs`](docs/preferences.mjs)):
+
+- **Ratings move the rank, never the match.** Where a posting sits in the list
+  changes; what the board claims about the fit does not. The bands mean what the
+  specification says they mean, and a card whose position moved says so and says
+  why — *"−6.4 from your ratings — you passed on other e-commerce & product
+  content postings"*. Only **Best overall** is affected; *Highest match* and
+  *Most recent* are asked to sort on one stated axis and are left alone.
+- **It learns categories, not listings.** Each rating stores a snapshot of the
+  posting's features — role family, kinds of work in the description, industry,
+  employer, engagement shape — so the lesson outlives the posting, which will be
+  gone in a fortnight.
+- **It whispers before it speaks.** The inferred half of the model reaches full
+  volume at four ratings. One 👎 is a data point, not a preference.
+- **Nothing gets buried.** A category saturates after three consistent ratings,
+  and the whole model is capped at ±15 rank points — enough to reorder
+  neighbours, never enough to close off a family she has not actually rejected.
+  That cap matters: the point of this board is surfacing work she would not have
+  searched for, and an over-eager learner shuts exactly those doors.
+- **It stays in the browser.** Ratings live in localStorage with the saved and
+  applied lists. **Export ratings** writes a JSON file; **Import ratings** merges
+  one back, which is how they move to another machine — or come back after
+  clearing site data. **Start ratings again** wipes them.
+
+Keyboard: <kbd>1</kbd> 👍, <kbd>2</kbd> 👎, <kbd>3</kbd> 🚫 on the focused card.
+Pressing the same one twice clears the rating.
 
 ### Confirming a posting is still open
 
@@ -517,6 +566,13 @@ v3 ([`config/profile.v3.json`](config/profile.v3.json)):
   `qualification.learnableGaps` with a note saying why it is learnable.
 - **Stale postings hang around** → lower `search.staleAfterDays` (30) or raise
   `search.staleKeepMinMatch` (88).
+- **A whole level of role is wrong** → the 👍 / 👎 / 🚫 buttons handle this
+  without a config change; `seniority` in the v3 profile is only the vocabulary
+  that lets "too senior" and "too junior" recognise a level.
+
+The rating model's own constants — how fast it gains confidence, how far one
+category may move a posting — are at the top of
+[`docs/preferences.mjs`](docs/preferences.mjs), with the reasoning for each.
 
 Phrases are matched on whole words, case-insensitively. Hyphens and slashes are
 treated as spaces, so `copy editing` also matches "copy-editing" and
@@ -551,6 +607,7 @@ scripts/
   lib/                  http, text, xml, location gate, three scorers, normalizer, liveness check
   sources/              one adapter per job board
 docs/                   the site itself (GitHub Pages serves this folder)
+  preferences.mjs       the 👍/👎/🚫 ranking model, shared by the page and the tests
   data/                 v1 jobs.json + meta.json, rewritten by the Action
   data/v2/, data/v3/    the other two boards, from the same fetch
 tests/                  unit tests, no network required
