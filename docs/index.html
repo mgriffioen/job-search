@@ -18,14 +18,15 @@
   <div class="masthead__inner">
     <div class="masthead__title">
       <h1>Emily's Job Board</h1>
-      <p class="masthead__sub" id="tagline">QA · email marketing · editorial — remote roles open to Michigan, full- or part-time</p>
+      <p class="masthead__sub" id="tagline">Content &amp; editorial QA · proofreading · e-commerce content — remote roles open to Michigan</p>
     </div>
     <div class="masthead__meta">
       <!-- Two matching models over the same postings. The choice is in the URL
            so a particular board can be linked or bookmarked. -->
       <div class="boardswitch" role="group" aria-label="Matching model">
-        <button type="button" class="boardswitch__btn" data-board="v1" aria-pressed="true">v1 · title</button>
+        <button type="button" class="boardswitch__btn" data-board="v3" aria-pressed="true">v3 · fit</button>
         <button type="button" class="boardswitch__btn" data-board="v2" aria-pressed="false">v2 · ability</button>
+        <button type="button" class="boardswitch__btn" data-board="v1" aria-pressed="false">v1 · title</button>
       </div>
       <button type="button" class="icon-btn" id="theme-toggle" title="Switch theme" aria-label="Switch theme">◐</button>
       <p class="updated" id="updated">Loading…</p>
@@ -33,13 +34,13 @@
   </div>
 
   <div class="statbar" id="statbar" hidden>
-    <button type="button" class="stat" data-tier-filter="strong">
+    <button type="button" class="stat" id="stat-top-tile" data-tier-filter="strong">
       <span class="stat__num" id="stat-strong">0</span>
-      <span class="stat__label">Strong match</span>
+      <span class="stat__label" id="stat-top-label">Strong match</span>
     </button>
-    <button type="button" class="stat" data-tier-filter="good">
+    <button type="button" class="stat" id="stat-second-tile" data-tier-filter="good">
       <span class="stat__num" id="stat-good">0</span>
-      <span class="stat__label">Good match</span>
+      <span class="stat__label" id="stat-second-label">Good match</span>
     </button>
     <button type="button" class="stat" id="stat-newdir-tile" data-newdir-filter="1" hidden>
       <span class="stat__num" id="stat-newdir">0</span>
@@ -124,6 +125,7 @@
             <input type="range" id="max-age" min="1" max="46" step="1" value="46">
           </label>
           <label><input type="checkbox" id="only-project"> Only contract, freelance or project-based</label>
+          <label id="only-open-row" hidden><input type="checkbox" id="only-open"> Only postings confirmed still open <span class="hint">(v3)</span></label>
           <label id="only-newdir-row" hidden><input type="checkbox" id="only-newdir"> Only roles outside her current title <span class="hint">(v2)</span></label>
           <label><input type="checkbox" id="hide-hidden" checked> Hide dismissed jobs</label>
           <label><input type="checkbox" id="hide-applied"> Hide jobs already applied to</label>
@@ -179,6 +181,7 @@
         <span class="ring__cap">match</span>
       </div>
       <span class="freshness" data-age></span>
+      <span class="rec" data-rec hidden></span>
     </div>
 
     <div class="card__body">
@@ -189,11 +192,41 @@
 
       <ul class="chips" data-chips></ul>
 
+      <!-- v3 only: the four axes the specification scores separately, because
+           one number cannot say whether a job is the wrong work or the right
+           work with a requirement she does not meet. -->
+      <div class="fitbars" data-fitbars hidden></div>
+
       <!-- v2 only: an unfamiliar job title is useless without the reason it is
            being suggested, so the reason travels with it. -->
       <p class="card__newdir" data-newdir hidden></p>
 
+      <!-- v3 only: the plain-English account of why this posting matched. -->
+      <p class="card__why" data-whymatched hidden></p>
+
       <p class="card__excerpt" data-excerpt></p>
+
+      <details class="report" data-report hidden>
+        <summary data-report-summary>Evidence, gaps and cautions</summary>
+        <div class="report__grid">
+          <section class="report__block" data-evidence-block hidden>
+            <h4>Your strongest evidence</h4>
+            <ul data-evidence></ul>
+          </section>
+          <section class="report__block" data-learnable-block hidden>
+            <h4>Learnable gaps</h4>
+            <ul data-learnable></ul>
+          </section>
+          <section class="report__block report__block--warn" data-truegap-block hidden>
+            <h4>True experience gaps</h4>
+            <ul data-truegaps></ul>
+          </section>
+          <section class="report__block report__block--warn" data-watch-block hidden>
+            <h4>Watch out for</h4>
+            <ul data-watchouts></ul>
+          </section>
+        </div>
+      </details>
 
       <details class="why">
         <summary data-why-summary>Why it matched</summary>

@@ -4,6 +4,10 @@ A self-updating job board tuned to one résumé: 10 years of QA on HTML email an
 web content for digital marketing campaigns, plus an editorial and teaching
 background, based in Kalamazoo, Michigan.
 
+The work being looked for is **content and editorial quality**: somebody else
+made it, and her job is to investigate it, find what is wrong, verify it against
+a source of truth, and make sure it is right before it is published.
+
 **Remote roles only**, full-time or part-time. Twice a day a GitHub Action pulls
 postings from every free job API that will talk to it, drops anything that isn't
 remote or isn't open to a Michigan resident, scores what remains against the
@@ -106,9 +110,17 @@ allowance.
 Two places, and both matter:
 
 1. **`search.queries`** — what gets searched.
-2. **A `titles` group** — so the matcher recognises it. Skip this and the search
-   finds the postings but they score near nothing, which looks identical to the
-   term not working.
+2. **A `titles` group** (and, for v3, a `roleFamilies` entry in
+   `config/profile.v3.json`) — so the matcher recognises it. Skip this and the
+   search finds the postings but they score near nothing, which looks identical
+   to the term not working. A test enforces it: every term the two lists name
+   has to clear the publish threshold on a realistic posting.
+
+`search.priorityQueries` is a third, shorter list — the twenty terms worth
+spending a metered request on. JSearch is billed per call and can afford about
+three per run, so it takes them from here rather than from anywhere in the
+seventy-odd specific terms. Put a new term in `queries`; promote it to
+`priorityQueries` only if it is worth displacing something already there.
 
 `broadQueries` is a separate, shorter list for Adzuna and Jobicy, which index the
 whole market and return nothing for a long phrase — keep those terms to two
@@ -223,37 +235,136 @@ rate-limited that time; it does not affect the others.
 
 ---
 
-## Two boards: v1 and v2
+## Three boards: v3, v2 and v1
 
-The board runs **two matching models over the same postings**, switchable in the
-header (`?board=v2` in the URL, so a board can be linked or bookmarked).
+The board runs **three matching models over the same postings**, switchable in
+the header. **v3 is what the site opens on**; `?board=v2` or `?board=v1` in the
+URL selects another, so any board can be linked or bookmarked.
 
-| | v1 — title-driven | v2 — ability-based |
+| | **v3 — fit profile** (default) | v2 — ability-based | v1 — title-driven |
+| --- | --- | --- | --- |
+| What carries the score | What the day involves, and which concepts appear together | What she can do (max 46 of 100) | The job title (max 50 of 95) |
+| Title weight | 22 of 90, corroboration only | 22 | 50 |
+| Reports | Four separate axis scores, a recommendation, evidence, gaps and cautions | One score | One score |
+| Finds | Work she wants, under any title, that she is qualified for | Roles that want her abilities under any name | Roles named like hers |
+| Volume | Deliberately few | Many | Many |
+| Data | `docs/data/v3/` | `docs/data/v2/` | `docs/data/` |
+
+**One fetch feeds all three.** Scoring is pure CPU, so the extra models cost
+nothing at the APIs — which matters, because JSearch is billed per request and
+running the pipeline three times would triple every call.
+
+If a board has not been generated yet — v3 first appears after the run that
+follows its release — the page falls back to v1 and says so in the subtitle
+rather than showing an empty list.
+
+**v2 and v3 are overlays, not copies.** `config/profile.v2.json` and
+`config/profile.v3.json` hold only what defines their matching models. Search
+terms, engagement signals, penalties, the hard title exclusions and the location
+gate are all inherited from `config/profile.json`. That is deliberate — if the
+boards differed in what they searched for as well as how they scored, a
+difference between them would not be attributable to the model. **Put shared
+changes in `profile.json`; put only model-defining changes in the overlays.**
+
+The three scorers are separate files (`scripts/lib/score.mjs`,
+`scripts/lib/score-v2.mjs`, `scripts/lib/score-v3.mjs`) and duplicate some
+helpers. That is also deliberate: the models differ in their axes, their caps and
+the shape of the title signal, so sharing would mean parameterising all three
+into one — and a change meant for one board would silently move the others.
+
+---
+
+## How v3 scores a job
+
+v1 and v2 each answer with one number, which is the wrong shape for the decision
+being made. A posting can be exactly the right work and still demand a
+credential she does not have; another can meet every stated requirement and be a
+copywriting job wearing an editor's title. One number cannot tell those apart.
+
+**v3 scores four axes and shows all of them** ([`scripts/lib/score-v3.mjs`](scripts/lib/score-v3.mjs),
+vocabulary in [`config/profile.v3.json`](config/profile.v3.json)):
+
+| Axis | Weight | What it asks |
 | --- | --- | --- |
-| What carries the score | The job title (max 50 of 95) | What she can do (max 46 of 100) |
-| Title weight | 50 | 22 |
-| Finds | Roles named like hers | Roles that want her abilities under any name |
-| Extras | — | **New direction** badges, role families, the reason each fits |
-| Data | `docs/data/` | `docs/data/v2/` |
+| **Work fit** | 35% | What would she actually spend the day doing? |
+| **Experience fit** | 30% | How much of that has she already done, whatever it was called? |
+| **Qualification fit** | 20% | How closely does she meet what this employer explicitly asks for? |
+| **Lifestyle fit** | 15% | Remote, contract, part-time, flexible, pay stated? |
 
-**One fetch feeds both.** Scoring is pure CPU, so the second model costs nothing
-at the APIs — which matters, because JSearch is billed per request and running
-the pipeline twice would double every call.
+The overall score puts each posting in one of five bands, and each band carries a
+recommendation the card prints as a call to action:
 
-**v2 is an overlay, not a copy.** `config/profile.v2.json` holds only what
-defines its matching model: capabilities, role families, its ranking knobs, and
-the title groups it moves into families. Search terms, engagement signals,
-skills, penalties and the location gate are all inherited from
-`config/profile.json`. That is deliberate — if the two boards differed in what
-they searched for as well as how they scored, a difference between them would
-not be attributable to the model. **Put shared changes in `profile.json`; put
-only model-defining changes in `profile.v2.json`.**
+| Score | Band | Recommendation |
+| --- | --- | --- |
+| 95–100 | Exceptional match | **APPLY ASAP** |
+| 88–94 | Strong match — priority application | **APPLY** |
+| 80–87 | Good match — review carefully | **APPLY** |
+| 70–79 | Possible adjacent opportunity | **CONSIDER** |
+| below 70 | Low priority | **SKIP** |
 
-The two scorers are separate files (`scripts/lib/score.mjs`,
-`scripts/lib/score-v2.mjs`) and duplicate some helpers. That is also deliberate:
-the models differ in their caps and in the shape of the title signal, so sharing
-would mean parameterising v1 — and v1 is the live board, which should not move
-because an experiment beside it changed.
+Six rules do most of the work:
+
+- **Titles corroborate; they do not decide.** A recognised title is worth at most
+  22 of the 90 raw work-fit points. What carries the axis is what the posting
+  says the job involves — and, more than any single concept, which concepts
+  appear **together**. "Proofreading" is a word; *proofreading against brand
+  standards for digital content* is her job. Fourteen such combinations are
+  scored in `combinations`, and they outweigh any exact title match.
+- **Writing is not disqualifying; writing as the job is.** Editing roles rewrite
+  sentences all the time, so the copywriting test is a balance rather than a
+  keyword: count the distinct concepts on each side, and only penalise when
+  creating outweighs reviewing. A title that says *Copywriter* is charged
+  separately, because a title is the strongest statement a posting makes about
+  what the job primarily is.
+- **Technical literacy is a positive; software engineering is not.** Reading HTML
+  and working in a CMS score points. Selenium, CI/CD and test frameworks cost
+  them.
+- **Experience fit is a coverage ratio, not a tally.** Of everything this posting
+  asks for, how much has she done? A tally rewards long postings; a ratio rewards
+  postings whose demands she actually meets. Demands she has *not* performed —
+  medical editing, newsroom reporting, engineering — sit in `experienceGaps` and
+  are the other half of the denominator. That is what separates "she has not held
+  this title" (fine) from "she has not done this work" (not fine).
+- **One learnable tool must not sink a good job.** "AP Style required" costs three
+  points and is reported as a **learnable gap** with a note explaining why it is
+  learnable. A law degree costs twenty-six and is reported as a **true gap**. Any
+  true gap also caps the recommendation at CONSIDER, however well the posting
+  scores elsewhere.
+- **Freshness moves the sort order, never the score.** 0–3 days old, this week,
+  the last fortnight, over a fortnight, over a month: each bucket carries a rank
+  bonus. Anything over 30 days is dropped unless it scores 88 or better, and
+  what survives is labelled *confirm it is still open*.
+
+Every card carries the reasoning in plain English: **why it matched**, **your
+strongest evidence** (concrete sentences from her background, ready to lift into
+an application), **learnable gaps** versus **true experience gaps**, and **watch
+out for** — a misleading title, copywriting buried in the description, real
+automation requirements, or a score read off a two-line snippet.
+
+**Quality over quantity is the point.** v3 publishes far fewer postings than v1;
+`search.minMatchScore` in `config/profile.v3.json` (65) is the single knob for
+that. Six jobs worth applying to beat a hundred vaguely related ones — and v1 is
+still one click away in the header when you want the wide view.
+
+### Confirming a posting is still open
+
+Aggregators keep serving listings for weeks after the employer has closed them,
+so before publishing, v3 re-fetches its top postings and files each one:
+
+- **Confirmed open** — the link resolved and the page does not say the role is
+  closed.
+- **Closed** — the link is gone (404/410) or the page says so in words. These are
+  dropped from the board entirely.
+- **Not confirmed** — the site blocked the check, timed out, or fell outside the
+  budget. Labelled honestly rather than assumed either way.
+
+Anything short of a definite answer is *not confirmed*, never *closed*: a false
+positive silently deletes a real job, which is the failure this is meant to
+prevent. The pass spends a fixed budget (`VERIFY_MAX_CHECKS`, 60 requests by
+default, capped on concurrency and wall-clock time) and can be turned off
+entirely with `VERIFY_LISTINGS=false`. It can never fail a run — an unreachable
+network produces a board where nothing is confirmed, which is what the labels
+are for.
 
 ### Work she can do but does not want
 
@@ -272,7 +383,7 @@ work is kept off both boards:
   but one where Spanish is "a plus" is left alone — she has the skill, and a role
   she would otherwise want should not be punished for mentioning it.
 
-## How the ranking works
+## How the ranking works (v1 and v2)
 
 Each posting gets two independent scores.
 
@@ -367,17 +478,45 @@ local search.
 
 ## Tuning the match score
 
-Everything lives in [`config/profile.json`](config/profile.json) — no code
-changes needed. Edit, commit, and the next run uses it (or run `npm run fetch`
-locally to see the effect immediately).
+Everything lives in the config files — no code changes needed. Edit, commit, and
+the next run uses it (or run `npm run fetch` locally to see the effect
+immediately). Search terms, penalties and the location gate are shared by every
+board and live in [`config/profile.json`](config/profile.json); the v3 model's
+own vocabulary lives in [`config/profile.v3.json`](config/profile.v3.json).
+
+Shared, affects every board:
 
 - **Roles keep appearing that she doesn't want** → add a phrase to `penalties`
   (soft, reduces score) or `excludeTitlePhrases` (hard, removes entirely).
+- **A whole family of jobs is missing** → add the terms to `search.queries` and
+  a matching `titles` group.
+
+v1 and v2 only:
+
 - **A good role ranks too low** → add its title to the right `titles` group, or
   raise that group's `weight`.
 - **Too few results** → lower `search.minMatchScore` or raise `search.maxAgeDays`.
 - **Too much noise** → raise `search.minMatchScore` to 30–35.
 - **New skill to emphasise** → add it to `skills` with a weight of 4–10.
+
+v3 ([`config/profile.v3.json`](config/profile.v3.json)):
+
+- **Too few results** → lower `search.minMatchScore` (65). This is the volume
+  knob; nothing else needs touching.
+- **A job family is being missed** → add it to `roleFamilies` with a `tier`
+  (`core`, `priority` or `adjacent`) and a `why` the card can show.
+- **A responsibility should count for more** → add or reweight a group in
+  `workSignals`, or — better — add the pair of concepts to `combinations`,
+  which is what actually separates a real match from a keyword.
+- **Something she has done is not being credited** → add it to `experience`
+  with the sentence you would want to see in the application.
+- **Something she has never done keeps sneaking in** → add it to
+  `experienceGaps` (work) or `qualification.disqualifying` (a stated
+  requirement).
+- **A tool requirement is being treated as fatal** → move it into
+  `qualification.learnableGaps` with a note saying why it is learnable.
+- **Stale postings hang around** → lower `search.staleAfterDays` (30) or raise
+  `search.staleKeepMinMatch` (88).
 
 Phrases are matched on whole words, case-insensitively. Hyphens and slashes are
 treated as spaces, so `copy editing` also matches "copy-editing" and
@@ -386,7 +525,7 @@ treated as spaces, so `copy editing` also matches "copy-editing" and
 ## Working on it locally
 
 ```bash
-npm test          # 28 unit tests — matching, location gate, scoring, dedupe
+npm test          # unit tests — matching, location gate, all three scorers, dedupe, liveness
 npm run fetch     # pull live postings → docs/data/
 npm run serve     # preview at http://localhost:4173
 npm start         # fetch then serve
@@ -402,15 +541,18 @@ block `fetch` on `file://` URLs. Use `npm run serve`.
 
 ```
 config/
-  profile.json          résumé keywords, weights, location rules — the tuning knobs
+  profile.json          shared: search terms, weights, penalties, location rules
+  profile.v2.json       v2 overlay: capabilities and role families
+  profile.v3.json       v3 overlay: the four-axis fit model, bands and gap lists
   company-boards.json   specific company career pages to watch
 scripts/
-  fetch-jobs.mjs        orchestrator: fetch → normalize → dedupe → filter → score → write
+  fetch-jobs.mjs        orchestrator: fetch → normalize → dedupe → filter → score → verify → write
   serve.mjs             local preview server
-  lib/                  http, text, xml, location gate, scorer, normalizer
+  lib/                  http, text, xml, location gate, three scorers, normalizer, liveness check
   sources/              one adapter per job board
 docs/                   the site itself (GitHub Pages serves this folder)
-  data/                 jobs.json + meta.json, rewritten by the Action
+  data/                 v1 jobs.json + meta.json, rewritten by the Action
+  data/v2/, data/v3/    the other two boards, from the same fetch
 tests/                  unit tests, no network required
 ```
 

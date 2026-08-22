@@ -1,7 +1,8 @@
 #!/usr/bin/env node
 /**
  * Pulls postings from every enabled source, normalizes, de-duplicates, scores
- * against config/profile.json, and writes docs/data/{jobs,meta}.json.
+ * them under each matching model, confirms the top of the default board is
+ * still open, and writes docs/data/{,v2/,v3/}{jobs,meta}.json.
  *
  * Design rule: a single failing source must never fail the run. Each adapter
  * is isolated, and its error is recorded in meta.json so the site can show
@@ -15,7 +16,9 @@ import { normalizeJob, dedupeJobs, hostOf } from './lib/normalize.mjs';
 import { evaluateLocation } from './lib/location.mjs';
 import { scoreJob, matchTier } from './lib/score.mjs';
 import { scoreJob as scoreJobV2 } from './lib/score-v2.mjs';
-import { buildV2Profile } from './lib/profiles.mjs';
+import { scoreJob as scoreJobV3, matchTier as matchTierV3 } from './lib/score-v3.mjs';
+import { buildV2Profile, buildV3Profile } from './lib/profiles.mjs';
+import { verifyListings } from './lib/verify.mjs';
 
 import * as remotive from './sources/remotive.mjs';
 import * as remoteok from './sources/remoteok.mjs';
@@ -66,10 +69,13 @@ async function main() {
   // The last run's meta.json is the only state that survives between runs, and
   // it is committed with every update. A metered source reads its own previous
   // report from it to know what quota it has left before spending anything.
-  // v2 is an overlay on the same profile, so both boards search identically and
-  // differ only in scoring. Absent overlay simply means no v2 board.
+  // v2 and v3 are overlays on the same profile, so every board searches
+  // identically and they differ only in scoring. A missing overlay simply means
+  // that board is not built.
   const v2Overlay = await readJsonIfPresent(new URL('profile.v2.json', CONFIG_DIR));
   const v2Profile = buildV2Profile(profile, v2Overlay);
+  const v3Overlay = await readJsonIfPresent(new URL('profile.v3.json', CONFIG_DIR));
+  const v3Profile = buildV3Profile(profile, v3Overlay);
 
   const previousMeta = await readJsonIfPresent(new URL('meta.json', DATA_DIR));
   const previousReports = new Map((previousMeta?.sources ?? []).map((report) => [report.id, report]));
@@ -132,28 +138,67 @@ async function main() {
 
   const now = new Date();
 
-  // Both boards are built from this one fetch. Scoring is pure CPU, so the
-  // second model costs nothing at the APIs — which matters, because JSearch is
-  // billed per request and running the pipeline twice would double every call.
+  // All three boards are built from this one fetch. Scoring is pure CPU, so the
+  // extra models cost nothing at the APIs — which matters, because JSearch is
+  // billed per request and running the pipeline three times would triple every
+  // call. v3 is what the site opens on; v1 and v2 stay alongside it.
   const boards = [
-    { id: 'v1', label: 'Title-driven', profile, scoreJob, dir: DATA_DIR },
+    { id: 'v1', label: 'Title-driven', profile, scoreJob, tier: matchTier, dir: DATA_DIR },
     v2Profile && {
       id: 'v2',
       label: 'Ability-based',
       profile: v2Profile,
       scoreJob: scoreJobV2,
+      tier: matchTier,
       dir: new URL('v2/', DATA_DIR),
+    },
+    v3Profile && {
+      id: 'v3',
+      label: 'Fit profile',
+      profile: v3Profile,
+      scoreJob: scoreJobV3,
+      // v3 grades on the specification's five bands rather than v1's four
+      // tiers, so the tier function travels with the board.
+      tier: (match) => matchTierV3(match, v3Profile),
+      tierOrder: (v3Profile.bands || []).map((band) => band.tier),
+      tierLabels: Object.fromEntries((v3Profile.bands || []).map((band) => [band.tier, band.label])),
+      // Only this board pays for liveness checks: it publishes few enough
+      // postings that verifying its top slice is affordable, and it is the
+      // board the spec asks to confirm before presenting anything as open.
+      verify: true,
+      dir: new URL('v3/', DATA_DIR),
     },
   ].filter(Boolean);
 
   let primary = null;
 
   for (const board of boards) {
-    const built = buildBoard(deduped, board.profile, board.scoreJob, now);
+    const built = buildBoard(deduped, board.profile, board.scoreJob, now, { tier: board.tier, tierOrder: board.tierOrder });
+
+    // Confirming a posting is still open costs one request each, so it runs
+    // over the published slice only, after scoring has decided what is worth
+    // checking. Closed postings are dropped outright; everything else keeps a
+    // label saying how sure we are.
+    let verification = null;
+    if (board.verify) {
+      verification = await verifyListings(built.jobs, { warn: (m) => console.warn(`  ! liveness: ${m}`) });
+      if (verification.closed) {
+        built.jobs = built.jobs.filter((job) => job.availability !== 'closed');
+        built.dropped.closed = verification.closed;
+        built.tiers = countTiers(built.jobs, board.tierOrder);
+      }
+    }
+
     const meta = {
       generatedAt: startedAt.toISOString(),
       durationMs: Date.now() - startedAt.getTime(),
-      model: { id: board.id, label: board.label },
+      model: {
+        id: board.id,
+        label: board.label,
+        tierOrder: board.tierOrder ?? ['strong', 'good', 'possible', 'stretch'],
+        tierLabels: board.tierLabels ?? null,
+        axisWeights: board.profile.axisWeights ?? null,
+      },
       candidate: board.profile.candidate,
       ranking: board.profile.ranking,
       filters: {
@@ -167,6 +212,7 @@ async function main() {
         dropped: built.dropped,
       },
       tiers: built.tiers,
+      ...(verification ? { verification: verification.report } : {}),
       freshLast48h: built.jobs.filter((j) => j.ageDays !== null && !j.ageAssumed && j.ageDays <= 2).length,
       projectBased: built.jobs.filter((j) => j.projectBased).length,
       discoveries: built.jobs.filter((j) => j.discovery).length,
@@ -180,13 +226,15 @@ async function main() {
     console.log(
       `\n[${board.id}] ${board.label}: published ${built.jobs.length} jobs\n` +
         `  dropped: ${built.dropped.location} out-of-area, ${built.dropped.stale} stale, ` +
-        `${built.dropped.lowMatch} below match threshold, ${built.dropped.excluded} excluded\n` +
-        `  tiers: ${meta.tiers.strong} strong / ${meta.tiers.good} good / ` +
-        `${meta.tiers.possible} possible / ${meta.tiers.stretch} stretch` +
-        (meta.discoveries ? `\n  new directions: ${meta.discoveries}` : '')
+        `${built.dropped.lowMatch} below match threshold, ${built.dropped.excluded} excluded` +
+        (built.dropped.closed ? `, ${built.dropped.closed} no longer open` : '') +
+        `\n  tiers: ${Object.entries(meta.tiers).map(([tier, count]) => `${count} ${tier}`).join(' / ')}` +
+        (meta.discoveries ? `\n  new directions: ${meta.discoveries}` : '') +
+        (verification ? `\n  liveness: ${verification.report.checked} checked, ${verification.report.live} confirmed open, ${verification.report.closed} closed, ${verification.report.unknown} unresolved` : '')
     );
 
-    if (board.id === 'v1') primary = { meta, jobs: built.jobs };
+    // The Actions run summary reports the board the site actually opens on.
+    if (board.id === 'v3' || (!primary && board.id === 'v1')) primary = { meta, jobs: built.jobs };
   }
 
   if (primary) await writeStepSummary(primary.meta, primary.jobs);
@@ -201,9 +249,15 @@ async function main() {
  * threshold) must stay identical between boards or a difference in the results
  * would say more about the plumbing than about the models.
  */
-export function buildBoard(deduped, profile, score, now) {
+export function buildBoard(deduped, profile, score, now, options = {}) {
+  const tierOf = options.tier || matchTier;
   const maxAgeDays = profile.search.maxAgeDays;
   const minMatch = profile.search.minMatchScore;
+  // The spec's freshness rule: a posting past staleAfterDays is only worth
+  // showing if it is unusually strong. Boards that do not set it keep the
+  // single maxAgeDays cliff.
+  const staleAfterDays = profile.search.staleAfterDays ?? null;
+  const staleKeepMinMatch = profile.search.staleKeepMinMatch ?? 100;
   const dropped = { location: 0, stale: 0, lowMatch: 0, excluded: 0, blockedDomain: 0 };
   const scored = [];
 
@@ -227,13 +281,24 @@ export function buildBoard(deduped, profile, score, now) {
       continue;
     }
 
-    const result = score(job, profile, now);
+    // The location verdict is handed to the scorer rather than recomputed:
+    // v3 scores how open the posting is as part of lifestyle fit.
+    const result = score(job, profile, now, { location });
 
     if (result.excluded) {
       dropped.excluded += 1;
       continue;
     }
     if (result.ageDays !== null && result.ageDays > maxAgeDays) {
+      dropped.stale += 1;
+      continue;
+    }
+    if (
+      staleAfterDays !== null &&
+      result.ageDays !== null &&
+      result.ageDays > staleAfterDays &&
+      result.match < staleKeepMinMatch
+    ) {
       dropped.stale += 1;
       continue;
     }
@@ -257,7 +322,7 @@ export function buildBoard(deduped, profile, score, now) {
       locationScope: location.scope,
       locationReason: location.reason,
       match: result.match,
-      matchTier: matchTier(result.match),
+      matchTier: tierOf(result.match),
       // Contract / freelance / project-shaped work, which the board filters on.
       projectBased: result.projectBased,
       // v2 only: a role outside her current title, and why it was suggested.
@@ -268,20 +333,28 @@ export function buildBoard(deduped, profile, score, now) {
       ageAssumed: result.ageAssumed,
       reasons: result.reasons,
       breakdown: result.breakdown,
+      // v3 only: the four axis scores and the written report that goes with
+      // them. Spread rather than nested so the card can read them directly.
+      ...(result.details || {}),
     });
   }
 
   scored.sort((a, b) => b.rank - a.rank);
-  return {
-    jobs: scored.slice(0, profile.search.maxJobsStored),
-    dropped,
-    tiers: {
-      strong: scored.filter((j) => j.matchTier === 'strong').length,
-      good: scored.filter((j) => j.matchTier === 'good').length,
-      possible: scored.filter((j) => j.matchTier === 'possible').length,
-      stretch: scored.filter((j) => j.matchTier === 'stretch').length,
-    },
-  };
+  const jobs = scored.slice(0, profile.search.maxJobsStored);
+  return { jobs, dropped, tiers: countTiers(jobs, options.tierOrder) };
+}
+
+/**
+ * Tier counts for the header tiles. The order comes from the board, because v3
+ * grades on the specification's five bands and v1/v2 on four tiers — counting
+ * one board's vocabulary on the other's produces a row of zeroes.
+ */
+export function countTiers(jobs, tierOrder = ['strong', 'good', 'possible', 'stretch']) {
+  const counts = Object.fromEntries(tierOrder.map((tier) => [tier, 0]));
+  for (const job of jobs) {
+    if (job.matchTier in counts) counts[job.matchTier] += 1;
+  }
+  return counts;
 }
 
 /** Nice-to-have: surface the top new matches in the GitHub Actions run summary. */
@@ -291,10 +364,12 @@ async function writeStepSummary(meta, jobs) {
 
   const top = jobs.filter((j) => j.ageDays !== null && j.ageDays <= 3).slice(0, 15);
   const lines = [
-    `## Job board updated — ${meta.counts.published} matches`,
+    `## Job board updated — ${meta.counts.published} matches on the ${meta.model?.label ?? ''} board (${meta.model?.id ?? 'v1'})`,
     '',
-    `**${meta.tiers.strong}** strong · **${meta.tiers.good}** good · ` +
-      `**${meta.tiers.possible}** possible · ${meta.freshLast48h} posted in the last 48h`,
+    // Written from whichever tiers this board grades on, so the v3 bands are
+    // not silently dropped from the summary.
+    `${Object.entries(meta.tiers).map(([tier, count]) => `**${count}** ${tier}`).join(' · ')}` +
+      ` · ${meta.freshLast48h} posted in the last 48h`,
     '',
   ];
 
@@ -310,6 +385,14 @@ async function writeStepSummary(meta, jobs) {
 
   // Metered sources report where they stand, so the quota is visible here on
   // every run instead of only in a RapidAPI warning email once it is too late.
+  if (meta.verification?.enabled) {
+    lines.push(
+      `${meta.verification.live} of ${meta.verification.checked} checked postings confirmed still open` +
+        `, ${meta.verification.closed} closed and dropped, ${meta.verification.unknown} could not be confirmed.`,
+      ''
+    );
+  }
+
   for (const source of meta.sources.filter((s) => s.quota || s.budget)) {
     const used = typeof source.quota?.limit === 'number' && typeof source.quota?.remaining === 'number'
       ? `**${source.quota.limit - source.quota.remaining} of ${source.quota.limit}** used this period`
