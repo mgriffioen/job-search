@@ -19,7 +19,7 @@ import {
   normalisePreferences,
   emptyPreferences,
   summarise,
-} from './preferences.mjs';
+} from './preferences.mjs?v=066e61608b';
 
 const STORE_KEY = 'emily-job-board:v1';
 const PREFS_KEY = 'emily-job-board:prefs:v1';

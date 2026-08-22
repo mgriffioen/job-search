@@ -1,6 +1,5 @@
 {
   "_readme": "Model v3 — the fit-profile matcher, written from the job-search matching specification. This is an OVERLAY on config/profile.json, like profile.v2.json: search terms, engagement, skills, penalties, location and the exclusion list are inherited, and only what defines this model lives here. v3 does not score one blended number out of a title and some keywords. It scores four separate axes — WORK FIT (what she would actually do all day), EXPERIENCE FIT (how much of that work she has already done), QUALIFICATION FIT (the employer's stated requirements) and LIFESTYLE FIT (remote, contract, flexibility) — and weights them 35/30/20/15 into the overall score. The bands, the recommendation, the learnable-vs-true gap split and the freshness rules are all from the spec.",
-
   "search": {
     "_comment": "Quality over quantity: this board publishes far fewer postings than v1 and v2. minMatchScore sits just under the spec's 70-point 'possible adjacent opportunity' band so near-misses stay reachable with the slider, and everything below that is dropped rather than stored.",
     "minMatchScore": 65,
@@ -9,7 +8,6 @@
     "staleAfterDays": 30,
     "staleKeepMinMatch": 88
   },
-
   "ranking": {
     "_comment": "Freshness is 'extremely important' per the spec, so the half-life is shorter here than on the other boards and the bucket bonuses below sharpen it further. These adjust the sort order only — never the score, which has to keep meaning what the bands say it means.",
     "matchWeight": 0.7,
@@ -17,7 +15,6 @@
     "recencyHalfLifeDays": 10,
     "assumedAgeDaysWhenUnknown": 21
   },
-
   "_axisWeightsComment": "The spec's weighting, and the only place it is defined.",
   "axisWeights": {
     "work": 0.35,
@@ -25,25 +22,72 @@
     "qualification": 0.2,
     "lifestyle": 0.15
   },
-
+  "_workGateComment": "WORK FIT IS THE GATE. The other three axes have high floors by their nature — every posting on this board is remote (lifestyle), she clears most stated requirements (qualification), and she has done a great deal of adjacent work (experience). Weighted together those three are 65% of the score, so without this a job she has no wish to do reached the apply bands on being qualified for it: a marine sales role scored 72 on work fit 39, and a UX/UI design contract led the board at 85. The cap says the obvious thing — a job she does not want to do cannot be a strong match however well she would meet its requirements — and lets the axis the specification calls primary actually decide. base + slope*100 must reach 100 so a perfect posting is never capped.",
+  "workGate": {
+    "base": 45,
+    "slope": 0.55
+  },
   "_bandsComment": "The spec's result labels, highest first. `recommendation` is what the card prints as the call to action.",
   "bands": [
-    { "min": 95, "tier": "exceptional", "label": "Exceptional match — apply ASAP", "recommendation": "APPLY ASAP" },
-    { "min": 88, "tier": "strong", "label": "Strong match — priority application", "recommendation": "APPLY" },
-    { "min": 80, "tier": "good", "label": "Good match — review carefully", "recommendation": "APPLY" },
-    { "min": 70, "tier": "possible", "label": "Possible adjacent opportunity", "recommendation": "CONSIDER" },
-    { "min": 0, "tier": "low", "label": "Low priority", "recommendation": "SKIP" }
+    {
+      "min": 95,
+      "tier": "exceptional",
+      "label": "Exceptional match — apply ASAP",
+      "recommendation": "APPLY ASAP"
+    },
+    {
+      "min": 88,
+      "tier": "strong",
+      "label": "Strong match — priority application",
+      "recommendation": "APPLY"
+    },
+    {
+      "min": 80,
+      "tier": "good",
+      "label": "Good match — review carefully",
+      "recommendation": "APPLY"
+    },
+    {
+      "min": 70,
+      "tier": "possible",
+      "label": "Possible adjacent opportunity",
+      "recommendation": "CONSIDER"
+    },
+    {
+      "min": 0,
+      "tier": "low",
+      "label": "Low priority",
+      "recommendation": "SKIP"
+    }
   ],
-
   "_freshnessBucketsComment": "Sort-order bonuses only. maxDays is inclusive; the last bucket catches everything older.",
   "freshnessBuckets": [
-    { "maxDays": 3, "label": "Posted in the last 3 days", "rankBonus": 6 },
-    { "maxDays": 7, "label": "Posted this week", "rankBonus": 3 },
-    { "maxDays": 14, "label": "Posted in the last two weeks", "rankBonus": 0 },
-    { "maxDays": 30, "label": "Over two weeks old", "rankBonus": -4 },
-    { "maxDays": null, "label": "Over a month old — confirm it is still open", "rankBonus": -10 }
+    {
+      "maxDays": 3,
+      "label": "Posted in the last 3 days",
+      "rankBonus": 6
+    },
+    {
+      "maxDays": 7,
+      "label": "Posted this week",
+      "rankBonus": 3
+    },
+    {
+      "maxDays": 14,
+      "label": "Posted in the last two weeks",
+      "rankBonus": 0
+    },
+    {
+      "maxDays": 30,
+      "label": "Over two weeks old",
+      "rankBonus": -4
+    },
+    {
+      "maxDays": null,
+      "label": "Over a month old — confirm it is still open",
+      "rankBonus": -10
+    }
   ],
-
   "_roleFamiliesComment": "The spec's highest-priority job families. `tier` decides how much a title alone is worth: `core` families are the ones to search aggressively for, `priority` are close variations, `adjacent` are the ones she would not think to search — those are flagged as new directions on the card and carry `why` to explain themselves. Titles here are matched against the job title only; the description does the rest of the work.",
   "roleFamilies": [
     {
@@ -252,11 +296,16 @@
       ]
     }
   ],
-
+  "_workSignalTiersComment": "CORE signals are evidence that the job is reviewing work somebody else produced, against a standard: proofreading, review and sign-off, accuracy and verification, working to a style guide, content audit. SUPPORTING signals say where and with whom — channels, product content, layout, detail, collaboration, workflow, learning content — and are context, not evidence. Every digital and creative posting carries the supporting vocabulary, so before this split a Creative Designer scored 80 on work fit and a payroll role 79. Supporting signals are now capped at supportingCap of the 46 available, and a posting with no core signal at all cannot exceed noCoreCap, because nothing in it says she would be reviewing anything.",
+  "workSignalCaps": {
+    "supporting": 14,
+    "noCore": 30
+  },
   "_workSignalsComment": "THE PRIMARY AXIS. The spec is explicit that titles must not be trusted on their own — 'what would this person actually spend her day doing?' Each group is a concept from the spec's high-value description signals, matched anywhere in the posting, with diminishing returns so a posting that stuffs one concept cannot beat one that genuinely describes the work.",
   "workSignals": [
     {
       "id": "proofreading",
+      "tier": "core",
       "label": "Proofreading and copy editing",
       "weight": 12,
       "phrases": [
@@ -283,6 +332,7 @@
     },
     {
       "id": "final-review",
+      "tier": "core",
       "label": "Review and sign-off before publication",
       "weight": 12,
       "phrases": [
@@ -310,12 +360,11 @@
     },
     {
       "id": "accuracy",
+      "tier": "core",
       "label": "Accuracy, verification and discrepancy detection",
       "weight": 12,
       "phrases": [
         "content accuracy",
-        "accuracy",
-        "accurate",
         "error-free",
         "error free",
         "verify",
@@ -333,17 +382,21 @@
         "inconsistency",
         "identify inconsistencies",
         "error detection",
-        "errors",
         "typos",
         "cross-reference",
         "cross reference",
         "source of truth",
         "spot check",
-        "quality checks"
-      ]
+        "quality checks",
+        "review for accuracy",
+        "factual accuracy",
+        "free of errors"
+      ],
+      "_comment": "A bare 'accuracy'/'accurate'/'errors' matched every posting on the board — payroll, sales and engineering alike. The phrases here name reviewing something for accuracy rather than merely being accurate at your own job."
     },
     {
       "id": "standards",
+      "tier": "core",
       "label": "Working to a style guide and brand standards",
       "weight": 11,
       "phrases": [
@@ -361,17 +414,12 @@
         "brand voice",
         "brand consistency",
         "on-brand",
-        "tone of voice",
-        "tone",
-        "consistency",
-        "consistent",
-        "adherence",
-        "compliance with guidelines",
-        "governance"
+        "tone of voice"
       ]
     },
     {
       "id": "audit",
+      "tier": "core",
       "label": "Content audit and validation",
       "weight": 10,
       "phrases": [
@@ -381,18 +429,20 @@
         "content integrity",
         "content quality",
         "editorial quality",
+        "editorial audit",
         "quality audit",
-        "audit",
-        "auditing",
+        "brand audit",
+        "site audit",
         "review existing content",
         "content inventory",
         "remediation",
-        "gap analysis",
-        "findings"
-      ]
+        "findings report"
+      ],
+      "_comment": "A bare 'audit'/'auditing' was removed: it is finance and compliance vocabulary, and it gave a payroll specialist the same core signal as a content audit. Every phrase here now names the thing being audited."
     },
     {
       "id": "customer-facing-channels",
+      "tier": "supporting",
       "label": "Customer-facing email, web and campaign content",
       "weight": 10,
       "phrases": [
@@ -418,6 +468,7 @@
     },
     {
       "id": "product-content",
+      "tier": "supporting",
       "label": "Product, catalog and e-commerce content",
       "weight": 10,
       "phrases": [
@@ -443,6 +494,7 @@
     },
     {
       "id": "visual-qa",
+      "tier": "supporting",
       "label": "Layout, formatting and visual consistency",
       "weight": 9,
       "phrases": [
@@ -452,22 +504,17 @@
         "visual quality",
         "alignment",
         "spacing",
-        "typography",
-        "imagery",
-        "images",
         "alt text",
-        "links",
         "broken links",
         "link checking",
         "asset validation",
         "rendering",
-        "proofing",
-        "design review",
-        "artwork"
+        "proofing"
       ]
     },
     {
       "id": "detail",
+      "tier": "supporting",
       "label": "Attention to detail",
       "weight": 8,
       "phrases": [
@@ -477,15 +524,12 @@
         "eye for detail",
         "keen eye",
         "meticulous",
-        "thorough",
-        "rigorous",
-        "high standards",
-        "pattern recognition",
-        "nothing slips"
+        "pattern recognition"
       ]
     },
     {
       "id": "collaboration",
+      "tier": "supporting",
       "label": "Feedback to designers, developers and production teams",
       "weight": 8,
       "phrases": [
@@ -495,19 +539,16 @@
         "creative team",
         "production team",
         "production teams",
-        "cross-functional",
-        "cross functional",
-        "stakeholders",
-        "feedback",
         "actionable feedback",
-        "partner with",
-        "liaise",
+        "written feedback",
         "account team",
+        "client brands",
         "agency"
       ]
     },
     {
       "id": "publishing-workflow",
+      "tier": "supporting",
       "label": "Publishing workflow and production schedule",
       "weight": 7,
       "phrases": [
@@ -516,22 +557,17 @@
         "publish",
         "production schedule",
         "editorial calendar",
-        "workflow",
-        "workflows",
         "cms",
         "content management system",
-        "deadlines",
         "deadline-driven",
         "multiple projects",
-        "concurrent",
         "competing priorities",
-        "queue",
-        "traffic",
-        "intake"
+        "production queue"
       ]
     },
     {
       "id": "learning-content",
+      "tier": "supporting",
       "label": "Educational, assessment and training content",
       "weight": 7,
       "phrases": [
@@ -541,9 +577,8 @@
         "courseware",
         "course content",
         "instructional",
-        "lesson",
-        "assessment",
-        "assessments",
+        "lesson plan",
+        "assessment items",
         "test items",
         "item bank",
         "rubric",
@@ -555,130 +590,388 @@
       ]
     }
   ],
-
-  "_combinationsComment": "The spec's VERY STRONG COMBINATIONS, and its instruction that these matter more than an exact title match. Each entry needs one phrase from every list, anywhere in the posting, in any order — that is what distinguishes a posting genuinely describing this work from one that happens to use a single word. Total is capped so a long posting cannot collect all fourteen.",
+  "_combinationsComment": "The spec's VERY STRONG COMBINATIONS, and its instruction that these matter more than an exact title match. Each entry needs one phrase from every list, anywhere in the posting, in any order. EVERY MEMBER MUST NAME ITS OWN CONCEPT: a set containing a bare 'review', 'quality', 'audit' or 'compare' turns \"concepts appearing together\" into \"common words appearing together\", which is how a Sr. Global Payroll Specialist came to fire both 'Email + content review + quality assurance' and 'Content audit + discrepancies + source of truth'. Total is capped so a long posting cannot collect all fourteen.",
   "combinations": [
     {
       "label": "Proofreading + brand standards + digital content",
       "weight": 9,
       "all": [
-        ["proofread", "proofreading", "copyedit", "copy edit", "copy editing", "copyediting"],
-        ["brand standards", "brand guidelines", "brand voice", "style guide", "house style", "editorial standards"],
-        ["digital content", "web content", "email", "website", "landing page", "digital assets", "online content"]
+        [
+          "proofread",
+          "proofreading",
+          "copyedit",
+          "copy edit",
+          "copy editing",
+          "copyediting",
+          "editorial review"
+        ],
+        [
+          "brand standards",
+          "brand guidelines",
+          "brand voice",
+          "style guide",
+          "style guides",
+          "house style",
+          "editorial standards",
+          "editorial guidelines"
+        ],
+        [
+          "digital content",
+          "web content",
+          "html email",
+          "email marketing",
+          "landing page",
+          "digital assets",
+          "online content",
+          "website content"
+        ]
       ]
     },
     {
       "label": "Editing + marketing + style guides",
       "weight": 8,
       "all": [
-        ["editing", "edits", "editorial review", "copy edit", "copy editing", "proofread", "proofreading"],
-        ["marketing", "campaign", "campaigns", "advertising", "promotional"],
-        ["style guide", "style guides", "house style", "editorial guidelines", "brand guidelines"]
+        [
+          "copy editing",
+          "copyediting",
+          "copy edit",
+          "proofread",
+          "proofreading",
+          "editorial review",
+          "content review"
+        ],
+        [
+          "marketing campaign",
+          "marketing campaigns",
+          "campaign assets",
+          "advertising",
+          "promotional materials",
+          "marketing content"
+        ],
+        [
+          "style guide",
+          "style guides",
+          "house style",
+          "editorial guidelines",
+          "brand guidelines"
+        ]
       ]
     },
     {
       "label": "Content accuracy + web/email + final review",
       "weight": 9,
       "all": [
-        ["accuracy", "accurate", "content accuracy", "error-free", "error free", "verify", "validate"],
-        ["web", "website", "web content", "email", "html email", "landing page", "digital"],
-        ["final review", "sign-off", "sign off", "before publication", "pre-publication", "approval", "quality control", "final check"]
+        [
+          "content accuracy",
+          "factual accuracy",
+          "error-free",
+          "error free",
+          "verify accuracy",
+          "review for accuracy",
+          "proofread"
+        ],
+        [
+          "web content",
+          "website content",
+          "html email",
+          "email campaign",
+          "email campaigns",
+          "landing page",
+          "digital content"
+        ],
+        [
+          "final review",
+          "final check",
+          "before publication",
+          "pre-publication",
+          "sign-off",
+          "quality control",
+          "final proof",
+          "publication readiness"
+        ]
       ]
     },
     {
       "label": "Content quality + digital marketing",
       "weight": 8,
       "all": [
-        ["content quality", "editorial quality", "quality control", "quality assurance", "content integrity"],
-        ["digital marketing", "marketing", "campaigns", "crm", "email marketing", "e-commerce", "ecommerce"]
+        [
+          "content quality",
+          "editorial quality",
+          "content integrity",
+          "content accuracy",
+          "quality control"
+        ],
+        [
+          "digital marketing",
+          "email marketing",
+          "marketing campaigns",
+          "crm",
+          "e-commerce",
+          "ecommerce",
+          "lifecycle marketing"
+        ]
       ]
     },
     {
       "label": "Editorial review + customer-facing content",
       "weight": 8,
       "all": [
-        ["editorial review", "content review", "review content", "proofread", "proofreading", "copy editing"],
-        ["customer-facing content", "customer facing", "customer-facing", "consumer facing", "public-facing", "customer communications"]
+        [
+          "editorial review",
+          "content review",
+          "review content",
+          "proofread",
+          "proofreading",
+          "copy editing"
+        ],
+        [
+          "customer-facing content",
+          "customer facing",
+          "customer-facing",
+          "consumer facing",
+          "public-facing",
+          "customer communications",
+          "customer-facing copy"
+        ]
       ]
     },
     {
       "label": "Content audit + discrepancies + source of truth",
       "weight": 9,
       "all": [
-        ["content audit", "audit", "auditing", "content inventory", "review existing content"],
-        ["discrepancy", "discrepancies", "inconsistencies", "errors", "issues", "gaps"],
-        ["source of truth", "cross-reference", "cross reference", "compare", "against the", "reference material", "documentation"]
+        [
+          "content audit",
+          "content audits",
+          "content inventory",
+          "editorial audit",
+          "review existing content"
+        ],
+        [
+          "discrepancy",
+          "discrepancies",
+          "inconsistencies",
+          "identify inconsistencies",
+          "errors and omissions",
+          "typos"
+        ],
+        [
+          "source of truth",
+          "cross-reference",
+          "cross reference",
+          "style guide",
+          "reference material",
+          "brand guidelines",
+          "product data"
+        ]
       ]
     },
     {
       "label": "Product content + accuracy + e-commerce",
       "weight": 9,
       "all": [
-        ["product content", "product copy", "product information", "product data", "product descriptions", "catalog"],
-        ["accuracy", "accurate", "verify", "validate", "quality", "consistency", "error-free"],
-        ["e-commerce", "ecommerce", "retail", "online store", "pdp", "product detail page", "merchandising"]
+        [
+          "product content",
+          "product copy",
+          "product information",
+          "product descriptions",
+          "catalog content",
+          "product data"
+        ],
+        [
+          "accuracy of product",
+          "content accuracy",
+          "data accuracy",
+          "verify",
+          "validate",
+          "error-free",
+          "error free",
+          "quality checks",
+          "completeness",
+          "correct and consistent"
+        ],
+        [
+          "e-commerce",
+          "ecommerce",
+          "online store",
+          "product detail page",
+          "pdp",
+          "merchandising",
+          "retail"
+        ]
       ]
     },
     {
       "label": "Proofreading + visual and layout review",
       "weight": 8,
       "all": [
-        ["proofread", "proofreading", "copy editing", "editorial review", "content review"],
-        ["layout", "formatting", "visual", "design", "artwork", "typography", "alignment", "imagery"]
+        [
+          "proofread",
+          "proofreading",
+          "copy editing",
+          "editorial review",
+          "content review"
+        ],
+        [
+          "layout",
+          "formatting",
+          "visual consistency",
+          "alignment",
+          "spacing",
+          "proofing"
+        ]
       ]
     },
     {
       "label": "Brand consistency + proofreading + marketing",
       "weight": 8,
       "all": [
-        ["brand consistency", "brand standards", "on-brand", "brand voice", "brand compliance"],
-        ["proofread", "proofreading", "copy edit", "copy editing", "editing", "review"],
-        ["marketing", "campaign", "campaigns", "creative", "advertising"]
+        [
+          "brand consistency",
+          "brand standards",
+          "on-brand",
+          "brand voice",
+          "brand compliance"
+        ],
+        [
+          "proofread",
+          "proofreading",
+          "copy edit",
+          "copy editing",
+          "editorial review",
+          "content review"
+        ],
+        [
+          "marketing campaign",
+          "marketing campaigns",
+          "campaign assets",
+          "creative assets",
+          "advertising"
+        ]
       ]
     },
     {
       "label": "Style-guide compliance + quality control",
       "weight": 7,
       "all": [
-        ["style guide", "house style", "editorial guidelines", "brand guidelines", "editorial standards", "ap style", "chicago manual"],
-        ["quality control", "quality assurance", "compliance", "adherence", "consistency", "governance"]
+        [
+          "style guide",
+          "style guides",
+          "house style",
+          "editorial guidelines",
+          "editorial standards",
+          "ap style",
+          "chicago manual"
+        ],
+        [
+          "quality control",
+          "quality assurance",
+          "content quality",
+          "editorial quality",
+          "compliance review",
+          "adherence to"
+        ]
       ]
     },
     {
       "label": "Email + content review + quality assurance",
       "weight": 9,
       "all": [
-        ["email", "html email", "email marketing", "crm", "lifecycle"],
-        ["content review", "proofread", "proofreading", "copy", "editorial review", "review"],
-        ["quality assurance", "quality control", "qa", "testing", "accuracy"]
+        [
+          "html email",
+          "email campaign",
+          "email campaigns",
+          "email marketing",
+          "email production",
+          "crm"
+        ],
+        [
+          "content review",
+          "proofread",
+          "proofreading",
+          "editorial review",
+          "copy review",
+          "review the copy"
+        ],
+        [
+          "quality assurance",
+          "quality control",
+          "content quality",
+          "testing",
+          "accuracy"
+        ]
       ]
     },
     {
       "label": "Retail / e-commerce + content quality",
       "weight": 8,
       "all": [
-        ["retail", "e-commerce", "ecommerce", "consumer brands", "direct to consumer", "dtc", "merchandising"],
-        ["content quality", "editorial quality", "content accuracy", "quality assurance", "quality control", "proofreading"]
+        [
+          "retail",
+          "e-commerce",
+          "ecommerce",
+          "consumer brands",
+          "direct to consumer",
+          "merchandising"
+        ],
+        [
+          "content quality",
+          "editorial quality",
+          "content accuracy",
+          "proofreading",
+          "copy editing",
+          "content review"
+        ]
       ]
     },
     {
       "label": "Educational content + editing / proofreading",
       "weight": 8,
       "all": [
-        ["educational content", "learning content", "curriculum", "courseware", "instructional", "course content", "training materials"],
-        ["editing", "editorial", "proofread", "proofreading", "copy edit", "copy editing", "review"]
+        [
+          "educational content",
+          "learning content",
+          "curriculum",
+          "courseware",
+          "course content",
+          "instructional design",
+          "training materials"
+        ],
+        [
+          "copy editing",
+          "copyediting",
+          "editorial review",
+          "proofread",
+          "proofreading",
+          "content review",
+          "editorial quality"
+        ]
       ]
     },
     {
       "label": "Assessment + editorial quality",
       "weight": 8,
       "all": [
-        ["assessment", "assessments", "test items", "item bank", "exam", "psychometric", "rubric"],
-        ["editorial", "editing", "proofread", "proofreading", "quality", "accuracy", "review"]
+        [
+          "assessment items",
+          "test items",
+          "item bank",
+          "exam content",
+          "psychometric",
+          "assessment content"
+        ],
+        [
+          "editorial",
+          "copy editing",
+          "proofread",
+          "proofreading",
+          "editorial quality",
+          "content review",
+          "accuracy review"
+        ]
       ]
     }
   ],
-
   "_orientationComment": "The spec's central question about writing: IS THE PERSON PRIMARILY CREATING THE CONTENT, OR REVIEWING CONTENT CREATED BY OTHERS? A posting is not rejected for mentioning writing — editing roles rewrite sentences all the time. It is scored on the balance. Distinct concepts are counted on each side; whichever dominates moves the work-fit score, and a creation-dominant posting also earns a 'watch out for' note.",
   "orientation": {
     "reviewPhrases": [
@@ -784,7 +1077,6 @@
     "maxReviewBonus": 8,
     "watchOutThreshold": 3
   },
-
   "_automationComment": "The spec's other negative: she does not want to become an automation engineer or a developer. Technical literacy is a positive and is never penalised here — HTML, CSS and reading templates are her daily tools, and they live in workSignals and skills. Only writing code as the job is penalised.",
   "automation": {
     "phrases": [
@@ -829,7 +1121,6 @@
     "maxPenalty": 30,
     "watchOutThreshold": 2
   },
-
   "_experienceComment": "EXPERIENCE FIT — the spec's transferable-experience logic, made mechanical. Each entry is work she has demonstrably performed; `phrases` are how a posting asks for it, and `evidence` is the sentence the card offers as YOUR STRONGEST EVIDENCE, ready to lift into an application. Experience fit is a coverage ratio: of everything this posting asks for, how much has she already done? That is what stops a job being rejected because the title differs, and what stops a job being credited for work she has never done.",
   "experience": [
     {
@@ -862,6 +1153,7 @@
     },
     {
       "id": "proofreading",
+      "tier": "core",
       "label": "Professional proofreading and copy editing",
       "weight": 10,
       "evidence": "Proofread customer-facing copy daily for ten years — spelling, grammar, punctuation, capitalization, hyphenation, trademarks and product terminology — as the last review before publication.",
@@ -934,6 +1226,7 @@
     },
     {
       "id": "visual-qa",
+      "tier": "supporting",
       "label": "Visual and layout quality assurance",
       "weight": 9,
       "evidence": "Caught spacing, alignment, imagery, alt-text and broken-link faults across email and web builds — visual QA alongside the editorial pass, not instead of it.",
@@ -958,6 +1251,7 @@
     },
     {
       "id": "product-content",
+      "tier": "supporting",
       "label": "Retail product and pricing content",
       "weight": 9,
       "evidence": "Verified product names, terminology, pricing and offers against source data for retail e-commerce campaigns — the same checks a product-content or catalog QA role runs, one system upstream.",
@@ -986,24 +1280,24 @@
       "label": "Concise defect feedback to designers and developers",
       "weight": 9,
       "evidence": "Delivered concise, actionable QA feedback to designers and developers in a fast-paced agency production cycle, which is what kept rework down.",
+      "_comment": "'collaborate', 'stakeholders', 'cross-functional' and a bare 'feedback' are in every posting on the board and were credited as her experience on all of them.",
       "phrases": [
         "designers",
         "developers",
         "design team",
         "creative team",
         "production team",
-        "cross-functional",
-        "stakeholders",
-        "feedback",
+        "actionable feedback",
+        "written feedback",
         "defect",
         "defects",
-        "bug",
+        "bug reports",
         "tickets",
         "jira",
         "agency",
         "client-facing",
         "multiple clients",
-        "collaborate"
+        "client brands"
       ]
     },
     {
@@ -1011,21 +1305,17 @@
       "label": "Many concurrent projects to deadline",
       "weight": 8,
       "evidence": "Ran QA on many concurrent campaigns against a production schedule, prioritising by launch date without letting a deadline slip.",
+      "_comment": "'deadlines', 'fast-paced', 'prioritize' and 'organizational skills' were removed: every posting ever written contains them, and an entry that matches everything measures nothing.",
       "phrases": [
         "multiple projects",
+        "many projects",
         "concurrent",
         "competing priorities",
-        "deadlines",
         "deadline-driven",
-        "fast-paced",
-        "fast paced",
-        "prioritize",
-        "prioritise",
-        "workflow",
         "production schedule",
+        "editorial calendar",
         "queue",
-        "time management",
-        "organizational skills",
+        "intake",
         "juggle"
       ]
     },
@@ -1101,67 +1391,131 @@
     },
     {
       "id": "remote-independent",
+      "_comment": "Deliberately narrow. This entry used to match 'remote', 'contract' and 'collaborate', which is every posting on a remote job board — it credited a marine sales role with her experience and pushed the whole board's experience fit into the nineties. Remote and contract are scored on the lifestyle axis, where they belong; what is left here is the part that is actually evidence.",
       "label": "Remote, self-directed delivery",
-      "weight": 6,
+      "weight": 5,
       "evidence": "Ten years of remote work, including freelance and project-based engagements delivered against a brief with minimal supervision.",
       "phrases": [
-        "remote",
-        "freelance",
-        "contract",
-        "independent",
         "self-directed",
         "self directed",
         "work independently",
+        "works independently",
         "minimal supervision",
-        "asynchronous",
-        "distributed team",
+        "little supervision",
+        "manage your own workload",
         "autonomy"
       ]
     }
   ],
-
   "_experienceGapsComment": "Demands she has NOT performed. These are the other half of the experience-fit ratio — a posting that asks for five things she has done and none of these scores near the top, and one that asks mostly for these does not, however friendly its title. Kept separate from qualification gaps because these are about the work itself, not about a stated requirement.",
   "experienceGaps": [
     {
       "id": "medical-scientific",
       "label": "Medical, scientific or pharmaceutical editing",
       "weight": 12,
-      "phrases": ["medical writing", "medical editing", "clinical", "pharmaceutical", "pharma", "biotech", "scientific manuscript", "manuscripts", "peer-reviewed", "regulatory submission", "ama style", "medical legal regulatory", "mlr", "drug", "therapeutic"]
+      "phrases": [
+        "medical writing",
+        "medical editing",
+        "clinical",
+        "pharmaceutical",
+        "pharma",
+        "biotech",
+        "scientific manuscript",
+        "manuscripts",
+        "peer-reviewed",
+        "regulatory submission",
+        "ama style",
+        "medical legal regulatory",
+        "mlr",
+        "drug",
+        "therapeutic"
+      ]
     },
     {
       "id": "legal",
       "label": "Legal editing or a legal qualification",
       "weight": 12,
-      "phrases": ["law degree", "juris doctor", "attorney", "paralegal", "litigation", "contract law", "legal editing", "legal writing", "case law", "bar admission"]
+      "phrases": [
+        "law degree",
+        "juris doctor",
+        "attorney",
+        "paralegal",
+        "litigation",
+        "contract law",
+        "legal editing",
+        "legal writing",
+        "case law",
+        "bar admission"
+      ]
     },
     {
       "id": "journalism",
       "label": "Newsroom reporting",
       "weight": 10,
       "_comment": "Bare 'reporting' is deliberately absent — every marketing posting on the board mentions reporting, and it was filing ordinary coordinator roles as newsroom work.",
-      "phrases": ["newsroom", "news reporting", "reporter", "breaking news", "news desk", "byline", "pitch stories", "beat reporting", "wire service", "investigative journalism"]
+      "phrases": [
+        "newsroom",
+        "news reporting",
+        "reporter",
+        "breaking news",
+        "news desk",
+        "byline",
+        "pitch stories",
+        "beat reporting",
+        "wire service",
+        "investigative journalism"
+      ]
     },
     {
       "id": "software-engineering",
       "label": "Software engineering",
       "weight": 12,
       "_comment": "'code review' and 'version control' are absent on purpose: documentation and CMS roles use both, and neither means the job is engineering.",
-      "phrases": ["software development", "software engineering", "programming", "developing applications", "api development", "database design", "algorithms", "system architecture", "build features", "ship code"]
+      "phrases": [
+        "software development",
+        "software engineering",
+        "programming",
+        "developing applications",
+        "api development",
+        "database design",
+        "algorithms",
+        "system architecture",
+        "build features",
+        "ship code"
+      ]
     },
     {
       "id": "financial-technical",
       "label": "Financial or actuarial expertise",
       "weight": 10,
-      "phrases": ["financial statements", "gaap", "sec filings", "actuarial", "underwriting", "audited financials", "cpa", "portfolio management"]
+      "phrases": [
+        "financial statements",
+        "gaap",
+        "sec filings",
+        "actuarial",
+        "underwriting",
+        "audited financials",
+        "cpa",
+        "portfolio management"
+      ]
     },
     {
       "id": "paid-media",
       "label": "Paid media buying and analytics ownership",
       "weight": 8,
-      "phrases": ["media buying", "paid search", "paid social", "google ads", "programmatic", "bid strategy", "roas", "attribution modeling", "demand generation"]
+      "phrases": [
+        "media buying",
+        "paid search",
+        "paid social",
+        "google ads",
+        "programmatic",
+        "bid strategy",
+        "roas",
+        "attribution modeling",
+        "demand generation"
+      ]
     }
   ],
-
   "_qualificationComment": "QUALIFICATION FIT — how closely she meets what the employer explicitly asks for. The base is high on purpose: ten years in the work, an honours BA and a graduate degree clear the stated bar for most of these postings. What moves it is the specific asks. The spec's rule holds here — one easily learnable missing tool must not destroy the score, so learnable gaps cost a few points each and are reported separately from the ones that genuinely disqualify.",
   "qualification": {
     "base": 78,
@@ -1172,30 +1526,202 @@
     "penaltyYearsBeyond": 12,
     "degreeAsked": {
       "weight": 6,
-      "phrases": ["bachelor", "bachelors", "bachelor's", "b.a.", "b.s.", "degree in english", "english degree", "journalism degree", "degree in communications", "degree in journalism", "college degree", "undergraduate degree", "four-year degree"]
+      "phrases": [
+        "bachelor",
+        "bachelors",
+        "bachelor's",
+        "b.a.",
+        "b.s.",
+        "degree in english",
+        "english degree",
+        "journalism degree",
+        "degree in communications",
+        "degree in journalism",
+        "college degree",
+        "undergraduate degree",
+        "four-year degree"
+      ]
     },
     "advancedDegreeAsked": {
       "weight": 4,
-      "phrases": ["master", "masters", "master's", "graduate degree", "advanced degree", "m.a.", "postgraduate"]
+      "phrases": [
+        "master",
+        "masters",
+        "master's",
+        "graduate degree",
+        "advanced degree",
+        "m.a.",
+        "postgraduate"
+      ]
     },
     "learnableGaps": [
-      { "id": "ap-style", "label": "AP Style", "note": "A style manual, not a discipline — she has a decade of applying client style guides and can absorb AP in a weekend.", "phrases": ["ap style", "associated press style", "ap stylebook"] },
-      { "id": "chicago-style", "label": "Chicago Manual of Style", "note": "Same again: a specific manual on top of ten years of enforcing house style.", "phrases": ["chicago manual", "cmos", "chicago style"] },
-      { "id": "other-style-manual", "label": "A specific style manual (MLA / APA / AMA)", "note": "Manual-specific conventions layered on existing style-guide discipline.", "phrases": ["mla style", "apa style", "ama style", "microsoft manual of style"] },
-      { "id": "cms-platform", "label": "A specific CMS", "note": "She has worked in CMS and campaign tools; the platform name changes, the work does not.", "phrases": ["contentful", "sitecore", "adobe experience manager", "aem", "drupal", "sanity", "storyblok", "kentico", "sitefinity"] },
-      { "id": "pim-platform", "label": "A PIM platform such as Salsify", "note": "Product-information tooling around work she already does by hand against source data.", "phrases": ["salsify", "akeneo", "inriver", "productsup", "pim", "product information management", "syndigo"] },
-      { "id": "ecommerce-platform", "label": "A specific e-commerce platform", "note": "Retail e-commerce content is familiar ground; the storefront platform is a tool to learn.", "phrases": ["shopify", "magento", "salesforce commerce", "sfcc", "bigcommerce", "commercetools", "woocommerce"] },
-      { "id": "editorial-tooling", "label": "A specific editorial tool", "note": "Terminology and linting tools sit on top of the editorial judgement they automate.", "phrases": ["acrolinx", "grammarly business", "writer.com", "termbase", "xml editor", "oxygen xml", "madcap flare"] },
-      { "id": "assessment-terminology", "label": "Assessment-development terminology", "note": "Item banks, DOK levels and alignment vocabulary — new words for curriculum and evaluation work she has done.", "phrases": ["psychometric", "item bank", "depth of knowledge", "dok", "item writing", "alignment to standards", "test blueprint", "bloom's taxonomy"] },
-      { "id": "localization-tooling", "label": "Translation or localisation tooling", "note": "Tooling only — this board does not surface language-focused roles, but a passing tool requirement should not sink an otherwise good posting.", "phrases": ["trados", "memoq", "xtm", "phrase tms", "translation memory"] }
+      {
+        "id": "ap-style",
+        "label": "AP Style",
+        "note": "A style manual, not a discipline — she has a decade of applying client style guides and can absorb AP in a weekend.",
+        "phrases": [
+          "ap style",
+          "associated press style",
+          "ap stylebook"
+        ]
+      },
+      {
+        "id": "chicago-style",
+        "label": "Chicago Manual of Style",
+        "note": "Same again: a specific manual on top of ten years of enforcing house style.",
+        "phrases": [
+          "chicago manual",
+          "cmos",
+          "chicago style"
+        ]
+      },
+      {
+        "id": "other-style-manual",
+        "label": "A specific style manual (MLA / APA / AMA)",
+        "note": "Manual-specific conventions layered on existing style-guide discipline.",
+        "phrases": [
+          "mla style",
+          "apa style",
+          "ama style",
+          "microsoft manual of style"
+        ]
+      },
+      {
+        "id": "cms-platform",
+        "label": "A specific CMS",
+        "note": "She has worked in CMS and campaign tools; the platform name changes, the work does not.",
+        "phrases": [
+          "contentful",
+          "sitecore",
+          "adobe experience manager",
+          "aem",
+          "drupal",
+          "sanity",
+          "storyblok",
+          "kentico",
+          "sitefinity"
+        ]
+      },
+      {
+        "id": "pim-platform",
+        "label": "A PIM platform such as Salsify",
+        "note": "Product-information tooling around work she already does by hand against source data.",
+        "phrases": [
+          "salsify",
+          "akeneo",
+          "inriver",
+          "productsup",
+          "pim",
+          "product information management",
+          "syndigo"
+        ]
+      },
+      {
+        "id": "ecommerce-platform",
+        "label": "A specific e-commerce platform",
+        "note": "Retail e-commerce content is familiar ground; the storefront platform is a tool to learn.",
+        "phrases": [
+          "shopify",
+          "magento",
+          "salesforce commerce",
+          "sfcc",
+          "bigcommerce",
+          "commercetools",
+          "woocommerce"
+        ]
+      },
+      {
+        "id": "editorial-tooling",
+        "label": "A specific editorial tool",
+        "note": "Terminology and linting tools sit on top of the editorial judgement they automate.",
+        "phrases": [
+          "acrolinx",
+          "grammarly business",
+          "writer.com",
+          "termbase",
+          "xml editor",
+          "oxygen xml",
+          "madcap flare"
+        ]
+      },
+      {
+        "id": "assessment-terminology",
+        "label": "Assessment-development terminology",
+        "note": "Item banks, DOK levels and alignment vocabulary — new words for curriculum and evaluation work she has done.",
+        "phrases": [
+          "psychometric",
+          "item bank",
+          "depth of knowledge",
+          "dok",
+          "item writing",
+          "alignment to standards",
+          "test blueprint",
+          "bloom's taxonomy"
+        ]
+      },
+      {
+        "id": "localization-tooling",
+        "label": "Translation or localisation tooling",
+        "note": "Tooling only — this board does not surface language-focused roles, but a passing tool requirement should not sink an otherwise good posting.",
+        "phrases": [
+          "trados",
+          "memoq",
+          "xtm",
+          "phrase tms",
+          "translation memory"
+        ]
+      }
     ],
     "disqualifying": [
-      { "id": "advanced-credential", "label": "A credential she does not hold", "weight": 26, "phrases": ["law degree", "juris doctor", "phd required", "doctorate", "md required", "registered nurse", "cpa required", "professional engineer", "active security clearance", "ts/sci"] },
-      { "id": "management-scope", "label": "A management remit rather than hands-on review", "weight": 18, "phrases": ["manage a team of", "people management", "direct reports", "hiring and firing", "budget ownership", "p&l", "department head"] },
-      { "id": "onsite-requirement", "label": "An on-site or relocation requirement", "weight": 20, "phrases": ["must relocate", "relocation required", "onsite required", "on-site required", "in office", "in-office", "hybrid schedule", "days per week in", "must reside in"] }
+      {
+        "id": "advanced-credential",
+        "label": "A credential she does not hold",
+        "weight": 26,
+        "phrases": [
+          "law degree",
+          "juris doctor",
+          "phd required",
+          "doctorate",
+          "md required",
+          "registered nurse",
+          "cpa required",
+          "professional engineer",
+          "active security clearance",
+          "ts/sci"
+        ]
+      },
+      {
+        "id": "management-scope",
+        "label": "A management remit rather than hands-on review",
+        "weight": 18,
+        "phrases": [
+          "manage a team of",
+          "people management",
+          "direct reports",
+          "hiring and firing",
+          "budget ownership",
+          "p&l",
+          "department head"
+        ]
+      },
+      {
+        "id": "onsite-requirement",
+        "label": "An on-site or relocation requirement",
+        "weight": 20,
+        "phrases": [
+          "must relocate",
+          "relocation required",
+          "onsite required",
+          "on-site required",
+          "in office",
+          "in-office",
+          "hybrid schedule",
+          "days per week in",
+          "must reside in"
+        ]
+      }
     ]
   },
-
   "_lifestyleComment": "LIFESTYLE FIT — the spec's special positive signals. The location gate has already dropped anything that is not remote, so this axis is about how much freedom the posting actually offers on top of that: contract and project framing, part-time and flexible capacity, asynchronous work, and pay that is stated rather than hidden.",
   "lifestyle": {
     "base": 46,
@@ -1203,44 +1729,218 @@
     "remoteUS": 24,
     "remoteOther": 18,
     "signals": [
-      { "label": "Contract or freelance", "weight": 12, "phrases": ["contract", "contractor", "independent contractor", "freelance", "freelancer", "1099", "fixed-term", "contract-to-hire"] },
-      { "label": "Project or deliverable based", "weight": 10, "phrases": ["project-based", "project based", "per project", "per-project", "deliverable", "deliverables", "statement of work", "scope of work", "retainer", "milestone", "fixed fee"] },
-      { "label": "Part-time", "weight": 9, "phrases": ["part-time", "part time", "hours per week", "10 hours", "15 hours", "20 hours", "25 hours", "30 hours"] },
-      { "label": "Flexible schedule", "weight": 9, "phrases": ["flexible hours", "flexible schedule", "flexibility", "set your own hours", "variable hours", "your own schedule", "flexible working"] },
-      { "label": "Asynchronous work", "weight": 7, "phrases": ["asynchronous", "async", "work when you want", "no set hours", "results-oriented work"] }
+      {
+        "label": "Contract or freelance",
+        "weight": 12,
+        "phrases": [
+          "contract",
+          "contractor",
+          "independent contractor",
+          "freelance",
+          "freelancer",
+          "1099",
+          "fixed-term",
+          "contract-to-hire"
+        ]
+      },
+      {
+        "label": "Project or deliverable based",
+        "weight": 10,
+        "phrases": [
+          "project-based",
+          "project based",
+          "per project",
+          "per-project",
+          "deliverable",
+          "deliverables",
+          "statement of work",
+          "scope of work",
+          "retainer",
+          "milestone",
+          "fixed fee"
+        ]
+      },
+      {
+        "label": "Part-time",
+        "weight": 9,
+        "phrases": [
+          "part-time",
+          "part time",
+          "hours per week",
+          "10 hours",
+          "15 hours",
+          "20 hours",
+          "25 hours",
+          "30 hours"
+        ]
+      },
+      {
+        "label": "Flexible schedule",
+        "weight": 9,
+        "phrases": [
+          "flexible hours",
+          "flexible schedule",
+          "flexibility",
+          "set your own hours",
+          "variable hours",
+          "your own schedule",
+          "flexible working"
+        ]
+      },
+      {
+        "label": "Asynchronous work",
+        "weight": 7,
+        "phrases": [
+          "asynchronous",
+          "async",
+          "work when you want",
+          "no set hours",
+          "results-oriented work"
+        ]
+      }
     ],
     "signalsCap": 26,
     "drawbacks": [
-      { "label": "Travel expected", "weight": 8, "phrases": ["travel required", "travel up to", "willing to travel", "quarterly travel", "% travel"] },
-      { "label": "On-call, evening or weekend cover", "weight": 8, "phrases": ["on-call", "on call", "weekend work", "weekends", "evening shift", "night shift", "rotating shift", "overnight"] },
-      { "label": "Time-zone constraint", "weight": 5, "phrases": ["must overlap", "core hours", "pst hours", "est hours", "european time zone", "gmt hours"] }
+      {
+        "label": "Travel expected",
+        "weight": 8,
+        "phrases": [
+          "travel required",
+          "travel up to",
+          "willing to travel",
+          "quarterly travel",
+          "% travel"
+        ]
+      },
+      {
+        "label": "On-call, evening or weekend cover",
+        "weight": 8,
+        "phrases": [
+          "on-call",
+          "on call",
+          "weekend work",
+          "weekends",
+          "evening shift",
+          "night shift",
+          "rotating shift",
+          "overnight"
+        ]
+      },
+      {
+        "label": "Time-zone constraint",
+        "weight": 5,
+        "phrases": [
+          "must overlap",
+          "core hours",
+          "pst hours",
+          "est hours",
+          "european time zone",
+          "gmt hours"
+        ]
+      }
     ],
     "compensationStated": 4
   },
-
   "_industriesComment": "The spec's industry positives. Small, deliberate weights: a good posting from an unlisted industry should not lose to a mediocre one from a listed one.",
   "industries": [
-    { "label": "Retail / e-commerce / consumer brands", "weight": 5, "phrases": ["retail", "e-commerce", "ecommerce", "consumer brands", "direct to consumer", "dtc", "merchandising", "omnichannel"] },
-    { "label": "Digital marketing / CRM / email", "weight": 5, "phrases": ["digital marketing", "crm", "email marketing", "lifecycle marketing", "martech", "marketing operations"] },
-    { "label": "Marketing or creative agency", "weight": 4, "phrases": ["agency", "creative agency", "marketing agency", "client brands", "account team", "studio"] },
-    { "label": "Educational publishing / assessment", "weight": 4, "phrases": ["educational publishing", "edtech", "assessment", "testing organization", "curriculum publisher", "learning company", "higher education"] }
+    {
+      "label": "Retail / e-commerce / consumer brands",
+      "weight": 5,
+      "phrases": [
+        "retail",
+        "e-commerce",
+        "ecommerce",
+        "consumer brands",
+        "direct to consumer",
+        "dtc",
+        "merchandising",
+        "omnichannel"
+      ]
+    },
+    {
+      "label": "Digital marketing / CRM / email",
+      "weight": 5,
+      "phrases": [
+        "digital marketing",
+        "crm",
+        "email marketing",
+        "lifecycle marketing",
+        "martech",
+        "marketing operations"
+      ]
+    },
+    {
+      "label": "Marketing or creative agency",
+      "weight": 4,
+      "phrases": [
+        "agency",
+        "creative agency",
+        "marketing agency",
+        "client brands",
+        "account team",
+        "studio"
+      ]
+    },
+    {
+      "label": "Educational publishing / assessment",
+      "weight": 4,
+      "phrases": [
+        "educational publishing",
+        "edtech",
+        "assessment",
+        "testing organization",
+        "curriculum publisher",
+        "learning company",
+        "higher education"
+      ]
+    }
   ],
-
   "_thinPostingComment": "Jooble and the RSS feeds return a two-line snippet rather than a description, and three of the four axes read the description — so a posting titled exactly what she is looking for can arrive scoring like a mediocre one purely because there is nothing to read. A posting shorter than minChars whose title names a family, with nothing counting against it, is floored on the strength of the title alone, and the card says the score was read off a snippet.",
   "thinPosting": {
     "minChars": 300,
-    "floors": { "core": 78, "priority": 72, "adjacent": 0 }
+    "floors": {
+      "core": 78,
+      "priority": 72,
+      "adjacent": 0
+    }
   },
-
   "_seniorityComment": "Read off the job title only, and used by the board's 👍/👎 ranking model to make sense of a 'too senior' or 'too junior' rating. Descriptions mention senior stakeholders constantly; the title is what states the level of the job being advertised.",
   "seniority": {
-    "senior": ["senior", "sr.", "sr", "lead", "principal", "staff", "head of", "director", "vp", "vice president", "manager", "chief", "executive"],
-    "junior": ["junior", "jr.", "jr", "entry level", "entry-level", "associate", "assistant", "coordinator", "apprentice", "trainee", "intern", "graduate"]
+    "senior": [
+      "senior",
+      "sr.",
+      "sr",
+      "lead",
+      "principal",
+      "staff",
+      "head of",
+      "director",
+      "vp",
+      "vice president",
+      "manager",
+      "chief",
+      "executive"
+    ],
+    "junior": [
+      "junior",
+      "jr.",
+      "jr",
+      "entry level",
+      "entry-level",
+      "associate",
+      "assistant",
+      "coordinator",
+      "apprentice",
+      "trainee",
+      "intern",
+      "graduate"
+    ]
   },
-
   "_discoveryComment": "The spec's instruction to flag unusual opportunities even when the score is lower, because they may reveal a career category she would not have searched. A posting qualifies when its title belongs to an adjacent family, or when it wants enough distinct abilities with no recognisable title at all.",
   "discovery": {
     "minWorkSignals": 6,
-    "adjacentTiers": ["adjacent"]
+    "adjacentTiers": [
+      "adjacent"
+    ]
   }
 }

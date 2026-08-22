@@ -167,14 +167,36 @@ function matchFamily(profile, normTitle) {
 function scoreWork(profile, normTitle, normAll, family) {
   const reasons = [];
 
+  /**
+   * CORE signals are evidence that the job is reviewing work somebody else
+   * produced, against a standard. SUPPORTING signals say where and with whom.
+   *
+   * The distinction is the whole axis. Every digital and creative posting
+   * carries the supporting vocabulary — layout, deadlines, designers, campaigns
+   * — so counting the two alike let a Creative Designer score 80 here and a
+   * payroll role 79. Supporting signals are therefore capped, and a posting with
+   * no core signal at all is capped harder still: nothing in it says she would
+   * be reviewing anything.
+   */
+  const caps = profile.workSignalCaps || {};
   const signalHits = matchGroup(profile.workSignals, normAll).sort((a, b) => b.weight - a.weight);
-  let signals = 0;
-  signalHits.forEach((hit, index) => {
-    const points = hit.weight * 0.9 ** index;
-    signals += points;
-    if (index < 8) reasons.push({ kind: 'work', label: hit.label, detail: `“${hit.phrase}”`, points: round1(points) });
-  });
-  signals = clamp(signals, 0, SIGNAL_CAP);
+  const coreHits = signalHits.filter((hit) => hit.tier !== 'supporting');
+  const supportingHits = signalHits.filter((hit) => hit.tier === 'supporting');
+
+  const tally = (hits, cap) => {
+    let total = 0;
+    hits.forEach((hit, index) => {
+      const points = hit.weight * 0.9 ** index;
+      total += points;
+      if (index < 6) reasons.push({ kind: 'work', label: hit.label, detail: `“${hit.phrase}”`, points: round1(points) });
+    });
+    return clamp(total, 0, cap);
+  };
+
+  const core = tally(coreHits, SIGNAL_CAP);
+  const supporting = tally(supportingHits, caps.supporting ?? 14);
+  let signals = clamp(core + supporting, 0, SIGNAL_CAP);
+  if (!coreHits.length) signals = Math.min(signals, caps.noCore ?? 30);
 
   const comboHits = matchCombinations(profile.combinations, normAll);
   let combos = 0;
@@ -225,6 +247,7 @@ function scoreWork(profile, normTitle, normAll, family) {
     score: clamp(Math.round((raw / WORK_MAX) * 100), 0, 100),
     reasons,
     signalCount: signalHits.length,
+    coreSignalCount: coreHits.length,
     signalLabels: signalHits.map((h) => h.label),
     // Carried onto the card so the 👍/👎 model can learn over the kinds of work
     // a posting involves rather than over the posting itself. Ids only — the
@@ -513,7 +536,7 @@ export function matchTier(match, profile) {
  * to watch for — written from the same hits that produced the score, so the
  * explanation can never drift from the number.
  */
-function buildReport({ job, family, work, experience, qualification, lifestyle, penalties, industries, thin }) {
+function buildReport({ job, family, work, experience, qualification, lifestyle, penalties, industries, thin, gated }) {
   const why = [];
 
   if (family) {
@@ -569,6 +592,11 @@ function buildReport({ job, family, work, experience, qualification, lifestyle, 
   }
   for (const reason of penalties.reasons) {
     watchOuts.push(`${reason.label} — ${reason.detail}.`);
+  }
+  if (gated) {
+    watchOuts.push(
+      'You would meet this employer\u2019s requirements more than the day-to-day work justifies — the score is held to what the work itself is worth.'
+    );
   }
   if (thin) {
     watchOuts.push('This board only received a short snippet of the posting, so the scores lean on the title. Open the full description before judging it.');
@@ -631,6 +659,25 @@ export function scoreJob(job, profile, now = new Date(), options = {}) {
   match = clamp(Math.round(match + penalties.score), 0, 100);
 
   /**
+   * WORK FIT IS THE GATE.
+   *
+   * The other three axes have high floors by their nature: everything here is
+   * remote, she clears most stated requirements, and she has done a great deal
+   * of adjacent work. Together they are 65% of the score, so without this a job
+   * she has no wish to do reached the apply bands purely on her being qualified
+   * for it — a marine sales role at 72, a UX/UI design contract leading the
+   * board at 85.
+   *
+   * The cap says the obvious thing: a job she does not want to do cannot be a
+   * strong match however well she would meet its requirements. It only ever
+   * lowers a score, and a posting whose work she wants is never touched by it.
+   */
+  const gate = profile.workGate || {};
+  const ceiling = (gate.base ?? 45) + work.score * (gate.slope ?? 0.55);
+  const gated = match > ceiling;
+  if (gated) match = Math.round(ceiling);
+
+  /**
    * Several sources return a two-line snippet rather than a description. Three
    * of the four axes read the description, so a posting titled exactly what she
    * is looking for can arrive scoring like a mediocre one purely because there
@@ -659,7 +706,7 @@ export function scoreJob(job, profile, now = new Date(), options = {}) {
   const bucket = freshnessBucket(recency.ageDays, profile);
   const band = bandFor(match, profile);
 
-  const report = buildReport({ job, family, work, experience, qualification, lifestyle, penalties, industries, thin });
+  const report = buildReport({ job, family, work, experience, qualification, lifestyle, penalties, industries, thin, gated });
 
   /**
    * The spec's recommendation, with two ceilings on top of the band: a demand
@@ -748,6 +795,9 @@ export function scoreJob(job, profile, now = new Date(), options = {}) {
         seniority: seniorityOf(profile, normTitle),
       },
       scoredFromSnippet: thin,
+      // Whether the work-fit gate held this score down, so the card can say
+      // that being qualified for something is not the same as wanting it.
+      gatedByWorkFit: gated,
       yearsRequested: qualification.years,
     },
   };

@@ -306,12 +306,33 @@ recommendation the card prints as a call to action:
 
 Six rules do most of the work:
 
+- **Work fit is the gate.** The other three axes have high floors by their
+  nature: everything here is remote, she clears most stated requirements, and
+  she has done a great deal of adjacent work. Together they are 65% of the
+  score, so without a gate a job she has no wish to do reaches the apply bands
+  purely on her being qualified for it — on the first live board a UX/UI design
+  contract led at 85 and a payroll role scored 82. `workGate` caps the overall
+  at `base + slope × work fit`, which says the obvious thing: **a job she does
+  not want to do cannot be a strong match however well she would meet its
+  requirements.** It only ever lowers a score, and never touches a posting whose
+  work she wants.
 - **Titles corroborate; they do not decide.** A recognised title is worth at most
   22 of the 90 raw work-fit points. What carries the axis is what the posting
   says the job involves — and, more than any single concept, which concepts
   appear **together**. "Proofreading" is a word; *proofreading against brand
   standards for digital content* is her job. Fourteen such combinations are
-  scored in `combinations`, and they outweigh any exact title match.
+  scored in `combinations`, and they outweigh any exact title match. **Every
+  member of every combination set must name its own concept**: a set containing
+  a bare "review", "quality" or "audit" turns *concepts appearing together* into
+  *common words appearing together*, which is how a payroll posting came to fire
+  both "Email + content review + quality assurance" and "Content audit +
+  discrepancies + source of truth". A test enforces it.
+- **Work signals are evidence or context, and the two are not equal.** `core`
+  signals say the job is reviewing work somebody else produced against a
+  standard; `supporting` signals — layout, deadlines, designers, campaigns —
+  say where and with whom. Every digital and creative posting carries the
+  supporting vocabulary, so it is capped, and a posting with no core signal at
+  all is capped harder: nothing in it says she would be reviewing anything.
 - **Writing is not disqualifying; writing as the job is.** Editing roles rewrite
   sentences all the time, so the copywriting test is a balance rather than a
   keyword: count the distinct concepts on each side, and only penalise when
@@ -566,6 +587,11 @@ v3 ([`config/profile.v3.json`](config/profile.v3.json)):
   `qualification.learnableGaps` with a note saying why it is learnable.
 - **Stale postings hang around** → lower `search.staleAfterDays` (30) or raise
   `search.staleKeepMinMatch` (88).
+- **Jobs she does not want keep reaching the top** → this is nearly always a
+  `workSignals` group or a `combinations` set that a generic posting can
+  satisfy. Open the card's *Why it matched* panel, find the signal that should
+  not have fired, and either tier it `supporting` or make its phrases name the
+  thing being reviewed. Tightening the `workGate` slope is the blunt version.
 - **A whole level of role is wrong** → the 👍 / 👎 / 🚫 buttons handle this
   without a config change; `seniority` in the v3 profile is only the vocabulary
   that lets "too senior" and "too junior" recognise a level.
@@ -581,7 +607,8 @@ treated as spaces, so `copy editing` also matches "copy-editing" and
 ## Working on it locally
 
 ```bash
-npm test          # unit tests — matching, location gate, all three scorers, dedupe, liveness
+npm test          # unit tests — matching, location gate, all three scorers, dedupe, liveness, ratings
+npm run stamp     # refresh the cache-busting stamps after editing docs/
 npm run fetch     # pull live postings → docs/data/
 npm run serve     # preview at http://localhost:4173
 npm start         # fetch then serve
@@ -589,6 +616,14 @@ npm start         # fetch then serve
 
 No dependencies to install — everything uses the Node standard library, so
 `npm test` and `npm run fetch` work on a clean checkout with Node 20+.
+
+**After editing anything in `docs/`, run `npm run stamp`.** The board fetches
+its data with a cache-buster, but referenced its own code by bare name — so a
+browser that had the site open across a deploy ran the *old* script against the
+*new* data. That is how the ratings first shipped invisibly: current postings,
+current scores, no rating buttons. Every asset URL now carries a hash of its own
+contents, `npm run serve` refreshes them, and `npm test` fails if they are
+stale.
 
 Open `docs/index.html` directly and the page will load but stay empty; browsers
 block `fetch` on `file://` URLs. Use `npm run serve`.
@@ -603,6 +638,7 @@ config/
   company-boards.json   specific company career pages to watch
 scripts/
   fetch-jobs.mjs        orchestrator: fetch → normalize → dedupe → filter → score → verify → write
+  stamp-assets.mjs      content hashes on the page's own asset URLs, so a deploy is never cached over
   serve.mjs             local preview server
   lib/                  http, text, xml, location gate, three scorers, normalizer, liveness check
   sources/              one adapter per job board
