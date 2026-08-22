@@ -130,6 +130,20 @@ export function countConcepts(phrases, normalizedText) {
   return concepts;
 }
 
+/**
+ * Junior, mid or senior, read off the title.
+ *
+ * Only the title, deliberately: descriptions say "you will work with senior
+ * stakeholders" constantly, and the level of the job being advertised is what
+ * the "too senior" / "too junior" feedback is about.
+ */
+export function seniorityOf(profile, normTitle) {
+  const config = profile.seniority || {};
+  if (longestMatch(config.senior, normTitle)) return 'senior';
+  if (longestMatch(config.junior, normTitle)) return 'junior';
+  return 'mid';
+}
+
 /** Which role family this title belongs to, if any. Longest match wins. */
 function matchFamily(profile, normTitle) {
   let best = null;
@@ -212,6 +226,10 @@ function scoreWork(profile, normTitle, normAll, family) {
     reasons,
     signalCount: signalHits.length,
     signalLabels: signalHits.map((h) => h.label),
+    // Carried onto the card so the 👍/👎 model can learn over the kinds of work
+    // a posting involves rather than over the posting itself. Ids only — the
+    // labels travel once in meta.json rather than on every posting.
+    signalIds: signalHits.map((hit) => hit.id).filter(Boolean),
     combinationLabels: comboHits.map((h) => h.label),
     orientation,
     automation,
@@ -717,6 +735,18 @@ export function scoreJob(job, profile, now = new Date(), options = {}) {
       gaps: report.gaps,
       watchOuts: report.watchOuts,
       freshness: { label: bucket.label, ageDays: recency.ageDays, assumed: recency.assumed },
+      /**
+       * The facts the 👍/👎 ranking model learns over. Emitted as data rather
+       * than prose because the client has to be able to compare one posting
+       * with the categories of another, months after the first has expired.
+       */
+      signals: {
+        work: work.signalIds,
+        industries: industries.map((hit) => hit.label),
+        creation: work.orientation.creationCount + (work.orientation.creationTitle ? 1 : 0),
+        automation: work.automation.concepts,
+        seniority: seniorityOf(profile, normTitle),
+      },
       scoredFromSnippet: thin,
       yearsRequested: qualification.years,
     },

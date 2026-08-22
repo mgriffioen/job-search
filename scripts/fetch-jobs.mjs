@@ -198,6 +198,12 @@ async function main() {
         tierOrder: board.tierOrder ?? ['strong', 'good', 'possible', 'stretch'],
         tierLabels: board.tierLabels ?? null,
         axisWeights: board.profile.axisWeights ?? null,
+        // Named once here rather than on every posting: the board's 👍/👎
+        // model stores work-signal ids, and the cards need their labels to say
+        // what a rating was learned from.
+        workSignalLabels: board.profile.workSignals
+          ? Object.fromEntries(board.profile.workSignals.map((group) => [group.id, group.label]))
+          : null,
       },
       candidate: board.profile.candidate,
       ranking: board.profile.ranking,

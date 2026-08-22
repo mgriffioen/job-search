@@ -9,8 +9,21 @@
  * job descriptions are third-party text and must never be able to run.
  */
 
+import {
+  DOWN_REASONS,
+  buildModel,
+  adjustmentFor,
+  recordFeedback,
+  clearFeedback,
+  ratingFor,
+  normalisePreferences,
+  emptyPreferences,
+  summarise,
+} from './preferences.mjs';
+
 const STORE_KEY = 'emily-job-board:v1';
 const PREFS_KEY = 'emily-job-board:prefs:v1';
+const RATINGS_KEY = 'emily-job-board:ratings:v1';
 
 const state = {
   jobs: [],
@@ -21,6 +34,13 @@ const state = {
   focusIndex: -1,
   visible: [],
   store: loadStore(),
+  // The 👍 / 👎 / 🚫 ratings, and the weights derived from them. The model is
+  // rebuilt whenever a rating changes rather than per card, because every card
+  // in a render consults the same one.
+  ratings: emptyPreferences(),
+  model: null,
+  // jobId → { points, notes }, recomputed with the model.
+  adjustments: new Map(),
 };
 
 /* ---------------------------------------------------------------
@@ -47,6 +67,48 @@ function saveStore() {
   } catch {
     /* storage full or blocked — the board still works, just without memory */
   }
+}
+
+function loadRatings() {
+  try {
+    return normalisePreferences(JSON.parse(localStorage.getItem(RATINGS_KEY) || '{}'));
+  } catch {
+    return emptyPreferences();
+  }
+}
+
+function saveRatings() {
+  try {
+    localStorage.setItem(RATINGS_KEY, JSON.stringify(state.ratings));
+  } catch {
+    /* storage full or blocked — ranking still works, just without memory */
+  }
+}
+
+/**
+ * Rebuilds the preference model and every posting's adjustment.
+ *
+ * Called on load and after each rating. Doing it here rather than inside the
+ * sort keeps the arithmetic to once per change instead of once per comparison,
+ * and means the card and the sort order can never disagree about a number.
+ */
+function refreshRanking() {
+  state.model = buildModel(state.ratings);
+  const labels = state.meta?.model?.workSignalLabels || {};
+  state.adjustments = new Map();
+  for (const job of state.jobs) {
+    const adjustment = adjustmentFor(job, state.model, labels);
+    if (adjustment.points) state.adjustments.set(job.id, adjustment);
+  }
+}
+
+function adjustmentOf(job) {
+  return state.adjustments.get(job.id) || { points: 0, notes: [] };
+}
+
+/** Where a posting actually sorts: the board's rank, plus what she has taught it. */
+function tunedRank(job) {
+  return job.rank + adjustmentOf(job).points;
 }
 
 function loadPrefs() {
@@ -196,7 +258,10 @@ function sortJobs(jobs, mode) {
     case 'company':
       return copy.sort((a, b) => a.company.localeCompare(b.company) || b.match - a.match);
     default:
-      return copy.sort((a, b) => b.rank - a.rank);
+      // "Best overall" is the only sort the ratings touch. Highest match and
+      // Most recent are asked to sort on one stated axis, and quietly folding
+      // a learned preference into either would make them lie.
+      return copy.sort((a, b) => tunedRank(b) - tunedRank(a));
   }
 }
 
@@ -334,6 +399,8 @@ function renderCard(job) {
   const hideBtn = $('[data-action="hide"]', node);
   hideBtn.textContent = isHidden ? 'Restore' : 'Dismiss';
 
+  renderFeedback(node, job);
+
   const note = $('.note', node);
   const textarea = $('[data-note]', node);
   note.classList.toggle('is-open', isSaved || isApplied);
@@ -419,6 +486,61 @@ function renderFitReport(node, job) {
   fillBlock(node, '[data-learnable-block]', '[data-learnable]', learnable.map((g) => [g.label, g.note]));
   fillBlock(node, '[data-truegap-block]', '[data-truegaps]', trueGaps.map((g) => [g.label, g.note]));
   fillBlock(node, '[data-watch-block]', '[data-watchouts]', watchOuts.map((w) => [null, w]));
+}
+
+/**
+ * The 👍 / 👎 / 🚫 row, the reason chips, and — when the ratings have moved this
+ * posting — a line saying by how much and why.
+ *
+ * Only on boards that emit the signals the model learns over, which today means
+ * v3. On v1 and v2 the buttons would take a rating the ranking cannot use.
+ */
+function renderFeedback(node, job) {
+  if (!job.signals) return;
+
+  const rating = ratingFor(state.ratings, job.id);
+  const row = $('[data-feedback]', node);
+  row.hidden = false;
+
+  for (const button of $$('.vote', row)) {
+    const active = rating?.verdict === button.dataset.verdict;
+    button.classList.toggle('is-on', active);
+    button.setAttribute('aria-pressed', String(active));
+  }
+
+  // The reason row stays open while a 👎 has no reason yet, and after one is
+  // chosen it keeps showing the choice rather than vanishing — otherwise there
+  // is no way to see or change what was said.
+  const picker = $('[data-reason-picker]', node);
+  if (rating?.verdict === 'down') {
+    picker.hidden = false;
+    const chips = $('[data-reason-chips]', node);
+    for (const reason of DOWN_REASONS) {
+      const chip = document.createElement('button');
+      chip.type = 'button';
+      chip.className = 'reasonchip';
+      chip.dataset.reason = reason.id;
+      chip.textContent = reason.label;
+      const chosen = rating.reason === reason.id;
+      chip.classList.toggle('is-on', chosen);
+      chip.setAttribute('aria-pressed', String(chosen));
+      chips.append(chip);
+    }
+  }
+
+  const adjustment = adjustmentOf(job);
+  if (!adjustment.points) return;
+
+  const line = document.createElement('p');
+  line.className = adjustment.points > 0 ? 'tuned tuned--up' : 'tuned tuned--down';
+  const delta = document.createElement('strong');
+  delta.textContent = `${adjustment.points > 0 ? '+' : ''}${adjustment.points} from your ratings`;
+  line.append(delta);
+  if (adjustment.notes.length) {
+    line.append(document.createTextNode(` — ${adjustment.notes.join('; ')}.`));
+  }
+  line.title = 'Your ratings move where a posting sits in the list. They never change the match score or the band, which mean what the matching specification says they mean.';
+  row.before(line);
 }
 
 /** One report section: hidden when empty, never rendered with innerHTML. */
@@ -517,6 +639,101 @@ function toggle(bucket, id) {
   saveStore();
 }
 
+/**
+ * Records a verdict, or clears it when the same one is pressed again.
+ *
+ * 🚫 also hides the posting, because "wrong kind of work" is a judgement about
+ * this one as well as about its kind; un-rating it brings it back. The two are
+ * kept distinct on purpose: Dismiss removes one listing and teaches nothing.
+ */
+function handleVerdict(verdict, id) {
+  const job = state.jobs.find((j) => j.id === id);
+  if (!job) return;
+
+  const existing = ratingFor(state.ratings, id);
+  if (existing?.verdict === verdict) {
+    state.ratings = clearFeedback(state.ratings, id);
+    if (verdict === 'wrong') delete state.store.hidden[id];
+  } else {
+    state.ratings = recordFeedback(state.ratings, job, verdict);
+    if (verdict === 'wrong') state.store.hidden[id] = state.store.hidden[id] || new Date().toISOString();
+    else if (existing?.verdict === 'wrong') delete state.store.hidden[id];
+  }
+
+  saveRatings();
+  saveStore();
+  refreshRanking();
+  renderTuning();
+  render();
+}
+
+function handleReason(reasonId, id) {
+  const job = state.jobs.find((j) => j.id === id);
+  const existing = ratingFor(state.ratings, id);
+  if (!job || existing?.verdict !== 'down') return;
+
+  // Pressing the chosen reason again clears it, leaving the plain 👎.
+  const next = existing.reason === reasonId ? null : reasonId;
+  state.ratings = recordFeedback(state.ratings, job, 'down', next);
+  saveRatings();
+  refreshRanking();
+  renderTuning();
+  render();
+}
+
+function renderTuning() {
+  const panel = $('#tuning');
+  panel.hidden = !state.jobs.some((job) => job.signals);
+  if (panel.hidden) return;
+  $('#tuning-summary').textContent = summarise(state.model || buildModel(state.ratings));
+}
+
+function exportRatings() {
+  if (!state.model?.counts.total) {
+    window.alert('No ratings yet — 👍 or 👎 a few cards first.');
+    return;
+  }
+  download(
+    new Blob([`${JSON.stringify(state.ratings, null, 2)}\n`], { type: 'application/json' }),
+    `job-board-ratings-${new Date().toISOString().slice(0, 10)}.json`
+  );
+}
+
+/**
+ * Ratings are per-browser, like everything else the board remembers. Import is
+ * how they move to another machine — and the only way back after clearing site
+ * data, so it merges rather than replaces.
+ */
+async function importRatings(file) {
+  if (!file) return;
+  try {
+    const incoming = normalisePreferences(JSON.parse(await file.text()));
+    const merged = normalisePreferences(state.ratings);
+    let added = 0;
+    for (const [id, rating] of Object.entries(incoming.ratings)) {
+      if (!merged.ratings[id]) added += 1;
+      merged.ratings[id] = rating;
+    }
+    state.ratings = merged;
+    saveRatings();
+    refreshRanking();
+    renderTuning();
+    render();
+    window.alert(`Imported ${Object.keys(incoming.ratings).length} rating(s); ${added} were new.`);
+  } catch (err) {
+    window.alert(`That file could not be read as ratings (${err.message}).`);
+  }
+}
+
+function resetRatings() {
+  if (!window.confirm('Clear every 👍 / 👎 / 🚫 rating and go back to the board\u2019s own order?')) return;
+  state.ratings = emptyPreferences();
+  saveRatings();
+  refreshRanking();
+  renderTuning();
+  render();
+}
+
 function handleAction(action, id) {
   if (action === 'save') {
     toggle('saved', id);
@@ -565,11 +782,15 @@ function exportCsv() {
   ];
 
   const csv = rows.map((r) => r.map(esc).join(',')).join('\r\n');
-  const blob = new Blob([`﻿${csv}`], { type: 'text/csv;charset=utf-8' });
+  download(new Blob([`﻿${csv}`], { type: 'text/csv;charset=utf-8' }), `job-applications-${new Date().toISOString().slice(0, 10)}.csv`);
+}
+
+/** Hands a generated file to the browser. */
+function download(blob, filename) {
   const url = URL.createObjectURL(blob);
   const a = document.createElement('a');
   a.href = url;
-  a.download = `job-applications-${new Date().toISOString().slice(0, 10)}.csv`;
+  a.download = filename;
   a.click();
   URL.revokeObjectURL(url);
 }
@@ -762,6 +983,17 @@ function onKeydown(event) {
     case 'x':
       if (id) { event.preventDefault(); const i = state.focusIndex; handleAction('hide', id); focusCard(Math.min(i, $$('.card').length - 1)); }
       break;
+    case '1':
+    case '2':
+    case '3': {
+      if (!id) break;
+      const verdict = { 1: 'up', 2: 'down', 3: 'wrong' }[event.key];
+      event.preventDefault();
+      const index = state.focusIndex;
+      handleVerdict(verdict, id);
+      focusCard(Math.min(index, $$('.card').length - 1));
+      break;
+    }
     case 'Enter': {
       const job = state.visible.find((j) => j.id === id);
       if (job) { event.preventDefault(); window.open(job.applyUrl || job.url, '_blank', 'noopener'); }
@@ -832,6 +1064,12 @@ function wireEvents() {
   });
 
   $('#export-csv').addEventListener('click', exportCsv);
+  $('#export-ratings').addEventListener('click', exportRatings);
+  $('#reset-ratings').addEventListener('click', resetRatings);
+  $('#import-ratings').addEventListener('change', (event) => {
+    importRatings(event.target.files?.[0]);
+    event.target.value = '';
+  });
   $('#theme-toggle').addEventListener('click', cycleTheme);
 
   // A full navigation rather than a live swap: saved/applied/hidden state and
@@ -881,10 +1119,23 @@ function wireEvents() {
   });
 
   $('#results').addEventListener('click', (event) => {
+    const card = event.target.closest('.card');
+    if (!card) return;
+
+    const vote = event.target.closest('[data-verdict]');
+    if (vote) {
+      handleVerdict(vote.dataset.verdict, card.dataset.id);
+      return;
+    }
+
+    const reason = event.target.closest('[data-reason]');
+    if (reason) {
+      handleReason(reason.dataset.reason, card.dataset.id);
+      return;
+    }
+
     const button = event.target.closest('[data-action]');
-    if (!button) return;
-    const card = button.closest('.card');
-    handleAction(button.dataset.action, card.dataset.id);
+    if (button) handleAction(button.dataset.action, card.dataset.id);
   });
 
   $('#results').addEventListener('focusin', (event) => {
@@ -1037,8 +1288,12 @@ async function init() {
     return;
   }
 
+  state.ratings = loadRatings();
+  refreshRanking();
+
   renderHeader();
   renderSourceControls();
+  renderTuning();
   render();
 }
 

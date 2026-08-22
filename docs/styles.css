@@ -851,3 +851,131 @@ textarea { resize: vertical; }
 .report__block--warn h4 { color: var(--possible); }
 
 .chip--open { color: var(--strong); border-color: color-mix(in srgb, var(--strong) 40%, transparent); }
+
+/* ---------------------------------------------------------------
+   The 👍 / 👎 / 🚫 ranking controls
+
+   These teach the sort order, so they sit apart from the actions that act on
+   one posting — quieter than the buttons above them until one is pressed.
+   --------------------------------------------------------------- */
+
+.feedback {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 6px;
+  margin: 10px 0 0;
+  padding-top: 10px;
+  border-top: 1px dashed var(--line);
+}
+
+.feedback__lead {
+  font-size: .76rem;
+  color: var(--text-faint);
+  margin-right: 2px;
+}
+
+.vote {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 5px 10px;
+  border: 1px solid var(--line-strong);
+  border-radius: 999px;
+  background: var(--surface);
+  color: var(--text-soft);
+  font: inherit;
+  font-size: .78rem;
+  line-height: 1.2;
+  cursor: pointer;
+  transition: background .12s, border-color .12s, color .12s;
+}
+
+.vote:hover { border-color: var(--accent); color: var(--text); }
+
+.vote.is-on {
+  background: var(--accent-soft);
+  border-color: transparent;
+  color: var(--accent-text);
+  font-weight: 650;
+}
+
+.vote--stop.is-on {
+  background: color-mix(in srgb, var(--danger) 12%, transparent);
+  color: var(--danger);
+}
+
+/* On a narrow screen the labels are what wrap first; the emoji still says
+   which is which. */
+@media (max-width: 520px) {
+  .vote span { display: none; }
+  .vote { padding: 5px 9px; font-size: .9rem; }
+}
+
+/**
+ * Any element the script hides stays hidden.
+ *
+ * `hidden` is only a default of `display: none`, so every block below that sets
+ * its own `display` — the fit bars, the reason row, the report grid — silently
+ * defeats it. That is how an empty "Why?" prompt appeared under cards nobody
+ * had rated.
+ */
+[hidden] { display: none !important; }
+
+.reasons {
+  margin: 8px 0 0;
+  display: grid;
+  gap: 6px;
+}
+
+.reasons__lead { font-size: .76rem; color: var(--text-faint); }
+
+.reasons__chips { display: flex; flex-wrap: wrap; gap: 5px; }
+
+.reasonchip {
+  padding: 4px 9px;
+  border: 1px solid var(--line-strong);
+  border-radius: 999px;
+  background: var(--surface);
+  color: var(--text-soft);
+  font: inherit;
+  font-size: .75rem;
+  cursor: pointer;
+}
+
+.reasonchip:hover { border-color: var(--accent); color: var(--text); }
+
+.reasonchip.is-on {
+  background: var(--possible-soft);
+  border-color: transparent;
+  color: var(--possible);
+  font-weight: 650;
+}
+
+/* What the ratings did to this posting's position, and why. */
+.tuned {
+  margin: 10px 0 0;
+  font-size: .78rem;
+  line-height: 1.45;
+  color: var(--text-soft);
+}
+
+.tuned strong { font-weight: 650; }
+.tuned--up strong { color: var(--strong); }
+.tuned--down strong { color: var(--possible); }
+
+.tuning {
+  margin-top: 12px;
+  padding-top: 12px;
+  border-top: 1px solid var(--line);
+  display: grid;
+  gap: 8px;
+}
+
+.tuning__summary { margin: 0; font-size: .82rem; color: var(--text-soft); }
+
+.tuning__actions { display: flex; flex-wrap: wrap; gap: 8px; }
+
+/* The import control is a label wrapping a hidden file input, so it needs the
+   button's cursor to behave like one. */
+.tuning__actions label.btn { cursor: pointer; }
