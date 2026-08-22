@@ -1,6 +1,6 @@
 {
-  "generatedAt": "2026-08-21T16:49:41.245Z",
-  "durationMs": 33085,
+  "generatedAt": "2026-08-22T06:57:00.650Z",
+  "durationMs": 27835,
   "model": {
     "id": "v2",
     "label": "Ability-based"
@@ -34,26 +34,26 @@
     "minMatchScore": 20
   },
   "counts": {
-    "fetched": 1736,
-    "unique": 1203,
-    "published": 617,
+    "fetched": 1575,
+    "unique": 1094,
+    "published": 543,
     "dropped": {
-      "location": 330,
+      "location": 349,
       "stale": 13,
-      "lowMatch": 175,
-      "excluded": 68,
+      "lowMatch": 157,
+      "excluded": 32,
       "blockedDomain": 0
     }
   },
   "tiers": {
-    "strong": 69,
-    "good": 201,
-    "possible": 207,
-    "stretch": 140
+    "strong": 52,
+    "good": 184,
+    "possible": 176,
+    "stretch": 131
   },
-  "freshLast48h": 240,
-  "projectBased": 232,
-  "discoveries": 142,
+  "freshLast48h": 174,
+  "projectBased": 201,
+  "discoveries": 125,
   "sources": [
     {
       "id": "companyboards",
@@ -67,7 +67,7 @@
       "id": "jsearch",
       "label": "Google Jobs",
       "status": "ok",
-      "fetched": 10,
+      "fetched": 0,
       "warnings": [],
       "quota": {
         "limit": 200,
@@ -76,34 +76,38 @@
         "resetAt": "2026-08-27T15:52:26.053Z"
       },
       "budget": {
-        "allowed": 1,
-        "spent": 1,
+        "allowed": 0,
+        "spent": 0,
         "reserve": 12,
-        "reason": "pacing 9 spendable requests across ~12 runs left this period (0.75/run)"
+        "reason": "pacing 8 spendable requests across ~11 runs left this period (0.73/run)"
       },
-      "ms": 4822
+      "ms": 0
     },
     {
       "id": "adzuna",
       "label": "Adzuna",
       "status": "ok",
-      "fetched": 182,
+      "fetched": 23,
       "warnings": [
-        "michigan-remote \"proofreader\": 0 results (Adzuna reports 0 total matches)",
-        "michigan-remote \"copy editor\": 0 results (Adzuna reports 0 total matches)",
-        "michigan-remote \"marketing coordinator\": 0 results (Adzuna reports 0 total matches)",
-        "michigan-remote \"content specialist\": 0 results (Adzuna reports 0 total matches)",
-        "michigan-remote \"email specialist\": 0 results (Adzuna reports 0 total matches)",
-        "michigan-remote \"content quality\": 0 results (Adzuna reports 0 total matches)",
-        "michigan-remote \"content integrity\": 0 results (Adzuna reports 0 total matches)",
-        "michigan-remote \"editorial quality\": 0 results (Adzuna reports 0 total matches)",
-        "michigan-remote \"content auditor\": 0 results (Adzuna reports 0 total matches)",
-        "michigan-remote \"catalog specialist\": 0 results (Adzuna reports 0 total matches)",
-        "us-remote \"editorial quality\": 0 results (Adzuna reports 0 total matches)",
-        "us-remote \"content auditor\": 0 results (Adzuna reports 0 total matches)",
-        "us-remote \"catalog specialist\": 0 results (Adzuna reports 0 total matches)"
+        "michigan-remote \"product content\": 0 results (Adzuna reports 0 total matches)",
+        "michigan-remote \"web content\": 0 results (Adzuna reports 0 total matches)",
+        "michigan-remote \"production editor\": 0 results (Adzuna reports 0 total matches)",
+        "michigan-remote \"campaign operations\": 0 results (Adzuna reports 0 total matches)",
+        "michigan-remote \"digital production\": 0 results (Adzuna reports 0 total matches)",
+        "michigan-remote \"freelance qa\": 0 results (Adzuna reports 0 total matches)",
+        "michigan-remote \"contract qa\": 0 results (Adzuna reports 0 total matches)",
+        "michigan-remote \"freelance editor\": 0 results (Adzuna reports 0 total matches)",
+        "michigan-remote \"content audit\": 0 results (Adzuna reports 0 total matches)",
+        "michigan-remote \"content editor\": 0 results (Adzuna reports 0 total matches)",
+        "michigan-remote \"assessment editor\": 0 results (Adzuna reports 0 total matches)",
+        "michigan-remote \"learning content\": 0 results (Adzuna reports 0 total matches)",
+        "us-remote \"freelance qa\": 0 results (Adzuna reports 0 total matches)",
+        "us-remote \"contract qa\": 0 results (Adzuna reports 0 total matches)",
+        "us-remote \"freelance editor\": 0 results (Adzuna reports 0 total matches)",
+        "us-remote \"content audit\": 0 results (Adzuna reports 0 total matches)",
+        "us-remote \"assessment editor\": 0 results (Adzuna reports 0 total matches)"
       ],
-      "ms": 7305
+      "ms": 4463
     },
     {
       "id": "jooble",
@@ -111,7 +115,7 @@
       "status": "ok",
       "fetched": 80,
       "warnings": [],
-      "ms": 1061
+      "ms": 1826
     },
     {
       "id": "remotive",
@@ -119,7 +123,7 @@
       "status": "ok",
       "fetched": 288,
       "warnings": [],
-      "ms": 704
+      "ms": 401
     },
     {
       "id": "weworkremotely",
@@ -129,7 +133,7 @@
       "warnings": [
         "remote-marketing-jobs.rss: HTTP 301 Moved Permanently"
       ],
-      "ms": 1327
+      "ms": 1537
     },
     {
       "id": "himalayas",
@@ -137,15 +141,15 @@
       "status": "ok",
       "fetched": 240,
       "warnings": [],
-      "ms": 883
+      "ms": 487
     },
     {
       "id": "jobicy",
       "label": "Jobicy",
       "status": "ok",
-      "fetched": 308,
+      "fetched": 315,
       "warnings": [],
-      "ms": 10156
+      "ms": 12908
     },
     {
       "id": "remoteok",
@@ -153,7 +157,7 @@
       "status": "ok",
       "fetched": 100,
       "warnings": [],
-      "ms": 729
+      "ms": 712
     },
     {
       "id": "workingnomads",
@@ -161,7 +165,7 @@
       "status": "ok",
       "fetched": 46,
       "warnings": [],
-      "ms": 542
+      "ms": 776
     },
     {
       "id": "arbeitnow",
@@ -169,7 +173,7 @@
       "status": "ok",
       "fetched": 175,
       "warnings": [],
-      "ms": 255
+      "ms": 144
     }
   ]
 }
