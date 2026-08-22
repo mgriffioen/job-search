@@ -1,17 +1,29 @@
 {
   "generatedAt": "2026-08-22T18:27:01.742Z",
-  "durationMs": 23768,
+  "durationMs": 32280,
   "model": {
-    "id": "v1",
-    "label": "Title-driven",
+    "id": "v3",
+    "label": "Fit profile",
     "tierOrder": [
+      "exceptional",
       "strong",
       "good",
       "possible",
-      "stretch"
+      "low"
     ],
-    "tierLabels": null,
-    "axisWeights": null
+    "tierLabels": {
+      "exceptional": "Exceptional match — apply ASAP",
+      "strong": "Strong match — priority application",
+      "good": "Good match — review carefully",
+      "possible": "Possible adjacent opportunity",
+      "low": "Low priority"
+    },
+    "axisWeights": {
+      "work": 0.35,
+      "experience": 0.3,
+      "qualification": 0.2,
+      "lifestyle": 0.15
+    }
   },
   "candidate": {
     "name": "Emily Griffioen",
@@ -22,10 +34,10 @@
     "homeStateCode": "MI"
   },
   "ranking": {
-    "_comment": "Default blend used for the 'Best overall' sort in the UI. The UI can override these live.",
-    "matchWeight": 0.72,
-    "recencyWeight": 0.28,
-    "recencyHalfLifeDays": 14,
+    "_comment": "Freshness is 'extremely important' per the spec, so the half-life is shorter here than on the other boards and the bucket bonuses below sharpen it further. These adjust the sort order only — never the score, which has to keep meaning what the bands say it means.",
+    "matchWeight": 0.7,
+    "recencyWeight": 0.3,
+    "recencyHalfLifeDays": 10,
     "assumedAgeDaysWhenUnknown": 21,
     "_bullseyeComment": "Some sources return only a snippet, so a posting whose title names one of her exact roles cannot earn skill points it deserves. Such a title floors the match here, provided nothing in the posting counts against it. Raise bullseyeTitleWeight to make the floor apply to fewer title groups.",
     "bullseyeTitleFloor": 72,
@@ -35,29 +47,39 @@
   },
   "filters": {
     "maxAgeDays": 45,
-    "minMatchScore": 20
+    "minMatchScore": 65
   },
   "counts": {
     "fetched": 1526,
     "unique": 1032,
-    "published": 168,
+    "published": 114,
     "dropped": {
       "location": 318,
-      "stale": 11,
-      "lowMatch": 510,
+      "stale": 21,
+      "lowMatch": 554,
       "excluded": 25,
       "blockedDomain": 0
     }
   },
   "tiers": {
-    "strong": 8,
-    "good": 12,
-    "possible": 51,
-    "stretch": 97
+    "exceptional": 0,
+    "strong": 2,
+    "good": 15,
+    "possible": 59,
+    "low": 38
   },
-  "freshLast48h": 54,
-  "projectBased": 85,
-  "discoveries": 0,
+  "verification": {
+    "enabled": true,
+    "checked": 60,
+    "live": 31,
+    "closed": 0,
+    "unknown": 29,
+    "skipped": 54,
+    "ms": 1791
+  },
+  "freshLast48h": 43,
+  "projectBased": 50,
+  "discoveries": 37,
   "sources": [
     {
       "id": "companyboards",
