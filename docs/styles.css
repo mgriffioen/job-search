@@ -717,3 +717,137 @@ textarea { resize: vertical; }
 .chip--newdir { background: var(--accent-soft); color: var(--accent-text); border-color: transparent; font-weight: 650; }
 
 .hint { color: var(--text-faint); font-size: .8em; }
+
+/* ---------------------------------------------------------------
+   v3 — the fit-profile card
+
+   The specification asks for four separate scores, a recommendation, and a
+   written account of the evidence, the gaps and the cautions. That is a lot of
+   card, so the hierarchy carries it: the recommendation and the axis bars are
+   glanceable, the prose sits at reading size, and the full report stays folded
+   until it is wanted.
+   --------------------------------------------------------------- */
+
+/* v3 grades on five bands rather than four tiers; the two new ones borrow the
+   existing palette so the colour keeps meaning the same thing across boards. */
+.card[data-tier="exceptional"] { --tier: var(--strong); --tier-soft: var(--strong-soft); }
+.card[data-tier="low"] { --tier: var(--stretch); --tier-soft: var(--stretch-soft); }
+
+.rec {
+  display: inline-block;
+  margin-top: 6px;
+  padding: 3px 8px;
+  border-radius: 999px;
+  font-size: .68rem;
+  font-weight: 700;
+  letter-spacing: .04em;
+  text-transform: uppercase;
+  white-space: nowrap;
+  background: var(--stretch-soft);
+  color: var(--stretch);
+}
+
+.rec[data-rec="apply-asap"] { background: var(--strong-soft); color: var(--strong); }
+.rec[data-rec="apply"] { background: var(--good-soft); color: var(--good); }
+.rec[data-rec="consider"] { background: var(--possible-soft); color: var(--possible); }
+
+.fitbars {
+  display: grid;
+  gap: 4px;
+  margin: 0 0 10px;
+}
+
+.fitbar {
+  display: grid;
+  grid-template-columns: 5.5rem 1fr 2rem;
+  align-items: center;
+  gap: 8px;
+  font-size: .76rem;
+  color: var(--text-soft);
+}
+
+.fitbar__label { white-space: nowrap; }
+
+.fitbar__track {
+  height: 6px;
+  border-radius: 999px;
+  background: var(--surface-2);
+  overflow: hidden;
+}
+
+.fitbar__fill {
+  display: block;
+  height: 100%;
+  border-radius: 999px;
+  background: var(--tier, var(--accent));
+}
+
+.fitbar__num {
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+  color: var(--text);
+  font-weight: 600;
+}
+
+.card__why {
+  margin: 0 0 10px;
+  font-size: .88rem;
+  line-height: 1.5;
+  color: var(--text);
+}
+
+.report { margin-bottom: 12px; }
+
+.report > summary {
+  cursor: pointer;
+  font-size: .8rem;
+  font-weight: 600;
+  color: var(--text-soft);
+  display: flex;
+  gap: 6px;
+  align-items: center;
+}
+
+.report > summary::-webkit-details-marker { display: none; }
+.report > summary::before { content: "▸"; transition: transform .15s; }
+.report[open] > summary::before { transform: rotate(90deg); }
+
+.report__grid {
+  display: grid;
+  gap: 12px;
+  margin-top: 10px;
+  padding: 10px 12px;
+  border: 1px solid var(--line);
+  border-radius: var(--radius-sm);
+  background: var(--surface-2);
+}
+
+@media (min-width: 720px) {
+  .report__grid { grid-template-columns: 1fr 1fr; }
+}
+
+.report__block h4 {
+  margin: 0 0 4px;
+  font-size: .74rem;
+  text-transform: uppercase;
+  letter-spacing: .05em;
+  color: var(--text-faint);
+}
+
+.report__block ul {
+  margin: 0;
+  padding-left: 1.1rem;
+  display: grid;
+  gap: 5px;
+  font-size: .83rem;
+  line-height: 1.45;
+  color: var(--text-soft);
+}
+
+.report__block strong { color: var(--text); font-weight: 600; }
+
+/* Gaps and cautions read as warnings, not as errors: most of them are things
+   to check before applying rather than reasons not to. */
+.report__block--warn h4 { color: var(--possible); }
+
+.chip--open { color: var(--strong); border-color: color-mix(in srgb, var(--strong) 40%, transparent); }

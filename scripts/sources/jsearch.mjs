@@ -210,7 +210,15 @@ export async function fetchJobs({ profile, warn, previous, record = () => {} }) 
     return jobs;
   }
 
-  const queries = selectQueries(profile.search.queries, budget.allowed, new Date(), runsPerDay);
+  // The priority shortlist, not the full seventy-term list: a budget of three
+  // requests should be spent on the job families that matter most, not on
+  // whichever slice of the long list the rotation happens to land on.
+  const queries = selectQueries(
+    profile.search.priorityQueries?.length ? profile.search.priorityQueries : profile.search.queries,
+    budget.allowed,
+    new Date(),
+    runsPerDay
+  );
   console.log(`  · ${label}: budget ${budget.allowed}/${maxPerRun} request(s) — ${budget.reason}`);
 
   for (const query of queries) {

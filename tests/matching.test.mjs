@@ -9,12 +9,24 @@ import { normalizeJob, dedupeJobs, dedupeKey, isSameOrganisation, hostOf } from 
 import { parseRssItems } from '../scripts/lib/xml.mjs';
 import { explain as explainJsearch, extractJobs, mapJob as mapJsearchJob, selectQueries } from '../scripts/sources/jsearch.mjs';
 import { scoreJob as scoreJobV2 } from '../scripts/lib/score-v2.mjs';
-import { buildV2Profile } from '../scripts/lib/profiles.mjs';
+import {
+  scoreJob as scoreJobV3,
+  matchTier as matchTierV3,
+  bandFor,
+  countConcepts,
+  requiredYears,
+  freshnessBucket,
+} from '../scripts/lib/score-v3.mjs';
+import { buildV2Profile, buildV3Profile } from '../scripts/lib/profiles.mjs';
+import { classifyResponse, verifyListings } from '../scripts/lib/verify.mjs';
+import { buildBoard } from '../scripts/fetch-jobs.mjs';
 import { planRunBudget, readQuotaHeaders, describeQuota } from '../scripts/lib/quota.mjs';
 
 const profile = JSON.parse(await readFile(new URL('../config/profile.json', import.meta.url), 'utf8'));
 const v2Overlay = JSON.parse(await readFile(new URL('../config/profile.v2.json', import.meta.url), 'utf8'));
 const profileV2 = buildV2Profile(profile, v2Overlay);
+const v3Overlay = JSON.parse(await readFile(new URL('../config/profile.v3.json', import.meta.url), 'utf8'));
+const profileV3 = buildV3Profile(profile, v3Overlay);
 const NOW = new Date('2026-07-27T12:00:00Z');
 
 const job = (overrides = {}) => ({
@@ -290,17 +302,27 @@ test('a QA title with no marketing discipline does not get the combination bonus
   assert.ok(hers.match > generic.match, `${hers.match} should beat ${generic.match}`);
 });
 
-test('the profile supplies both a specific and a broad query list', () => {
+test('the profile supplies a priority, a specific and a broad query list', () => {
   // Whole-market and tag-filtered sources need broad terms; keyword-search
-  // sources reward the specific ones. Regressing either starves a source.
+  // sources reward the specific ones; the metered source can only afford a
+  // handful and must spend them on the best. Regressing any of the three
+  // starves a source.
   assert.ok(profile.search.queries.length >= 10);
   assert.ok(profile.search.broadQueries.length >= 5);
+  assert.ok(profile.search.priorityQueries.length >= 10);
 
-  const specific = profile.search.queries.slice(0, 7);
-  assert.ok(
-    specific.every((q) => /qa/.test(q)),
-    'the specific list must lead with her QA niche, since capped sources take from the front'
-  );
+  const all = new Set(profile.search.queries);
+  for (const query of profile.search.priorityQueries) {
+    assert.ok(all.has(query), `priority term "${query}" must also be in the full list`);
+  }
+
+  // The metered source takes from the front of the priority list, so the front
+  // of it has to be the work she is actually looking for rather than whatever
+  // was added most recently.
+  const lead = profile.search.priorityQueries.slice(0, 6).join(' ');
+  assert.match(lead, /content quality/);
+  assert.match(lead, /editorial quality/);
+
   assert.ok(
     profile.search.broadQueries.every((q) => q.split(' ').length <= 2),
     'broad terms must stay short enough to match a general index'
@@ -1011,4 +1033,395 @@ test('a realistic feed produces a sensible ranked list', () => {
     'a strong on-site match nearby is still filtered out — remote only'
   );
   assert.ok(ranked.every((r) => r.job.workType === 'remote'));
+});
+
+/* ------------------------------------------------------------------ v3 */
+
+/**
+ * The v3 postings below are written the way real ones read, because the model
+ * is deliberately hard to satisfy with keywords: it wants concepts appearing
+ * together, and a two-word fixture cannot demonstrate that.
+ */
+const CONTENT_QA_BODY =
+  'Review and proofread customer-facing content for accuracy and consistency against our brand ' +
+  'guidelines and style guide. You will run the final review before publication for email and web ' +
+  'campaigns, verify links, imagery and pricing, catch discrepancies and inconsistencies against the ' +
+  'live site, and give clear actionable feedback to designers and developers. Attention to detail is ' +
+  'essential. 3+ years of editorial or quality assurance experience. Bachelor degree preferred.';
+
+const v3job = (overrides = {}) => ({
+  title: 'Content Quality Specialist',
+  company: 'Example Retail',
+  location: 'USA',
+  locationRestriction: 'USA',
+  workType: 'remote',
+  description: CONTENT_QA_BODY,
+  tags: [],
+  postedAt: '2026-07-26T12:00:00Z',
+  ...overrides,
+});
+
+test('v3 inherits the search terms and gates, and replaces only the model', () => {
+  // Every board must see the same postings. If the search terms or the location
+  // gate drifted between them, a difference between the boards would say
+  // nothing about the models being compared.
+  assert.deepEqual(profileV3.search.queries, profile.search.queries);
+  assert.deepEqual(profileV3.location, profile.location);
+  assert.deepEqual(profileV3.penalties, profile.penalties);
+  assert.deepEqual(profileV3.excludeTitlePhrases, profile.excludeTitlePhrases);
+
+  // …but it publishes on its own terms.
+  assert.notEqual(profileV3.search.minMatchScore, profile.search.minMatchScore);
+  assert.ok(profileV3.workSignals.length > 0);
+  assert.ok(profileV3.combinations.length > 0);
+  assert.ok(profileV3.experience.length > 0);
+});
+
+test('v3 reports four axes and weights them 35/30/20/15', () => {
+  const result = scoreJobV3(v3job(), profileV3, NOW);
+  const { work, experience, qualification, lifestyle } = result.details.scores;
+
+  for (const [axis, value] of Object.entries(result.details.scores)) {
+    assert.ok(value >= 0 && value <= 100, `${axis} must be a percentage, got ${value}`);
+  }
+
+  // The overall is the weighted blend, plus a small industry nudge and any
+  // shared penalties — so it can sit above the blend but never far from it.
+  const blend = work * 0.35 + experience * 0.3 + qualification * 0.2 + lifestyle * 0.15;
+  assert.ok(
+    Math.abs(result.match - blend) <= 5,
+    `overall ${result.match} should track the weighted blend ${blend.toFixed(1)}`
+  );
+});
+
+test('a posting that describes her actual work lands in the apply bands', () => {
+  const result = scoreJobV3(v3job(), profileV3, NOW);
+  assert.ok(result.match >= 88, `expected a priority application, got ${result.match}`);
+  assert.ok(
+    ['APPLY', 'APPLY ASAP'].includes(result.details.recommendation),
+    `expected an apply recommendation, got ${result.details.recommendation}`
+  );
+  assert.ok(result.details.evidence.length >= 3, 'and arrives with evidence to apply with');
+  assert.match(result.details.whyMatched, /content & editorial quality/i);
+});
+
+test('the same work, offered as remote freelance, outranks it permanent', () => {
+  const permanent = scoreJobV3(v3job(), profileV3, NOW);
+  const freelance = scoreJobV3(
+    v3job({
+      description: `${CONTENT_QA_BODY} This is a freelance, project-based engagement with defined deliverables and flexible hours.`,
+    }),
+    profileV3,
+    NOW
+  );
+  assert.ok(freelance.details.scores.lifestyle > permanent.details.scores.lifestyle);
+  assert.ok(freelance.match > permanent.match);
+  assert.ok(freelance.projectBased);
+});
+
+test('concepts are counted once however many synonyms a posting uses', () => {
+  // Without this, a list of near-synonyms would outweigh a posting that
+  // genuinely describes several different things.
+  const text = normalizeForMatch('We review, reviewing and reviews all day, and proofread and proofreading too.');
+  assert.equal(countConcepts(['review', 'reviewing', 'reviews'], text).size, 1);
+  assert.equal(countConcepts(['review', 'proofread', 'proofreading'], text).size, 2);
+});
+
+test('a copywriting job is pushed down even when it mentions proofreading', () => {
+  // The spec's central question: is she creating the content or reviewing
+  // content created by others? Mentioning writing is not disqualifying — being
+  // mostly writing is.
+  const copywriting = scoreJobV3(
+    v3job({
+      title: 'Marketing Copywriter',
+      description:
+        'Write original copy for campaigns, blog posts and social media content. Content creation from ' +
+        'scratch, ideation and creative concepting with the brand team. SEO writing and thought ' +
+        'leadership. You will proofread your own work before it ships.',
+    }),
+    profileV3,
+    NOW
+  );
+
+  assert.ok(copywriting.match < 70, `a copywriting role must not reach the apply bands, got ${copywriting.match}`);
+  assert.ok(
+    copywriting.details.watchOuts.some((w) => /writing job|copywriting/i.test(w)),
+    'and must say why'
+  );
+  assert.equal(copywriting.details.recommendation, 'SKIP');
+});
+
+test('an editing role is not penalised merely for involving some writing', () => {
+  const withWriting = scoreJobV3(
+    v3job({
+      description: `${CONTENT_QA_BODY} You will occasionally rewrite a headline or suggest alternative copy.`,
+    }),
+    profileV3,
+    NOW
+  );
+  assert.ok(withWriting.match >= 88, `reviewing still dominates here, got ${withWriting.match}`);
+  assert.equal(withWriting.details.scores.work >= 80, true);
+});
+
+test('automation engineering is penalised while technical literacy is not', () => {
+  const automation = scoreJobV3(
+    v3job({
+      title: 'QA Analyst',
+      description:
+        'Build and maintain automated test frameworks in Selenium and Playwright, write Python and ' +
+        'Java, own the CI/CD pipeline in Jenkins, and develop API automation and unit tests.',
+    }),
+    profileV3,
+    NOW
+  );
+  assert.ok(automation.match < 70, `an automation role must not reach the apply bands, got ${automation.match}`);
+
+  const literacy = scoreJobV3(
+    v3job({
+      description: `${CONTENT_QA_BODY} Comfort reading HTML and CSS in our CMS is a plus.`,
+    }),
+    profileV3,
+    NOW
+  );
+  assert.ok(literacy.match >= 88, `reading HTML is her daily work, not a penalty — got ${literacy.match}`);
+});
+
+test('a learnable tool costs a little and is reported as learnable', () => {
+  // The spec is explicit: "AP Style required" must not destroy an otherwise
+  // excellent match.
+  const plain = scoreJobV3(v3job(), profileV3, NOW);
+  const withApStyle = scoreJobV3(
+    v3job({ description: `${CONTENT_QA_BODY} AP style required. Salsify experience preferred.` }),
+    profileV3,
+    NOW
+  );
+
+  assert.ok(plain.match - withApStyle.match <= 3, 'a learnable tool costs a couple of points, not a tier');
+  assert.ok(withApStyle.match >= 88, `still a priority application, got ${withApStyle.match}`);
+  const learnable = withApStyle.details.gaps.learnable.map((g) => g.label).join(', ');
+  assert.match(learnable, /AP Style/);
+  assert.equal(withApStyle.details.gaps.experience.length, 0, 'and is not filed as a true gap');
+});
+
+test('work she has never done is a true gap and caps the recommendation', () => {
+  const medical = scoreJobV3(
+    v3job({
+      title: 'Medical Copy Editor',
+      description:
+        'Copy edit clinical and pharmaceutical manuscripts to AMA style, support regulatory submission ' +
+        'documents, and review content for accuracy and consistency against our style guide. Five years ' +
+        'of pharmaceutical editing required.',
+    }),
+    profileV3,
+    NOW
+  );
+
+  const trueGaps = medical.details.gaps.experience.map((g) => g.label).join(', ');
+  assert.match(trueGaps, /Medical, scientific or pharmaceutical/);
+  assert.notEqual(medical.details.recommendation, 'APPLY');
+  assert.notEqual(medical.details.recommendation, 'APPLY ASAP');
+});
+
+test('a bare title on a snippet is floored, but never over a true gap', () => {
+  // Jooble and the RSS feeds return two lines, and three of the four axes read
+  // the description — so a bullseye title arrives with nothing to score.
+  const snippet = scoreJobV3(
+    v3job({ title: 'Content Quality Specialist', description: 'Remote content quality role.' }),
+    profileV3,
+    NOW
+  );
+  assert.ok(snippet.match >= 70, `a core title on a snippet should still be visible, got ${snippet.match}`);
+  assert.equal(snippet.details.scoredFromSnippet, true);
+  assert.ok(snippet.details.watchOuts.some((w) => /snippet/i.test(w)), 'and says the score was read off a snippet');
+
+  const wrongJob = scoreJobV3(
+    v3job({ title: 'Copy Editor', description: 'Copy editor for clinical and pharmaceutical manuscripts.' }),
+    profileV3,
+    NOW
+  );
+  assert.ok(wrongJob.match < 70, `the floor must not rescue work she has never done, got ${wrongJob.match}`);
+});
+
+test('v3 bands and recommendations follow the specification', () => {
+  assert.equal(bandFor(97, profileV3).recommendation, 'APPLY ASAP');
+  assert.equal(bandFor(90, profileV3).recommendation, 'APPLY');
+  assert.equal(bandFor(83, profileV3).recommendation, 'APPLY');
+  assert.equal(bandFor(72, profileV3).recommendation, 'CONSIDER');
+  assert.equal(bandFor(40, profileV3).recommendation, 'SKIP');
+
+  assert.equal(matchTierV3(96, profileV3), 'exceptional');
+  assert.equal(matchTierV3(89, profileV3), 'strong');
+  assert.equal(matchTierV3(81, profileV3), 'good');
+  assert.equal(matchTierV3(71, profileV3), 'possible');
+  assert.equal(matchTierV3(50, profileV3), 'low');
+});
+
+test('the years asked for are read off the posting', () => {
+  assert.equal(requiredYears('3+ years of editorial experience'), 3);
+  assert.equal(requiredYears('3-5 years in a similar role'), 5);
+  assert.equal(requiredYears('Minimum 12 years of pharmaceutical editing'), 12);
+  assert.equal(requiredYears('No experience necessary'), null);
+});
+
+test('an unreasonable experience bar costs qualification fit, a reachable one does not', () => {
+  const reachable = scoreJobV3(v3job(), profileV3, NOW);
+  const unreasonable = scoreJobV3(
+    v3job({ description: CONTENT_QA_BODY.replace('3+ years', '15+ years') }),
+    profileV3,
+    NOW
+  );
+  assert.ok(unreasonable.details.scores.qualification < reachable.details.scores.qualification);
+});
+
+test('freshness buckets follow the spec ladder and only move the sort order', () => {
+  assert.equal(freshnessBucket(1, profileV3).rankBonus, 6);
+  assert.equal(freshnessBucket(5, profileV3).rankBonus, 3);
+  assert.equal(freshnessBucket(12, profileV3).rankBonus, 0);
+  assert.ok(freshnessBucket(20, profileV3).rankBonus < 0);
+  assert.ok(freshnessBucket(90, profileV3).rankBonus < 0);
+
+  // Two identical postings, different ages: the score is the same, the rank is not.
+  const fresh = scoreJobV3(v3job({ postedAt: new Date(NOW.getTime() - 86400000).toISOString() }), profileV3, NOW);
+  const older = scoreJobV3(v3job({ postedAt: new Date(NOW.getTime() - 20 * 86400000).toISOString() }), profileV3, NOW);
+  assert.equal(fresh.match, older.match, 'age must not change what the bands claim about fit');
+  assert.ok(fresh.rank > older.rank);
+});
+
+test('postings over a month old are dropped unless they are unusually strong', () => {
+  // The spec hides them by default; the board does it by not publishing them,
+  // because a stale listing that is only a decent match is a wasted click.
+  const old = (title, description) =>
+    normalizeJob(
+      {
+        sourceId: title,
+        title,
+        company: 'Example Retail',
+        url: `https://example.com/${encodeURIComponent(title)}`,
+        description,
+        location: 'Remote, USA',
+        remoteFlag: true,
+        postedAt: new Date(NOW.getTime() - 40 * 86400000).toISOString(),
+      },
+      { source: 'test', sourceLabel: 'Test' }
+    );
+
+  const built = buildBoard(
+    [
+      old('Content Quality Specialist', CONTENT_QA_BODY),
+      old('Marketing Coordinator', 'Support the marketing team with scheduling, reporting and campaign execution.'),
+    ],
+    profileV3,
+    scoreJobV3,
+    NOW,
+    { tier: (m) => matchTierV3(m, profileV3), tierOrder: profileV3.bands.map((b) => b.tier) }
+  );
+
+  assert.equal(built.jobs.length, 1, 'only the unusually strong one survives being over a month old');
+  assert.equal(built.jobs[0].title, 'Content Quality Specialist');
+  assert.ok(built.jobs[0].scores, 'and it carries the four axes into the board file');
+  assert.ok(built.jobs[0].recommendation);
+});
+
+/* --------------------------------------------------- liveness verification */
+
+test('only a definite answer marks a posting closed', () => {
+  // A false positive here silently deletes a real job, which is the failure
+  // this whole pass exists to prevent.
+  assert.equal(classifyResponse({ status: 404 }).state, 'closed');
+  assert.equal(classifyResponse({ status: 410 }).state, 'closed');
+  assert.equal(
+    classifyResponse({ status: 200, body: `${'x'.repeat(600)} We are no longer accepting applications for this role.` }).state,
+    'closed'
+  );
+
+  assert.equal(classifyResponse({ status: 403 }).state, 'unverified', 'a bot wall proves nothing');
+  assert.equal(classifyResponse({ status: 500 }).state, 'unverified');
+  assert.equal(classifyResponse({ error: 'timed out' }).state, 'unverified');
+  assert.equal(classifyResponse({ status: 200, body: '' }).state, 'unverified', 'an empty 200 proves nothing either');
+
+  assert.equal(
+    classifyResponse({ status: 200, body: `${'x'.repeat(600)} Apply now for this open position.` }).state,
+    'open'
+  );
+});
+
+test('“closed” wording is specific enough not to catch live postings', () => {
+  const live = `${'x'.repeat(600)} You will run closed-loop reporting on expired promotions and closed campaigns.`;
+  assert.equal(classifyResponse({ status: 200, body: live }).state, 'open');
+});
+
+test('verification labels every posting and spends a bounded budget', async () => {
+  const pages = {
+    'https://example.com/open': { status: 200, body: `${'x'.repeat(600)} Apply today.` },
+    'https://example.com/gone': { status: 404, body: '' },
+    'https://example.com/walled': { status: 403, body: '' },
+  };
+  const calls = [];
+  const fetchImpl = async (url) => {
+    calls.push(url);
+    const page = pages[url];
+    return { status: page.status, text: async () => page.body };
+  };
+
+  const jobs = [
+    { id: '1', url: 'https://example.com/open' },
+    { id: '2', url: 'https://example.com/gone' },
+    { id: '3', url: 'https://example.com/walled' },
+    { id: '4', url: 'https://example.com/open' },
+  ];
+
+  const { report, closed } = await verifyListings(jobs, { fetchImpl, maxChecks: 3, concurrency: 1 });
+
+  assert.equal(calls.length, 3, 'the budget is a hard cap on requests');
+  assert.equal(jobs[0].availability, 'open');
+  assert.equal(jobs[1].availability, 'closed');
+  assert.equal(jobs[2].availability, 'unverified', 'blocked is not the same as closed');
+  assert.equal(jobs[3].availability, 'unverified', 'and what the budget did not reach is not claimed either');
+  assert.equal(closed, 1);
+  assert.equal(report.checked, 3);
+  assert.equal(report.live, 1);
+});
+
+test('a verification pass that cannot reach the network still produces a board', async () => {
+  const jobs = [{ id: '1', url: 'https://example.com/1' }];
+  const fetchImpl = async () => { throw new Error('getaddrinfo ENOTFOUND'); };
+  const { report, closed } = await verifyListings(jobs, { fetchImpl, maxChecks: 5 });
+
+  assert.equal(closed, 0, 'an unreachable network must never delete a posting');
+  assert.equal(jobs[0].availability, 'unverified');
+  assert.equal(report.unknown, 1);
+});
+
+test('every hand-added search term is recognised by the v3 model too', () => {
+  // Same trap as the v1 version of this test: a term added to the search list
+  // but invisible to the scorer returns postings that then score near zero.
+  const terms = [
+    'Content Quality Specialist', 'Editorial Quality Specialist', 'Content Reviewer', 'Quality Editor',
+    'Marketing Copy Editor', 'Digital Content Editor', 'Web Content Editor', 'Brand Editor',
+    'Copy Editor', 'Proofreader', 'Production Editor', 'Editorial Operations Specialist',
+    'Product Content Specialist', 'Catalog Quality Specialist', 'E-commerce Content Specialist',
+    'Email QA Specialist', 'Campaign Quality Specialist', 'Assessment Editor', 'Curriculum Editor',
+  ];
+  const searched = new Set(
+    [...profile.search.queries, ...profile.search.broadQueries].map((q) => q.toLowerCase())
+  );
+
+  for (const title of terms) {
+    const result = scoreJobV3(v3job({ title, description: CONTENT_QA_BODY }), profileV3, NOW);
+    assert.ok(
+      result.family,
+      `"${title}" must be recognised as a role family, or the board cannot explain why it appeared`
+    );
+    assert.ok(
+      result.match >= profileV3.search.minMatchScore,
+      `"${title}" must clear the publish threshold, got ${result.match}`
+    );
+    // Not every family title is worth an API call of its own, but the ones that
+    // name a whole family should be searched for by name.
+    if (!/specialist$/i.test(title)) continue;
+    assert.ok(
+      [...searched].some((q) => q.includes(title.toLowerCase().split(' ')[0])),
+      `nothing in the search list would ever find a "${title}"`
+    );
+  }
 });

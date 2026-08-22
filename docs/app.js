@@ -16,6 +16,8 @@ const state = {
   jobs: [],
   meta: null,
   view: 'all',
+  // Set when the requested board does not exist yet and v1 is standing in.
+  fellBackFrom: null,
   focusIndex: -1,
   visible: [],
   store: loadStore(),
@@ -95,12 +97,36 @@ function workTypeLabel(job) {
   }
 }
 
+// Chip labels. v1 and v2 grade on four tiers, v3 on the specification's five
+// bands; the keys do not collide, so one map covers every board. The board's
+// own wording for the band travels in meta and becomes the chip's tooltip.
 const TIER_LABEL = {
+  exceptional: 'Exceptional match',
   strong: 'Strong match',
   good: 'Good match',
   possible: 'Worth a look',
   stretch: 'Stretch',
+  low: 'Low priority',
 };
+
+/**
+ * How the two leading header tiles are labelled and what they filter to.
+ * v3's bands sit at different numbers from v1's tiers, so a tile that jumps to
+ * "70+" would mean something different on each board.
+ */
+function tileConfig(meta) {
+  const order = meta?.model?.tierOrder || [];
+  if (order.includes('exceptional')) {
+    return {
+      top: { label: 'Apply now', tiers: ['exceptional', 'strong'], min: 88 },
+      second: { label: 'Good match', tiers: ['good'], min: 80 },
+    };
+  }
+  return {
+    top: { label: 'Strong match', tiers: ['strong'], min: 70 },
+    second: { label: 'Good match', tiers: ['good'], min: 50 },
+  };
+}
 
 /* ---------------------------------------------------------------
    Filtering & sorting
@@ -117,6 +143,7 @@ function readFilters() {
     minMatch: Number($('#min-match').value),
     maxAge: Number($('#max-age').value),
     onlyProject: $('#only-project').checked,
+    onlyOpen: $('#only-open').checked,
     onlyNewDirections: $('#only-newdir').checked,
     hideHidden: $('#hide-hidden').checked,
     hideApplied: $('#hide-applied').checked,
@@ -145,6 +172,7 @@ function applyFilters(jobs, f) {
     if (!job.employmentTypes.some((t) => f.employment.includes(t))) return false;
     if (f.sources.length && !job.sources.some((s) => f.sources.includes(s))) return false;
     if (f.onlyProject && !job.projectBased) return false;
+    if (f.onlyOpen && job.availability !== 'open') return false;
     if (f.onlyNewDirections && !job.discovery) return false;
     if (job.match < f.minMatch) return false;
     if (maxAgeActive && (job.ageDays === null || job.ageDays > f.maxAge)) return false;
@@ -210,7 +238,9 @@ function renderCard(job) {
   $('[data-location]', node).textContent = job.location || workTypeLabel(job);
 
   const chips = $('[data-chips]', node);
-  chips.append(makeChip(TIER_LABEL[job.matchTier], 'tier'));
+  const tierChip = makeChip(TIER_LABEL[job.matchTier] || job.matchTier, 'tier');
+  if (job.band?.label) tierChip.title = job.band.label;
+  chips.append(tierChip);
   chips.append(makeChip(workTypeLabel(job)));
   for (const type of job.employmentTypes) {
     if (type !== 'unspecified') chips.append(makeChip(type));
@@ -226,6 +256,18 @@ function renderCard(job) {
     chips.append(makeChip('project-based', 'project'));
   }
   if (job.salary) chips.append(makeChip(job.salary, 'salary'));
+  if (job.availability === 'open') {
+    const chip = makeChip('Confirmed open', 'open');
+    chip.title = `The posting was re-fetched when this board was built and did not say it was closed (${job.availabilityDetail || 'checked'}).`;
+    chips.append(chip);
+  } else if (job.availability === 'unverified') {
+    const chip = makeChip('Not confirmed', 'caution');
+    chip.title = 'This board could not confirm the posting is still open — the site blocked the check, timed out, or was past the checking budget. Open it and see.';
+    chips.append(chip);
+  }
+  if (job.freshness?.label && job.ageDays !== null && job.ageDays > 30) {
+    chips.append(makeChip(job.freshness.label, 'caution'));
+  }
   if (job.employerUnknown) {
     const chip = makeChip('Employer not named', 'caution');
     chip.title = 'This listing was reposted by a job site that lists itself as the employer, so who is actually hiring is not stated. It sorts lower for that reason.';
@@ -240,6 +282,8 @@ function renderCard(job) {
     lead.textContent = job.family?.label ? `${job.family.label} — why this fits: ` : 'Different title, your skills: ';
     newdir.append(lead, document.createTextNode(job.family?.why || 'this posting asks for several of your core abilities.'));
   }
+
+  renderFitReport(node, job);
 
   $('[data-excerpt]', node).textContent = job.excerpt || '';
 
@@ -298,6 +342,102 @@ function renderCard(job) {
   return node;
 }
 
+/**
+ * The v3 card: four axis scores, the recommendation, and the written report.
+ *
+ * Every block is hidden unless the posting actually carries the field, so the
+ * same template renders a v1 card unchanged — there is one card, not three.
+ */
+function renderFitReport(node, job) {
+  if (job.recommendation) {
+    const rec = $('[data-rec]', node);
+    rec.hidden = false;
+    rec.textContent = job.recommendation;
+    rec.dataset.rec = job.recommendation.toLowerCase().replace(/\s+/g, '-');
+    if (job.recommendationCapped) {
+      rec.title = 'Held back from a stronger recommendation by a gap or by how much original writing the role involves — see the cautions below.';
+    }
+  }
+
+  if (job.scores) {
+    const bars = $('[data-fitbars]', node);
+    bars.hidden = false;
+    const axes = [
+      ['Work', job.scores.work, 'What the day actually involves'],
+      ['Experience', job.scores.experience, 'How much of it she has already done'],
+      ['Qualification', job.scores.qualification, 'How closely she meets the stated requirements'],
+      ['Lifestyle', job.scores.lifestyle, 'Remote, contract, flexibility'],
+    ];
+    for (const [label, value, title] of axes) {
+      const row = document.createElement('div');
+      row.className = 'fitbar';
+      row.title = title;
+
+      const name = document.createElement('span');
+      name.className = 'fitbar__label';
+      name.textContent = label;
+
+      const track = document.createElement('span');
+      track.className = 'fitbar__track';
+      const fill = document.createElement('span');
+      fill.className = 'fitbar__fill';
+      fill.style.width = `${Math.max(0, Math.min(100, value))}%`;
+      track.append(fill);
+
+      const num = document.createElement('span');
+      num.className = 'fitbar__num';
+      num.textContent = String(value);
+
+      row.append(name, track, num);
+      bars.append(row);
+    }
+  }
+
+  if (job.whyMatched) {
+    const why = $('[data-whymatched]', node);
+    why.hidden = false;
+    why.textContent = job.whyMatched;
+  }
+
+  const evidence = job.evidence || [];
+  const learnable = job.gaps?.learnable || [];
+  const trueGaps = job.gaps?.experience || [];
+  const watchOuts = job.watchOuts || [];
+  if (!evidence.length && !learnable.length && !trueGaps.length && !watchOuts.length) return;
+
+  const report = $('[data-report]', node);
+  report.hidden = false;
+  $('[data-report-summary]', node).textContent =
+    [
+      evidence.length ? `${evidence.length} piece${evidence.length === 1 ? '' : 's'} of evidence` : '',
+      learnable.length ? `${learnable.length} learnable gap${learnable.length === 1 ? '' : 's'}` : '',
+      trueGaps.length ? `${trueGaps.length} true gap${trueGaps.length === 1 ? '' : 's'}` : '',
+      watchOuts.length ? `${watchOuts.length} caution${watchOuts.length === 1 ? '' : 's'}` : '',
+    ].filter(Boolean).join(' · ');
+
+  fillBlock(node, '[data-evidence-block]', '[data-evidence]', evidence.map((e) => [e.label, e.evidence]));
+  fillBlock(node, '[data-learnable-block]', '[data-learnable]', learnable.map((g) => [g.label, g.note]));
+  fillBlock(node, '[data-truegap-block]', '[data-truegaps]', trueGaps.map((g) => [g.label, g.note]));
+  fillBlock(node, '[data-watch-block]', '[data-watchouts]', watchOuts.map((w) => [null, w]));
+}
+
+/** One report section: hidden when empty, never rendered with innerHTML. */
+function fillBlock(node, blockSelector, listSelector, rows) {
+  if (!rows.length) return;
+  $(blockSelector, node).hidden = false;
+  const list = $(listSelector, node);
+  for (const [label, text] of rows) {
+    const li = document.createElement('li');
+    if (label) {
+      const strong = document.createElement('strong');
+      strong.textContent = `${label}: `;
+      li.append(strong);
+    }
+    li.append(document.createTextNode(text || ''));
+    list.append(li);
+  }
+}
+
 function render() {
   const filters = readFilters();
   const visible = sortJobs(applyFilters(state.jobs, filters), filters.sort);
@@ -324,14 +464,15 @@ function render() {
             : 'No jobs match these filters. Try lowering the minimum match or widening the date range.';
   }
 
-  const strong = visible.filter((j) => j.matchTier === 'strong').length;
+  const topTiers = tileConfig(state.meta).top.tiers;
+  const strong = visible.filter((j) => topTiers.includes(j.matchTier)).length;
   const fresh = visible.filter((j) => j.ageDays !== null && !j.ageAssumed && j.ageDays <= 2).length;
   $('#resultline').innerHTML = '';
   $('#resultline').append(
     document.createTextNode('Showing '),
     boldText(String(visible.length)),
     document.createTextNode(` of ${state.jobs.length} matches`),
-    document.createTextNode(strong ? ` · ${strong} strong` : ''),
+    document.createTextNode(strong ? ` · ${strong} ${tileConfig(state.meta).top.label.toLowerCase()}` : ''),
     document.createTextNode(fresh ? ` · ${fresh} new in 48h` : '')
   );
 
@@ -398,12 +539,19 @@ function exportCsv() {
 
   const esc = (value) => `"${String(value ?? '').replace(/"/g, '""')}"`;
   const rows = [
-    ['Status', 'Saved on', 'Applied on', 'Match', 'Title', 'Company', 'Location', 'Schedule', 'Salary', 'Posted', 'Source', 'URL', 'Notes'],
+    // The v3 columns are blank on the other boards rather than absent, so one
+    // tracker spreadsheet works whichever board a job was saved from.
+    ['Status', 'Saved on', 'Applied on', 'Match', 'Recommendation', 'Work fit', 'Experience fit', 'Qualification fit', 'Lifestyle fit', 'Title', 'Company', 'Location', 'Schedule', 'Salary', 'Posted', 'Source', 'URL', 'Notes'],
     ...tracked.map((j) => [
       state.store.applied[j.id] ? 'Applied' : 'Saved',
       (state.store.saved[j.id] || '').slice(0, 10),
       (state.store.applied[j.id] || '').slice(0, 10),
       j.match,
+      j.recommendation || '',
+      j.scores?.work ?? '',
+      j.scores?.experience ?? '',
+      j.scores?.qualification ?? '',
+      j.scores?.lifestyle ?? '',
       j.title,
       j.company,
       j.location || j.locationScope,
@@ -673,7 +821,7 @@ function wireEvents() {
 
   $('#reset-filters').addEventListener('click', () => {
     $$('#controls input[type="checkbox"]').forEach((el) => {
-      el.checked = !['hide-applied', 'only-project', 'only-newdir'].includes(el.id);
+      el.checked = !['hide-applied', 'only-project', 'only-newdir', 'only-open'].includes(el.id);
     });
     $('#min-match').value = 0;
     $('#min-match-out').textContent = '0';
@@ -693,8 +841,8 @@ function wireEvents() {
       const board = btn.dataset.board;
       if (board === currentBoard()) return;
       const url = new URL(location.href);
-      if (board === 'v2') url.searchParams.set('board', 'v2');
-      else url.searchParams.delete('board');
+      if (board === DEFAULT_BOARD) url.searchParams.delete('board');
+      else url.searchParams.set('board', board);
       location.assign(url.toString());
     });
   }
@@ -713,7 +861,9 @@ function wireEvents() {
       return;
     }
     if (stat.dataset.tierFilter) {
-      const min = stat.dataset.tierFilter === 'strong' ? 70 : 50;
+      // Written onto the tile when the header rendered, because the band
+      // boundaries differ between the matching models.
+      const min = Number(stat.dataset.tierMin) || (stat.dataset.tierFilter === 'strong' ? 70 : 50);
       $('#min-match').value = String(min);
       $('#min-match-out').textContent = String(min);
       $('#filters').open = true;
@@ -770,23 +920,45 @@ function restorePrefs() {
  * Which matching model is being viewed. Kept in the URL so a board can be
  * linked, bookmarked and shared, and so a reload does not silently switch it.
  */
+const BOARDS = ['v1', 'v2', 'v3'];
+const DEFAULT_BOARD = 'v3';
+
 function currentBoard() {
-  return new URLSearchParams(location.search).get('board') === 'v2' ? 'v2' : 'v1';
+  const asked = new URLSearchParams(location.search).get('board');
+  return BOARDS.includes(asked) ? asked : DEFAULT_BOARD;
 }
 
 function boardDataPath() {
-  return currentBoard() === 'v2' ? 'data/v2' : 'data';
+  const board = currentBoard();
+  return board === 'v1' ? 'data' : `data/${board}`;
 }
 
-async function loadData() {
+async function loadBoard(base) {
   const bust = `?t=${Date.now()}`;
-  const base = boardDataPath();
   const [jobs, meta] = await Promise.all([
     fetch(`${base}/jobs.json${bust}`, { cache: 'no-store' }).then((r) => (r.ok ? r.json() : [])),
     fetch(`${base}/meta.json${bust}`, { cache: 'no-store' }).then((r) => (r.ok ? r.json() : null)),
   ]);
-  state.jobs = Array.isArray(jobs) ? jobs : [];
-  state.meta = meta;
+  return { jobs: Array.isArray(jobs) ? jobs : [], meta };
+}
+
+async function loadData() {
+  const board = await loadBoard(boardDataPath());
+  state.jobs = board.jobs;
+  state.meta = board.meta;
+  state.fellBackFrom = null;
+
+  // A board exists only once a run has produced it. Rather than showing an
+  // empty page that looks broken, fall back to v1 — which has been generated
+  // since the first run — and say so.
+  if (!state.meta && currentBoard() !== 'v1') {
+    const fallback = await loadBoard('data');
+    if (fallback.meta) {
+      state.fellBackFrom = currentBoard();
+      state.jobs = fallback.jobs;
+      state.meta = fallback.meta;
+    }
+  }
 }
 
 function renderHeader() {
@@ -811,16 +983,32 @@ function renderHeader() {
   $('#stat-newdir').textContent = String(meta.discoveries ?? 0);
 
   for (const btn of $$('.boardswitch__btn')) {
-    btn.setAttribute('aria-pressed', String(btn.dataset.board === currentBoard()));
+    // What is actually on screen, which is not the requested board when that
+    // board has not been generated yet.
+    btn.setAttribute('aria-pressed', String(btn.dataset.board === (meta.model?.id || currentBoard())));
   }
   if (meta.model?.label) {
-    $('#tagline').textContent =
-      `${meta.model.label} matching (${meta.model.id}) · ${meta.counts?.published ?? 0} matches — remote, open to Michigan`;
+    $('#tagline').textContent = state.fellBackFrom
+      ? `The ${state.fellBackFrom} board has not been generated yet — showing ${meta.model.label.toLowerCase()} (${meta.model.id}) until the next scheduled run.`
+      : `${meta.model.label} matching (${meta.model.id}) · ${meta.counts?.published ?? 0} matches — remote, open to Michigan`;
   }
 
+  // Liveness checking is v3's; on the other boards the control would filter on
+  // a field no posting carries.
+  const hasAvailability = state.jobs.some((j) => j.availability !== undefined);
+  $('#only-open-row').hidden = !hasAvailability;
+
+  const tiles = tileConfig(meta);
+  const countTiers = (list) => list.reduce((sum, tier) => sum + (meta.tiers?.[tier] ?? 0), 0);
+
+  $('#stat-top-label').textContent = tiles.top.label;
+  $('#stat-second-label').textContent = tiles.second.label;
+  $('#stat-top-tile').dataset.tierMin = String(tiles.top.min);
+  $('#stat-second-tile').dataset.tierMin = String(tiles.second.min);
+
   $('#stat-project').textContent = String(meta.projectBased ?? 0);
-  $('#stat-strong').textContent = String(meta.tiers?.strong ?? 0);
-  $('#stat-good').textContent = String(meta.tiers?.good ?? 0);
+  $('#stat-strong').textContent = String(countTiers(tiles.top.tiers));
+  $('#stat-good').textContent = String(countTiers(tiles.second.tiers));
   $('#stat-fresh').textContent = String(meta.freshLast48h ?? 0);
 }
 
@@ -840,12 +1028,12 @@ async function init() {
 
   // The v2 board only exists once a run has produced it; until then say so
   // plainly rather than showing an empty board that looks broken.
-  if (!state.meta && currentBoard() === 'v2') {
-    $('#updated').textContent = 'v2 board not generated yet.';
+  if (!state.meta) {
+    $('#updated').textContent = 'No board data yet.';
     $('#empty').hidden = false;
     $('#empty').textContent =
-      'The v2 (ability-based) board has not been generated yet — it appears after the next scheduled run. ' +
-      'Switch back to v1 in the header for the current board.';
+      'No board has been generated yet — run the “Update job listings” workflow from the Actions tab, ' +
+      'or `npm run fetch` locally.';
     return;
   }
 
