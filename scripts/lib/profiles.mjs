@@ -66,6 +66,8 @@ export function buildV3Profile(base, overlay) {
     lifestyle: overlay.lifestyle || {},
     industries: overlay.industries || [],
     thinPosting: overlay.thinPosting || {},
+    workGate: overlay.workGate || {},
+    workSignalCaps: overlay.workSignalCaps || {},
     seniority: overlay.seniority || {},
     discovery: overlay.discovery || {},
   };

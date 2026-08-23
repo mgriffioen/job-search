@@ -243,3 +243,25 @@ test('ratings on a board that emits no signals are inert rather than wrong', () 
   const v1Job = { id: 'v1:1', title: 'Email QA Specialist', company: 'Northline Retail', rank: 70 };
   assert.deepEqual(adjustmentFor(v1Job, model, LABELS), { points: 0, notes: [] });
 });
+
+/* ------------------------------------------------------------ asset stamps */
+
+test('the page’s own assets carry a content stamp', async () => {
+  /**
+   * The board fetches its data with a cache-buster but referenced its own code
+   * by bare name, so a browser that had the site open across a deploy ran the
+   * old script against the new data. That is exactly how the ratings shipped
+   * invisibly: new postings, new scores, no rating buttons.
+   *
+   * This fails the build when a stamp is stale, which is the only reliable
+   * moment to catch it — after the deploy there is no way to reach the browsers
+   * that already have the old file.
+   */
+  const { outdatedStamps } = await import('../scripts/stamp-assets.mjs');
+  const stale = await outdatedStamps();
+  assert.deepEqual(
+    stale,
+    [],
+    `run "npm run stamp" and commit the result — stale: ${stale.join(', ')}`
+  );
+});

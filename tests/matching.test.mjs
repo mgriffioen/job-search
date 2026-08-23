@@ -1425,3 +1425,172 @@ test('every hand-added search term is recognised by the v3 model too', () => {
     );
   }
 });
+
+/* ------------------------------------------- v3: what must NOT reach the top */
+
+/**
+ * These fixtures are written from the postings that actually led the live board
+ * on 22 August 2026 — a UX/UI design contract at 85, a Creative Designer at 89,
+ * a payroll specialist at 82, a marine sales role at 72.
+ *
+ * Every one of them was a scoring fault rather than a near miss, and they had
+ * two causes worth keeping tests on:
+ *
+ *   1. Nothing gated the score on work fit. Experience, qualification and
+ *      lifestyle are 65% of the weight and all three have high floors — every
+ *      posting here is remote, she clears most stated requirements, and she has
+ *      done a great deal of adjacent work — so a job she had no wish to do
+ *      reached the apply bands purely on her being qualified for it.
+ *
+ *   2. The combination rules, which the specification weights above any title
+ *      match, contained bare words: "review", "quality", "audit", "compare".
+ *      That turned "concepts appearing together" into "common words appearing
+ *      together", and a payroll posting fired both "Email + content review +
+ *      quality assurance" and "Content audit + discrepancies + source of truth".
+ */
+const FALSE_POSITIVES = [
+  ['Creative Designer',
+    'We are looking for a Creative Designer to produce beautiful, on-brand work across digital and print. ' +
+    'You will design campaign assets, social graphics, landing pages and presentation decks, working from creative ' +
+    'briefs and maintaining consistency with our brand guidelines. Partner with marketing stakeholders and developers, ' +
+    'present concepts, and iterate on feedback. Strong attention to detail, excellent layout and typography skills, ' +
+    'fluency in Figma and Adobe Creative Suite. You will manage multiple projects to tight deadlines and take part in ' +
+    'the assessment of new creative tools. 4+ years of design experience and a strong portfolio required.'],
+  ['Senior UX/UI Designer: Contractor Job Ad',
+    'A full-service creative and design agency hiring a senior UX/UI designer on contract: user research, wireframes, ' +
+    'prototypes, design systems and accessible, responsive interfaces. You will collaborate with developers and content ' +
+    'strategists, present work to stakeholders, run design reviews, and ensure visual consistency and quality across ' +
+    'deliverables. Strong Figma skills, attention to detail, and the ability to manage multiple projects to deadline. ' +
+    'WCAG accessibility knowledge required. Remote, contract.'],
+  ['Sr. Global Payroll Specialist',
+    'Process multi-country payroll accurately and on time. You will verify payroll inputs for accuracy, reconcile ' +
+    'discrepancies, maintain documentation and audit trails, support internal and external audits, and ensure compliance ' +
+    'with local regulations and company policy. Partner with HR and Finance stakeholders, respond to employee queries by ' +
+    'email, and maintain process consistency across regions. High attention to detail and the ability to meet strict ' +
+    'deadlines are essential. 5+ years of payroll experience required.'],
+  ['Content Marketing Strategist',
+    'Own our content marketing strategy end to end. You will develop the editorial calendar, write original blog posts ' +
+    'and thought leadership, create content for social media and email campaigns, and drive SEO content production. ' +
+    'Brief and manage freelance writers, collaborate with designers on creative assets, and report on campaign ' +
+    'performance. Strong storytelling and ideation skills, attention to detail, and experience running content programs ' +
+    'at pace. 5+ years in content marketing.'],
+  ['Sales Executive - Marine',
+    'Sell marine equipment to dealers and distributors across the region. Build the pipeline, run product ' +
+    'demonstrations, prepare accurate quotations, and follow up by email and phone. Maintain accurate CRM records, ' +
+    'prepare pricing proposals, and work with the marketing team on campaign collateral. Attention to detail, ' +
+    'self-motivation and the ability to juggle multiple accounts to deadline.'],
+];
+
+const TRUE_POSITIVES = [
+  ['Marketing Copy Editor',
+    'Copy edit and proofread marketing campaign copy written by our creative team — email, landing pages and product ' +
+    'descriptions — against our house style guide and brand voice. You are the last set of eyes before publication: ' +
+    'check grammar, punctuation, spelling and formatting, verify product information and pricing against source data, ' +
+    'and flag inconsistencies between the campaign and the live website. Partner with designers and developers to get ' +
+    'corrections made. Two to four years in an editorial or content review role. Remote, part-time considered.'],
+  ['Product Content Editor',
+    'Own product content quality across our e-commerce catalog. Review product descriptions and product information for ' +
+    'accuracy, verify pricing and offers against source data, audit the catalog for discrepancies, and maintain ' +
+    'consistency with brand standards and our editorial style guide. You will proofread new copy before it publishes ' +
+    'and work with merchandising and designers on corrections. Salsify experience preferred. 2+ years. Remote.'],
+];
+
+test('being qualified for a job is not the same as wanting it', () => {
+  // The work-fit gate. Without it these five led the live board.
+  for (const [title, description] of FALSE_POSITIVES) {
+    const result = scoreJobV3(v3job({ title, description }), profileV3, NOW);
+    assert.ok(
+      result.match < 70,
+      `"${title}" must not reach the adjacent-opportunity band, got ${result.match} ` +
+        `(work ${result.details.scores.work}, experience ${result.details.scores.experience})`
+    );
+    assert.equal(result.details.recommendation, 'SKIP');
+  }
+});
+
+test('and the work she wants still reaches the apply bands', () => {
+  // The other half of the same change: a gate that also caught the true
+  // positives would have been a worse model, not a better one.
+  for (const [title, description] of [...TRUE_POSITIVES, ['Content Quality Specialist', CONTENT_QA_BODY]]) {
+    const result = scoreJobV3(v3job({ title, description }), profileV3, NOW);
+    assert.ok(result.match >= 88, `"${title}" should still be a priority application, got ${result.match}`);
+    assert.equal(result.details.scores.work >= 80, true, `and its work fit should be high, got ${result.details.scores.work}`);
+  }
+});
+
+test('the vocabulary every posting shares cannot carry work fit on its own', () => {
+  // Layout, deadlines, designers, stakeholders, campaigns and "attention to
+  // detail" are in every digital posting written. They are context, not
+  // evidence that she would be reviewing anything.
+  const supportingOnly = scoreJobV3(
+    v3job({
+      title: 'Digital Producer',
+      description:
+        'Work with designers and developers on campaign assets and landing pages. Manage multiple projects against ' +
+        'tight deadlines in a fast-paced production workflow, partner with stakeholders, and keep the CMS up to date. ' +
+        'Attention to detail and strong layout and formatting sense essential.',
+    }),
+    profileV3,
+    NOW
+  );
+  assert.ok(
+    supportingOnly.details.scores.work <= 45,
+    `supporting signals alone must not build a work fit, got ${supportingOnly.details.scores.work}`
+  );
+});
+
+test('no combination rule may be satisfied by common words alone', () => {
+  // The rule that broke the board: a bare "review", "quality", "audit" or
+  // "compare" in a combination set turns "concepts appearing together" into
+  // "common words appearing together".
+  // Process filler, not domain nouns. "retail" and "e-commerce" tell you what
+  // kind of work a posting is about; "review", "quality" and "accuracy" are in
+  // every job advertisement ever written and tell you nothing.
+  const tooCommon = new Set([
+    'review', 'reviews', 'quality', 'audit', 'auditing', 'compare', 'accuracy', 'accurate',
+    'errors', 'issues', 'gaps', 'documentation', 'against the', 'consistency', 'marketing',
+    'editing', 'edits', 'assessment', 'assessments', 'digital', 'web', 'email', 'campaign',
+    'campaigns', 'design', 'layout', 'formatting', 'visual', 'testing', 'compliance',
+  ]);
+
+  /**
+   * The invariant is not "no set may contain a common word" — "proofreading +
+   * layout review" is a fine rule, because the proofreading half is specific
+   * enough to carry it. It is that no combination may have MORE THAN ONE set
+   * satisfiable by filler, because then the whole rule fires on filler.
+   *
+   * That is exactly what went wrong: "content audit + discrepancies + source of
+   * truth" had all three sets satisfiable by "audit", "errors" and
+   * "documentation", so a payroll posting fired it.
+   */
+  for (const combination of profileV3.combinations) {
+    const weak = combination.all
+      .map((set, index) => ({ index, filler: set.filter((phrase) => tooCommon.has(phrase)) }))
+      .filter((set) => set.filler.length > 0);
+
+    assert.ok(
+      weak.length <= 1,
+      `"${combination.label}" has ${weak.length} sets satisfiable by common words ` +
+        `(${weak.map((w) => `set ${w.index + 1}: ${w.filler.map((f) => `"${f}"`).join(', ')}`).join('; ')}) — ` +
+        'the whole rule can fire on filler'
+    );
+  }
+});
+
+test('every work signal declares whether it is evidence or context', () => {
+  for (const group of profileV3.workSignals) {
+    assert.ok(group.id, 'a work signal needs an id — the ranking model learns over them');
+    assert.ok(
+      ['core', 'supporting'].includes(group.tier),
+      `"${group.label}" must be tiered core or supporting, got ${group.tier}`
+    );
+  }
+  assert.ok(profileV3.workSignals.some((g) => g.tier === 'core'));
+  assert.ok(profileV3.workSignals.some((g) => g.tier === 'supporting'));
+});
+
+test('the work-fit gate can only ever lower a score', () => {
+  const { base, slope } = profileV3.workGate;
+  assert.ok(base + slope * 100 >= 100, 'a perfect work fit must not be capped below 100');
+  assert.ok(slope > 0 && base < 100, 'and the gate has to actually bind at the bottom');
+});
