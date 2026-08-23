@@ -1,6 +1,6 @@
 {
-  "generatedAt": "2026-08-22T21:56:38.766Z",
-  "durationMs": 19605,
+  "generatedAt": "2026-08-23T06:58:19.887Z",
+  "durationMs": 31200,
   "model": {
     "id": "v3",
     "label": "Fit profile",
@@ -64,23 +64,23 @@
     "minMatchScore": 65
   },
   "counts": {
-    "fetched": 1517,
-    "unique": 1005,
-    "published": 97,
+    "fetched": 1459,
+    "unique": 978,
+    "published": 94,
     "dropped": {
-      "location": 304,
-      "stale": 22,
-      "lowMatch": 558,
-      "excluded": 24,
+      "location": 308,
+      "stale": 21,
+      "lowMatch": 536,
+      "excluded": 19,
       "blockedDomain": 0
     }
   },
   "tiers": {
     "exceptional": 0,
     "strong": 2,
-    "good": 10,
-    "possible": 54,
-    "low": 31
+    "good": 7,
+    "possible": 57,
+    "low": 28
   },
   "verification": {
     "enabled": true,
@@ -88,12 +88,12 @@
     "live": 38,
     "closed": 0,
     "unknown": 22,
-    "skipped": 37,
-    "ms": 1706
+    "skipped": 34,
+    "ms": 2451
   },
-  "freshLast48h": 26,
-  "projectBased": 33,
-  "discoveries": 29,
+  "freshLast48h": 28,
+  "projectBased": 37,
+  "discoveries": 23,
   "sources": [
     {
       "id": "companyboards",
@@ -107,49 +107,48 @@
       "id": "jsearch",
       "label": "Google Jobs",
       "status": "ok",
-      "fetched": 0,
+      "fetched": 4,
       "warnings": [],
       "quota": {
         "limit": 200,
-        "remaining": 20,
-        "observedAt": "2026-08-21T16:49:46.053Z",
-        "resetAt": "2026-08-27T15:52:26.053Z"
+        "remaining": 19,
+        "observedAt": "2026-08-23T06:58:21.895Z",
+        "resetAt": "2026-08-27T15:52:25.895Z"
       },
       "budget": {
-        "allowed": 0,
-        "spent": 0,
+        "allowed": 1,
+        "spent": 1,
         "reserve": 12,
-        "reason": "pacing 8 spendable requests across ~10 runs left this period (0.80/run)"
+        "reason": "pacing 8 spendable requests across ~9 runs left this period (0.89/run)"
       },
-      "ms": 0
+      "ms": 2007
     },
     {
       "id": "adzuna",
       "label": "Adzuna",
       "status": "ok",
-      "fetched": 68,
+      "fetched": 72,
       "warnings": [
-        "michigan-remote \"content integrity\": 0 results (Adzuna reports 0 total matches)",
-        "michigan-remote \"content audit\": 0 results (Adzuna reports 0 total matches)",
-        "michigan-remote \"assessment editor\": 0 results (Adzuna reports 0 total matches)",
-        "michigan-remote \"learning content\": 0 results (Adzuna reports 0 total matches)",
-        "michigan-remote \"curriculum editor\": 0 results (Adzuna reports 0 total matches)",
-        "michigan-remote \"freelance editor\": 0 results (Adzuna reports 0 total matches)",
-        "michigan-remote \"freelance proofreader\": 0 results (Adzuna reports 0 total matches)",
-        "michigan-remote \"contract editor\": 0 results (Adzuna reports 0 total matches)",
-        "michigan-remote \"freelance qa\": 0 results (Adzuna reports 0 total matches)",
-        "michigan-remote \"content quality\": 0 results (Adzuna reports 0 total matches)",
-        "michigan-remote \"editorial quality\": 0 results (Adzuna reports 0 total matches)",
-        "us-remote \"content audit\": 0 results (Adzuna reports 0 total matches)",
-        "us-remote \"assessment editor\": 0 results (Adzuna reports 0 total matches)",
-        "us-remote \"curriculum editor\": 0 results (Adzuna reports 0 total matches)",
-        "us-remote \"freelance editor\": 0 results (Adzuna reports 0 total matches)",
-        "us-remote \"freelance proofreader\": 0 results (Adzuna reports 0 total matches)",
-        "us-remote \"contract editor\": 0 results (Adzuna reports 0 total matches)",
-        "us-remote \"freelance qa\": 0 results (Adzuna reports 0 total matches)",
-        "us-remote \"editorial quality\": 0 results (Adzuna reports 0 total matches)"
+        "michigan-remote \"content editor\": 0 results (Adzuna reports 0 total matches)",
+        "michigan-remote \"copy editor\": 0 results (Adzuna reports 0 total matches)",
+        "michigan-remote \"proofreader\": 0 results (Adzuna reports 0 total matches)",
+        "michigan-remote \"copyediting\": 0 results (Adzuna reports 0 total matches)",
+        "michigan-remote \"content reviewer\": 0 results (Adzuna reports 0 total matches)",
+        "michigan-remote \"content auditor\": 0 results (Adzuna reports 0 total matches)",
+        "michigan-remote \"quality editor\": 0 results (Adzuna reports 0 total matches)",
+        "michigan-remote \"editorial specialist\": 0 results (Adzuna reports 0 total matches)",
+        "michigan-remote \"production editor\": 0 results (Adzuna reports 0 total matches)",
+        "michigan-remote \"digital editor\": 0 results (Adzuna reports 0 total matches)",
+        "michigan-remote \"web content\": 0 results (Adzuna reports 0 total matches)",
+        "michigan-remote \"digital content\": 0 results (Adzuna reports 0 total matches)",
+        "us-remote \"copyediting\": 0 results (Adzuna reports 0 total matches)",
+        "us-remote \"content auditor\": 0 results (Adzuna reports 0 total matches)",
+        "us-remote \"quality editor\": 0 results (Adzuna reports 0 total matches)",
+        "us-remote \"editorial specialist\": 0 results (Adzuna reports 0 total matches)",
+        "us-remote \"production editor\": 0 results (Adzuna reports 0 total matches)",
+        "us-remote \"digital editor\": 0 results (Adzuna reports 0 total matches)"
       ],
-      "ms": 2293
+      "ms": 5551
     },
     {
       "id": "jooble",
@@ -157,7 +156,7 @@
       "status": "ok",
       "fetched": 80,
       "warnings": [],
-      "ms": 801
+      "ms": 1036
     },
     {
       "id": "remotive",
@@ -165,17 +164,17 @@
       "status": "ok",
       "fetched": 320,
       "warnings": [],
-      "ms": 420
+      "ms": 452
     },
     {
       "id": "weworkremotely",
       "label": "We Work Remotely",
       "status": "ok",
-      "fetched": 267,
+      "fetched": 266,
       "warnings": [
         "remote-marketing-jobs.rss: HTTP 301 Moved Permanently"
       ],
-      "ms": 1422
+      "ms": 1059
     },
     {
       "id": "himalayas",
@@ -183,25 +182,25 @@
       "status": "ok",
       "fetched": 240,
       "warnings": [],
-      "ms": 396
+      "ms": 444
     },
     {
       "id": "jobicy",
       "label": "Jobicy",
       "status": "ok",
-      "fetched": 226,
+      "fetched": 159,
       "warnings": [
-        "?count=50&geo=usa&tag=editorial%20quality: HTTP 429 Too Many Requests"
+        "?count=50&geo=usa&tag=digital%20content: HTTP 429 Too Many Requests"
       ],
-      "ms": 3319
+      "ms": 9247
     },
     {
       "id": "remoteok",
       "label": "RemoteOK",
       "status": "ok",
-      "fetched": 100,
+      "fetched": 99,
       "warnings": [],
-      "ms": 497
+      "ms": 493
     },
     {
       "id": "workingnomads",
@@ -209,7 +208,7 @@
       "status": "ok",
       "fetched": 44,
       "warnings": [],
-      "ms": 732
+      "ms": 375
     },
     {
       "id": "arbeitnow",
@@ -217,7 +216,7 @@
       "status": "ok",
       "fetched": 175,
       "warnings": [],
-      "ms": 133
+      "ms": 233
     }
   ]
 }
