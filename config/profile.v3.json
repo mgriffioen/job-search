@@ -94,7 +94,7 @@
       "id": "content-editorial-quality",
       "tier": "core",
       "label": "Content & editorial quality",
-      "why": "Reviewing content somebody else produced, against a standard, before it goes out — the exact shape of the last ten years.",
+      "why": "Reviewing content somebody else produced, against a standard, before it goes out — the exact shape of your last ten years.",
       "titles": [
         "content quality specialist",
         "content quality analyst",
@@ -127,7 +127,7 @@
       "id": "marketing-digital-editing",
       "tier": "core",
       "label": "Marketing & digital editing",
-      "why": "Editing marketing and web content written by others — ten years of reviewing customer-facing campaign copy reads as direct experience, not a transfer.",
+      "why": "Editing marketing and web content written by others — your ten years of reviewing customer-facing campaign copy reads as direct experience, not a transfer.",
       "titles": [
         "marketing copy editor",
         "digital copy editor",
@@ -149,7 +149,7 @@
       "id": "copyediting-proofreading",
       "tier": "core",
       "label": "Copy editing & proofreading",
-      "why": "The craft itself: someone else writes it, she makes it correct.",
+      "why": "The craft itself: someone else writes it, you make it correct.",
       "titles": [
         "copy editor",
         "copyeditor",
@@ -171,7 +171,7 @@
       "id": "email-crm-campaign-qa",
       "tier": "core",
       "label": "Email, CRM & campaign QA",
-      "why": "Her incumbent job, named the way employers name it.",
+      "why": "Your incumbent job, named the way employers name it.",
       "titles": [
         "email qa",
         "email qa specialist",
@@ -194,7 +194,7 @@
       "id": "ecommerce-product-content",
       "tier": "priority",
       "label": "E-commerce & product content",
-      "why": "Checking product names, pricing, offers and terminology against a source of truth is what she already does for retail campaigns — the same work, one system further upstream.",
+      "why": "Checking product names, pricing, offers and terminology against a source of truth is what you already do for retail campaigns — the same work, one system further upstream.",
       "titles": [
         "e-commerce content specialist",
         "ecommerce content specialist",
@@ -224,7 +224,7 @@
       "id": "production-final-review",
       "tier": "priority",
       "label": "Production & final review",
-      "why": "The last pair of eyes before publication, and the workflow that gets it there — a production QA habit with an editorial title on it.",
+      "why": "The last pair of eyes before publication, and the workflow that gets it there — your production QA habit with an editorial title on it.",
       "titles": [
         "production editor",
         "digital production editor",
@@ -1558,7 +1558,7 @@
       {
         "id": "ap-style",
         "label": "AP Style",
-        "note": "A style manual, not a discipline — she has a decade of applying client style guides and can absorb AP in a weekend.",
+        "note": "A style manual, not a discipline — you have a decade of applying client style guides and can absorb AP in a weekend.",
         "phrases": [
           "ap style",
           "associated press style",
@@ -1589,7 +1589,7 @@
       {
         "id": "cms-platform",
         "label": "A specific CMS",
-        "note": "She has worked in CMS and campaign tools; the platform name changes, the work does not.",
+        "note": "You have worked in CMS and campaign tools; the platform name changes, the work does not.",
         "phrases": [
           "contentful",
           "sitecore",
@@ -1605,7 +1605,7 @@
       {
         "id": "pim-platform",
         "label": "A PIM platform such as Salsify",
-        "note": "Product-information tooling around work she already does by hand against source data.",
+        "note": "Product-information tooling around work you already do by hand against source data.",
         "phrases": [
           "salsify",
           "akeneo",
@@ -1647,7 +1647,7 @@
       {
         "id": "assessment-terminology",
         "label": "Assessment-development terminology",
-        "note": "Item banks, DOK levels and alignment vocabulary — new words for curriculum and evaluation work she has done.",
+        "note": "Item banks, DOK levels and alignment vocabulary — new words for curriculum and evaluation work you have already done.",
         "phrases": [
           "psychometric",
           "item bank",
@@ -1675,7 +1675,7 @@
     "disqualifying": [
       {
         "id": "advanced-credential",
-        "label": "A credential she does not hold",
+        "label": "A credential you do not hold",
         "weight": 26,
         "phrases": [
           "law degree",

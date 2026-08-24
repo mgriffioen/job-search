@@ -1594,3 +1594,65 @@ test('the work-fit gate can only ever lower a score', () => {
   assert.ok(base + slope * 100 >= 100, 'a perfect work fit must not be capped below 100');
   assert.ok(slope > 0 && base < 100, 'and the gate has to actually bind at the bottom');
 });
+
+test('the board speaks to the person reading it', () => {
+  /**
+   * She is the one reading her own job board, so every word it renders is
+   * addressed to her — "work you have done daily for ten years", not "work she
+   * has done". This scans the two places that copy comes from: the strings the
+   * scorer composes, and the strings the config supplies to the card.
+   *
+   * Comments and `_`-prefixed config notes are exempt: those are addressed to
+   * whoever maintains this, who is not necessarily her.
+   */
+  const thirdPerson = /\b(she|her|hers)\b/i;
+
+  const result = scoreJobV3(
+    v3job({
+      title: 'Medical Copy Editor',
+      description:
+        `${CONTENT_QA_BODY} Copy edit clinical and pharmaceutical manuscripts to AMA style. ` +
+        'A law degree is preferred. Salsify experience a plus. 1 years of experience minimum.',
+    }),
+    profileV3,
+    NOW
+  );
+
+  const rendered = [
+    result.details.whyMatched,
+    ...result.details.evidence.flatMap((e) => [e.label, e.evidence]),
+    ...result.details.gaps.learnable.flatMap((g) => [g.label, g.note]),
+    ...result.details.gaps.experience.flatMap((g) => [g.label, g.note]),
+    ...result.details.watchOuts,
+    ...result.reasons.flatMap((r) => [r.label, r.detail]),
+    result.family?.why,
+  ].filter(Boolean);
+
+  for (const line of rendered) {
+    assert.ok(!thirdPerson.test(line), `card copy must address the reader directly: "${line}"`);
+  }
+
+  // …and a proofreader's board does not print "1 years".
+  assert.ok(
+    !rendered.some((line) => /\b1 years\b/.test(line)),
+    'a singular year must not be pluralised'
+  );
+
+  // The config side: everything the card can show, minus the maintainer notes.
+  const visibleStrings = (value, key = '') => {
+    if (typeof key === 'string' && key.startsWith('_')) return [];
+    if (Array.isArray(value)) return value.flatMap((v) => visibleStrings(v));
+    if (value && typeof value === 'object') {
+      return Object.entries(value).flatMap(([k, v]) =>
+        ['phrases', 'titles', 'queries', 'all'].includes(k) ? [] : visibleStrings(v, k)
+      );
+    }
+    return typeof value === 'string' ? [value] : [];
+  };
+
+  for (const [name, config] of [['profile.json', profile], ['profile.v2.json', profileV2], ['profile.v3.json', profileV3]]) {
+    for (const line of visibleStrings(config)) {
+      assert.ok(!thirdPerson.test(line), `${name} shows the reader: "${line}"`);
+    }
+  }
+});

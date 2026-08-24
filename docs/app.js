@@ -312,7 +312,7 @@ function renderCard(job) {
   }
   if (job.discovery) {
     const chip = makeChip('New direction', 'newdir');
-    chip.title = 'Outside the job titles she has been searching, but a match on what she can actually do.';
+    chip.title = 'Outside the job titles you have been searching, but a match on what you can actually do.';
     chips.append(chip);
   }
   if (job.projectBased && !job.employmentTypes.includes('contract')) {
@@ -431,8 +431,8 @@ function renderFitReport(node, job) {
     bars.hidden = false;
     const axes = [
       ['Work', job.scores.work, 'What the day actually involves'],
-      ['Experience', job.scores.experience, 'How much of it she has already done'],
-      ['Qualification', job.scores.qualification, 'How closely she meets the stated requirements'],
+      ['Experience', job.scores.experience, 'How much of it you have already done'],
+      ['Qualification', job.scores.qualification, 'How closely you meet the stated requirements'],
       ['Lifestyle', job.scores.lifestyle, 'Remote, contract, flexibility'],
     ];
     for (const [label, value, title] of axes) {
