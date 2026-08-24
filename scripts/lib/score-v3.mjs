@@ -345,7 +345,7 @@ function scoreExperience(profile, normAll) {
   for (const gap of missing) {
     reasons.push({
       kind: 'penalty',
-      label: `Not her experience: ${gap.label}`,
+      label: `Not your experience: ${gap.label}`,
       detail: `“${gap.phrase}”`,
       points: -gap.weight,
     });
@@ -389,28 +389,29 @@ function scoreQualification(profile, normAll, rawText) {
   let score = config.base ?? 78;
 
   const years = requiredYears(rawText);
+  const yearsPhrase = years === 1 ? '1 year' : `${years} years`;
   if (years !== null) {
     if (years <= (config.yearsWithinReach ?? 6)) {
       score += config.bonusYearsClear ?? 7;
-      reasons.push({ kind: 'qualification', label: 'Experience bar cleared', detail: `Asks for ${years} years; she has ten`, points: config.bonusYearsClear ?? 7 });
+      reasons.push({ kind: 'qualification', label: 'Experience bar cleared', detail: `Asks for ${yearsPhrase}; you have ten`, points: config.bonusYearsClear ?? 7 });
     } else if (years <= (config.yearsRequiredComfortable ?? 10)) {
       score += config.bonusYearsComfortable ?? 3;
-      reasons.push({ kind: 'qualification', label: 'Experience bar met', detail: `Asks for ${years} years; she has ten`, points: config.bonusYearsComfortable ?? 3 });
+      reasons.push({ kind: 'qualification', label: 'Experience bar met', detail: `Asks for ${yearsPhrase}; you have ten`, points: config.bonusYearsComfortable ?? 3 });
     } else {
       score -= config.penaltyYearsBeyond ?? 12;
-      reasons.push({ kind: 'penalty', label: 'Asks for more years than she has', detail: `${years} years requested`, points: -(config.penaltyYearsBeyond ?? 12) });
+      reasons.push({ kind: 'penalty', label: 'Asks for more years than you have', detail: `${yearsPhrase} requested`, points: -(config.penaltyYearsBeyond ?? 12) });
     }
   }
 
   const degree = longestMatch(config.degreeAsked?.phrases, normAll);
   if (degree) {
     score += config.degreeAsked.weight ?? 6;
-    reasons.push({ kind: 'qualification', label: 'Degree requirement met', detail: `“${degree}” — she holds an honours BA and an MA`, points: config.degreeAsked.weight ?? 6 });
+    reasons.push({ kind: 'qualification', label: 'Degree requirement met', detail: `“${degree}” — you hold an honours BA and an MA`, points: config.degreeAsked.weight ?? 6 });
   }
   const advanced = longestMatch(config.advancedDegreeAsked?.phrases, normAll);
   if (advanced) {
     score += config.advancedDegreeAsked.weight ?? 4;
-    reasons.push({ kind: 'qualification', label: 'Advanced degree requirement met', detail: `“${advanced}” — she holds a master's`, points: config.advancedDegreeAsked.weight ?? 4 });
+    reasons.push({ kind: 'qualification', label: 'Advanced degree requirement met', detail: `“${advanced}” — you hold a master's`, points: config.advancedDegreeAsked.weight ?? 4 });
   }
 
   // Learnable: a named tool or manual on top of a competency she already has.
@@ -543,12 +544,12 @@ function buildReport({ job, family, work, experience, qualification, lifestyle, 
     const tier = family.tier === 'adjacent' ? 'an adjacent' : `a ${family.tier}`;
     why.push(`The title sits in ${tier} family for this search — ${family.label.toLowerCase()} — matching on “${family.phrase}”.`);
   } else if (work.signalCount) {
-    why.push('The title is not one she would have searched for; the description is what matched.');
+    why.push('This is not a title you would have searched for; the description is what matched.');
   }
 
   if (work.signalLabels.length) {
     const named = work.signalLabels.slice(0, 3).map((label) => label.toLowerCase());
-    why.push(`The posting asks for ${listPhrase(named)} — work she has done daily for ten years.`);
+    why.push(`The posting asks for ${listPhrase(named)} — work you have done daily for ten years.`);
   }
 
   if (work.combinationLabels.length) {
@@ -560,11 +561,11 @@ function buildReport({ job, family, work, experience, qualification, lifestyle, 
   } else if (work.orientation.reviewCount >= 3) {
     // Below three the claim is not worth making: one stray "review" in a
     // two-line snippet is not evidence that reviewing dominates anything.
-    why.push(`Reviewing and correcting dominate the description — ${work.orientation.reviewCount} signals against ${work.orientation.creationCount} for creating content, which is the half of the work she wants.`);
+    why.push(`Reviewing and correcting dominate the description — ${work.orientation.reviewCount} signals against ${work.orientation.creationCount} for creating content, which is the half of the work you want.`);
   }
 
   if (industries.length) {
-    why.push(`${industries[0].label} is her own background.`);
+    why.push(`${industries[0].label} is your own background.`);
   }
 
   const watchOuts = [];
@@ -579,7 +580,7 @@ function buildReport({ job, family, work, experience, qualification, lifestyle, 
   }
   if (work.automation.substantial) {
     watchOuts.push(
-      `Technical automation requirements are real, not incidental: ${work.automation.matched.slice(0, 4).join(', ')}. Reading HTML is fine; building test frameworks is not the job she wants.`
+      `Technical automation requirements are real, not incidental: ${work.automation.matched.slice(0, 4).join(', ')}. Reading HTML is fine; building test frameworks is not the job you want.`
     );
   }
   if (family && work.signalCount < 3 && !thin) {
@@ -588,7 +589,7 @@ function buildReport({ job, family, work, experience, qualification, lifestyle, 
     watchOuts.push('The title looks right but the description barely describes review work — the title may be misleading.');
   }
   if (qualification.blocking.length) {
-    watchOuts.push(`Stated requirement she does not meet: ${qualification.blocking.map((b) => b.label.toLowerCase()).join(', ')}.`);
+    watchOuts.push(`Stated requirement you do not meet: ${qualification.blocking.map((b) => b.label.toLowerCase()).join(', ')}.`);
   }
   for (const reason of penalties.reasons) {
     watchOuts.push(`${reason.label} — ${reason.detail}.`);
@@ -611,7 +612,7 @@ function buildReport({ job, family, work, experience, qualification, lifestyle, 
     gaps: {
       learnable: qualification.learnable.map((gap) => ({ label: gap.label, note: gap.note })),
       experience: [
-        ...experience.missing.map((gap) => ({ label: gap.label, note: 'The posting asks for work she has not done professionally.' })),
+        ...experience.missing.map((gap) => ({ label: gap.label, note: 'The posting asks for work you have not done professionally.' })),
         ...qualification.blocking.map((gap) => ({ label: gap.label, note: `Stated requirement: “${gap.phrase}”.` })),
       ],
     },
