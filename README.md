@@ -48,12 +48,22 @@ Repo **Actions → Update job listings → Run workflow**
 It takes a minute or two. When it finishes, the site has jobs on it. From then
 on it runs itself at roughly 2am and noon Eastern.
 
-> **Note on branches.** GitHub registers scheduled and manually-run workflows
-> only from the repository's **default branch**. This project was pushed to
+> **Rename the default branch to `main`.** This project was pushed to
 > `claude/job-search-qa-specialist-ny8k3g`, which GitHub made the default
-> because it was the first branch in an empty repo. Renaming it to `main`
-> (**Settings → Branches → pencil icon**) is worth doing — the `push` trigger
-> below already accepts both names.
+> because it was the first branch in an empty repo. Everything lives on it: the
+> site, the twice-daily data commits, and the schedule (GitHub only registers
+> scheduled and manually-run workflows from the **default branch**).
+>
+> **Settings → Branches → pencil icon → `main` → Rename branch.** GitHub does
+> the rest in one move: it repoints the default, carries the Pages source
+> across so the site keeps building, retargets any open pull requests, and
+> leaves a redirect so existing clones keep working. The `push` trigger below
+> already accepts `main`, so nothing stops.
+>
+> Do **not** do this by creating a `main` branch by hand instead. A new branch
+> would not be the default, so Pages, the schedule and every data commit would
+> carry on landing on the old branch while `main` quietly went stale — two
+> trunks, one of them a decoy. The rename is the whole job.
 
 ---
 
