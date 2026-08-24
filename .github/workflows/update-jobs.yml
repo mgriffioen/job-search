@@ -6,6 +6,9 @@ on:
     - cron: '10 6,16 * * *'
   workflow_dispatch:
   push:
+    # Both names are listed so a push-triggered run keeps working either side of
+    # the default-branch rename described in the README. Once that rename has
+    # happened, the second line is dead and can be deleted.
     branches:
       - main
       - claude/job-search-qa-specialist-ny8k3g
