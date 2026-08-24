@@ -1,6 +1,6 @@
 {
-  "generatedAt": "2026-08-24T12:44:38.258Z",
-  "durationMs": 30915,
+  "generatedAt": "2026-08-24T12:51:46.081Z",
+  "durationMs": 21729,
   "model": {
     "id": "v3",
     "label": "Fit profile",
@@ -64,14 +64,14 @@
     "minMatchScore": 65
   },
   "counts": {
-    "fetched": 1546,
-    "unique": 1037,
-    "published": 35,
+    "fetched": 1495,
+    "unique": 1011,
+    "published": 31,
     "dropped": {
       "location": 288,
-      "stale": 26,
-      "lowMatch": 665,
-      "excluded": 23,
+      "stale": 25,
+      "lowMatch": 645,
+      "excluded": 22,
       "blockedDomain": 0
     }
   },
@@ -79,21 +79,21 @@
     "exceptional": 0,
     "strong": 0,
     "good": 1,
-    "possible": 18,
-    "low": 16
+    "possible": 16,
+    "low": 14
   },
   "verification": {
     "enabled": true,
-    "checked": 35,
-    "live": 18,
+    "checked": 31,
+    "live": 15,
     "closed": 0,
-    "unknown": 17,
+    "unknown": 16,
     "skipped": 0,
-    "ms": 2093
+    "ms": 876
   },
   "freshLast48h": 8,
   "projectBased": 15,
-  "discoveries": 4,
+  "discoveries": 3,
   "sources": [
     {
       "id": "companyboards",
@@ -121,7 +121,7 @@
         "reserve": 12,
         "reason": "not a scheduled run — holding the metered quota for the next one"
       },
-      "ms": 1
+      "ms": 0
     },
     {
       "id": "adzuna",
@@ -147,7 +147,7 @@
         "us-remote \"production editor\": 0 results (Adzuna reports 0 total matches)",
         "us-remote \"digital editor\": 0 results (Adzuna reports 0 total matches)"
       ],
-      "ms": 4844
+      "ms": 3311
     },
     {
       "id": "jooble",
@@ -155,7 +155,7 @@
       "status": "ok",
       "fetched": 80,
       "warnings": [],
-      "ms": 904
+      "ms": 754
     },
     {
       "id": "remotive",
@@ -163,7 +163,7 @@
       "status": "ok",
       "fetched": 288,
       "warnings": [],
-      "ms": 348
+      "ms": 431
     },
     {
       "id": "weworkremotely",
@@ -173,7 +173,7 @@
       "warnings": [
         "remote-marketing-jobs.rss: HTTP 301 Moved Permanently"
       ],
-      "ms": 1622
+      "ms": 2955
     },
     {
       "id": "himalayas",
@@ -181,15 +181,17 @@
       "status": "ok",
       "fetched": 240,
       "warnings": [],
-      "ms": 434
+      "ms": 395
     },
     {
       "id": "jobicy",
       "label": "Jobicy",
       "status": "ok",
-      "fetched": 241,
-      "warnings": [],
-      "ms": 10480
+      "fetched": 191,
+      "warnings": [
+        "?count=50&geo=usa&tag=content%20operations: HTTP 429 Too Many Requests"
+      ],
+      "ms": 3325
     },
     {
       "id": "remoteok",
@@ -197,7 +199,7 @@
       "status": "ok",
       "fetched": 99,
       "warnings": [],
-      "ms": 967
+      "ms": 755
     },
     {
       "id": "workingnomads",
@@ -205,7 +207,7 @@
       "status": "ok",
       "fetched": 42,
       "warnings": [],
-      "ms": 822
+      "ms": 809
     },
     {
       "id": "arbeitnow",
@@ -213,7 +215,7 @@
       "status": "ok",
       "fetched": 175,
       "warnings": [],
-      "ms": 129
+      "ms": 120
     }
   ]
 }
