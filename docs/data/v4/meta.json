@@ -1,19 +1,44 @@
 {
   "generatedAt": "2026-08-25T21:02:17.263Z",
-  "durationMs": 32756,
+  "durationMs": 45185,
   "model": {
-    "id": "v2",
-    "label": "Ability-based",
+    "id": "v4",
+    "label": "Occupational fit",
     "tierOrder": [
+      "exceptional",
       "strong",
       "good",
       "possible",
-      "stretch"
+      "low"
     ],
-    "tierLabels": null,
-    "axisWeights": null,
-    "workSignalLabels": null,
-    "surpriseMax": null
+    "tierLabels": {
+      "exceptional": "Exceptional match — apply ASAP",
+      "strong": "Strong match — priority application",
+      "good": "Good match — review carefully",
+      "possible": "Possible adjacent opportunity",
+      "low": "Low priority"
+    },
+    "axisWeights": {
+      "work": 0.35,
+      "experience": 0.3,
+      "qualification": 0.2,
+      "lifestyle": 0.15
+    },
+    "workSignalLabels": {
+      "proofreading": "Proofreading and copy editing",
+      "final-review": "Review and sign-off before publication",
+      "accuracy": "Accuracy, verification and discrepancy detection",
+      "standards": "Working to a style guide and brand standards",
+      "audit": "Content audit and validation",
+      "customer-facing-channels": "Customer-facing email, web and campaign content",
+      "product-content": "Product, catalog and e-commerce content",
+      "visual-qa": "Layout, formatting and visual consistency",
+      "detail": "Attention to detail",
+      "collaboration": "Feedback to designers, developers and production teams",
+      "publishing-workflow": "Publishing workflow and production schedule",
+      "learning-content": "Educational, assessment and training content"
+    },
+    "surpriseMax": 3
   },
   "candidate": {
     "name": "Emily Griffioen",
@@ -24,49 +49,58 @@
     "homeStateCode": "MI"
   },
   "ranking": {
-    "_comment": "Default blend used for the 'Best overall' sort in the UI. The UI can override these live.",
-    "matchWeight": 0.72,
-    "recencyWeight": 0.28,
-    "recencyHalfLifeDays": 14,
+    "_comment": "Freshness is 'extremely important' per the spec, so the half-life is shorter here than on the other boards and the bucket bonuses below sharpen it further. These adjust the sort order only — never the score, which has to keep meaning what the bands say it means.",
+    "matchWeight": 0.7,
+    "recencyWeight": 0.3,
+    "recencyHalfLifeDays": 10,
     "assumedAgeDaysWhenUnknown": 21,
     "_bullseyeComment": "Some sources return only a snippet, so a posting whose title names one of her exact roles cannot earn skill points it deserves. Such a title floors the match here, provided nothing in the posting counts against it. Raise bullseyeTitleWeight to make the floor apply to fewer title groups.",
     "bullseyeTitleFloor": 72,
     "bullseyeTitleWeight": 44,
     "_unnamedEmployerComment": "Reposting sites list themselves as the employer, so you cannot tell who is actually hiring. Those postings still appear, but sort lower by this fraction. Set to 0 to treat them like any other listing.",
-    "unnamedEmployerPenalty": 0.25,
-    "discoveryMinCapabilities": 5,
-    "discoveryFloor": 52,
-    "incumbentTitleWeight": 38,
-    "roleFamilyTitleWeight": 30
+    "unnamedEmployerPenalty": 0.25
   },
   "filters": {
     "maxAgeDays": 45,
-    "minMatchScore": 20
+    "minMatchScore": 70
   },
   "counts": {
     "fetched": 1407,
     "unique": 1002,
-    "published": 516,
+    "published": 5,
     "dropped": {
       "location": 298,
-      "stale": 9,
-      "lowMatch": 162,
+      "stale": 13,
+      "lowMatch": 411,
       "excluded": 17,
       "blockedDomain": 0,
-      "wrongOccupation": 0
+      "wrongOccupation": 258
     }
   },
   "tiers": {
-    "strong": 80,
-    "good": 154,
-    "possible": 166,
-    "stretch": 116
+    "exceptional": 0,
+    "strong": 0,
+    "good": 0,
+    "possible": 5,
+    "low": 0
   },
-  "freshLast48h": 225,
-  "projectBased": 223,
-  "discoveries": 109,
+  "verification": {
+    "enabled": true,
+    "checked": 5,
+    "live": 4,
+    "closed": 0,
+    "unknown": 1,
+    "skipped": 0,
+    "ms": 255
+  },
+  "freshLast48h": 1,
+  "projectBased": 3,
+  "discoveries": 2,
   "surprises": 0,
-  "occupations": null,
+  "occupations": {
+    "adjacent": 2,
+    "core": 3
+  },
   "sources": [
     {
       "id": "companyboards",

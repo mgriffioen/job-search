@@ -1,6 +1,6 @@
 {
-  "generatedAt": "2026-08-25T16:52:49.591Z",
-  "durationMs": 38466,
+  "generatedAt": "2026-08-25T21:02:17.263Z",
+  "durationMs": 39531,
   "model": {
     "id": "v3",
     "label": "Fit profile",
@@ -37,7 +37,8 @@
       "collaboration": "Feedback to designers, developers and production teams",
       "publishing-workflow": "Publishing workflow and production schedule",
       "learning-content": "Educational, assessment and training content"
-    }
+    },
+    "surpriseMax": null
   },
   "candidate": {
     "name": "Emily Griffioen",
@@ -64,15 +65,16 @@
     "minMatchScore": 65
   },
   "counts": {
-    "fetched": 1411,
-    "unique": 998,
-    "published": 27,
+    "fetched": 1407,
+    "unique": 1002,
+    "published": 29,
     "dropped": {
-      "location": 286,
+      "location": 298,
       "stale": 18,
-      "lowMatch": 649,
-      "excluded": 18,
-      "blockedDomain": 0
+      "lowMatch": 640,
+      "excluded": 17,
+      "blockedDomain": 0,
+      "wrongOccupation": 0
     }
   },
   "tiers": {
@@ -80,20 +82,22 @@
     "strong": 0,
     "good": 0,
     "possible": 8,
-    "low": 19
+    "low": 21
   },
   "verification": {
     "enabled": true,
-    "checked": 27,
-    "live": 19,
+    "checked": 29,
+    "live": 21,
     "closed": 0,
     "unknown": 8,
     "skipped": 0,
-    "ms": 1096
+    "ms": 3583
   },
-  "freshLast48h": 10,
-  "projectBased": 17,
-  "discoveries": 5,
+  "freshLast48h": 12,
+  "projectBased": 19,
+  "discoveries": 7,
+  "surprises": 0,
+  "occupations": null,
   "sources": [
     {
       "id": "companyboards",
@@ -111,9 +115,9 @@
       "warnings": [],
       "quota": {
         "limit": 200,
-        "remaining": 16,
-        "observedAt": "2026-08-25T16:52:56.960Z",
-        "resetAt": "2026-08-27T15:52:25.960Z"
+        "remaining": 14,
+        "observedAt": "2026-08-25T21:02:20.798Z",
+        "resetAt": "2026-08-27T15:52:25.798Z"
       },
       "budget": {
         "allowed": 1,
@@ -121,7 +125,7 @@
         "reserve": 12,
         "reason": "pacing 4 spendable requests across ~4 runs left this period (1.00/run)"
       },
-      "ms": 7364
+      "ms": 3530
     },
     {
       "id": "adzuna",
@@ -150,7 +154,7 @@
         "us-remote \"freelance qa\": 0 results (Adzuna reports 0 total matches)",
         "us-remote \"editorial quality\": 0 results (Adzuna reports 0 total matches)"
       ],
-      "ms": 5374
+      "ms": 4633
     },
     {
       "id": "jooble",
@@ -158,7 +162,7 @@
       "status": "ok",
       "fetched": 80,
       "warnings": [],
-      "ms": 3877
+      "ms": 879
     },
     {
       "id": "remotive",
@@ -166,7 +170,7 @@
       "status": "ok",
       "fetched": 288,
       "warnings": [],
-      "ms": 486
+      "ms": 999
     },
     {
       "id": "weworkremotely",
@@ -176,7 +180,7 @@
       "warnings": [
         "remote-marketing-jobs.rss: HTTP 301 Moved Permanently"
       ],
-      "ms": 1080
+      "ms": 1686
     },
     {
       "id": "himalayas",
@@ -184,15 +188,17 @@
       "status": "ok",
       "fetched": 240,
       "warnings": [],
-      "ms": 569
+      "ms": 999
     },
     {
       "id": "jobicy",
       "label": "Jobicy",
       "status": "ok",
-      "fetched": 215,
-      "warnings": [],
-      "ms": 9122
+      "fetched": 211,
+      "warnings": [
+        "?count=50&geo=usa&tag=copy%20editor: HTTP 429 Too Many Requests"
+      ],
+      "ms": 13203
     },
     {
       "id": "remoteok",
@@ -200,7 +206,7 @@
       "status": "ok",
       "fetched": 99,
       "warnings": [],
-      "ms": 381
+      "ms": 846
     },
     {
       "id": "workingnomads",
@@ -208,7 +214,7 @@
       "status": "ok",
       "fetched": 43,
       "warnings": [],
-      "ms": 402
+      "ms": 678
     },
     {
       "id": "arbeitnow",
@@ -216,7 +222,7 @@
       "status": "ok",
       "fetched": 175,
       "warnings": [],
-      "ms": 171
+      "ms": 622
     }
   ]
 }
