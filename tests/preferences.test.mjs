@@ -10,6 +10,7 @@ import {
   clearFeedback,
   emptyPreferences,
   featuresOf,
+  mayLearn,
   normalisePreferences,
   ratingFor,
   recordFeedback,
@@ -37,12 +38,18 @@ const job = (overrides = {}) => ({
   salary: null,
   scores: { work: 90, experience: 90, qualification: 85, lifestyle: 80 },
   family: { id: 'content-editorial-quality', label: 'Content & editorial quality', tier: 'core' },
+  occupation: { class: 'core', id: 'content-editorial-quality', label: 'Content & editorial quality' },
   signals: {
     work: ['proofreading', 'product-content'],
     industries: ['Retail / e-commerce / consumer brands'],
     creation: 0,
     automation: 0,
     seniority: 'mid',
+    // v4 postings carry their occupational class and their dominant function.
+    // These, not the work signals, are what 🚫 is a judgement about.
+    occupation: 'content-editorial-quality',
+    occupationClass: 'core',
+    function: 'reviewing',
   },
   ...overrides,
 });
@@ -50,6 +57,8 @@ const job = (overrides = {}) => ({
 test('a posting is described by its categories, not by itself', () => {
   // What makes a rating outlive the posting it was made on.
   const features = featuresOf(job());
+  assert.ok(features.includes('occupation:content-editorial-quality'));
+  assert.ok(features.includes('function:reviewing'));
   assert.ok(features.includes('family:content-editorial-quality'));
   assert.ok(features.includes('work:proofreading'));
   assert.ok(features.includes('industry:retail-e-commerce-consumer-brands'));
@@ -150,7 +159,7 @@ test('"wrong industry" blames the industry rather than the whole posting', () =>
     family: { id: 'copyediting-proofreading', label: 'Copy editing & proofreading', tier: 'core' },
     employmentTypes: ['full-time'],
     projectBased: false,
-    signals: { ...job().signals, work: [] },
+    signals: { ...job().signals, work: [], occupation: 'copyediting-proofreading' },
   });
 
   assert.ok(
@@ -242,6 +251,133 @@ test('ratings on a board that emits no signals are inert rather than wrong', () 
   const model = buildModel(recordFeedback(emptyPreferences(), job({ id: 'a' }), 'up'));
   const v1Job = { id: 'v1:1', title: 'Email QA Specialist', company: 'Northline Retail', rank: 70 };
   assert.deepEqual(adjustmentFor(v1Job, model, LABELS), { points: 0, notes: [] });
+});
+
+
+/* ------------------------------------------- v4: the three verdicts differ */
+
+/**
+ * The fault these cover is the one that made the feedback controls worse than
+ * useless: every verdict learned the same way, so marking a Commercial Lawyer
+ * "wrong kind of work" taught the board that proofreading, accuracy and
+ * verification were undesirable — the candidate's own strongest skills — and
+ * rejecting one full-time posting taught it that full-time work was unwanted.
+ */
+
+test('🚫 learns the occupation and never the transferable skills', () => {
+  const lawyer = job({
+    id: 'lawyer',
+    title: 'Commercial/Transactional Lawyer',
+    company: 'Brain Co.',
+    family: null,
+    occupation: { class: 'wrong', id: 'legal', label: 'Legal practice' },
+    signals: {
+      // The posting genuinely asks for all of these. That is exactly why it
+      // scored well, and exactly why 🚫 must not learn from them.
+      work: ['proofreading', 'accuracy', 'final-review'],
+      industries: [],
+      creation: 0,
+      automation: 0,
+      seniority: 'mid',
+      occupation: 'legal',
+      occupationClass: 'wrong',
+      function: 'reviewing',
+    },
+  });
+
+  const model = buildModel(recordFeedback(emptyPreferences(), lawyer, 'wrong'));
+
+  assert.ok(model.features['occupation:legal'] < 0, 'the occupation is the lesson');
+  for (const skill of ['work:proofreading', 'work:accuracy', 'work:final-review']) {
+    assert.ok(!model.features[skill], `${skill} is a skill she has, not a reason to reject anything`);
+  }
+  assert.ok(!model.features['company:brain-co'], '🚫 is about the profession, not the employer');
+
+  // And the practical consequence: a genuine proofreading job is untouched.
+  const proofreading = job({ id: 'good', company: 'Someone Else' });
+  assert.equal(adjustmentFor(proofreading, model, LABELS).points, 0);
+});
+
+test('🚫 on one profession does not follow her into another', () => {
+  const psychologist = job({
+    id: 'psych',
+    title: 'Child Psychologist',
+    family: null,
+    occupation: { class: 'wrong', id: 'clinical', label: 'Clinical practice' },
+    signals: { work: ['accuracy'], industries: [], creation: 0, automation: 0, seniority: 'mid', occupation: 'clinical', function: 'reviewing' },
+  });
+  const model = buildModel(recordFeedback(emptyPreferences(), psychologist, 'wrong'));
+
+  const lawyerish = job({
+    id: 'law',
+    company: 'Other Co',
+    family: null,
+    signals: { ...job().signals, occupation: 'legal' },
+  });
+  assert.equal(adjustmentFor(lawyerish, model, LABELS).points, 0, 'a different wrong occupation is a separate lesson');
+});
+
+test('👎 never teaches the board that full-time work is unwanted', () => {
+  // The explicit preferences — remote, United States, full-time, part-time and
+  // contract — are stated, not inferred, and several rejected postings
+  // happening to be full-time is a fact about what was advertised.
+  let prefs = emptyPreferences();
+  for (let i = 0; i < 6; i += 1) {
+    prefs = recordFeedback(
+      prefs,
+      job({ id: `ft-${i}`, company: `Company ${i}`, employmentTypes: ['full-time'], projectBased: false }),
+      'down'
+    );
+  }
+  const model = buildModel(prefs);
+
+  assert.ok(!(model.features['shape:full-time'] < 0), 'full-time must never carry a negative weight');
+  for (const shape of ['shape:part-time', 'shape:contract', 'shape:project']) {
+    assert.ok(!(model.features[shape] < 0), `${shape} is an explicit preference`);
+  }
+});
+
+test('👍 still learns from the shape of the engagement', () => {
+  // Protection runs one way only: contract and project work are wanted, and a
+  // 👍 on one should still say so.
+  const model = buildModel(recordFeedback(emptyPreferences(), job({ id: 'a' }), 'up'));
+  assert.ok(model.features['shape:contract'] > 0);
+  assert.ok(model.features['shape:project'] > 0);
+});
+
+test('what each verdict may learn from is stated once, and differs', () => {
+  assert.equal(mayLearn('wrong', 'occupation'), true);
+  assert.equal(mayLearn('wrong', 'function'), true);
+  assert.equal(mayLearn('wrong', 'work'), false);
+  assert.equal(mayLearn('wrong', 'shape'), false);
+  assert.equal(mayLearn('wrong', 'company'), false);
+
+  assert.equal(mayLearn('down', 'work'), true);
+  assert.equal(mayLearn('down', 'company'), true);
+  assert.equal(mayLearn('down', 'shape'), false);
+
+  assert.equal(mayLearn('up', 'shape'), true);
+  assert.equal(mayLearn('up', 'work'), true);
+});
+
+test('ratings given under the old rules are re-read under the new ones', () => {
+  // Ratings live in the browser and in exported files. A 🚫 given before v4
+  // drew this distinction must not keep punishing proofreading forever.
+  const stored = normalisePreferences({
+    ratings: {
+      old: {
+        verdict: 'wrong',
+        at: '2026-08-01T00:00:00Z',
+        features: ['family:content-editorial-quality', 'work:proofreading', 'shape:full-time', 'company:acme'],
+        facts: {},
+        title: 'Something regrettable',
+      },
+    },
+  });
+  const model = buildModel(stored);
+  assert.ok(!model.features['work:proofreading'], 'the old lesson about proofreading is dropped');
+  assert.ok(!model.features['shape:full-time'], 'and the one about full-time work with it');
+  assert.ok(model.features['family:content-editorial-quality'] < 0, 'the occupational half survives');
 });
 
 /* ------------------------------------------------------------ asset stamps */

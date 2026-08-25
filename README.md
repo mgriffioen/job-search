@@ -120,7 +120,7 @@ allowance.
 Two places, and both matter:
 
 1. **`search.queries`** — what gets searched.
-2. **A `titles` group** (and, for v3, a `roleFamilies` entry in
+2. **A `titles` group** (and, for v3 and v4, a `roleFamilies` entry in
    `config/profile.v3.json`) — so the matcher recognises it. Skip this and the
    search finds the postings but they score near nothing, which looks identical
    to the term not working. A test enforces it: every term the two lists name
@@ -247,42 +247,191 @@ rate-limited that time; it does not affect the others.
 
 ---
 
-## Three boards: v3, v2 and v1
+## Four boards: v4, v3, v2 and v1
 
-The board runs **three matching models over the same postings**, switchable in
-the header. **v3 is what the site opens on**; `?board=v2` or `?board=v1` in the
-URL selects another, so any board can be linked or bookmarked.
+The board runs **four matching models over the same postings**, switchable in
+the header. **v4 is what the site opens on**; `?board=v3`, `?board=v2` or
+`?board=v1` in the URL selects another, so any board can be linked or
+bookmarked.
 
-| | **v3 — fit profile** (default) | v2 — ability-based | v1 — title-driven |
-| --- | --- | --- | --- |
-| What carries the score | What the day involves, and which concepts appear together | What she can do (max 46 of 100) | The job title (max 50 of 95) |
-| Title weight | 22 of 90, corroboration only | 22 | 50 |
-| Reports | Four separate axis scores, a recommendation, evidence, gaps and cautions | One score | One score |
-| Finds | Work she wants, under any title, that she is qualified for | Roles that want her abilities under any name | Roles named like hers |
-| Volume | Deliberately few | Many | Many |
-| Data | `docs/data/v3/` | `docs/data/v2/` | `docs/data/` |
+| | **v4 — occupational fit** (default) | v3 — fit profile | v2 — ability-based | v1 — title-driven |
+| --- | --- | --- | --- | --- |
+| What carries the score | Whether the occupation is plausible at all, *then* v3's four axes | What the day involves, and which concepts appear together | What she can do (max 46 of 100) | The job title (max 50 of 95) |
+| Title weight | Places the occupation; 22 of 90 towards work fit | 22 of 90, corroboration only | 22 | 50 |
+| Reports | The occupational verdict, four axis scores, a recommendation, evidence, gaps and cautions | Four axis scores and the same report | One score | One score |
+| Finds | Work she could plausibly be hired for and wants to do | Work she wants, under any title, that she is qualified for | Roles that want her abilities under any name | Roles named like hers |
+| Volume | Fewest — precision over volume | Deliberately few | Many | Many |
+| Data | `docs/data/v4/` | `docs/data/v3/` | `docs/data/v2/` | `docs/data/` |
 
-**One fetch feeds all three.** Scoring is pure CPU, so the extra models cost
+**One fetch feeds all four.** Scoring is pure CPU, so the extra models cost
 nothing at the APIs — which matters, because JSearch is billed per request and
-running the pipeline three times would triple every call.
+running the pipeline once per model would multiply every call.
 
-If a board has not been generated yet — v3 first appears after the run that
+If a board has not been generated yet — v4 first appears after the run that
 follows its release — the page falls back to v1 and says so in the subtitle
 rather than showing an empty list.
 
-**v2 and v3 are overlays, not copies.** `config/profile.v2.json` and
-`config/profile.v3.json` hold only what defines their matching models. Search
-terms, engagement signals, penalties, the hard title exclusions and the location
-gate are all inherited from `config/profile.json`. That is deliberate — if the
-boards differed in what they searched for as well as how they scored, a
-difference between them would not be attributable to the model. **Put shared
-changes in `profile.json`; put only model-defining changes in the overlays.**
+**The overlays are not copies.** `config/profile.v2.json` and
+`config/profile.v3.json` hold only what defines their matching models, and
+`config/profile.v4.json` is an overlay **on the v3 overlay**: it keeps every
+axis, signal, combination and band v3 defined and adds the occupational gate in
+front of them. Search terms, engagement signals, penalties, the hard title
+exclusions and the location gate are all inherited from `config/profile.json`.
+That is deliberate — if the boards differed in what they searched for as well as
+how they scored, a difference between them would not be attributable to the
+model. **Put shared changes in `profile.json`; put only model-defining changes in
+the overlays.**
 
-The three scorers are separate files (`scripts/lib/score.mjs`,
-`scripts/lib/score-v2.mjs`, `scripts/lib/score-v3.mjs`) and duplicate some
-helpers. That is also deliberate: the models differ in their axes, their caps and
-the shape of the title signal, so sharing would mean parameterising all three
-into one — and a change meant for one board would silently move the others.
+`scripts/lib/score.mjs`, `score-v2.mjs` and `score-v3.mjs` are separate files and
+duplicate some helpers. That is also deliberate: those three models differ in
+their axes, their caps and the shape of the title signal, so sharing would mean
+parameterising all of them into one — and a change meant for one board would
+silently move the others. `score-v4.mjs` is the exception and **calls** v3
+rather than copying it, because it is not a different set of axes; it is the
+same axes with a question in front of them.
+
+---
+
+## How v4 scores a job
+
+v3 answers one question well: *how much of this posting's vocabulary is her
+vocabulary?* On the live board that produced
+
+| Posting | v3 |
+| --- | --- |
+| Commercial/Transactional Lawyer | 73 |
+| Prevention Program Assistant | 78 |
+| Child Psychologist | 68 |
+| AI Systems Engineering Subject Matter Expert | 66 |
+| **Content Reviewer – US** | **74** |
+| **Content Reviewer – English US** | **68** |
+
+Every one of those scores was earned honestly. Lawyers review for accuracy and
+catch discrepancies; child-welfare specialists audit documentation against
+policy; systems engineers verify and validate. **Careful checking against a
+standard is something every profession does**, so measuring it measures nothing
+about whether somebody could be hired into the job — and the two Content
+Reviewer postings, which she plausibly *could* be hired into, sat among them and
+below some of them.
+
+**v4 asks the prior question first** ([`scripts/lib/score-v4.mjs`](scripts/lib/score-v4.mjs),
+vocabulary in [`config/profile.v4.json`](config/profile.v4.json)):
+
+> Is this an occupation she could plausibly hold?
+
+Only after that is answered do v3's four axes get to speak. Everything below
+happens **before** work fit, experience fit, qualification fit and lifestyle fit
+are weighted.
+
+### Step 1 — the occupational fit gate
+
+Every posting is classified into one of four classes.
+
+| Class | What it means | What happens |
+| --- | --- | --- |
+| **CORE TARGET** | The occupation itself is proofreading, copyediting, editorial or content quality, or digital / marketing / email / creative QA. The title says so. | Scored normally |
+| **ADJACENT** | A title she would not have searched for, whose primary responsibilities are still reviewing, editing, validating or quality-checking customer-facing, marketing, e-commerce or editorial content. | Scored normally, ×0.97, flagged as a discovery |
+| **OCCUPATION UNCLEAR** | The posting has not said what the job is. Usually a two-line snippet. | ×0.85 and capped at 69, so it can never claim to be a good match |
+| **WRONG OCCUPATION** | A different profession whose description happens to contain her vocabulary. | **Suppressed** — dropped by the pipeline and counted, not listed quietly at 20 |
+
+Nine professions are named in `occupationGate.wrongOccupations`: legal,
+clinical/medical, social work and child welfare, engineering, software QA and
+test automation, accounting and audit, scientific and regulatory, sales and
+recruiting, and the physical trades. Each is recognised three ways, in the order
+the evidence deserves:
+
+- **`titles`** — conclusive. The employer named the profession in the job title,
+  and no description argues with that.
+- **`weakTitles`** — Program Coordinator, Case Manager, Technician. These point
+  at the occupation without settling it, because content people hold them too,
+  so they classify only when the description corroborates them.
+- **`body`** — needs several *distinct* concepts from the profession itself
+  ("bar admission", "clinical supervision", "general ledger"), and is not
+  consulted at all against a core-family title.
+
+**This is not an industry blocklist.** A posting is never rejected because the
+word "health", "legal" or "financial" appears in a company blurb — that is
+exactly the failure mode in the other direction, and there is a test for it. A
+title that names a content occupation (`titleExemptions`: Content Engineer,
+Editorial Program Coordinator, Content Reviewer, Documentation Specialist…) is
+never overruled by its own body text.
+
+**The class is a prerequisite and a multiplier, never another small signal.**
+That is the difference between v4 and adding a few more penalty phrases to v3:
+no quantity of transferable vocabulary moves a posting out of the class its
+occupation puts it in. A Content Reviewer at 70% transferable overlap outranks a
+Lawyer at 95%, which is the specification's own test and is asserted in
+`tests/matching.test.mjs`.
+
+### Step 2 — the credential / eligibility gate
+
+Kept separate from the classes, because the two fail separately: a posting can
+read as exactly the right occupation and still demand a licence.
+
+**Rejected:** JD or bar admission · clinical, medical or nursing licence · MSW
+or social-work licensure · a required computer-science degree or years of
+software engineering · CPA or CFA · a scientific doctorate or years in
+pharmaceutical regulatory work.
+
+**Not rejected, and never more than a few points:** AP Style · Chicago Manual of
+Style · a CMS · a PIM such as Salsify · a project-management platform · agency
+experience · an e-commerce platform · a proofreading or markup tool. These are
+**learnable gaps** — the underlying competency is already there, and the card
+labels them as such. *"AP Style required" must not sink an otherwise excellent
+editorial job*, and there is a test for that too.
+
+### Step 3 — then the existing fit scoring
+
+Work / Experience / Qualification / Lifestyle, weighted 35 / 30 / 20 / 15,
+exactly as [v3 describes below](#how-v3-scores-a-job). Occupational relevance
+multiplies and caps the result; it is not another weighted term added to it.
+
+### Step 4 — reviewing versus creating
+
+Unchanged in principle from v3, with strategy added to the creation side: owning
+a marketing programme, a content roadmap, demand generation or a messaging
+framework is the opposite half of her work, not the same half. "Strategist"
+joins the creation titles. A Senior Integrated Marketing Strategist is therefore
+**down-ranked, not suppressed** — adjacent industry, wrong function — and the
+card says which: *"the industry is yours and the occupation is next door to it,
+but the function is the opposite one."*
+
+Writing being present is still not disqualifying. An editing role that mentions
+rewriting sentences is untouched.
+
+### The Surprise Me shelf
+
+One to three postings, above the list, whose title she would never have typed
+into a search box and whose work turns out to be hers anyway. Candidates must be
+**adjacent** — a core-family title is not a surprise, it is the search working —
+and must clear a high work-fit bar, because a surprise that turns out to be
+mediocre teaches her to stop reading the shelf. When nothing qualifies the shelf
+disappears entirely.
+
+This is how an obscure title like *Digital Content Integrity Coordinator* gets
+found.
+
+### Precision over volume
+
+v4's publish threshold is **70**, the specification's own "possible adjacent
+opportunity" line, up from v3's 65 — and wrong-occupation postings are dropped
+before the threshold is consulted. **Bands are never filled to keep the count
+up.** If few good jobs exist today, the board shows few good jobs. The standard
+it is aiming at is:
+
+> *"I can understand why Emily might realistically apply for each of these
+> jobs"* — not *"I can find several sentences in each description that resemble
+> things Emily has done."*
+
+### What each card explains
+
+For every surviving posting the card answers the five questions the
+specification asks: why this occupation belongs in the target or adjacent
+family, which responsibilities match her actual experience, any learnable gaps,
+any genuine eligibility concerns, and whether the job primarily **reviews**
+existing content or **creates** new content. The paragraph leads with the
+occupation — justifying a match with generic transferable phrases is the thing
+v4 exists to stop.
 
 ---
 
@@ -374,21 +523,31 @@ an application), **learnable gaps** versus **true experience gaps**, and **watch
 out for** — a misleading title, copywriting buried in the description, real
 automation requirements, or a score read off a two-line snippet.
 
-**Quality over quantity is the point.** v3 publishes far fewer postings than v1;
-`search.minMatchScore` in `config/profile.v3.json` (65) is the single knob for
-that. Six jobs worth applying to beat a hundred vaguely related ones — and v1 is
-still one click away in the header when you want the wide view.
+**Quality over quantity is the point.** v4 publishes far fewer postings than v1
+— fewer even than v3, since it also suppresses whole occupations.
+`search.minMatchScore` (70 in `config/profile.v4.json`, 65 in the v3 overlay) is
+the single knob for the threshold. Six jobs worth applying to beat a hundred
+vaguely related ones — and v1 is still one click away in the header when you
+want the wide view.
 
 ### Teaching it what you actually want — 👍 / 👎 / 🚫
 
 The four axes score a posting against a written specification. The rating
-buttons on each v3 card score it against what she has actually said:
+buttons on each v3 and v4 card score it against what she has actually said:
 
-| Button | What it does |
-| --- | --- |
-| 👍 **More like this** | Lifts postings in the same categories |
-| 👎 **Not for me** | Pushes them down, and offers a reason |
-| 🚫 **Wrong kind of work** | Hides this one and pushes its kind well down |
+| Button | What it means | What it learns from |
+| --- | --- | --- |
+| 👍 **More like this** | The occupation, the responsibilities, the content type, the industry and the shape were all right | Everything |
+| 👎 **Not for me** | The occupation may be perfectly valid; *this* opportunity is not wanted | Everything except the protected preferences, and cautiously |
+| 🚫 **Wrong kind of work** | An occupational mismatch | **Only** the occupation, professional domain, job family and dominant function |
+
+**The three buttons deliberately do not mean the same thing**, and v4 makes them
+learn differently. Marking a Commercial Lawyer 🚫 has to teach *"legal work is
+wrong"* and nothing whatsoever about review, proofreading, accuracy or
+discrepancy detection — those are her strongest skills, and a model that learned
+to mark them down from a 🚫 would be actively working against her. Likewise
+rejecting one full-time posting must never produce a negative weight on
+full-time work.
 
 After 👎 a row of reasons appears — *too much writing, too technical, wrong
 industry, too senior, too junior, poor pay, not flexible, other*. It is
@@ -398,9 +557,18 @@ generalise correctly instead of quietly marking down the industry and the
 employer for a fault that belonged to neither. A stated reason redirects the
 blame rather than adding to it.
 
-Five rules keep it from doing more harm than good
+Seven rules keep it from doing more harm than good
 ([`docs/preferences.mjs`](docs/preferences.mjs)):
 
+- **The verdict decides what may be learned.** 🚫 learns only occupational
+  facts; 👎 learns from everything except the protected preferences; 👍 learns
+  from everything. Ratings already in storage are re-read under these rules
+  rather than keeping an older model's conclusions.
+- **Explicit preferences are protected from inference.** Remote, United States,
+  full-time, part-time and contract are all *stated*, not guessed, so nothing in
+  the ratings may produce a negative weight on them. Several rejected postings
+  happening to be full-time is a fact about what was advertised. (👍 still
+  learns positively from the shape of an engagement — protection runs one way.)
 - **Ratings move the rank, never the match.** Where a posting sits in the list
   changes; what the board claims about the fit does not. The bands mean what the
   specification says they mean, and a card whose position moved says so and says
@@ -429,7 +597,7 @@ Pressing the same one twice clears the rating.
 ### Confirming a posting is still open
 
 Aggregators keep serving listings for weeks after the employer has closed them,
-so before publishing, v3 re-fetches its top postings and files each one:
+so before publishing, v3 and v4 re-fetch their top postings and file each one:
 
 - **Confirmed open** — the link resolved and the page does not say the role is
   closed.
@@ -562,7 +730,9 @@ Everything lives in the config files — no code changes needed. Edit, commit, a
 the next run uses it (or run `npm run fetch` locally to see the effect
 immediately). Search terms, penalties and the location gate are shared by every
 board and live in [`config/profile.json`](config/profile.json); the v3 model's
-own vocabulary lives in [`config/profile.v3.json`](config/profile.v3.json).
+own vocabulary lives in [`config/profile.v3.json`](config/profile.v3.json), and
+the occupational gate that v4 puts in front of it lives in
+[`config/profile.v4.json`](config/profile.v4.json).
 
 Shared, affects every board:
 
@@ -605,6 +775,23 @@ v3 ([`config/profile.v3.json`](config/profile.v3.json)):
 - **A whole level of role is wrong** → the 👍 / 👎 / 🚫 buttons handle this
   without a config change; `seniority` in the v3 profile is only the vocabulary
   that lets "too senior" and "too junior" recognise a level.
+
+v4 only, in [`config/profile.v4.json`](config/profile.v4.json):
+
+- **A whole profession keeps turning up** → add it to
+  `occupationGate.wrongOccupations`. Put the job titles that settle it in
+  `titles`, titles that only hint at it in `weakTitles`, and phrases from the
+  profession itself in `body` — never a word that appears in ordinary marketing
+  copy, which a test enforces.
+- **A good job is being suppressed** → check the card on `?board=v3` to see what
+  it scored before the gate. If the title is the problem, add it to
+  `occupationGate.titleExemptions`; if a company blurb is, raise that
+  occupation's `bodyThreshold`.
+- **A required credential is being treated as learnable, or vice versa** →
+  `credentialGate.phrases` rejects; `qualification.learnableGaps` in the v3
+  profile costs a few points and explains itself. Nothing belongs in both.
+- **The Surprise Me shelf is empty or noisy** → `surprise.minWorkFit` and
+  `surprise.minMatch`. An empty shelf on a quiet day is correct behaviour.
 
 The rating model's own constants — how fast it gains confidence, how far one
 category may move a posting — are at the top of

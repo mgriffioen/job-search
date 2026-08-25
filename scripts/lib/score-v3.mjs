@@ -73,7 +73,7 @@ const round1 = (n) => Math.round(n * 10) / 10;
  * describes a posting more exactly than "content quality", and it is the
  * longer one that should be quoted back as the reason.
  */
-function longestMatch(phrases, normalizedText) {
+export function longestMatch(phrases, normalizedText) {
   let best = null;
   for (const phrase of phrases || []) {
     if (!containsPhrase(normalizedText, phrase)) continue;
@@ -82,7 +82,7 @@ function longestMatch(phrases, normalizedText) {
   return best;
 }
 
-function matchGroup(groups, normalizedText) {
+export function matchGroup(groups, normalizedText) {
   const hits = [];
   for (const entry of groups || []) {
     const matched = longestMatch(entry.phrases, normalizedText);

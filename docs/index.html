@@ -8,7 +8,7 @@
 <meta name="theme-color" content="#0f172a">
 <title>Emily's Job Board</title>
 <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🔎</text></svg>">
-<link rel="stylesheet" href="styles.css?v=583d5a1671">
+<link rel="stylesheet" href="styles.css?v=dfb93f04ba">
 </head>
 <body>
 
@@ -21,10 +21,11 @@
       <p class="masthead__sub" id="tagline">Content &amp; editorial QA · proofreading · e-commerce content — remote roles open to Michigan</p>
     </div>
     <div class="masthead__meta">
-      <!-- Two matching models over the same postings. The choice is in the URL
+      <!-- Four matching models over the same postings. The choice is in the URL
            so a particular board can be linked or bookmarked. -->
       <div class="boardswitch" role="group" aria-label="Matching model">
-        <button type="button" class="boardswitch__btn" data-board="v3" aria-pressed="true">v3 · fit</button>
+        <button type="button" class="boardswitch__btn" data-board="v4" aria-pressed="true">v4 · occupation</button>
+        <button type="button" class="boardswitch__btn" data-board="v3" aria-pressed="false">v3 · fit</button>
         <button type="button" class="boardswitch__btn" data-board="v2" aria-pressed="false">v2 · ability</button>
         <button type="button" class="boardswitch__btn" data-board="v1" aria-pressed="false">v1 · title</button>
       </div>
@@ -45,6 +46,10 @@
     <button type="button" class="stat" id="stat-newdir-tile" data-newdir-filter="1" hidden>
       <span class="stat__num" id="stat-newdir">0</span>
       <span class="stat__label">New directions</span>
+    </button>
+    <button type="button" class="stat" id="stat-surprise-tile" data-surprise-filter="1" hidden>
+      <span class="stat__num" id="stat-surprise">0</span>
+      <span class="stat__label">Surprise me</span>
     </button>
     <button type="button" class="stat" data-project-filter="1">
       <span class="stat__num" id="stat-project">0</span>
@@ -127,6 +132,7 @@
           <label><input type="checkbox" id="only-project"> Only contract, freelance or project-based</label>
           <label id="only-open-row" hidden><input type="checkbox" id="only-open"> Only postings confirmed still open <span class="hint">(v3)</span></label>
           <label id="only-newdir-row" hidden><input type="checkbox" id="only-newdir"> Only roles outside your current title <span class="hint">(v2)</span></label>
+          <label id="only-surprise-row" hidden><input type="checkbox" id="only-surprise"> Only the Surprise Me shelf <span class="hint">(v4)</span></label>
           <label><input type="checkbox" id="hide-hidden" checked> Hide dismissed jobs</label>
           <label><input type="checkbox" id="hide-applied"> Hide jobs already applied to</label>
         </fieldset>
@@ -150,6 +156,17 @@
       </div>
     </details>
   </form>
+
+  <!-- v4 only: one to three postings whose title is nothing she would have
+       searched for and whose work turns out to be hers anyway. This is how an
+       obscure title like "Digital Content Integrity Coordinator" gets found. -->
+  <section class="surprise" id="surprise" aria-label="Surprise me" hidden>
+    <div class="surprise__head">
+      <h2>✨ Surprise me</h2>
+      <p class="surprise__sub">Titles you would never have searched for, doing work that turns out to be yours.</p>
+    </div>
+    <div class="surprise__list" id="surprise-list"></div>
+  </section>
 
   <p class="resultline" id="resultline" aria-live="polite"></p>
 
@@ -205,6 +222,11 @@
 
       <ul class="chips" data-chips></ul>
 
+      <!-- v4 only: the occupational verdict, before any of the fit scores.
+           Whether she plausibly belongs in this occupation is the question that
+           has to be answered first; the four axes only mean something after it. -->
+      <p class="occupation" data-occupation hidden></p>
+
       <!-- v3 only: the four axes the specification scores separately, because
            one number cannot say whether a job is the wrong work or the right
            work with a requirement she does not meet. -->
@@ -233,6 +255,10 @@
           <section class="report__block report__block--warn" data-truegap-block hidden>
             <h4>True experience gaps</h4>
             <ul data-truegaps></ul>
+          </section>
+          <section class="report__block" data-mode-block hidden>
+            <h4>Reviewing or creating?</h4>
+            <ul data-mode></ul>
           </section>
           <section class="report__block report__block--warn" data-watch-block hidden>
             <h4>Watch out for</h4>
@@ -276,6 +302,6 @@
   </article>
 </template>
 
-<script src="app.js?v=06698e940d" type="module"></script>
+<script src="app.js?v=390d39ff5b" type="module"></script>
 </body>
 </html>
