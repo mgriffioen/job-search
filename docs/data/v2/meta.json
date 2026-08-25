@@ -1,6 +1,6 @@
 {
-  "generatedAt": "2026-08-25T21:02:17.263Z",
-  "durationMs": 32756,
+  "generatedAt": "2026-08-25T21:07:46.576Z",
+  "durationMs": 21683,
   "model": {
     "id": "v2",
     "label": "Ability-based",
@@ -44,13 +44,13 @@
     "minMatchScore": 20
   },
   "counts": {
-    "fetched": 1407,
-    "unique": 1002,
-    "published": 516,
+    "fetched": 1406,
+    "unique": 995,
+    "published": 457,
     "dropped": {
-      "location": 298,
+      "location": 356,
       "stale": 9,
-      "lowMatch": 162,
+      "lowMatch": 156,
       "excluded": 17,
       "blockedDomain": 0,
       "wrongOccupation": 0
@@ -58,13 +58,13 @@
   },
   "tiers": {
     "strong": 80,
-    "good": 154,
-    "possible": 166,
-    "stretch": 116
+    "good": 133,
+    "possible": 142,
+    "stretch": 102
   },
-  "freshLast48h": 225,
-  "projectBased": 223,
-  "discoveries": 109,
+  "freshLast48h": 166,
+  "projectBased": 198,
+  "discoveries": 98,
   "surprises": 0,
   "occupations": null,
   "sources": [
@@ -80,7 +80,7 @@
       "id": "jsearch",
       "label": "Google Jobs",
       "status": "ok",
-      "fetched": 1,
+      "fetched": 0,
       "warnings": [],
       "quota": {
         "limit": 200,
@@ -89,12 +89,12 @@
         "resetAt": "2026-08-27T15:52:25.798Z"
       },
       "budget": {
-        "allowed": 1,
-        "spent": 1,
+        "allowed": 0,
+        "spent": 0,
         "reserve": 12,
-        "reason": "pacing 4 spendable requests across ~4 runs left this period (1.00/run)"
+        "reason": "not a scheduled run — holding the metered quota for the next one"
       },
-      "ms": 3530
+      "ms": 0
     },
     {
       "id": "adzuna",
@@ -123,7 +123,7 @@
         "us-remote \"freelance qa\": 0 results (Adzuna reports 0 total matches)",
         "us-remote \"editorial quality\": 0 results (Adzuna reports 0 total matches)"
       ],
-      "ms": 4633
+      "ms": 3976
     },
     {
       "id": "jooble",
@@ -131,7 +131,7 @@
       "status": "ok",
       "fetched": 80,
       "warnings": [],
-      "ms": 879
+      "ms": 938
     },
     {
       "id": "remotive",
@@ -139,7 +139,7 @@
       "status": "ok",
       "fetched": 288,
       "warnings": [],
-      "ms": 999
+      "ms": 433
     },
     {
       "id": "weworkremotely",
@@ -149,7 +149,7 @@
       "warnings": [
         "remote-marketing-jobs.rss: HTTP 301 Moved Permanently"
       ],
-      "ms": 1686
+      "ms": 1274
     },
     {
       "id": "himalayas",
@@ -157,7 +157,7 @@
       "status": "ok",
       "fetched": 240,
       "warnings": [],
-      "ms": 999
+      "ms": 441
     },
     {
       "id": "jobicy",
@@ -167,7 +167,7 @@
       "warnings": [
         "?count=50&geo=usa&tag=copy%20editor: HTTP 429 Too Many Requests"
       ],
-      "ms": 13203
+      "ms": 10037
     },
     {
       "id": "remoteok",
@@ -175,7 +175,7 @@
       "status": "ok",
       "fetched": 99,
       "warnings": [],
-      "ms": 846
+      "ms": 461
     },
     {
       "id": "workingnomads",
@@ -183,7 +183,7 @@
       "status": "ok",
       "fetched": 43,
       "warnings": [],
-      "ms": 678
+      "ms": 421
     },
     {
       "id": "arbeitnow",
@@ -191,7 +191,7 @@
       "status": "ok",
       "fetched": 175,
       "warnings": [],
-      "ms": 622
+      "ms": 211
     }
   ]
 }

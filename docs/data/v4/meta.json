@@ -1,6 +1,6 @@
 {
-  "generatedAt": "2026-08-25T21:02:17.263Z",
-  "durationMs": 45185,
+  "generatedAt": "2026-08-25T21:07:46.576Z",
+  "durationMs": 29305,
   "model": {
     "id": "v4",
     "label": "Occupational fit",
@@ -65,40 +65,40 @@
     "minMatchScore": 70
   },
   "counts": {
-    "fetched": 1407,
-    "unique": 1002,
-    "published": 5,
+    "fetched": 1406,
+    "unique": 995,
+    "published": 6,
     "dropped": {
-      "location": 298,
+      "location": 356,
       "stale": 13,
-      "lowMatch": 411,
+      "lowMatch": 378,
       "excluded": 17,
       "blockedDomain": 0,
-      "wrongOccupation": 258
+      "wrongOccupation": 225
     }
   },
   "tiers": {
     "exceptional": 0,
     "strong": 0,
     "good": 0,
-    "possible": 5,
+    "possible": 6,
     "low": 0
   },
   "verification": {
     "enabled": true,
-    "checked": 5,
+    "checked": 6,
     "live": 4,
     "closed": 0,
-    "unknown": 1,
+    "unknown": 2,
     "skipped": 0,
-    "ms": 255
+    "ms": 250
   },
-  "freshLast48h": 1,
+  "freshLast48h": 2,
   "projectBased": 3,
-  "discoveries": 2,
-  "surprises": 0,
+  "discoveries": 3,
+  "surprises": 1,
   "occupations": {
-    "adjacent": 2,
+    "adjacent": 3,
     "core": 3
   },
   "sources": [
@@ -114,7 +114,7 @@
       "id": "jsearch",
       "label": "Google Jobs",
       "status": "ok",
-      "fetched": 1,
+      "fetched": 0,
       "warnings": [],
       "quota": {
         "limit": 200,
@@ -123,12 +123,12 @@
         "resetAt": "2026-08-27T15:52:25.798Z"
       },
       "budget": {
-        "allowed": 1,
-        "spent": 1,
+        "allowed": 0,
+        "spent": 0,
         "reserve": 12,
-        "reason": "pacing 4 spendable requests across ~4 runs left this period (1.00/run)"
+        "reason": "not a scheduled run — holding the metered quota for the next one"
       },
-      "ms": 3530
+      "ms": 0
     },
     {
       "id": "adzuna",
@@ -157,7 +157,7 @@
         "us-remote \"freelance qa\": 0 results (Adzuna reports 0 total matches)",
         "us-remote \"editorial quality\": 0 results (Adzuna reports 0 total matches)"
       ],
-      "ms": 4633
+      "ms": 3976
     },
     {
       "id": "jooble",
@@ -165,7 +165,7 @@
       "status": "ok",
       "fetched": 80,
       "warnings": [],
-      "ms": 879
+      "ms": 938
     },
     {
       "id": "remotive",
@@ -173,7 +173,7 @@
       "status": "ok",
       "fetched": 288,
       "warnings": [],
-      "ms": 999
+      "ms": 433
     },
     {
       "id": "weworkremotely",
@@ -183,7 +183,7 @@
       "warnings": [
         "remote-marketing-jobs.rss: HTTP 301 Moved Permanently"
       ],
-      "ms": 1686
+      "ms": 1274
     },
     {
       "id": "himalayas",
@@ -191,7 +191,7 @@
       "status": "ok",
       "fetched": 240,
       "warnings": [],
-      "ms": 999
+      "ms": 441
     },
     {
       "id": "jobicy",
@@ -201,7 +201,7 @@
       "warnings": [
         "?count=50&geo=usa&tag=copy%20editor: HTTP 429 Too Many Requests"
       ],
-      "ms": 13203
+      "ms": 10037
     },
     {
       "id": "remoteok",
@@ -209,7 +209,7 @@
       "status": "ok",
       "fetched": 99,
       "warnings": [],
-      "ms": 846
+      "ms": 461
     },
     {
       "id": "workingnomads",
@@ -217,7 +217,7 @@
       "status": "ok",
       "fetched": 43,
       "warnings": [],
-      "ms": 678
+      "ms": 421
     },
     {
       "id": "arbeitnow",
@@ -225,7 +225,7 @@
       "status": "ok",
       "fetched": 175,
       "warnings": [],
-      "ms": 622
+      "ms": 211
     }
   ]
 }
