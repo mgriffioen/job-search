@@ -979,3 +979,87 @@ textarea { resize: vertical; }
 /* The import control is a label wrapping a hidden file input, so it needs the
    button's cursor to behave like one. */
 .tuning__actions label.btn { cursor: pointer; }
+
+/* ---------------------------------------------------------------
+   v4 — occupational fit
+
+   The verdict that comes before the scores, and the shelf of unfamiliar titles
+   that turned out to be the right work. Both are deliberately quiet: the
+   occupation line is one sentence at reading size rather than a banner, because
+   it appears on every card and a banner on every card is wallpaper.
+   --------------------------------------------------------------- */
+
+.occupation {
+  margin: 0 0 10px;
+  padding: .5rem .7rem;
+  border-left: 3px solid var(--tier, var(--accent));
+  border-radius: 0 6px 6px 0;
+  background: var(--tier-soft, var(--accent-soft));
+  color: var(--text);
+  font-size: .84rem;
+  line-height: 1.45;
+}
+.occupation__badge {
+  display: inline-block;
+  margin-right: .45em;
+  font-size: .68rem;
+  font-weight: 700;
+  letter-spacing: .04em;
+  text-transform: uppercase;
+  color: var(--tier, var(--accent-text));
+}
+/* An unplaceable occupation is a caution, not a compliment; the amber says so
+   whatever band the posting happens to have landed in. */
+.occupation[data-class="unclear"] { border-left-color: var(--possible); background: var(--possible-soft); }
+.occupation[data-class="unclear"] .occupation__badge { color: var(--possible); }
+.occupation[data-class="wrong"] { border-left-color: var(--stretch); background: var(--stretch-soft); }
+.occupation[data-class="wrong"] .occupation__badge { color: var(--stretch); }
+
+.surprise {
+  margin: 0 0 18px;
+  padding: 14px 16px 16px;
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  background: var(--surface);
+}
+.surprise__head { margin-bottom: 10px; }
+.surprise h2 { margin: 0; font-size: 1rem; letter-spacing: -.01em; }
+.surprise__sub { margin: 3px 0 0; color: var(--text-faint); font-size: .82rem; }
+
+.surprise__list {
+  display: grid;
+  gap: 8px;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+}
+
+.surprisecard {
+  display: flex;
+  gap: 10px;
+  align-items: flex-start;
+  padding: 10px 12px;
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  background: var(--surface-2);
+  color: inherit;
+  font: inherit;
+  text-align: left;
+  cursor: pointer;
+}
+.surprisecard:hover { border-color: var(--accent); }
+.surprisecard:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+
+.surprisecard__match {
+  flex: none;
+  min-width: 2.1rem;
+  padding: 2px 0;
+  border-radius: 6px;
+  background: var(--accent-soft);
+  color: var(--accent-text);
+  font-size: .82rem;
+  font-weight: 700;
+  text-align: center;
+}
+.surprisecard__text { display: flex; flex-direction: column; gap: 2px; min-width: 0; }
+.surprisecard__text strong { font-size: .88rem; line-height: 1.3; }
+.surprisecard__company { color: var(--text-faint); font-size: .78rem; }
+.surprisecard__why { color: var(--text-faint); font-size: .78rem; line-height: 1.4; }

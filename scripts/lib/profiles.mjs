@@ -72,3 +72,47 @@ export function buildV3Profile(base, overlay) {
     discovery: overlay.discovery || {},
   };
 }
+
+/**
+ * v4 is an overlay ON THE v3 OVERLAY. It keeps every axis, signal, combination
+ * and band v3 defined and adds the occupational fit gate in front of them, so
+ * the two boards differ by exactly the thing being tested and nothing else. A
+ * v4 that copied v3's 1,900-line vocabulary would start drifting from it the
+ * first time a phrase was added to one and not the other, and a comparison
+ * between the boards would stop meaning anything — the same reasoning that put
+ * v2 and v3 on this shared base in the first place.
+ *
+ * `orientationAdditions` are merged rather than replacing: the strategy and
+ * ownership language v4 counts on the creation side is an addition to v3's
+ * lists, not a fork of them.
+ */
+export function buildV4Profile(base, v3Overlay, v4Overlay) {
+  if (!v4Overlay) return null;
+  const v3Profile = buildV3Profile(base, v3Overlay);
+  if (!v3Profile) return null;
+
+  const additions = v4Overlay.orientationAdditions || {};
+  const orientation = {
+    ...v3Profile.orientation,
+    ...(v4Overlay.orientation || {}),
+    creationTitles: [
+      ...(v3Profile.orientation?.creationTitles || []),
+      ...(additions.creationTitlesAdded || []),
+    ],
+    creationPhrases: [
+      ...(v3Profile.orientation?.creationPhrases || []),
+      ...(additions.creationPhrasesAdded || []),
+    ],
+  };
+
+  return {
+    ...v3Profile,
+    search: { ...v3Profile.search, ...(v4Overlay.search || {}) },
+    ranking: mergeRanking(v3Profile.ranking, v4Overlay.ranking),
+    orientation,
+    occupationGate: v4Overlay.occupationGate || {},
+    credentialGate: v4Overlay.credentialGate || {},
+    surprise: v4Overlay.surprise || {},
+    protectedPreferences: v4Overlay.protectedPreferences || {},
+  };
+}

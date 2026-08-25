@@ -17,7 +17,12 @@ import {
   requiredYears,
   freshnessBucket,
 } from '../scripts/lib/score-v3.mjs';
-import { buildV2Profile, buildV3Profile } from '../scripts/lib/profiles.mjs';
+import {
+  scoreJob as scoreJobV4,
+  classifyOccupation,
+  checkEligibility,
+} from '../scripts/lib/score-v4.mjs';
+import { buildV2Profile, buildV3Profile, buildV4Profile } from '../scripts/lib/profiles.mjs';
 import { classifyResponse, verifyListings } from '../scripts/lib/verify.mjs';
 import { buildBoard } from '../scripts/fetch-jobs.mjs';
 import { planRunBudget, readQuotaHeaders, describeQuota } from '../scripts/lib/quota.mjs';
@@ -27,6 +32,8 @@ const v2Overlay = JSON.parse(await readFile(new URL('../config/profile.v2.json',
 const profileV2 = buildV2Profile(profile, v2Overlay);
 const v3Overlay = JSON.parse(await readFile(new URL('../config/profile.v3.json', import.meta.url), 'utf8'));
 const profileV3 = buildV3Profile(profile, v3Overlay);
+const v4Overlay = JSON.parse(await readFile(new URL('../config/profile.v4.json', import.meta.url), 'utf8'));
+const profileV4 = buildV4Profile(profile, v3Overlay, v4Overlay);
 const NOW = new Date('2026-07-27T12:00:00Z');
 
 const job = (overrides = {}) => ({
@@ -1650,9 +1657,359 @@ test('the board speaks to the person reading it', () => {
     return typeof value === 'string' ? [value] : [];
   };
 
-  for (const [name, config] of [['profile.json', profile], ['profile.v2.json', profileV2], ['profile.v3.json', profileV3]]) {
+  for (const [name, config] of [
+    ['profile.json', profile],
+    ['profile.v2.json', profileV2],
+    ['profile.v3.json', profileV3],
+    ['profile.v4.json', profileV4],
+  ]) {
     for (const line of visibleStrings(config)) {
       assert.ok(!thirdPerson.test(line), `${name} shows the reader: "${line}"`);
     }
   }
+});
+
+/* ------------------------------------------------------------------ v4 */
+
+/**
+ * MODEL V4 — occupational fit before transferable-skill fit.
+ *
+ * The postings below are written from the ones that actually led, or wrongly
+ * survived on, the live v3 board: a Commercial/Transactional Lawyer at 73, a
+ * Prevention Program Assistant at 78, a Child Psychologist at 68, an AI Systems
+ * Engineering Subject Matter Expert at 66 — all of them above a Content
+ * Reviewer at 74 and two more at 68.
+ *
+ * None of those were keyword accidents. Every one of them genuinely asks for
+ * review, accuracy, verification, discrepancy detection, proofreading and
+ * deadlines, because careful checking against a standard is something every
+ * profession does. That is the whole finding: measuring transferable skill
+ * measures nothing about whether somebody could hold the job, so v4 asks
+ * whether the occupation is plausible FIRST and only then scores the axes.
+ */
+
+const v4job = (overrides = {}) => ({
+  title: 'Content Quality Specialist',
+  company: 'Example Retail',
+  location: 'USA',
+  locationRestriction: 'USA',
+  workType: 'remote',
+  description: CONTENT_QA_BODY,
+  tags: [],
+  postedAt: '2026-07-26T12:00:00Z',
+  ...overrides,
+});
+
+const v4 = (title, description, extra = {}) =>
+  scoreJobV4(v4job({ title, description, ...extra }), profileV4, NOW);
+
+/**
+ * The five postings the specification names, written the way they actually
+ * read — which is to say, stuffed with her vocabulary. If these fixtures did
+ * not contain "review", "accuracy", "discrepancy" and "attention to detail",
+ * they would not be testing anything.
+ */
+const WRONG_OCCUPATIONS = [
+  ['legal', 'Commercial/Transactional Lawyer',
+    'Draft, review and negotiate commercial agreements for a fast-growing platform. You will review contracts for ' +
+    'accuracy and consistency, identify discrepancies between drafts and the executed version, proofread final ' +
+    'documents before signature, maintain a clause library with meticulous attention to detail, manage deadlines ' +
+    'across concurrent deals and provide legal advice to the business. Excellent written communication and quality ' +
+    'control essential. 5+ years of commercial contract negotiation experience.'],
+  ['clinical', 'Child Psychologist',
+    'Serve as part of a team of clinical and other subject matter experts. You will conduct psychological assessment ' +
+    'of children, review case documentation for accuracy and completeness, verify that reports meet our standards ' +
+    'before submission, identify discrepancies in records, and provide clear written feedback to providers. Strong ' +
+    'attention to detail and the ability to meet reporting deadlines required. Doctoral degree in psychology and ' +
+    'clinical licensure required.'],
+  ['social-services', 'Senior Child Welfare Specialist',
+    'Support a prevention-oriented, compliance-focused culture across a care provider network. You will conduct ' +
+    'compliance audits, review provider documentation for accuracy and consistency against policy, proofread ' +
+    'monitoring reports before they are issued, track corrections to completion, identify discrepancies across ' +
+    'sites, and meet strict reporting deadlines. Child welfare or social services background required.'],
+  ['engineering', 'AI Systems Engineering Subject Matter Expert',
+    'Help us build an international platform of digital re-skilling products. You will review learner-facing ' +
+    'technical content for accuracy, verify code samples against the curriculum, identify discrepancies between ' +
+    'lessons and the production system, and give detailed feedback. Deep expertise in system architecture, ' +
+    'machine learning models, data pipelines and production code required. Attention to detail essential.'],
+  ['social-services', 'Prevention Program Assistant',
+    'Support our Prevention of Sexual Abuse project, which conducts compliance audits and technical assistance for ' +
+    'the Office of Refugee Resettlement provider community. You will maintain accurate records, review and proofread ' +
+    'programme documentation, verify data for accuracy, track corrections, and support monitoring and continuous ' +
+    'quality improvement across the care provider network. Excellent attention to detail and deadline management.'],
+];
+
+test('v4 places every wrong occupation the specification names', () => {
+  for (const [expected, title, description] of WRONG_OCCUPATIONS) {
+    const result = v4(title, description);
+    assert.equal(
+      result.occupationClass,
+      'wrong',
+      `"${title}" is not an occupation to be in, got ${result.occupationClass} at ${result.match}`
+    );
+    assert.equal(result.details.occupation.id, expected, `and the profession should be named as ${expected}`);
+    assert.equal(result.suppressed, true, 'and it should be suppressed rather than published quietly');
+  }
+});
+
+test('a wrong occupation can never be a Strong or a Good match', () => {
+  // The specification's floor requirement. Even if every other axis were
+  // perfect, transferable vocabulary must not buy a place in the apply bands.
+  for (const [, title, description] of WRONG_OCCUPATIONS) {
+    const result = v4(title, description);
+    assert.ok(result.match < 70, `"${title}" reached ${result.match}`);
+    assert.ok(!['exceptional', 'strong', 'good'].includes(matchTierV3(result.match, profileV4)));
+    assert.equal(result.details.recommendation, 'SKIP');
+  }
+});
+
+test('the pipeline drops suppressed postings rather than listing them low', () => {
+  const board = buildBoard(
+    WRONG_OCCUPATIONS.map(([, title, description], index) => ({
+      id: `wrong-${index}`,
+      title,
+      company: 'Somewhere',
+      location: 'USA',
+      locationRestriction: 'USA',
+      workType: 'remote',
+      description,
+      tags: [],
+      employmentTypes: ['full-time'],
+      sources: ['test'],
+      postedAt: '2026-07-26T12:00:00Z',
+      url: 'https://example.com/1',
+    })),
+    profileV4,
+    scoreJobV4,
+    NOW,
+    { tier: (m) => matchTierV3(m, profileV4), tierOrder: profileV4.bands.map((b) => b.tier) }
+  );
+
+  assert.equal(board.jobs.length, 0, 'a board that lists these at 20 is still asking her to read them');
+  assert.equal(board.dropped.wrongOccupation, WRONG_OCCUPATIONS.length, 'and the suppression is counted, not silent');
+});
+
+test('a content reviewer outranks a lawyer with more transferable overlap', () => {
+  // The specification's own test: 70% overlap in the right occupation beats
+  // 95% overlap in the wrong one.
+  const reviewer = v4(
+    'Content Reviewer - US',
+    'Evaluate and review online content for accuracy, quality and adherence to our guidelines. You will compare ' +
+      'content against reference material, flag inconsistencies, and provide feedback. Flexible, remote, freelance ' +
+      'project work. Strong attention to detail and excellent English essential.'
+  );
+  const lawyer = v4(WRONG_OCCUPATIONS[0][1], WRONG_OCCUPATIONS[0][2]);
+
+  assert.ok(
+    reviewer.match > lawyer.match,
+    `the reviewer scored ${reviewer.match} and the lawyer ${lawyer.match}`
+  );
+  assert.equal(reviewer.occupationClass, 'core');
+  assert.ok(reviewer.rank > lawyer.rank, 'and it must sort above it, not merely score above it');
+});
+
+test('the occupations she is actually looking for still reach the apply bands', () => {
+  // The other half of every gate: one that also caught the true positives would
+  // be a worse model, not a better one.
+  for (const [title, description] of [...TRUE_POSITIVES, ['Content Quality Specialist', CONTENT_QA_BODY]]) {
+    const result = v4(title, description);
+    assert.equal(result.occupationClass, 'core', `"${title}" is a core target`);
+    assert.ok(result.match >= 88, `"${title}" should still be a priority application, got ${result.match}`);
+    assert.equal(result.suppressed, false);
+  }
+});
+
+test('an unfamiliar title whose work is hers is discovered, not suppressed', () => {
+  // The whole reason the board exists: an employer using a different name for
+  // work she has done for ten years.
+  const result = v4(
+    'Digital Content Integrity Coordinator',
+    'You will be the final check on everything the brand publishes. Review web and email content before it goes ' +
+      'live for accuracy, brand consistency and adherence to our style guide, verify pricing, links and imagery ' +
+      'against source-of-truth product data, log discrepancies, track corrections with designers and developers, ' +
+      'and audit live landing pages for errors after launch. Two years in a content review, proofreading or ' +
+      'digital production role.'
+  );
+
+  assert.notEqual(result.occupationClass, 'wrong');
+  assert.ok(result.match >= 80, `an unfamiliar title should not cost it the band, got ${result.match}`);
+  assert.equal(result.suppressed, false);
+});
+
+test('the Surprise Me shelf takes adjacent occupations and not core ones', () => {
+  // A core-family title is not a surprise; it is the search working.
+  const familiar = v4('Content Quality Specialist', CONTENT_QA_BODY);
+  assert.equal(familiar.surprise, false, 'a title she searched for is not a discovery');
+
+  const unfamiliar = v4(
+    'Merchandising Accuracy Coordinator',
+    'Own the accuracy of everything on our product pages. You will proofread product descriptions and marketing ' +
+      'copy before publication, verify pricing, imagery and product information against source data, run a weekly ' +
+      'content audit of the catalog for discrepancies, check that everything matches our brand style guide, and ' +
+      'work with designers and the e-commerce team to get corrections made ahead of each campaign launch.'
+  );
+  assert.equal(unfamiliar.occupationClass, 'adjacent', 'the title is not one of the families');
+  assert.equal(unfamiliar.surprise, true, 'and its work is unusually well aligned anyway');
+  assert.equal(unfamiliar.discovery, true);
+});
+
+test('a credential she cannot hold rejects the posting; a learnable tool does not', () => {
+  // The specification's sharpest distinction, and the one most matchers get
+  // wrong in both directions.
+  const credentialed = v4(
+    'Editorial Quality Specialist',
+    `${CONTENT_QA_BODY} An active bar license is required for this role.`
+  );
+  assert.equal(credentialed.suppressed, true, 'a bar licence is not something to pick up before applying');
+  assert.ok(credentialed.details.occupation.eligibility.length > 0);
+  assert.ok(
+    credentialed.details.gaps.experience.some((gap) => /bar/i.test(gap.note)),
+    'and it is reported beside the true gaps, never among the learnable ones'
+  );
+
+  const learnable = v4(
+    'Editorial Quality Specialist',
+    `${CONTENT_QA_BODY} AP Style required. Salsify and Chicago Manual of Style experience preferred.`
+  );
+  assert.equal(learnable.suppressed, false, 'AP style is a weekend, not a career');
+  assert.ok(learnable.match >= 85, `and it must not sink the score, got ${learnable.match}`);
+  assert.ok(learnable.details.gaps.learnable.length > 0, 'it is reported, as a learnable gap');
+});
+
+test('a specialist word in a company blurb does not condemn the job', () => {
+  // STEP 5. The failure mode being avoided is a board that hides an e-commerce
+  // content role at a health brand — the same mistake in the other direction.
+  const result = v4(
+    'Digital Content Editor',
+    'We are a direct-to-consumer health and wellness brand. Our legal and finance teams sit alongside marketing in ' +
+      'a flat structure. In this role you will copy edit and proofread web and email content against our brand ' +
+      'style guide, run the final review before campaigns deploy, verify product claims, pricing and links against ' +
+      'approved source copy, and flag discrepancies between the campaign and the live site.'
+  );
+
+  assert.notEqual(result.occupationClass, 'wrong');
+  assert.ok(result.match >= 80, `an editorial job at a health brand is an editorial job, got ${result.match}`);
+});
+
+test('strategy and content ownership are down-ranked, not called the wrong occupation', () => {
+  // The specification's reading of this one: adjacent industry, poor functional
+  // fit. It is not somebody else's profession; it is the opposite half of hers.
+  const strategist = v4(
+    'Senior Integrated Marketing Strategist',
+    'Lead integrated campaign strategy across paid, owned and earned channels for a consumer brand. You will own ' +
+      'the marketing strategy and the editorial calendar, develop messaging frameworks and brand positioning, brief ' +
+      'creative teams, drive demand generation, and report on campaign performance. Review creative for brand ' +
+      'consistency and accuracy before launch. 7+ years in integrated marketing.'
+  );
+
+  assert.ok(strategist.match < 70, `strategy ownership is not the work, got ${strategist.match}`);
+  assert.equal(strategist.details.occupation.contentMode, 'creating');
+  assert.ok(
+    /originates and owns content/.test(strategist.details.whyMatched),
+    'and the card says which half of the work it is, rather than shrugging'
+  );
+});
+
+test('every surviving posting answers the five questions the specification asks', () => {
+  const result = v4('Product Content Editor', TRUE_POSITIVES[1][1]);
+  const report = result.details.occupation;
+
+  assert.ok(report.why, '1. why this occupation belongs in the target or adjacent family');
+  assert.ok(report.responsibilities.length, '2. which responsibilities match her professional experience');
+  assert.ok(Array.isArray(result.details.gaps.learnable), '3. learnable gaps');
+  assert.ok(Array.isArray(report.eligibility), '4. eligibility concerns');
+  assert.ok(/REVIEWING|CREATING|Mixed/.test(report.contentModeNote), '5. reviewing or creating');
+
+  // And the ban that goes with them: the paragraph must lead with the
+  // occupation, not with a list of transferable phrases.
+  assert.ok(
+    result.details.whyMatched.startsWith(report.why),
+    `the explanation must open on the occupation: "${result.details.whyMatched.slice(0, 80)}…"`
+  );
+});
+
+test('the occupational class is a multiplier, not another small signal', () => {
+  // Same description, three occupations. If the class were merely one more
+  // weighted signal, the transferable content would dominate it.
+  const gate = profileV4.occupationGate;
+  assert.ok(gate.multipliers.core > gate.multipliers.adjacent);
+  assert.ok(gate.multipliers.adjacent > gate.multipliers.unclear);
+  assert.ok(gate.multipliers.unclear > gate.multipliers.wrong);
+
+  // And the caps below the bands they must never reach.
+  assert.ok(gate.caps.wrong < 70, 'a wrong occupation cannot be a possible opportunity');
+  assert.ok(gate.caps.unclear < 80, 'an unplaceable one cannot be a good match');
+  assert.equal(gate.caps.core, 100);
+});
+
+test('no wrong-occupation rule fires on a word every posting contains', () => {
+  /**
+   * The invariant that keeps this from becoming an industry blocklist. A body
+   * phrase has to name the profession — "bar admission", "clinical supervision",
+   * "general ledger" — and never a word that turns up in ordinary marketing
+   * copy, or the gate would start deleting the jobs it exists to find.
+   */
+  const everywhere = new Set([
+    'review', 'reviews', 'quality', 'accuracy', 'audit', 'compliance', 'documentation', 'content',
+    'deadlines', 'detail', 'communication', 'stakeholders', 'process', 'reporting', 'standards',
+    'health', 'legal', 'financial', 'marketing', 'digital', 'remote', 'team', 'project',
+  ]);
+
+  for (const occupation of profileV4.occupationGate.wrongOccupations) {
+    for (const phrase of occupation.body || []) {
+      assert.ok(
+        !everywhere.has(phrase),
+        `${occupation.id} would classify on the word "${phrase}", which is in every posting written`
+      );
+    }
+    assert.ok((occupation.bodyThreshold ?? 3) >= 2, `${occupation.id} must need more than one concept`);
+    assert.ok(occupation.why, `${occupation.id} must be able to explain itself on the card`);
+  }
+});
+
+test('a content title containing another profession is classified on its description', () => {
+  // "Content Engineer" is a content job with an engineer's word in it, and
+  // reading that word as the occupation is how a board loses the roles it
+  // exists to find.
+  const result = v4(
+    'Content Engineer',
+    'Own the quality of our published content. You will proofread and copy edit web and email content against our ' +
+      'style guide, run the final review before publication, verify links, pricing and imagery, and audit the live ' +
+      'site for discrepancies. Comfortable reading HTML. No coding required.'
+  );
+  assert.equal(result.occupationClass, 'adjacent', `got ${result.occupationClass}`);
+  assert.ok(
+    result.match >= profileV4.search.minMatchScore,
+    `and it must survive the publish threshold, got ${result.match}`
+  );
+});
+
+test('the occupational facts reach the card so the ratings can learn from them', () => {
+  const result = v4('Product Content Editor', TRUE_POSITIVES[1][1]);
+  assert.ok(result.details.signals.occupation, 'which occupation this is');
+  assert.ok(result.details.signals.function, 'and whether the job makes content or checks it');
+  assert.equal(result.details.signals.occupationClass, 'core');
+  // The transferable skills still travel — 👍 learns from them. It is 🚫 that
+  // must not, and that rule lives in docs/preferences.mjs.
+  assert.ok(result.details.signals.work.length > 0);
+});
+
+test('classification and eligibility can be asked separately', () => {
+  // They fail separately — a posting can read as exactly the right occupation
+  // and still demand a licence — so they are two functions, not one verdict.
+  const eligible = checkEligibility(profileV4, normalizeForMatch(CONTENT_QA_BODY));
+  assert.equal(eligible.eligible, true);
+
+  const blocked = checkEligibility(profileV4, normalizeForMatch('Editorial role. Juris doctor required.'));
+  assert.equal(blocked.eligible, false);
+  assert.equal(blocked.blocking[0].id, 'jd');
+
+  const classified = classifyOccupation(profileV4, {
+    normTitle: normalizeForMatch('Copy Editor'),
+    normAll: normalizeForMatch(CONTENT_QA_BODY),
+    family: { id: 'copyediting-proofreading', label: 'Copy editing & proofreading', tier: 'core' },
+    coreSignals: 4,
+    combinations: 2,
+  });
+  assert.equal(classified.class, 'core');
 });

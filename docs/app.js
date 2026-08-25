@@ -19,7 +19,7 @@ import {
   normalisePreferences,
   emptyPreferences,
   summarise,
-} from './preferences.mjs?v=066e61608b';
+} from './preferences.mjs?v=9a202cf9c0';
 
 const STORE_KEY = 'emily-job-board:v1';
 const PREFS_KEY = 'emily-job-board:prefs:v1';
@@ -172,6 +172,18 @@ const TIER_LABEL = {
 };
 
 /**
+ * v4's occupational classes, in the words the card uses. WRONG never appears —
+ * those postings are suppressed by the pipeline and never reach the board — but
+ * it is named here so a hand-edited or archived data file still renders.
+ */
+const OCCUPATION_LABEL = {
+  core: 'CORE TARGET',
+  adjacent: 'ADJACENT',
+  unclear: 'OCCUPATION UNCLEAR',
+  wrong: 'WRONG OCCUPATION',
+};
+
+/**
  * How the two leading header tiles are labelled and what they filter to.
  * v3's bands sit at different numbers from v1's tiers, so a tile that jumps to
  * "70+" would mean something different on each board.
@@ -207,6 +219,7 @@ function readFilters() {
     onlyProject: $('#only-project').checked,
     onlyOpen: $('#only-open').checked,
     onlyNewDirections: $('#only-newdir').checked,
+    onlySurprise: $('#only-surprise').checked,
     hideHidden: $('#hide-hidden').checked,
     hideApplied: $('#hide-applied').checked,
   };
@@ -236,6 +249,7 @@ function applyFilters(jobs, f) {
     if (f.onlyProject && !job.projectBased) return false;
     if (f.onlyOpen && job.availability !== 'open') return false;
     if (f.onlyNewDirections && !job.discovery) return false;
+    if (f.onlySurprise && !job.surprise) return false;
     if (job.match < f.minMatch) return false;
     if (maxAgeActive && (job.ageDays === null || job.ageDays > f.maxAge)) return false;
 
@@ -416,6 +430,25 @@ function renderCard(job) {
  * same template renders a v1 card unchanged — there is one card, not three.
  */
 function renderFitReport(node, job) {
+  /**
+   * v4's occupational verdict, printed above the axis scores because it is the
+   * question that comes first: whether she plausibly belongs in this occupation
+   * at all. The four axes only mean something once it is answered — a lawyer
+   * scoring 100 on experience fit is a fact about her carefulness, not about
+   * her being able to take the job.
+   */
+  if (job.occupation) {
+    const line = $('[data-occupation]', node);
+    line.hidden = false;
+    line.dataset.class = job.occupation.class;
+
+    const badge = document.createElement('strong');
+    badge.className = 'occupation__badge';
+    badge.textContent = OCCUPATION_LABEL[job.occupation.class] || job.occupation.class;
+    line.append(badge, document.createTextNode(` ${job.occupation.label} — ${job.occupation.why}`));
+    line.title = job.occupation.evidence || '';
+  }
+
   if (job.recommendation) {
     const rec = $('[data-rec]', node);
     rec.hidden = false;
@@ -470,7 +503,8 @@ function renderFitReport(node, job) {
   const learnable = job.gaps?.learnable || [];
   const trueGaps = job.gaps?.experience || [];
   const watchOuts = job.watchOuts || [];
-  if (!evidence.length && !learnable.length && !trueGaps.length && !watchOuts.length) return;
+  const modeNote = job.occupation?.contentModeNote || '';
+  if (!evidence.length && !learnable.length && !trueGaps.length && !watchOuts.length && !modeNote) return;
 
   const report = $('[data-report]', node);
   report.hidden = false;
@@ -483,6 +517,11 @@ function renderFitReport(node, job) {
     ].filter(Boolean).join(' · ');
 
   fillBlock(node, '[data-evidence-block]', '[data-evidence]', evidence.map((e) => [e.label, e.evidence]));
+  // The specification's fifth question about every surviving posting: is the
+  // job reviewing what already exists, or making what does not?
+  if (job.occupation?.contentModeNote) {
+    fillBlock(node, '[data-mode-block]', '[data-mode]', [[null, job.occupation.contentModeNote]]);
+  }
   fillBlock(node, '[data-learnable-block]', '[data-learnable]', learnable.map((g) => [g.label, g.note]));
   fillBlock(node, '[data-truegap-block]', '[data-truegaps]', trueGaps.map((g) => [g.label, g.note]));
   fillBlock(node, '[data-watch-block]', '[data-watchouts]', watchOuts.map((w) => [null, w]));
@@ -572,6 +611,8 @@ function render() {
   for (const job of visible) fragment.append(renderCard(job));
   results.append(fragment);
 
+  renderSurprise(visible);
+
   const empty = $('#empty');
   empty.hidden = visible.length > 0;
   if (!visible.length) {
@@ -603,6 +644,58 @@ function render() {
   state.focusIndex = -1;
 }
 
+/**
+ * The Surprise Me shelf — v4 only.
+ *
+ * One to three postings whose title she would never have typed into a search
+ * box and whose work turns out to be hers anyway. They are shown here IN
+ * ADDITION to their place in the list rather than being pulled out of it,
+ * because the shelf is a reading suggestion, not a category.
+ *
+ * It is drawn from the filtered, sorted list, so it respects every filter on
+ * screen — a shelf that ignored them would recommend jobs the rest of the page
+ * had just been told to hide. When nothing qualifies the shelf disappears
+ * entirely: an empty "Surprise me" heading is worse than no heading, and the
+ * specification is explicit that categories are not to be filled to keep the
+ * volume up.
+ */
+function renderSurprise(visible) {
+  const section = $('#surprise');
+  const list = $('#surprise-list');
+  list.replaceChildren();
+
+  const max = state.meta?.model?.surpriseMax ?? 3;
+  const picks = visible.filter((job) => job.surprise && !state.store.hidden[job.id]).slice(0, max);
+  section.hidden = picks.length === 0 || state.view !== 'all';
+  if (section.hidden) return;
+
+  for (const job of picks) {
+    const item = document.createElement('button');
+    item.type = 'button';
+    item.className = 'surprisecard';
+    item.dataset.jump = job.id;
+
+    const match = document.createElement('span');
+    match.className = 'surprisecard__match';
+    match.textContent = String(job.match);
+
+    const text = document.createElement('span');
+    text.className = 'surprisecard__text';
+    const title = document.createElement('strong');
+    title.textContent = job.title;
+    const company = document.createElement('span');
+    company.className = 'surprisecard__company';
+    company.textContent = job.company;
+    const why = document.createElement('span');
+    why.className = 'surprisecard__why';
+    why.textContent = job.occupation?.why || 'The title is unfamiliar; the responsibilities are not.';
+    text.append(title, company, why);
+
+    item.append(match, text);
+    list.append(item);
+  }
+}
+
 function boldText(text) {
   const b = document.createElement('b');
   b.textContent = text;
@@ -613,6 +706,7 @@ function updateFilterBadge(f) {
   const active = [];
   if (f.onlyProject) active.push('contract / freelance only');
   if (f.onlyNewDirections) active.push('new directions only');
+  if (f.onlySurprise) active.push('surprise me only');
   if (f.minMatch > 0) active.push(`match ≥ ${f.minMatch}`);
   if (f.maxAge < 46) active.push(`≤ ${f.maxAge}d old`);
   if (f.scopes.length < FILTERABLE_SCOPES.length) active.push('remote scope');
@@ -758,13 +852,15 @@ function exportCsv() {
   const rows = [
     // The v3 columns are blank on the other boards rather than absent, so one
     // tracker spreadsheet works whichever board a job was saved from.
-    ['Status', 'Saved on', 'Applied on', 'Match', 'Recommendation', 'Work fit', 'Experience fit', 'Qualification fit', 'Lifestyle fit', 'Title', 'Company', 'Location', 'Schedule', 'Salary', 'Posted', 'Source', 'URL', 'Notes'],
+    ['Status', 'Saved on', 'Applied on', 'Match', 'Recommendation', 'Occupational fit', 'Reviewing or creating', 'Work fit', 'Experience fit', 'Qualification fit', 'Lifestyle fit', 'Title', 'Company', 'Location', 'Schedule', 'Salary', 'Posted', 'Source', 'URL', 'Notes'],
     ...tracked.map((j) => [
       state.store.applied[j.id] ? 'Applied' : 'Saved',
       (state.store.saved[j.id] || '').slice(0, 10),
       (state.store.applied[j.id] || '').slice(0, 10),
       j.match,
       j.recommendation || '',
+      j.occupation ? `${j.occupation.class} — ${j.occupation.label}` : '',
+      j.occupation?.contentMode || '',
       j.scores?.work ?? '',
       j.scores?.experience ?? '',
       j.scores?.qualification ?? '',
@@ -1053,7 +1149,7 @@ function wireEvents() {
 
   $('#reset-filters').addEventListener('click', () => {
     $$('#controls input[type="checkbox"]').forEach((el) => {
-      el.checked = !['hide-applied', 'only-project', 'only-newdir', 'only-open'].includes(el.id);
+      el.checked = !['hide-applied', 'only-project', 'only-newdir', 'only-open', 'only-surprise'].includes(el.id);
     });
     $('#min-match').value = 0;
     $('#min-match-out').textContent = '0';
@@ -1110,12 +1206,25 @@ function wireEvents() {
       $('#only-project').checked = true;
       $('#filters').open = true;
     }
+    if (stat.dataset.surpriseFilter) {
+      $('#only-surprise').checked = true;
+      $('#filters').open = true;
+    }
     if (stat.dataset.ageFilter) {
       $('#max-age').value = stat.dataset.ageFilter;
       $('#max-age-out').textContent = '2 days';
       $('#filters').open = true;
     }
     setView('all');
+  });
+
+  $('#surprise-list').addEventListener('click', (event) => {
+    const item = event.target.closest('[data-jump]');
+    if (!item) return;
+    const card = $(`.card[data-id="${CSS.escape(item.dataset.jump)}"]`);
+    if (!card) return;
+    card.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    card.focus({ preventScroll: true });
   });
 
   $('#results').addEventListener('click', (event) => {
@@ -1171,8 +1280,8 @@ function restorePrefs() {
  * Which matching model is being viewed. Kept in the URL so a board can be
  * linked, bookmarked and shared, and so a reload does not silently switch it.
  */
-const BOARDS = ['v1', 'v2', 'v3'];
-const DEFAULT_BOARD = 'v3';
+const BOARDS = ['v1', 'v2', 'v3', 'v4'];
+const DEFAULT_BOARD = 'v4';
 
 function currentBoard() {
   const asked = new URLSearchParams(location.search).get('board');
@@ -1232,6 +1341,13 @@ function renderHeader() {
   $('#stat-newdir-tile').hidden = !hasDiscovery;
   $('#only-newdir-row').hidden = !hasDiscovery;
   $('#stat-newdir').textContent = String(meta.discoveries ?? 0);
+
+  // The Surprise Me tile and filter belong to v4. On the other boards they
+  // would be controls that silently do nothing.
+  const hasSurprise = state.jobs.some((j) => j.surprise !== undefined);
+  $('#stat-surprise-tile').hidden = !hasSurprise;
+  $('#only-surprise-row').hidden = !hasSurprise;
+  $('#stat-surprise').textContent = String(meta.surprises ?? 0);
 
   for (const btn of $$('.boardswitch__btn')) {
     // What is actually on screen, which is not the requested board when that

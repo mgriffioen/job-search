@@ -17,7 +17,8 @@ import { evaluateLocation } from './lib/location.mjs';
 import { scoreJob, matchTier } from './lib/score.mjs';
 import { scoreJob as scoreJobV2 } from './lib/score-v2.mjs';
 import { scoreJob as scoreJobV3, matchTier as matchTierV3 } from './lib/score-v3.mjs';
-import { buildV2Profile, buildV3Profile } from './lib/profiles.mjs';
+import { scoreJob as scoreJobV4 } from './lib/score-v4.mjs';
+import { buildV2Profile, buildV3Profile, buildV4Profile } from './lib/profiles.mjs';
 import { verifyListings } from './lib/verify.mjs';
 
 import * as remotive from './sources/remotive.mjs';
@@ -76,6 +77,10 @@ async function main() {
   const v2Profile = buildV2Profile(profile, v2Overlay);
   const v3Overlay = await readJsonIfPresent(new URL('profile.v3.json', CONFIG_DIR));
   const v3Profile = buildV3Profile(profile, v3Overlay);
+  // v4 overlays v3 rather than the base profile: it keeps every axis and every
+  // phrase v3 defined and adds the occupational fit gate in front of them.
+  const v4Overlay = await readJsonIfPresent(new URL('profile.v4.json', CONFIG_DIR));
+  const v4Profile = buildV4Profile(profile, v3Overlay, v4Overlay);
 
   const previousMeta = await readJsonIfPresent(new URL('meta.json', DATA_DIR));
   const previousReports = new Map((previousMeta?.sources ?? []).map((report) => [report.id, report]));
@@ -138,10 +143,11 @@ async function main() {
 
   const now = new Date();
 
-  // All three boards are built from this one fetch. Scoring is pure CPU, so the
+  // All four boards are built from this one fetch. Scoring is pure CPU, so the
   // extra models cost nothing at the APIs — which matters, because JSearch is
-  // billed per request and running the pipeline three times would triple every
-  // call. v3 is what the site opens on; v1 and v2 stay alongside it.
+  // billed per request and running the pipeline once per model would multiply
+  // every call. v4 is what the site opens on; v1, v2 and v3 stay alongside it
+  // so a change to the matching can be seen rather than argued about.
   const boards = [
     { id: 'v1', label: 'Title-driven', profile, scoreJob, tier: matchTier, dir: DATA_DIR },
     v2Profile && {
@@ -167,6 +173,17 @@ async function main() {
       // board the spec asks to confirm before presenting anything as open.
       verify: true,
       dir: new URL('v3/', DATA_DIR),
+    },
+    v4Profile && {
+      id: 'v4',
+      label: 'Occupational fit',
+      profile: v4Profile,
+      scoreJob: scoreJobV4,
+      tier: (match) => matchTierV3(match, v4Profile),
+      tierOrder: (v4Profile.bands || []).map((band) => band.tier),
+      tierLabels: Object.fromEntries((v4Profile.bands || []).map((band) => [band.tier, band.label])),
+      verify: true,
+      dir: new URL('v4/', DATA_DIR),
     },
   ].filter(Boolean);
 
@@ -204,6 +221,9 @@ async function main() {
         workSignalLabels: board.profile.workSignals
           ? Object.fromEntries(board.profile.workSignals.map((group) => [group.id, group.label]))
           : null,
+        // v4 only: how many postings the Surprise Me shelf may show at once.
+        // The client reads it rather than hard-coding a number the board owns.
+        surpriseMax: board.profile.surprise?.maxShown ?? null,
       },
       candidate: board.profile.candidate,
       ranking: board.profile.ranking,
@@ -222,6 +242,12 @@ async function main() {
       freshLast48h: built.jobs.filter((j) => j.ageDays !== null && !j.ageAssumed && j.ageDays <= 2).length,
       projectBased: built.jobs.filter((j) => j.projectBased).length,
       discoveries: built.jobs.filter((j) => j.discovery).length,
+      // v4 only: how many surprises are on the shelf, and how the occupational
+      // gate classified what survived. Zero surprises is a normal day.
+      surprises: built.jobs.filter((j) => j.surprise).length,
+      occupations: built.jobs.some((j) => j.occupation)
+        ? countOccupations(built.jobs)
+        : null,
       sources: sourceReports,
     };
 
@@ -233,14 +259,16 @@ async function main() {
       `\n[${board.id}] ${board.label}: published ${built.jobs.length} jobs\n` +
         `  dropped: ${built.dropped.location} out-of-area, ${built.dropped.stale} stale, ` +
         `${built.dropped.lowMatch} below match threshold, ${built.dropped.excluded} excluded` +
+        (built.dropped.wrongOccupation ? `, ${built.dropped.wrongOccupation} wrong occupation` : '') +
         (built.dropped.closed ? `, ${built.dropped.closed} no longer open` : '') +
         `\n  tiers: ${Object.entries(meta.tiers).map(([tier, count]) => `${count} ${tier}`).join(' / ')}` +
         (meta.discoveries ? `\n  new directions: ${meta.discoveries}` : '') +
+        (meta.surprises ? `\n  surprise me: ${meta.surprises}` : '') +
         (verification ? `\n  liveness: ${verification.report.checked} checked, ${verification.report.live} confirmed open, ${verification.report.closed} closed, ${verification.report.unknown} unresolved` : '')
     );
 
     // The Actions run summary reports the board the site actually opens on.
-    if (board.id === 'v3' || (!primary && board.id === 'v1')) primary = { meta, jobs: built.jobs };
+    if (board.id === 'v4' || (!primary && board.id === 'v1')) primary = { meta, jobs: built.jobs };
   }
 
   if (primary) await writeStepSummary(primary.meta, primary.jobs);
@@ -264,7 +292,7 @@ export function buildBoard(deduped, profile, score, now, options = {}) {
   // single maxAgeDays cliff.
   const staleAfterDays = profile.search.staleAfterDays ?? null;
   const staleKeepMinMatch = profile.search.staleKeepMinMatch ?? 100;
-  const dropped = { location: 0, stale: 0, lowMatch: 0, excluded: 0, blockedDomain: 0 };
+  const dropped = { location: 0, stale: 0, lowMatch: 0, excluded: 0, blockedDomain: 0, wrongOccupation: 0 };
   const scored = [];
 
   const blockedDomains = (profile.search.blockedDomains || []).map((d) => d.toLowerCase());
@@ -293,6 +321,17 @@ export function buildBoard(deduped, profile, score, now, options = {}) {
 
     if (result.excluded) {
       dropped.excluded += 1;
+      continue;
+    }
+    /**
+     * v4's occupational fit gate. A posting whose occupation is a different
+     * profession, or whose stated credential she cannot hold, is dropped here
+     * rather than published with a low score: the specification asks for these
+     * to be suppressed, and a board that lists them at 20 is still asking her
+     * to read them. The count is reported so the suppression stays visible.
+     */
+    if (result.suppressed) {
+      dropped.wrongOccupation += 1;
       continue;
     }
     if (result.ageDays !== null && result.ageDays > maxAgeDays) {
@@ -333,6 +372,9 @@ export function buildBoard(deduped, profile, score, now, options = {}) {
       projectBased: result.projectBased,
       // v2 only: a role outside her current title, and why it was suggested.
       ...(result.discovery !== undefined ? { discovery: result.discovery, family: result.family } : {}),
+      // v4 only: the Surprise Me shelf — an unfamiliar title whose work is
+      // unusually well aligned anyway.
+      ...(result.surprise !== undefined ? { surprise: result.surprise } : {}),
       recency: result.recency,
       rank,
       ageDays: result.ageDays,
@@ -359,6 +401,20 @@ export function countTiers(jobs, tierOrder = ['strong', 'good', 'possible', 'str
   const counts = Object.fromEntries(tierOrder.map((tier) => [tier, 0]));
   for (const job of jobs) {
     if (job.matchTier in counts) counts[job.matchTier] += 1;
+  }
+  return counts;
+}
+
+/**
+ * How many published postings sat in each occupational class. Only v4 carries
+ * the field; on the other boards the tile it feeds stays hidden.
+ */
+export function countOccupations(jobs) {
+  const counts = {};
+  for (const job of jobs) {
+    const cls = job.occupation?.class;
+    if (!cls) continue;
+    counts[cls] = (counts[cls] || 0) + 1;
   }
   return counts;
 }

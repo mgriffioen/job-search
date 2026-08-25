@@ -36,12 +36,57 @@
  * directory GitHub Pages serves; the tests import it across the tree.
  */
 
-/** The three verdicts, and what each is worth before feature weighting. */
+/**
+ * The three verdicts, and what each is worth before feature weighting.
+ *
+ * THEY MEAN DIFFERENT THINGS, AND v4 MAKES THEM LEARN DIFFERENTLY.
+ *
+ * 👍 MORE LIKE THIS — the occupation, the responsibilities, the content type,
+ * the industry and the shape of the engagement were all right. Learns from
+ * everything.
+ *
+ * 👎 NOT FOR ME — the occupation may be perfectly valid; this particular
+ * opportunity is not wanted. It learns cautiously and never concludes that
+ * every attribute of the posting is disliked. Rejecting one full-time job must
+ * not produce a negative weight on full-time work.
+ *
+ * 🚫 WRONG KIND OF WORK — an occupational mismatch. It learns hard, and only
+ * about the occupation: the job family, the professional domain and the
+ * dominant function. It must NEVER learn a negative weight on the transferable
+ * skills the posting happened to name, because "review", "proofreading",
+ * "accuracy" and "verification" are what she is good at. A Commercial
+ * Lawyer marked 🚫 has to teach "legal work is wrong" and nothing whatsoever
+ * about proofreading.
+ */
 export const VERDICTS = {
   up: { id: 'up', weight: 1, label: 'More like this', icon: '👍' },
   down: { id: 'down', weight: -1, label: 'Not for me', icon: '👎' },
   wrong: { id: 'wrong', weight: -2, label: 'Wrong kind of work', icon: '🚫' },
 };
+
+/**
+ * What each verdict is allowed to learn from.
+ *
+ * OCCUPATIONAL_KINDS are the facts a 🚫 is actually about — which occupation
+ * this is, which professional domain, and whether the job creates content or
+ * reviews it. TRANSFERABLE_KINDS (`work:`) are the abilities the posting named,
+ * and are exactly what a 🚫 must not touch.
+ *
+ * PROTECTED_KINDS are the explicit preferences: remote, United States,
+ * full-time, part-time and contract are all wanted, and were stated rather than
+ * inferred. Nothing in the ratings may produce a negative weight on them —
+ * several rejected postings happening to be full-time is a coincidence of
+ * what was advertised, not a preference, and a board that concluded otherwise
+ * would quietly delete a category she asked for.
+ */
+const OCCUPATIONAL_KINDS = new Set(['occupation', 'family', 'industry', 'function']);
+const PROTECTED_KINDS = new Set(['shape']);
+
+export function mayLearn(verdict, kind) {
+  if (verdict === 'wrong') return OCCUPATIONAL_KINDS.has(kind);
+  if (verdict === 'down') return !PROTECTED_KINDS.has(kind);
+  return true;
+}
 
 /**
  * The optional follow-up to 👎. `dimension` is what the reason generalises to;
@@ -59,12 +104,20 @@ export const DOWN_REASONS = [
 ];
 
 /**
- * How much one saturated feature is worth. A role family is the whole category
- * and counts most; a single work signal is one sentence in a description and
- * counts least. An employer sits high because two bad postings from the same
- * outfit usually means the third is bad too.
+ * How much one saturated feature is worth. The occupation is the whole
+ * judgement and counts most; a single work signal is one sentence in a
+ * description and counts least. An employer sits high because two bad postings
+ * from the same outfit usually means the third is bad too.
  */
-const FEATURE_WEIGHT = { family: 2.2, work: 0.7, industry: 1.2, company: 1.6, shape: 0.7 };
+const FEATURE_WEIGHT = {
+  occupation: 2.6,
+  family: 2.2,
+  function: 1.4,
+  work: 0.7,
+  industry: 1.2,
+  company: 1.6,
+  shape: 0.7,
+};
 
 /** Consistent ratings stop counting after this many — see the note above. */
 const FEATURE_SATURATION = 3;
@@ -79,7 +132,7 @@ const FEATURE_SATURATION = 3;
  * signal where the evidence is — the role family and the industry she actually
  * rejected — and leaves the shared vocabulary as a tiebreak.
  */
-const KIND_CAP = { family: 7, industry: 4, company: 4, work: 3, shape: 2 };
+const KIND_CAP = { occupation: 8, family: 7, function: 4, industry: 4, company: 4, work: 3, shape: 2 };
 
 /** Below this the model has not learned enough to be worth saying out loud. */
 const MIN_VISIBLE = 1.5;
@@ -136,6 +189,15 @@ export function normalisePreferences(raw) {
 export function featuresOf(job) {
   const signals = job.signals || {};
   const features = [];
+
+  /**
+   * The occupational half, which v4 added and which is what the 🚫 button is
+   * really about: which occupation this posting belongs to, and whether the job
+   * makes content or checks it. Boards before v4 emit neither, and a rating
+   * given on one of them simply learns less rather than learning wrongly.
+   */
+  if (signals.occupation) features.push(`occupation:${slug(signals.occupation)}`);
+  if (signals.function) features.push(`function:${slug(signals.function)}`);
 
   if (job.family?.id) features.push(`family:${job.family.id}`);
   for (const id of signals.work || []) features.push(`work:${id}`);
@@ -239,6 +301,13 @@ export function buildModel(preferences) {
      */
     const featureShare = reason?.dimension ? 0.4 : 1;
     for (const feature of rating.features) {
+      /**
+       * The verdict decides what the rating is allowed to teach. Applied here
+       * rather than when the rating is recorded so that ratings already in
+       * storage — given before v4 drew this distinction — are re-read under the
+       * new rules instead of keeping the old model's conclusions forever.
+       */
+      if (!mayLearn(rating.verdict, feature.split(':')[0])) continue;
       features[feature] = (features[feature] || 0) + verdict.weight * featureShare;
     }
 
@@ -283,6 +352,13 @@ function describeFeature(feature, job, labels = {}) {
   const [kind, value] = feature.split(':');
   const signals = job.signals || {};
   switch (kind) {
+    case 'occupation':
+      return job.occupation?.label ? job.occupation.label.toLowerCase() : 'this occupation';
+    case 'function':
+      // "mixed" is the absence of an answer, and there is no honest way to name
+      // it in a sentence about what she prefers. Unnamed features still count
+      // towards the adjustment; they just do not get a line explaining it.
+      return value === 'creating' ? 'creating content' : value === 'reviewing' ? 'reviewing content' : null;
     case 'family':
       return job.family?.label ? job.family.label.toLowerCase() : 'this role family';
     case 'industry':
@@ -326,8 +402,18 @@ export function adjustmentFor(job, model, labels = {}) {
     const cap = KIND_CAP[kind] ?? 3;
     points += clamp(total, -cap, cap) * (model.confidence ?? 1);
   }
-  for (const contribution of contributions.slice(0, 2)) {
+  /**
+   * Two features can describe themselves the same way — a posting's occupation
+   * and its role family are usually the same category under two names — and a
+   * note that says the same thing twice reads as a bug. Name each category
+   * once, strongest first.
+   */
+  const named = new Set();
+  for (const contribution of contributions) {
+    if (notes.length >= 2) break;
     const name = describeFeature(contribution.feature, job, labels);
+    if (!name || named.has(name)) continue;
+    named.add(name);
     notes.push(
       contribution.value > 0
         ? `you rated other “${name}” postings up`
