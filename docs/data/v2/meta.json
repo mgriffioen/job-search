@@ -1,6 +1,6 @@
 {
-  "generatedAt": "2026-08-24T16:53:41.487Z",
-  "durationMs": 30704,
+  "generatedAt": "2026-08-25T07:06:00.331Z",
+  "durationMs": 39394,
   "model": {
     "id": "v2",
     "label": "Ability-based",
@@ -43,26 +43,26 @@
     "minMatchScore": 20
   },
   "counts": {
-    "fetched": 1546,
-    "unique": 1021,
-    "published": 546,
+    "fetched": 1688,
+    "unique": 1162,
+    "published": 637,
     "dropped": {
-      "location": 289,
-      "stale": 10,
-      "lowMatch": 153,
-      "excluded": 23,
+      "location": 286,
+      "stale": 12,
+      "lowMatch": 160,
+      "excluded": 67,
       "blockedDomain": 0
     }
   },
   "tiers": {
-    "strong": 86,
-    "good": 178,
-    "possible": 179,
-    "stretch": 103
+    "strong": 90,
+    "good": 193,
+    "possible": 216,
+    "stretch": 138
   },
-  "freshLast48h": 196,
-  "projectBased": 239,
-  "discoveries": 121,
+  "freshLast48h": 203,
+  "projectBased": 271,
+  "discoveries": 131,
   "sources": [
     {
       "id": "companyboards",
@@ -76,7 +76,7 @@
       "id": "jsearch",
       "label": "Google Jobs",
       "status": "ok",
-      "fetched": 2,
+      "fetched": 0,
       "warnings": [],
       "quota": {
         "limit": 200,
@@ -85,46 +85,43 @@
         "resetAt": "2026-08-27T15:52:25.140Z"
       },
       "budget": {
-        "allowed": 1,
-        "spent": 1,
+        "allowed": 0,
+        "spent": 0,
         "reserve": 12,
-        "reason": "pacing 5 spendable requests across ~6 runs left this period (0.83/run)"
+        "reason": "pacing 4 spendable requests across ~5 runs left this period (0.80/run)"
       },
-      "ms": 3663
+      "ms": 1
     },
     {
       "id": "adzuna",
       "label": "Adzuna",
       "status": "ok",
-      "fetched": 123,
+      "fetched": 156,
       "warnings": [
-        "michigan-remote \"copy editor\": 0 results (Adzuna reports 0 total matches)",
-        "michigan-remote \"proofreader\": 0 results (Adzuna reports 0 total matches)",
-        "michigan-remote \"copyediting\": 0 results (Adzuna reports 0 total matches)",
-        "michigan-remote \"content reviewer\": 0 results (Adzuna reports 0 total matches)",
-        "michigan-remote \"content auditor\": 0 results (Adzuna reports 0 total matches)",
-        "michigan-remote \"quality editor\": 0 results (Adzuna reports 0 total matches)",
-        "michigan-remote \"editorial specialist\": 0 results (Adzuna reports 0 total matches)",
-        "michigan-remote \"production editor\": 0 results (Adzuna reports 0 total matches)",
-        "michigan-remote \"digital editor\": 0 results (Adzuna reports 0 total matches)",
-        "michigan-remote \"web content\": 0 results (Adzuna reports 0 total matches)",
-        "michigan-remote \"digital content\": 0 results (Adzuna reports 0 total matches)",
-        "us-remote \"copyediting\": 0 results (Adzuna reports 0 total matches)",
-        "us-remote \"content auditor\": 0 results (Adzuna reports 0 total matches)",
-        "us-remote \"quality editor\": 0 results (Adzuna reports 0 total matches)",
-        "us-remote \"editorial specialist\": 0 results (Adzuna reports 0 total matches)",
-        "us-remote \"production editor\": 0 results (Adzuna reports 0 total matches)",
-        "us-remote \"digital editor\": 0 results (Adzuna reports 0 total matches)"
+        "michigan-remote \"editorial operations\": 0 results (Adzuna reports 0 total matches)",
+        "michigan-remote \"product content\": 0 results (Adzuna reports 0 total matches)",
+        "michigan-remote \"catalog quality\": 0 results (Adzuna reports 0 total matches)",
+        "michigan-remote \"catalog specialist\": 0 results (Adzuna reports 0 total matches)",
+        "michigan-remote \"product information\": 0 results (Adzuna reports 0 total matches)",
+        "michigan-remote \"content specialist\": 0 results (Adzuna reports 0 total matches)",
+        "michigan-remote \"email specialist\": 0 results (Adzuna reports 0 total matches)",
+        "michigan-remote \"campaign quality\": 0 results (Adzuna reports 0 total matches)",
+        "michigan-remote \"marketing qa\": 0 results (Adzuna reports 0 total matches)",
+        "michigan-remote \"content integrity\": 0 results (Adzuna reports 0 total matches)",
+        "us-remote \"catalog quality\": 0 results (Adzuna reports 0 total matches)",
+        "us-remote \"catalog specialist\": 0 results (Adzuna reports 0 total matches)",
+        "us-remote \"campaign quality\": 0 results (Adzuna reports 0 total matches)",
+        "us-remote \"marketing qa\": 0 results (Adzuna reports 0 total matches)"
       ],
-      "ms": 4911
+      "ms": 18039
     },
     {
       "id": "jooble",
       "label": "Jooble",
       "status": "ok",
-      "fetched": 80,
+      "fetched": 75,
       "warnings": [],
-      "ms": 975
+      "ms": 872
     },
     {
       "id": "remotive",
@@ -132,17 +129,17 @@
       "status": "ok",
       "fetched": 288,
       "warnings": [],
-      "ms": 482
+      "ms": 629
     },
     {
       "id": "weworkremotely",
       "label": "We Work Remotely",
       "status": "ok",
-      "fetched": 257,
+      "fetched": 253,
       "warnings": [
         "remote-marketing-jobs.rss: HTTP 301 Moved Permanently"
       ],
-      "ms": 1668
+      "ms": 1145
     },
     {
       "id": "himalayas",
@@ -150,15 +147,15 @@
       "status": "ok",
       "fetched": 240,
       "warnings": [],
-      "ms": 663
+      "ms": 817
     },
     {
       "id": "jobicy",
       "label": "Jobicy",
       "status": "ok",
-      "fetched": 241,
+      "fetched": 361,
       "warnings": [],
-      "ms": 11473
+      "ms": 10745
     },
     {
       "id": "remoteok",
@@ -166,7 +163,7 @@
       "status": "ok",
       "fetched": 99,
       "warnings": [],
-      "ms": 835
+      "ms": 623
     },
     {
       "id": "workingnomads",
@@ -174,7 +171,7 @@
       "status": "ok",
       "fetched": 42,
       "warnings": [],
-      "ms": 1151
+      "ms": 550
     },
     {
       "id": "arbeitnow",
@@ -182,7 +179,7 @@
       "status": "ok",
       "fetched": 175,
       "warnings": [],
-      "ms": 165
+      "ms": 234
     }
   ]
 }
