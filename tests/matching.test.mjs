@@ -2013,3 +2013,70 @@ test('classification and eligibility can be asked separately', () => {
   });
   assert.equal(classified.class, 'core');
 });
+
+test('the funnel accounts for every posting that went in', () => {
+  /**
+   * The diagnostic that turns an empty board into a reading.
+   *
+   * When v4 first went live the board looked empty and there was no way to tell
+   * which stage had eaten the postings — the pipeline reported only "published"
+   * and a few drop counts that did not have to add up. They do now: every
+   * posting that enters buildBoard leaves it through exactly one exit, so
+   * "995 unique → 6 published" can always be decomposed into the reason for
+   * each of the 989 that did not make it.
+   */
+  const pool = [
+    ...WRONG_OCCUPATIONS.map(([, title, description], i) => [`wrong-${i}`, title, description]),
+    ['good-0', 'Content Quality Specialist', CONTENT_QA_BODY],
+    ['good-1', TRUE_POSITIVES[0][0], TRUE_POSITIVES[0][1]],
+    ['blocked-0', 'Editorial Quality Specialist', `${CONTENT_QA_BODY} An active bar license is required.`],
+    ['thin-0', 'Marketing Operations Associate', 'Support the marketing team.'],
+  ].map(([id, title, description]) => ({
+    id, title, company: 'Somewhere', location: 'USA', locationRestriction: 'USA', workType: 'remote',
+    description, tags: [], employmentTypes: ['full-time'], sources: ['test'],
+    postedAt: '2026-07-26T12:00:00Z', url: `https://example.com/${id}`,
+  }));
+
+  const built = buildBoard(pool, profileV4, scoreJobV4, NOW, {
+    tier: (m) => matchTierV3(m, profileV4),
+    tierOrder: profileV4.bands.map((b) => b.tier),
+  });
+
+  const dropped = Object.values(built.dropped).reduce((sum, n) => sum + n, 0);
+  assert.equal(
+    dropped + built.funnel.published,
+    pool.length,
+    `every posting must leave through exactly one exit: ${JSON.stringify(built.dropped)} + ${built.funnel.published} of ${pool.length}`
+  );
+
+  // Every posting that reached the scorer was classified, so "0 classified" can
+  // only ever mean the classifier did not run.
+  const classified = Object.values(built.funnel.classified).reduce((sum, n) => sum + n, 0);
+  assert.equal(classified, built.funnel.reachedScorer);
+  assert.ok(built.funnel.reachedScorer > 0, 'and the count is real, not an empty object');
+
+  // The two gates are reported apart, because they are fixed in different files.
+  assert.equal(built.dropped.wrongOccupation, WRONG_OCCUPATIONS.length);
+  assert.equal(built.dropped.credentialRejected, 1);
+  assert.ok(built.funnel.published >= 2, 'and the good postings still come through');
+});
+
+test('the other boards do not report a classification stage they do not have', () => {
+  // v1/v2/v3 do not classify occupations. Reporting "0 core, 0 adjacent" for
+  // them would read as a failure rather than an absence.
+  const built = buildBoard(
+    [{
+      id: 'v3-1', title: 'Content Quality Specialist', company: 'Somewhere', location: 'USA',
+      locationRestriction: 'USA', workType: 'remote', description: CONTENT_QA_BODY, tags: [],
+      employmentTypes: ['full-time'], sources: ['test'], postedAt: '2026-07-26T12:00:00Z',
+      url: 'https://example.com/1',
+    }],
+    profileV3,
+    scoreJobV3,
+    NOW,
+    { tier: (m) => matchTierV3(m, profileV3), tierOrder: profileV3.bands.map((b) => b.tier) }
+  );
+  assert.deepEqual(built.funnel.classified, {});
+  assert.equal(built.funnel.reachedScorer, 1);
+  assert.equal(built.dropped.credentialRejected, 0);
+});

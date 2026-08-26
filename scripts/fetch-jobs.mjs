@@ -236,6 +236,9 @@ async function main() {
         unique: deduped.length,
         published: built.jobs.length,
         dropped: built.dropped,
+        // Every stage between the two, so an empty or thin board can be read
+        // rather than guessed at.
+        funnel: built.funnel,
       },
       tiers: built.tiers,
       ...(verification ? { verification: verification.report } : {}),
@@ -260,7 +263,13 @@ async function main() {
         `  dropped: ${built.dropped.location} out-of-area, ${built.dropped.stale} stale, ` +
         `${built.dropped.lowMatch} below match threshold, ${built.dropped.excluded} excluded` +
         (built.dropped.wrongOccupation ? `, ${built.dropped.wrongOccupation} wrong occupation` : '') +
+        (built.dropped.credentialRejected ? `, ${built.dropped.credentialRejected} credential rejected` : '') +
         (built.dropped.closed ? `, ${built.dropped.closed} no longer open` : '') +
+        (Object.keys(built.funnel.classified).length
+          ? `\n  funnel: ${deduped.length} unique → ${built.funnel.reachedScorer} scored → ` +
+            `${Object.entries(built.funnel.classified).map(([cls, n]) => `${n} ${cls}`).join(' / ')} → ` +
+            `${built.funnel.published} published`
+          : '') +
         `\n  tiers: ${Object.entries(meta.tiers).map(([tier, count]) => `${count} ${tier}`).join(' / ')}` +
         (meta.discoveries ? `\n  new directions: ${meta.discoveries}` : '') +
         (meta.surprises ? `\n  surprise me: ${meta.surprises}` : '') +
@@ -292,7 +301,18 @@ export function buildBoard(deduped, profile, score, now, options = {}) {
   // single maxAgeDays cliff.
   const staleAfterDays = profile.search.staleAfterDays ?? null;
   const staleKeepMinMatch = profile.search.staleKeepMinMatch ?? 100;
-  const dropped = { location: 0, stale: 0, lowMatch: 0, excluded: 0, blockedDomain: 0, wrongOccupation: 0 };
+  const dropped = { location: 0, stale: 0, lowMatch: 0, excluded: 0, blockedDomain: 0, wrongOccupation: 0, credentialRejected: 0 };
+  /**
+   * The funnel, counted at every stage rather than only at the ends.
+   *
+   * An empty board has half a dozen possible causes — nothing fetched, the
+   * location gate, the occupational gate, the match threshold — and a single
+   * "published: 0" cannot tell them apart. Counting each stage turns a bug
+   * report into a reading: 995 unique → 6 published, with 225 suppressed as the
+   * wrong occupation, says the gate is working and the threshold is tight; 995
+   * → 0 classified would say the classifier never ran.
+   */
+  const funnel = { reachedScorer: 0, classified: {}, published: 0 };
   const scored = [];
 
   const blockedDomains = (profile.search.blockedDomains || []).map((d) => d.toLowerCase());
@@ -318,6 +338,12 @@ export function buildBoard(deduped, profile, score, now, options = {}) {
     // The location verdict is handed to the scorer rather than recomputed:
     // v3 scores how open the posting is as part of lifestyle fit.
     const result = score(job, profile, now, { location });
+    funnel.reachedScorer += 1;
+    // Only v4 classifies; on the other boards this stays empty rather than
+    // reporting a zero for a stage that does not exist.
+    if (result.occupationClass) {
+      funnel.classified[result.occupationClass] = (funnel.classified[result.occupationClass] || 0) + 1;
+    }
 
     if (result.excluded) {
       dropped.excluded += 1;
@@ -331,7 +357,8 @@ export function buildBoard(deduped, profile, score, now, options = {}) {
      * to read them. The count is reported so the suppression stays visible.
      */
     if (result.suppressed) {
-      dropped.wrongOccupation += 1;
+      if (result.suppressedBy === 'eligibility') dropped.credentialRejected += 1;
+      else dropped.wrongOccupation += 1;
       continue;
     }
     if (result.ageDays !== null && result.ageDays > maxAgeDays) {
@@ -389,7 +416,8 @@ export function buildBoard(deduped, profile, score, now, options = {}) {
 
   scored.sort((a, b) => b.rank - a.rank);
   const jobs = scored.slice(0, profile.search.maxJobsStored);
-  return { jobs, dropped, tiers: countTiers(jobs, options.tierOrder) };
+  funnel.published = jobs.length;
+  return { jobs, dropped, funnel, tiers: countTiers(jobs, options.tierOrder) };
 }
 
 /**

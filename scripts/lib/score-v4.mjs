@@ -326,6 +326,13 @@ export function scoreJob(job, profile, now = new Date(), options = {}) {
   if (!eligibility.eligible) match = Math.min(match, gate.caps?.wrong ?? 34);
 
   const suppressed = occupation.class === 'wrong' || !eligibility.eligible;
+  /**
+   * Which gate did it. The two fail for different reasons and are fixed in
+   * different files, so a run that suppresses a hundred postings has to be able
+   * to say how many were the wrong profession and how many were a credential
+   * she cannot hold — otherwise the only way to tell is to re-score by hand.
+   */
+  const suppressedBy = !suppressed ? null : occupation.class === 'wrong' ? 'occupation' : 'eligibility';
 
   // Everything downstream of the number has to be recomputed from the new
   // number, or the card would print v3's band beside v4's score.
@@ -374,6 +381,7 @@ export function scoreJob(job, profile, now = new Date(), options = {}) {
     // pipeline decides what to publish, and it reports how many were suppressed
     // and why, which a silent drop inside the scorer could not.
     suppressed,
+    suppressedBy,
     occupationClass: occupation.class,
     discovery: !suppressed && (occupation.class === 'adjacent' || base.discovery),
     surprise,

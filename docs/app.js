@@ -599,6 +599,53 @@ function fillBlock(node, blockSelector, listSelector, rows) {
   }
 }
 
+/**
+ * Why the list is empty, in the words of the actual reason.
+ *
+ * This is not cosmetic. Dismissals live in one localStorage key shared by all
+ * four boards and keyed by posting id, so a job dismissed while working the v1
+ * board is hidden on v4 too — and v4 publishes so few postings that a handful
+ * of old dismissals can hide the whole board. When that happened the message
+ * said "no jobs match these filters, try lowering the minimum match", which is
+ * a wrong diagnosis and sends her to a slider that cannot fix it. Naming the
+ * real cause, with the count and the way back, is the difference between a
+ * board that looks broken and one that explains itself.
+ */
+function emptyMessage(filters) {
+  if (!state.jobs.length) {
+    return 'No job data yet. Run the “Update job listings” workflow from the Actions tab (or `npm run fetch` locally) to populate the board.';
+  }
+  if (state.view === 'saved') return 'Nothing saved yet — hit ★ Save on anything worth a second look.';
+  if (state.view === 'applied') return 'No applications logged yet. Mark a job “Applied” after you send it in.';
+  if (state.view === 'hidden') return 'Nothing dismissed.';
+
+  // How many of this board's postings are being withheld by each cause,
+  // measured one cause at a time so the message can name the biggest.
+  const hidden = state.jobs.filter((job) => state.store.hidden[job.id]).length;
+  const applied = state.jobs.filter((job) => state.store.applied[job.id]).length;
+
+  if (filters.hideHidden && hidden === state.jobs.length) {
+    return `All ${state.jobs.length} postings on this board were dismissed or marked “wrong kind of work” — ` +
+      'on this or another board, since that memory is shared. Open the Hidden tab to see them, or untick ' +
+      '“Hide dismissed jobs” in Filters to bring them back.';
+  }
+  if (filters.hideHidden && hidden) {
+    return `No jobs match these filters. ${hidden} of this board's ${state.jobs.length} postings are dismissed ` +
+      'and hidden — untick “Hide dismissed jobs” in Filters to include them — and the rest are filtered out. ' +
+      'Try lowering the minimum match or widening the date range.';
+  }
+  if (filters.hideApplied && applied === state.jobs.length) {
+    return `You have applied to all ${state.jobs.length} postings on this board. Untick “Hide jobs already applied to” to see them.`;
+  }
+  if (filters.onlySurprise) {
+    return 'Nothing on the Surprise Me shelf today — that filter only shows unfamiliar titles whose work is an unusually good match. Untick it to see the rest of the board.';
+  }
+  if (filters.minMatch > 0) {
+    return `No jobs score ${filters.minMatch} or higher today. This board publishes few postings on purpose; drag the minimum match back down to 0 to see all ${state.jobs.length}.`;
+  }
+  return 'No jobs match these filters. Try lowering the minimum match or widening the date range.';
+}
+
 function render() {
   const filters = readFilters();
   const visible = sortJobs(applyFilters(state.jobs, filters), filters.sort);
@@ -615,28 +662,25 @@ function render() {
 
   const empty = $('#empty');
   empty.hidden = visible.length > 0;
-  if (!visible.length) {
-    empty.textContent = !state.jobs.length
-      ? 'No job data yet. Run the “Update job listings” workflow from the Actions tab (or `npm run fetch` locally) to populate the board.'
-      : state.view === 'saved'
-        ? 'Nothing saved yet — hit ★ Save on anything worth a second look.'
-        : state.view === 'applied'
-          ? 'No applications logged yet. Mark a job “Applied” after you send it in.'
-          : state.view === 'hidden'
-            ? 'Nothing dismissed.'
-            : 'No jobs match these filters. Try lowering the minimum match or widening the date range.';
-  }
+  if (!visible.length) empty.textContent = emptyMessage(filters);
 
   const topTiers = tileConfig(state.meta).top.tiers;
   const strong = visible.filter((j) => topTiers.includes(j.matchTier)).length;
   const fresh = visible.filter((j) => j.ageDays !== null && !j.ageAssumed && j.ageDays <= 2).length;
+  // Dismissals are shared across the four boards, so postings can go missing
+  // here for something done on another one. Saying how many keeps that visible
+  // instead of leaving a short board looking like a broken one.
+  const withheld = filters.hideHidden && state.view === 'all'
+    ? state.jobs.filter((job) => state.store.hidden[job.id]).length
+    : 0;
   $('#resultline').innerHTML = '';
   $('#resultline').append(
     document.createTextNode('Showing '),
     boldText(String(visible.length)),
     document.createTextNode(` of ${state.jobs.length} matches`),
     document.createTextNode(strong ? ` · ${strong} ${tileConfig(state.meta).top.label.toLowerCase()}` : ''),
-    document.createTextNode(fresh ? ` · ${fresh} new in 48h` : '')
+    document.createTextNode(fresh ? ` · ${fresh} new in 48h` : ''),
+    document.createTextNode(withheld ? ` · ${withheld} dismissed and hidden` : '')
   );
 
   updateFilterBadge(filters);
