@@ -1,6 +1,6 @@
 {
-  "generatedAt": "2026-08-26T16:57:27.011Z",
-  "durationMs": 34961,
+  "generatedAt": "2026-08-26T21:45:07.873Z",
+  "durationMs": 35600,
   "model": {
     "id": "v2",
     "label": "Ability-based",
@@ -44,27 +44,28 @@
     "minMatchScore": 20
   },
   "counts": {
-    "fetched": 1743,
-    "unique": 1229,
-    "published": 621,
+    "fetched": 1740,
+    "unique": 1227,
+    "published": 618,
     "dropped": {
-      "location": 339,
-      "stale": 11,
-      "lowMatch": 191,
-      "excluded": 67,
+      "location": 343,
+      "stale": 10,
+      "lowMatch": 188,
+      "excluded": 68,
       "blockedDomain": 0,
-      "wrongOccupation": 0
+      "wrongOccupation": 0,
+      "aiWork": 0
     }
   },
   "tiers": {
     "strong": 96,
     "good": 187,
-    "possible": 204,
-    "stretch": 134
+    "possible": 203,
+    "stretch": 132
   },
-  "freshLast48h": 229,
-  "projectBased": 255,
-  "discoveries": 139,
+  "freshLast48h": 224,
+  "projectBased": 254,
+  "discoveries": 140,
   "surprises": 0,
   "occupations": null,
   "sources": [
@@ -84,17 +85,17 @@
       "warnings": [],
       "quota": {
         "limit": 200,
-        "remaining": 13,
-        "observedAt": "2026-08-26T16:57:30.353Z",
-        "resetAt": "2026-08-27T15:52:25.353Z"
+        "remaining": 12,
+        "observedAt": "2026-08-26T21:45:16.507Z",
+        "resetAt": "2026-08-27T15:52:25.507Z"
       },
       "budget": {
         "allowed": 1,
         "spent": 1,
         "reserve": 12,
-        "reason": "pacing 2 spendable requests across ~2 runs left this period (1.00/run)"
+        "reason": "pacing 1 spendable request across ~2 runs left this period (0.50/run)"
       },
-      "ms": 3359
+      "ms": 8643
     },
     {
       "id": "adzuna",
@@ -118,7 +119,7 @@
         "us-remote \"marketing qa\": 0 results (Adzuna reports 0 total matches)",
         "us-remote \"content audit\": 0 results (Adzuna reports 0 total matches)"
       ],
-      "ms": 6321
+      "ms": 8634
     },
     {
       "id": "jooble",
@@ -126,7 +127,7 @@
       "status": "ok",
       "fetched": 80,
       "warnings": [],
-      "ms": 844
+      "ms": 1205
     },
     {
       "id": "remotive",
@@ -134,17 +135,17 @@
       "status": "ok",
       "fetched": 288,
       "warnings": [],
-      "ms": 893
+      "ms": 344
     },
     {
       "id": "weworkremotely",
       "label": "We Work Remotely",
       "status": "ok",
-      "fetched": 248,
+      "fetched": 246,
       "warnings": [
         "remote-marketing-jobs.rss: HTTP 301 Moved Permanently"
       ],
-      "ms": 1989
+      "ms": 940
     },
     {
       "id": "himalayas",
@@ -152,15 +153,15 @@
       "status": "ok",
       "fetched": 240,
       "warnings": [],
-      "ms": 584
+      "ms": 471
     },
     {
       "id": "jobicy",
       "label": "Jobicy",
       "status": "ok",
-      "fetched": 396,
+      "fetched": 395,
       "warnings": [],
-      "ms": 13382
+      "ms": 9699
     },
     {
       "id": "remoteok",
@@ -168,7 +169,7 @@
       "status": "ok",
       "fetched": 99,
       "warnings": [],
-      "ms": 940
+      "ms": 420
     },
     {
       "id": "workingnomads",
@@ -176,7 +177,7 @@
       "status": "ok",
       "fetched": 41,
       "warnings": [],
-      "ms": 834
+      "ms": 410
     },
     {
       "id": "arbeitnow",
@@ -184,7 +185,7 @@
       "status": "ok",
       "fetched": 175,
       "warnings": [],
-      "ms": 202
+      "ms": 134
     }
   ]
 }
