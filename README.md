@@ -354,14 +354,22 @@ word "health", "legal" or "financial" appears in a company blurb — that is
 exactly the failure mode in the other direction, and there is a test for it. A
 title that names a content occupation (`titleExemptions`: Content Engineer,
 Editorial Program Coordinator, Content Reviewer, Documentation Specialist…) is
-never overruled by its own body text.
+never overruled by its own body text — with one deliberate exception, [the AI
+gate below](#step-2b--ai-training-and-evaluation), where a content title in
+front of model-evaluation work is the whole problem being solved.
 
 **The class is a prerequisite and a multiplier, never another small signal.**
 That is the difference between v4 and adding a few more penalty phrases to v3:
 no quantity of transferable vocabulary moves a posting out of the class its
 occupation puts it in. A Content Reviewer at 70% transferable overlap outranks a
 Lawyer at 95%, which is the specification's own test and is asserted in
-`tests/matching.test.mjs`.
+`tests/matching.test.mjs` — though *which* Content Reviewer now depends on what
+it turns out to be reviewing.
+
+Two titles no longer confer a core class on sight — `coreFamilyTitleExclusions`:
+**Content Reviewer**, Content Rater, Content Analyst. They are still perfectly
+good occupations; they simply have to earn the class from their description,
+because the same words now advertise two completely different jobs. See Step 2b.
 
 ### Step 2 — the credential / eligibility gate
 
@@ -379,6 +387,51 @@ experience · an e-commerce platform · a proofreading or markup tool. These are
 **learnable gaps** — the underlying competency is already there, and the card
 labels them as such. *"AP Style required" must not sink an otherwise excellent
 editorial job*, and there is a test for that too.
+
+### Step 2b — AI training and evaluation
+
+A third gate, added because the market changed underneath this board. The jobs
+that pay careful readers of English to rate what a language model produced
+advertise in exactly her vocabulary — *review, accuracy, guidelines, quality,
+excellent English, attention to detail* — and increasingly under exactly her
+titles. A gate that read skills would file them next to a copyediting job.
+
+The line the specification draws is about what the work produces:
+
+| | |
+|---|---|
+| **AI is a tool used to do the job** | Fine. Not this gate's business. |
+| **Training, rating, evaluating or annotating the model *is* the job** | Suppressed. |
+
+So this gate reads responsibilities rather than industry. *AI Trainer*, *AI
+Writing Evaluator*, *LLM Evaluator*, *Search Quality Rater*, *Data Annotation
+Specialist* and RLHF-style work are suppressed on the title alone. Everything
+else needs **two distinct phrases naming something done to a model** — rating
+its responses, writing its training data, correcting its behaviour. Phrases that
+merely mean AI is nearby — "artificial intelligence", "machine learning",
+"AI-powered", "AI-generated" — can never suppress anything; they only let the
+card answer the question.
+
+This is the one classification a content title cannot overrule. Everywhere else
+in the gate a title naming a content occupation wins the argument with its own
+description, because that rule is what keeps an e-commerce content role at a
+health brand on the board. Here it has to lose — a content title in front of
+model-evaluation work is the entire failure being fixed.
+
+**`Content Reviewer` is the specification's own example**, and it no longer
+confers a core class on the strength of the title. It is judged on what is
+actually being reviewed:
+
+| The same title, three postings | Verdict |
+|---|---|
+| Reviews email campaigns, landing pages and product descriptions before they go live | **adjacent · 91 · APPLY** |
+| Rates model responses against annotation guidelines and writes prompts | **suppressed** |
+| "Evaluate online content against our guidelines" and nothing more | **unclear · 66** — held below the apply bands until it says |
+
+Nothing about this excludes a normal editorial job whose team uses AI. A copy
+editor who proofreads AI-drafted campaign copy before it reaches a customer is
+doing her own job on a new kind of first draft — that posting scores **89, core,
+APPLY**, and the card says AI is a tool here.
 
 ### Step 3 — then the existing fit scoring
 
@@ -425,13 +478,17 @@ it is aiming at is:
 
 ### What each card explains
 
-For every surviving posting the card answers the five questions the
+For every surviving posting the card answers the six questions the
 specification asks: why this occupation belongs in the target or adjacent
 family, which responsibilities match her actual experience, any learnable gaps,
-any genuine eligibility concerns, and whether the job primarily **reviews**
-existing content or **creates** new content. The paragraph leads with the
-occupation — justifying a match with generic transferable phrases is the thing
-v4 exists to stop.
+any genuine eligibility concerns, whether the job primarily **reviews** existing
+content or **creates** new content, and — when the posting raises AI at all —
+whether AI is a **tool** the team uses or whether training it is **the work**.
+The paragraph leads with the occupation; justifying a match with generic
+transferable phrases is the thing v4 exists to stop.
+
+The AI line appears only when the posting brings it up. A card that announced
+"no AI here" on every listing would teach her to stop reading that block.
 
 ---
 

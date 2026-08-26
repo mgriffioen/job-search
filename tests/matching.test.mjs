@@ -21,6 +21,7 @@ import {
   scoreJob as scoreJobV4,
   classifyOccupation,
   checkEligibility,
+  readAiPosture,
 } from '../scripts/lib/score-v4.mjs';
 import { buildV2Profile, buildV3Profile, buildV4Profile } from '../scripts/lib/profiles.mjs';
 import { classifyResponse, verifyListings } from '../scripts/lib/verify.mjs';
@@ -1790,8 +1791,12 @@ test('the pipeline drops suppressed postings rather than listing them low', () =
 });
 
 test('a content reviewer outranks a lawyer with more transferable overlap', () => {
-  // The specification's own test: 70% overlap in the right occupation beats
-  // 95% overlap in the wrong one.
+  // The specification's own test: overlap in a plausible occupation beats
+  // greater overlap in an impossible one. The reviewer here is the vague
+  // posting the board actually sees — "online content", "our guidelines", no
+  // customer in sight — so it is not claimed as a good match. It does not have
+  // to be. It only has to beat the lawyer, and no amount of contract-review
+  // vocabulary can lift the lawyer past it.
   const reviewer = v4(
     'Content Reviewer - US',
     'Evaluate and review online content for accuracy, quality and adherence to our guidelines. You will compare ' +
@@ -1804,8 +1809,61 @@ test('a content reviewer outranks a lawyer with more transferable overlap', () =
     reviewer.match > lawyer.match,
     `the reviewer scored ${reviewer.match} and the lawyer ${lawyer.match}`
   );
-  assert.equal(reviewer.occupationClass, 'core');
+  assert.equal(reviewer.suppressed, false, 'and it survives, where the lawyer does not');
   assert.ok(reviewer.rank > lawyer.rank, 'and it must sort above it, not merely score above it');
+});
+
+/**
+ * "Content Reviewer" — the title the specification singles out, and the reason
+ * the AI gate exists.
+ *
+ * It used to mean somebody checking marketing copy. It increasingly means
+ * somebody grading what a language model produced, advertised in her exact
+ * vocabulary: review, accuracy, guidelines, quality, excellent English,
+ * attention to detail. So the board may no longer take the title's word for it
+ * — "DO NOT automatically treat as good anymore. First determine what 'content
+ * review' actually means."
+ *
+ * The three postings below share a title and nothing else, and each has its own
+ * correct answer.
+ */
+test('“Content Reviewer” is judged on what is being reviewed, not on the title', () => {
+  const marketing = v4(
+    'Content Reviewer',
+    'Own the final quality check on our retail marketing content. Review email campaigns, landing pages and ' +
+      'product descriptions before they go live: proofread copy for grammar, spelling and punctuation, verify ' +
+      'pricing, links and imagery against source data, check everything against our brand style guide, log ' +
+      'discrepancies and track corrections with designers and developers.'
+  );
+  assert.equal(marketing.occupationClass, 'adjacent', 'reviewing customer-facing marketing content is her job');
+  assert.equal(marketing.suppressed, false);
+  assert.ok(marketing.match >= 80, `and it should still be a good match, got ${marketing.match}`);
+
+  const aiRating = v4(
+    'Content Reviewer - English US',
+    'Join our community of freelance contributors. You will review and rate model responses for accuracy, fluency ' +
+      'and adherence to our annotation guidelines, compare two candidate responses and choose the better one, ' +
+      'write prompts on assigned topics, and flag factual errors. Excellent written English and attention to ' +
+      'detail essential. Flexible remote project work paid per task.'
+  );
+  assert.equal(aiRating.occupationClass, 'wrong', 'rating model output is not content review');
+  assert.equal(aiRating.details.occupation.id, 'ai-training');
+  assert.equal(aiRating.suppressed, true);
+
+  // Same title, same freelance framing, same vocabulary. Only the object of the
+  // reviewing differs, and that is the whole judgement.
+  assert.ok(
+    marketing.match - aiRating.match > 40,
+    `the two must not land near each other: ${marketing.match} against ${aiRating.match}`
+  );
+
+  const vague = v4(
+    'Content Reviewer - US',
+    'Evaluate and review online content for accuracy, quality and adherence to our guidelines. Strong attention ' +
+      'to detail and excellent English essential.'
+  );
+  assert.equal(vague.occupationClass, 'unclear', 'a posting that has not said what it reviews has not said');
+  assert.ok(vague.match < 70, `and it cannot claim the apply bands on a title alone, got ${vague.match}`);
 });
 
 test('the occupations she is actually looking for still reach the apply bands', () => {
@@ -1910,8 +1968,11 @@ test('strategy and content ownership are down-ranked, not called the wrong occup
   );
 });
 
-test('every surviving posting answers the five questions the specification asks', () => {
-  const result = v4('Product Content Editor', TRUE_POSITIVES[1][1]);
+test('every surviving posting answers the six questions the specification asks', () => {
+  const result = v4(
+    'Product Content Editor',
+    `${TRUE_POSITIVES[1][1]} Our merchandising team drafts with AI tools before it reaches you.`
+  );
   const report = result.details.occupation;
 
   assert.ok(report.why, '1. why this occupation belongs in the target or adjacent family');
@@ -1919,6 +1980,9 @@ test('every surviving posting answers the five questions the specification asks'
   assert.ok(Array.isArray(result.details.gaps.learnable), '3. learnable gaps');
   assert.ok(Array.isArray(report.eligibility), '4. eligibility concerns');
   assert.ok(/REVIEWING|CREATING|Mixed/.test(report.contentModeNote), '5. reviewing or creating');
+  // 6. and, when AI comes up at all, whether it is the tool or the work.
+  assert.ok(report.aiNote, '6. AI is mentioned, so the card must say which kind of AI job this is');
+  assert.equal(report.ai, 'tool');
 
   // And the ban that goes with them: the paragraph must lead with the
   // occupation, not with a list of transferable phrases.
@@ -1982,6 +2046,240 @@ test('a content title containing another profession is classified on its descrip
     result.match >= profileV4.search.minMatchScore,
     `and it must survive the publish threshold, got ${result.match}`
   );
+});
+
+/* ------------------------------------------------ v4: AI training and evaluation */
+
+/**
+ * STEP 1(D) — the gate the market made necessary.
+ *
+ * The specification is precise about the line: "AI is a tool used to perform
+ * the relevant job → potentially fine. Training/evaluating/improving the AI is
+ * the job → not wanted." Both sides of that line advertise for a careful reader
+ * of English who works to guidelines and notices errors, so a gate that read
+ * skills would put them in the same place. These tests exist to keep it reading
+ * the object of the work instead.
+ */
+
+const AI_WORK = [
+  ['AI Trainer',
+    'Use your writing ability to help improve our assistant. You will review responses for accuracy and tone, ' +
+    'correct errors, and follow detailed guidelines. Excellent English and attention to detail required. Flexible ' +
+    'remote work paid per task.'],
+  ['AI Writing Evaluator',
+    'Use your editorial eye to review written responses for accuracy, tone and clarity against our style ' +
+    'guidelines. You will provide detailed written feedback, identify errors and inconsistencies, and meet daily ' +
+    'deadlines. Excellent grammar and attention to detail required. Remote, flexible, paid per task.'],
+  ['LLM Evaluator',
+    'Review and score outputs for factual accuracy, coherence and adherence to our quality guidelines. Strong ' +
+    'proofreading skills and meticulous attention to detail essential.'],
+  ['Search Quality Rater',
+    'Evaluate search results for relevance and quality against detailed rating guidelines. You will review web ' +
+    'pages for accuracy, apply consistent standards, and meet weekly deadlines. Part-time, remote, flexible hours.'],
+  ['Data Annotation Specialist',
+    'Review and label content according to our annotation guidelines. You will verify accuracy, resolve ' +
+    'discrepancies between annotators, and maintain consistency across the dataset. Attention to detail essential.'],
+  ['Editorial Specialist',
+    // The one with a title she would absolutely have searched for. Only the
+    // responsibilities give it away, which is exactly the case the body
+    // threshold is there for.
+    'Bring your editorial judgement to a frontier lab. You will write prompts on specialist topics, rate model ' +
+    'responses for accuracy and style, compare candidate outputs and pick the stronger one, and help build the ' +
+    'training data that teaches the model to write well. Excellent grammar and proofreading skills essential.'],
+];
+
+test('AI training and evaluation work is suppressed however editorial it sounds', () => {
+  for (const [title, description] of AI_WORK) {
+    const result = v4(title, description);
+    assert.equal(
+      result.details.occupation.id,
+      'ai-training',
+      `"${title}" is AI work, got ${result.details.occupation.id} at ${result.match}`
+    );
+    assert.equal(result.occupationClass, 'wrong');
+    assert.equal(result.suppressed, true, 'the specification excludes or strongly suppresses these');
+    assert.ok(result.match < 70, `"${title}" reached ${result.match}`);
+    assert.equal(result.details.recommendation, 'SKIP');
+  }
+});
+
+test('a job is not AI work merely because the employer uses AI', () => {
+  /**
+   * The other half, and the more dangerous one to get wrong: the specification
+   * says plainly not to exclude a normal editorial, QA, marketing or e-commerce
+   * position because employees use AI tools. Proofreading an AI first draft
+   * before it reaches a customer is her job done on a new kind of draft — the
+   * output goes to the customer, not back to the model.
+   */
+  const editor = v4(
+    'Marketing Copy Editor',
+    'Copy edit and proofread marketing campaign copy — email, landing pages and product descriptions — against ' +
+      'our house style guide and brand voice. Increasingly our first drafts are AI-generated, so you will review ' +
+      'AI-generated copy alongside writer-drafted copy: check grammar, punctuation and spelling, verify product ' +
+      'information and pricing against source data, and flag inconsistencies with the live website. We use AI ' +
+      'tools across the team. Partner with designers and developers on corrections. Remote.'
+  );
+
+  assert.equal(editor.suppressed, false, 'AI as a tool is not a reason to hide an editing job');
+  assert.notEqual(editor.details.occupation.id, 'ai-training');
+  assert.ok(editor.match >= 80, `and it must keep its band, got ${editor.match}`);
+  assert.equal(editor.details.occupation.ai, 'tool');
+
+  // A retailer boasting about its recommendation engine is not an AI employer
+  // for these purposes either.
+  const retail = v4(
+    'Product Content Editor',
+    TRUE_POSITIVES[1][1] +
+      ' We are an AI-powered retail platform using machine learning to personalise every storefront.'
+  );
+  assert.equal(retail.suppressed, false, 'a company blurb is not a job description');
+  assert.equal(retail.occupationClass, 'core');
+});
+
+test('the card says whether AI is the tool or the work', () => {
+  // The specification's sixth question about every surviving posting, and the
+  // one it calls "especially important".
+  const editor = v4(
+    'Content Editor',
+    'Review and edit web and email content against our brand style guide before publication, verify product ' +
+      'information and pricing, and flag inconsistencies. The team uses AI tools to draft first versions.'
+  );
+  assert.match(editor.details.occupation.aiNote || '', /tool/i);
+  assert.match(editor.details.whyMatched, /AI/, 'and the answer belongs in the paragraph she actually reads');
+
+  const trainer = v4(...AI_WORK[0]);
+  assert.match(trainer.details.occupation.aiNote || '', /the WORK/);
+  assert.ok(
+    trainer.details.watchOuts.some((w) => /AI training or evaluation/.test(w)),
+    'a suppressed posting must say why it was suppressed'
+  );
+
+  // Silence is the honest answer when the posting never raises it. A card that
+  // announced "no AI here" on every listing would train her to stop reading.
+  const quiet = v4('Product Content Editor', TRUE_POSITIVES[1][1]);
+  assert.equal(quiet.details.occupation.ai, 'absent');
+  assert.equal(quiet.details.occupation.aiNote, null);
+});
+
+test('no AI rule fires on a word an ordinary content posting contains', () => {
+  /**
+   * The same invariant the wrong-occupation lists carry, and it matters more
+   * here: this gate is allowed to overrule a title she searched for, so a loose
+   * phrase in it would delete real jobs rather than merely demote them. Every
+   * work phrase must name something done TO a model.
+   */
+  const everywhere = new Set([
+    'review', 'reviews', 'content', 'quality', 'accuracy', 'guidelines', 'feedback', 'evaluate',
+    'rate', 'rating', 'annotate', 'label', 'prompt', 'model', 'data', 'training', 'ai',
+    'artificial intelligence', 'machine learning', 'automation', 'english', 'writing',
+  ]);
+  const gate = profileV4.aiWorkGate;
+
+  for (const phrase of gate.workPhrases) {
+    assert.ok(
+      !everywhere.has(phrase),
+      `"${phrase}" would classify an ordinary editing job as AI work`
+    );
+    assert.ok(phrase.includes(' ') || phrase === 'rlhf' || phrase === 'utterances',
+      `"${phrase}" is a single common word and needs its context to mean anything`);
+  }
+  assert.ok(gate.bodyThreshold >= 2, 'one sentence about AI is a sentence, not a job');
+
+  // And the mention list, which must never be able to suppress anything, is
+  // where the ambiguous vocabulary is allowed to live.
+  for (const phrase of ['artificial intelligence', 'machine learning', 'ai generated', 'ai tools']) {
+    assert.ok(gate.mentionPhrases.includes(phrase), `"${phrase}" must be a mention, never a verdict`);
+    assert.ok(!gate.workPhrases.includes(phrase), `"${phrase}" must not be able to suppress a posting`);
+  }
+});
+
+test('the AI gate can overrule a title the occupation gate would have trusted', () => {
+  /**
+   * The ordering that makes this work. Everywhere else in the gate a title
+   * naming a content occupation wins the argument with its own description —
+   * that rule is what keeps a content role at a health brand on the board. Here
+   * it has to lose, because a content title in front of model-evaluation work
+   * is the entire failure being fixed.
+   */
+  const posture = readAiPosture(profileV4, {
+    normTitle: normalizeForMatch('Editorial Specialist'),
+    normAll: normalizeForMatch(AI_WORK[5][1]),
+  });
+  assert.equal(posture.posture, 'work');
+
+  const asContent = classifyOccupation(profileV4, {
+    normTitle: normalizeForMatch('Editorial Specialist'),
+    normAll: normalizeForMatch(AI_WORK[5][1]),
+    family: { id: 'content-editorial-quality', tier: 'core', label: 'Content & editorial quality' },
+    coreSignals: 4,
+    combinations: 2,
+  });
+  assert.equal(asContent.class, 'wrong', 'a core-family title does not rescue model evaluation');
+  assert.equal(asContent.id, 'ai-training');
+});
+
+test('the AI postings that were actually on the board are caught', () => {
+  /**
+   * Written from the live v4 board on the day this gate was built, in the
+   * employers' own words. Three of the eight postings it was publishing were
+   * AI-rating work — one of them the Content Reviewer the specification names —
+   * and all three had cleared a threshold of 70.
+   *
+   * Imagined fixtures are written by somebody who already knows the answer.
+   * These are the sentences real employers actually use, which is a different
+   * and harder test: none of them says "train a model" anywhere.
+   */
+  const live = [
+    ['Content Reviewer - US',
+      'We are looking for an independent, flexible, remote opportunity where you can help improve AI-powered ' +
+      'search technology from the comfort of your home. If you are curious, internet-savvy, and enjoy evaluating ' +
+      'online content, this freelance project could be a great fit.'],
+    ['AI Consulting Domain Expert',
+      'micro1 is engaging AI Consulting Domain Experts to partner on a customer-facing project focused on the ' +
+      'evaluation and optimization of AI-driven outputs. In this role, you will apply your expertise to help ' +
+      'train next-generation AI systems. Your work will shape how models learn, reason, and perform through ' +
+      'high-quality, real-world input.'],
+    ['Media Search Analyst - English (AU)',
+      'This position offers you the flexibility to set your own schedule and complete exciting tasks using an ' +
+      'innovative web-based evaluation tool. You will be doing a comprehensive assessment of diverse task ' +
+      'categories, encompassing music, video and search relevance.'],
+  ];
+
+  for (const [title, description] of live) {
+    const result = v4(title, description);
+    assert.equal(
+      result.details.occupation.id,
+      'ai-training',
+      `"${title}" was published at 70+ before this gate; got ${result.details.occupation.id} at ${result.match}`
+    );
+    assert.equal(result.suppressed, true);
+  }
+});
+
+test('the pipeline drops AI-training postings and counts them with the rest', () => {
+  const board = buildBoard(
+    AI_WORK.map(([title, description], index) => ({
+      id: `ai-${index}`,
+      title,
+      company: 'Somewhere',
+      location: 'USA',
+      locationRestriction: 'USA',
+      workType: 'remote',
+      description,
+      tags: [],
+      employmentTypes: ['contract'],
+      sources: ['test'],
+      postedAt: '2026-07-26T12:00:00Z',
+      url: 'https://example.com/1',
+    })),
+    profileV4,
+    scoreJobV4,
+    NOW,
+    { tier: (m) => matchTierV3(m, profileV4), tierOrder: profileV4.bands.map((b) => b.tier) }
+  );
+
+  assert.equal(board.jobs.length, 0, 'none of these belong on the board at any score');
+  assert.equal(board.dropped.wrongOccupation, AI_WORK.length);
 });
 
 test('the occupational facts reach the card so the ratings can learn from them', () => {

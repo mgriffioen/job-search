@@ -260,6 +260,7 @@ async function main() {
         `  dropped: ${built.dropped.location} out-of-area, ${built.dropped.stale} stale, ` +
         `${built.dropped.lowMatch} below match threshold, ${built.dropped.excluded} excluded` +
         (built.dropped.wrongOccupation ? `, ${built.dropped.wrongOccupation} wrong occupation` : '') +
+        (built.dropped.aiWork ? ` (${built.dropped.aiWork} of them AI training/evaluation)` : '') +
         (built.dropped.closed ? `, ${built.dropped.closed} no longer open` : '') +
         `\n  tiers: ${Object.entries(meta.tiers).map(([tier, count]) => `${count} ${tier}`).join(' / ')}` +
         (meta.discoveries ? `\n  new directions: ${meta.discoveries}` : '') +
@@ -292,7 +293,7 @@ export function buildBoard(deduped, profile, score, now, options = {}) {
   // single maxAgeDays cliff.
   const staleAfterDays = profile.search.staleAfterDays ?? null;
   const staleKeepMinMatch = profile.search.staleKeepMinMatch ?? 100;
-  const dropped = { location: 0, stale: 0, lowMatch: 0, excluded: 0, blockedDomain: 0, wrongOccupation: 0 };
+  const dropped = { location: 0, stale: 0, lowMatch: 0, excluded: 0, blockedDomain: 0, wrongOccupation: 0, aiWork: 0 };
   const scored = [];
 
   const blockedDomains = (profile.search.blockedDomains || []).map((d) => d.toLowerCase());
@@ -332,6 +333,11 @@ export function buildBoard(deduped, profile, score, now, options = {}) {
      */
     if (result.suppressed) {
       dropped.wrongOccupation += 1;
+      // AI training and evaluation is counted separately as well as in the
+      // total. It is the newest of the suppression rules and the one most
+      // likely to need tuning, so the run has to say how often it fired rather
+      // than burying it among the lawyers and the nurses.
+      if (result.details?.occupation?.id === 'ai-training') dropped.aiWork += 1;
       continue;
     }
     if (result.ageDays !== null && result.ageDays > maxAgeDays) {

@@ -112,6 +112,7 @@ export function buildV4Profile(base, v3Overlay, v4Overlay) {
     orientation,
     occupationGate: v4Overlay.occupationGate || {},
     credentialGate: v4Overlay.credentialGate || {},
+    aiWorkGate: v4Overlay.aiWorkGate || {},
     surprise: v4Overlay.surprise || {},
     protectedPreferences: v4Overlay.protectedPreferences || {},
   };

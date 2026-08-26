@@ -504,7 +504,8 @@ function renderFitReport(node, job) {
   const trueGaps = job.gaps?.experience || [];
   const watchOuts = job.watchOuts || [];
   const modeNote = job.occupation?.contentModeNote || '';
-  if (!evidence.length && !learnable.length && !trueGaps.length && !watchOuts.length && !modeNote) return;
+  const aiNote = job.occupation?.aiNote || '';
+  if (!evidence.length && !learnable.length && !trueGaps.length && !watchOuts.length && !modeNote && !aiNote) return;
 
   const report = $('[data-report]', node);
   report.hidden = false;
@@ -521,6 +522,15 @@ function renderFitReport(node, job) {
   // job reviewing what already exists, or making what does not?
   if (job.occupation?.contentModeNote) {
     fillBlock(node, '[data-mode-block]', '[data-mode]', [[null, job.occupation.contentModeNote]]);
+  }
+  /**
+   * And its sixth, asked only when the posting raises it: if AI is mentioned,
+   * is it a tool the team uses or is training it the actual job? A card that
+   * printed "no AI here" on every listing would teach her to stop reading this
+   * block, so silence is the answer when the posting never brought it up.
+   */
+  if (aiNote) {
+    fillBlock(node, '[data-ai-block]', '[data-ai]', [[null, aiNote]]);
   }
   fillBlock(node, '[data-learnable-block]', '[data-learnable]', learnable.map((g) => [g.label, g.note]));
   fillBlock(node, '[data-truegap-block]', '[data-truegaps]', trueGaps.map((g) => [g.label, g.note]));
@@ -852,7 +862,7 @@ function exportCsv() {
   const rows = [
     // The v3 columns are blank on the other boards rather than absent, so one
     // tracker spreadsheet works whichever board a job was saved from.
-    ['Status', 'Saved on', 'Applied on', 'Match', 'Recommendation', 'Occupational fit', 'Reviewing or creating', 'Work fit', 'Experience fit', 'Qualification fit', 'Lifestyle fit', 'Title', 'Company', 'Location', 'Schedule', 'Salary', 'Posted', 'Source', 'URL', 'Notes'],
+    ['Status', 'Saved on', 'Applied on', 'Match', 'Recommendation', 'Occupational fit', 'Reviewing or creating', 'AI: tool or work', 'Work fit', 'Experience fit', 'Qualification fit', 'Lifestyle fit', 'Title', 'Company', 'Location', 'Schedule', 'Salary', 'Posted', 'Source', 'URL', 'Notes'],
     ...tracked.map((j) => [
       state.store.applied[j.id] ? 'Applied' : 'Saved',
       (state.store.saved[j.id] || '').slice(0, 10),
@@ -861,6 +871,7 @@ function exportCsv() {
       j.recommendation || '',
       j.occupation ? `${j.occupation.class} — ${j.occupation.label}` : '',
       j.occupation?.contentMode || '',
+      j.occupation?.ai || '',
       j.scores?.work ?? '',
       j.scores?.experience ?? '',
       j.scores?.qualification ?? '',
