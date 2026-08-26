@@ -38,14 +38,26 @@
  * its occupation puts it in, so a Content Reviewer at 70% transferable overlap
  * outranks a Lawyer at 95% — which is the specification's own test.
  *
- * TWO GATES, NOT ONE. Occupation and eligibility are separate because they fail
- * separately: a posting can read as exactly the right occupation and still
- * demand a licence, and a posting can name a credential in a paragraph about
- * some other team. The eligibility gate lists credentials she demonstrably does
+ * THREE GATES, NOT ONE. Occupation, eligibility and AI-work are separate
+ * because they fail separately: a posting can read as exactly the right
+ * occupation and still demand a licence, and a posting can name a credential in
+ * a paragraph about some other team. The eligibility gate lists credentials she demonstrably does
  * not hold and cannot acquire between now and the application. Everything
  * softer — AP style, Chicago, a CMS, a PIM, an agency background, a markup tool
  * — stays a LEARNABLE GAP: it costs a few points on qualification fit and never
  * removes a posting.
+ *
+ * AND THE THIRD GATE: AI TRAINING IS NOT CONTENT WORK. The market changed under
+ * this board. The occupations that pay careful readers of English to rate what
+ * a model produced advertise in exactly her vocabulary — review, accuracy,
+ * guidelines, quality, attention to detail — and increasingly under exactly her
+ * titles, which is why `Content Reviewer` can no longer be trusted on sight.
+ * The line the specification draws is about what the work produces: AI used as
+ * a tool to do the job is fine and is nobody's business but hers, while
+ * training, rating, evaluating or annotating the model AS the job is not
+ * wanted. So the AI gate reads responsibilities rather than industry, and it is
+ * the one classification a content title cannot overrule — everywhere else in
+ * this file a title that names a content occupation wins the argument.
  *
  * WHAT IS DELIBERATELY NOT DONE HERE. The wrong-occupation lists are not a
  * keyword blocklist over industries. A posting is not rejected because the word
@@ -92,6 +104,79 @@ export function checkEligibility(profile, normAll) {
 }
 
 /**
+ * STEP 1(D) — is AI the tool, or is AI the work?
+ *
+ * The specification's own words: "AI is a tool used to perform the relevant job
+ * → potentially fine. Training/evaluating/improving the AI is the job → not
+ * wanted." Those two look identical from a distance. Both advertise for careful
+ * readers of English, both talk about guidelines, accuracy and quality, and the
+ * second increasingly advertises under the first's titles — which is why
+ * `Content Reviewer` can no longer be trusted on sight.
+ *
+ * So this reads what is being done, not who is doing it or where:
+ *
+ *   `titles`       conclusive. An AI Trainer trains AI.
+ *   `weakTitles`   a title that goes both ways, settled by one work phrase.
+ *   `workPhrases`  the act of teaching or grading a model. Two DISTINCT
+ *                  concepts for a body-only verdict, because one sentence about
+ *                  AI is a sentence and not a job.
+ *   `mentionPhrases` AI is in the room and the posting has not said it is the
+ *                  work. This NEVER suppresses. It exists so the card can
+ *                  answer the question instead of going quiet.
+ *
+ * Deliberately absent from `workPhrases`: "artificial intelligence", "machine
+ * learning", "AI-powered". A retailer that boasts about its recommendation
+ * engine has not advertised an AI-training job, and a proofreader checking
+ * AI-drafted campaign copy before it reaches a customer is doing her own job on
+ * a new kind of first draft.
+ */
+export function readAiPosture(profile, { normTitle, normAll }) {
+  const gate = profile.aiWorkGate || {};
+  const work = countConcepts(gate.workPhrases, normAll);
+  const mentions = countConcepts(gate.mentionPhrases, normAll);
+
+  const found = (evidence) => ({ posture: 'work', evidence, work: work.size, mentions: mentions.size });
+
+  const titleHit = longestMatch(gate.titles, normTitle);
+  if (titleHit) return found(`Title names the work: “${titleHit}”`);
+
+  const weakHit = longestMatch(gate.weakTitles, normTitle);
+  if (weakHit && work.size >= 1) {
+    return found(`Title “${weakHit}”, and the description is about training or grading a model`);
+  }
+
+  if (work.size >= (gate.bodyThreshold ?? 2)) {
+    return found(`${work.size} responsibilities that are about the model itself rather than about content`);
+  }
+
+  if (work.size || mentions.size) {
+    return { posture: 'tool', evidence: null, work: work.size, mentions: mentions.size };
+  }
+  return { posture: 'absent', evidence: null, work: 0, mentions: 0 };
+}
+
+/**
+ * The sentence the card prints about AI, which the specification requires of
+ * every surviving posting that mentions it at all. Silence would be the wrong
+ * answer twice over: it would hide the reason a suppressed posting was
+ * suppressed, and it would leave her guessing about the ones that survived.
+ */
+function aiSentence(posture) {
+  if (posture.posture === 'absent') return null;
+  if (posture.posture === 'work') {
+    return (
+      'AI is the WORK here, not a tool: the job is training, rating or evaluating a model, which is not the kind ' +
+      'of reviewing you are looking for.'
+    );
+  }
+  return posture.work
+    ? 'AI is mentioned, and one responsibility points at model work — read that paragraph before applying. ' +
+      'On balance this still reads as AI being a tool the team uses rather than the thing being built.'
+    : 'AI is mentioned only as a tool the team uses, not as the thing being trained or evaluated. That is not a ' +
+      'reason to skip this one.';
+}
+
+/**
  * STEP 1 — the occupational fit gate.
  *
  * `family` is v3's title match; `coreSignals` is how many of v3's CORE work
@@ -101,10 +186,50 @@ export function checkEligibility(profile, normAll) {
  * subject matter, and never from the total score — a score is exactly the thing
  * transferable vocabulary inflates.
  */
-export function classifyOccupation(profile, { normTitle, normAll, family, coreSignals, combinations, creationDominant = false }) {
+export function classifyOccupation(
+  profile,
+  { normTitle, normAll, family, coreSignals, combinations, creationDominant = false, aiPosture = null }
+) {
   const gate = profile.occupationGate || {};
   const coreTiers = gate.coreFamilyTiers || ['core', 'priority'];
-  const inCoreFamily = Boolean(family && coreTiers.includes(family.tier));
+
+  /**
+   * A title in a core family states the occupation — except for the handful the
+   * market has taken back. `Content Reviewer` is a real editorial title and is
+   * also what the AI-data marketplaces call the person grading model output, so
+   * the specification's instruction is to work out what is being reviewed
+   * rather than to take the title's word for it. Excluded titles are not
+   * penalised; they are simply made to earn their class from the description
+   * like any unfamiliar one, which is the path a genuine content-review job
+   * walks through comfortably.
+   */
+  const titleTakenBack = Boolean(longestMatch(gate.coreFamilyTitleExclusions, normTitle));
+  const inCoreFamily = Boolean(family && coreTiers.includes(family.tier)) && !titleTakenBack;
+
+  /**
+   * The AI test runs FIRST, ahead of the wrong-occupation lists and ahead of
+   * the core-family shortcut, because it is the one classification a content
+   * title must not be able to overrule. Everywhere else in this gate a title
+   * that names a content occupation wins the argument; here the whole failure
+   * mode is a content title in front of model-evaluation work.
+   */
+  const ai = aiPosture || readAiPosture(profile, { normTitle, normAll });
+  if (ai.posture === 'work') {
+    return {
+      class: 'wrong',
+      id: 'ai-training',
+      label: 'AI training and evaluation',
+      why:
+        'The reviewing in this job is reviewing what a model produced, so that the model gets better. Your ' +
+        'language and judgement would be the training material rather than the point of the work, and you have ' +
+        'said that is not the direction you want.',
+      evidence: ai.evidence,
+      contentDomain: countConcepts(gate.contentDomain, normAll).size,
+      coreSignals,
+      combinations,
+      ai,
+    };
+  }
 
   // A title that names a content occupation is not overruled by its own
   // description. "Content Engineer" and "Editorial Program Coordinator" are
@@ -125,6 +250,7 @@ export function classifyOccupation(profile, { normTitle, normAll, family, coreSi
       contentDomain,
       coreSignals,
       combinations,
+      ai,
     };
   }
 
@@ -139,6 +265,7 @@ export function classifyOccupation(profile, { normTitle, normAll, family, coreSi
       contentDomain,
       coreSignals,
       combinations,
+      ai,
     };
   }
 
@@ -169,6 +296,7 @@ export function classifyOccupation(profile, { normTitle, normAll, family, coreSi
       contentDomain,
       coreSignals,
       combinations,
+      ai,
     };
   }
 
@@ -191,6 +319,7 @@ export function classifyOccupation(profile, { normTitle, normAll, family, coreSi
       contentDomain,
       coreSignals,
       combinations,
+      ai,
     };
   }
 
@@ -205,6 +334,7 @@ export function classifyOccupation(profile, { normTitle, normAll, family, coreSi
     contentDomain,
     coreSignals,
     combinations,
+    ai,
   };
 }
 
@@ -305,6 +435,7 @@ export function scoreJob(job, profile, now = new Date(), options = {}) {
   const combinations = matchCombinations(profile.combinations, normAll).length;
 
   const orientation = readOrientation(profile, normTitle, normAll);
+  const aiPosture = readAiPosture(profile, { normTitle, normAll });
   const occupation = classifyOccupation(profile, {
     normTitle,
     normAll,
@@ -312,6 +443,7 @@ export function scoreJob(job, profile, now = new Date(), options = {}) {
     coreSignals,
     combinations,
     creationDominant: orientation.mode === 'creating',
+    aiPosture,
   });
   const eligibility = checkEligibility(profile, normAll);
 
@@ -349,6 +481,7 @@ export function scoreJob(job, profile, now = new Date(), options = {}) {
     occupation,
     eligibility,
     orientation,
+    aiPosture,
     normAll,
   });
 
@@ -399,6 +532,9 @@ export function scoreJob(job, profile, now = new Date(), options = {}) {
         occupationClass: occupation.class,
         function: orientation.mode,
         review: orientation.review,
+        // Whether AI is the tool or the work. A fact about the occupation
+        // rather than about her skills, so a 🚫 is allowed to learn from it.
+        ai: aiPosture.posture,
       },
     },
   };
@@ -414,7 +550,7 @@ export function scoreJob(job, profile, now = new Date(), options = {}) {
  * transferable vocabulary that used to open this paragraph now appears only as
  * supporting detail, which is what it is.
  */
-function buildOccupationReport({ profile, base, occupation, eligibility, orientation, normAll }) {
+function buildOccupationReport({ profile, base, occupation, eligibility, orientation, aiPosture, normAll }) {
   const coreHits = matchGroup(profile.workSignals, normAll).filter((hit) => hit.tier !== 'supporting');
   const responsibilities = coreHits.slice(0, 4).map((hit) => ({ label: hit.label, phrase: hit.phrase }));
 
@@ -438,6 +574,11 @@ function buildOccupationReport({ profile, base, occupation, eligibility, orienta
   }
   why.push(orientationSentence(orientation));
 
+  // The specification's sixth question, asked only when there is something to
+  // answer: if AI is mentioned, is it the tool or is it the work?
+  const aiNote = aiSentence(aiPosture);
+  if (aiNote) why.push(aiNote);
+
   const watchOuts = [...(base.details.watchOuts || [])];
   if (occupation.class === 'wrong') {
     watchOuts.unshift(
@@ -450,6 +591,22 @@ function buildOccupationReport({ profile, base, occupation, eligibility, orienta
       'The posting does not say enough about the day-to-day work to place the occupation. Open it before judging it.'
     );
   }
+  if (occupation.id === 'ai-training') {
+    watchOuts.unshift(
+      'This is AI training or evaluation work, not content or editorial work. ' +
+        `${occupation.evidence}. The specification excludes it: your editorial judgement would be the raw material ` +
+        'for a model rather than the point of the job.'
+    );
+  } else if (aiPosture.posture === 'tool' && aiPosture.work) {
+    // Below the threshold, so it survived — but one model-work phrase in an
+    // otherwise ordinary content posting is worth a second look before applying.
+    watchOuts.push(
+      'AI is mentioned and one responsibility reads as model work rather than content work. Read that paragraph ' +
+        'before applying: the difference between using AI and training it is the difference between this job and one ' +
+        'you have said you do not want.'
+    );
+  }
+
   for (const blocked of eligibility.blocking) {
     watchOuts.unshift(`Eligibility: this posting requires ${blocked.label.toLowerCase()} — “${blocked.phrase}”.`);
   }
@@ -481,6 +638,8 @@ function buildOccupationReport({ profile, base, occupation, eligibility, orienta
       responsibilities,
       contentMode: orientation.mode,
       contentModeNote: orientationSentence(orientation),
+      ai: aiPosture.posture,
+      aiNote,
       eligibility: eligibility.blocking.map((blocked) => ({ label: blocked.label, phrase: blocked.phrase })),
     },
   };

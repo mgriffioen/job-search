@@ -34,6 +34,9 @@
     "_coreFamilyTiersComment": "Which of v3's role-family tiers count as CORE occupations on their own. A title in one of these families states the occupation, so it needs no further proof — 'Copy Editor' is a copy editor. v3's `adjacent` tier (quality-review-adjacent: QA Specialist, Quality Analyst and the rest) deliberately does NOT appear here: those titles are held by software testers, manufacturing inspectors and clinical auditors as often as by content people, so they must earn their class from the description like any other unfamiliar title.",
     "coreFamilyTiers": ["core", "priority"],
 
+    "_coreFamilyTitleExclusionsComment": "Titles that land in a core family but must NOT be granted CORE class on the strength of the title alone. They are here because the market changed underneath them: `Content Reviewer` used to mean somebody checking marketing copy and now, more often than not, means somebody rating what a language model produced. The specification is explicit — do not treat Content Reviewer as inherently desirable based on title alone; work out what is actually being reviewed and why. So a posting with one of these titles is classified from its description like any unfamiliar title: it reaches ADJACENT when the responsibilities are genuinely content review, and it is caught by the AI-work gate below when they are not. It is not a penalty and it is not an exclusion — it is a refusal to take the title's word for it.",
+    "coreFamilyTitleExclusions": ["content reviewer", "content rater", "content analyst"],
+
     "_wrongOccupationsComment": "STEP 1(C) — the professions whose vocabulary overlaps hers and whose work does not. Each entry is recognised two ways. A `titles` hit is conclusive: the employer has named the occupation in the job title and no description can argue with it. A `body` hit needs `bodyThreshold` DISTINCT concepts, because one stray 'patient' or 'litigation' in a company blurb is not a profession — this is the specification's STEP 5 rule that a posting is not rejected because the word 'health' or 'legal' appears somewhere. `weakTitles` are titles that point at the occupation without settling it — Program Coordinator, Case Manager, Technician are held by content people too — so they classify only when the description corroborates them with at least one occupation concept. `credentials` are the STEP 2 eligibility gate and are listed with the occupation they belong to, because a credential is only disqualifying when it is the credential for the job being advertised.",
     "wrongOccupations": [
       {
@@ -231,6 +234,71 @@
       "localization", "localisation", "content moderator", "content reviewer", "content quality",
       "content architect", "information architect", "brand program", "marketing program",
       "editorial quality", "copy quality", "quality editor", "brand editor", "style editor"
+    ]
+  },
+
+  "_aiWorkGateComment": "STEP 1(D) — AI TRAINING AND EVALUATION. A separate gate from the wrong-occupation list because it fails differently and because it has to be able to overrule a title she WOULD have searched for. The occupations that pay people to rate model responses advertise themselves in her vocabulary — review, accuracy, guidelines, quality, English fluency, attention to detail — and increasingly under her titles, so the wrong-occupation test, which never argues with a content title, would wave every one of them through. This gate reads the responsibilities instead of the industry. THE DISTINCTION IT IS DRAWING: AI used as a tool to do the work is fine and is not this gate's business; training, rating, evaluating, annotating or improving the model IS the work is not wanted. That is why `workPhrases` name the act of teaching or grading a model and never merely the presence of one — 'artificial intelligence', 'machine learning' and 'AI-powered' are not in that list, and a retailer whose blurb boasts about its AI recommendation engine is not an AI-training job.",
+
+  "aiWorkGate": {
+    "_titlesComment": "Conclusive. These titles state that the product of the work is a better model, and no description talks them out of it.",
+    "titles": [
+      "ai trainer", "a i trainer", "ai tutor", "ai teacher", "ai coach",
+      "ai writing evaluator", "ai evaluator", "ai content evaluator", "ai content reviewer",
+      "ai reviewer", "ai rater", "ai annotator", "ai data annotator", "ai data specialist",
+      "ai training specialist", "ai response reviewer", "ai quality rater",
+      "llm evaluator", "llm trainer", "llm reviewer", "llm data",
+      "model evaluator", "model response reviewer", "model response evaluator",
+      "model quality analyst", "response evaluator", "response rater", "prompt engineer",
+      "prompt writer", "prompt specialist", "prompt designer", "rlhf",
+      "data annotator", "data annotation specialist", "annotation specialist",
+      "data labeler", "data labeller", "search quality rater", "search engine evaluator",
+      "search quality evaluator", "ads quality rater", "relevance rater", "web search evaluator",
+      "generative ai specialist", "chatbot trainer", "conversation data specialist",
+      "ai consulting", "ai consultant", "ai domain expert", "ai subject matter expert"
+    ],
+
+    "_weakTitlesComment": "Titles that go both ways, and the reason this gate exists at all. `Content Reviewer` is the specification's own example: it is a real editorial occupation and it is also what the AI-data marketplaces call the person rating model output. One corroborating phrase from `workPhrases` settles it; without one the posting is classified on its responsibilities like any other.",
+    "weakTitles": [
+      "content reviewer", "content rater", "content analyst", "content specialist",
+      "quality rater", "rater", "evaluator", "annotator", "linguist",
+      "language specialist", "language data specialist", "language analyst",
+      "transcriptionist", "transcription specialist", "freelance writer", "writing evaluator",
+      "quality analyst", "search analyst", "web analyst", "internet analyst"
+    ],
+
+    "_workPhrasesComment": "The act of teaching or grading a model. `bodyThreshold` DISTINCT concepts are needed for a body-only classification, for the same reason the wrong-occupation lists have one: a single sentence about AI is a sentence, not a job. Every phrase here describes something done TO a model — its outputs graded, its training data written, its behaviour corrected. Nothing here fires on a job that merely happens near an AI product. The last few entries were taken from postings that were actually live on the board when this gate was written — a TELUS Content Reviewer advertising 'help improve AI-powered search technology', a micro1 AI Consulting Domain Expert offering to let you 'shape how models learn', a TELUS Media Search Analyst rating results in a 'web-based evaluation tool'. Real postings write differently from imagined ones, and this is the list that has to match the real ones.",
+    "workPhrases": [
+      "train ai", "train our ai", "training ai", "train the model", "train our models",
+      "training the model", "model training", "training data", "training dataset",
+      "training datasets", "ai training", "llm training", "teach the model", "teach ai",
+      "rlhf", "reinforcement learning from human feedback", "human feedback",
+      "rate responses", "rate model responses", "rank responses", "ranking responses",
+      "compare responses", "evaluate responses", "evaluate model outputs", "evaluate ai responses",
+      "model outputs", "model output", "model responses", "llm outputs", "llm responses",
+      "chatbot responses", "ai assistant responses", "assistant responses",
+      "prompt and response", "prompts and responses", "prompt response pairs",
+      "write prompts", "writing prompts", "craft prompts", "create prompts", "prompt creation",
+      "data annotation", "annotate data", "annotating data", "text annotation",
+      "label data", "labeling data", "labelling data", "data labeling", "data labelling",
+      "fine tune the model", "fine tune our model", "fine tuning the model",
+      "improve our models", "improve the model", "improve our ai", "improve ai",
+      "model quality", "model performance", "model behavior", "model behaviour",
+      "reward model", "ground truth", "gold standard responses", "red teaming",
+      "adversarial prompts", "search quality rating", "relevance rating", "rate search results",
+      "annotation guidelines", "labeling guidelines", "rating guidelines", "utterances",
+      "train next generation ai", "how models learn", "ai driven outputs",
+      "improve ai powered", "evaluation of ai", "optimization of ai",
+      "evaluate search results", "search relevance", "web based evaluation tool"
+    ],
+    "bodyThreshold": 2,
+
+    "_mentionPhrasesComment": "AI is present but the posting has not said the job is about it. These NEVER suppress anything — they exist so the card can answer the specification's question, 'is AI a tool here or is it the work?', with something better than silence. A proofreader checking AI-drafted marketing copy before it reaches customers is doing her job with a new kind of first draft, and this list is what lets the card say so.",
+    "mentionPhrases": [
+      "artificial intelligence", "machine learning", "generative ai", "gen ai", "genai",
+      "large language model", "large language models", "llm", "llms", "chatgpt", "gpt",
+      "copilot", "ai tools", "ai tool", "ai powered", "ai-powered", "ai assisted",
+      "ai-assisted", "ai generated", "ai-generated", "ai content", "ai workflows",
+      "using ai", "leverage ai", "ai platform", "automation and ai"
     ]
   },
 
