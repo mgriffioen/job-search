@@ -7,7 +7,7 @@
     "_multipliersComment": "Applied to the finished four-axis score. CORE is untouched; ADJACENT pays a small tariff for the uncertainty of an unfamiliar title; UNCLEAR — nothing in the posting says what the occupation is, usually a two-line snippet — is discounted and held below the apply bands; WRONG is discounted to nothing and suppressed by the pipeline.",
     "multipliers": { "core": 1, "adjacent": 0.97, "unclear": 0.85, "wrong": 0.4 },
 
-    "_capsComment": "The hard ceiling per class, applied after the multiplier. The specification's floor requirement: a WRONG-occupation posting must never appear as a Strong or Good match on the strength of transferable skills, whatever else it scores. 34 sits below the 'possible adjacent opportunity' band and below the board's publish threshold, so in practice these do not reach the board at all. UNCLEAR is capped just under 70 for the same reason in a milder form: a posting that has not said what the job is cannot claim to be a good match.",
+    "_capsComment": "The hard ceiling per class, applied after the multiplier. The specification's floor requirement: a WRONG-occupation posting must never appear as a Strong or Good match on the strength of transferable skills, whatever else it scores. 34 sits far below every band and below the publish threshold, so these do not reach the board at all. UNCLEAR is capped at 69, which is one point under the 'possible adjacent opportunity' band: a posting that has not said what the job is cannot claim to be a good match. Note what changed when the threshold moved to 65 — an UNCLEAR posting can now be published, in the `low` band, where before the cap kept it off the board entirely. It is labelled Low priority and SKIP, which is the honest description of a posting whose occupation could not be read.",
     "caps": { "core": 100, "adjacent": 100, "unclear": 69, "wrong": 34 },
 
     "_adjacentEvidenceComment": "What an unfamiliar title has to show to count as ADJACENT rather than UNCLEAR. Core work signals are the evidence that the job is reviewing somebody else's work against a standard (proofreading, final review, accuracy, standards, audit); contentDomain is the evidence that the thing being reviewed is content rather than payroll, casework or code. Both are required — that pairing is the whole gate. A combination hit, which is v3's strongest evidence, substitutes for the second core signal.",
@@ -272,9 +272,9 @@
     ]
   },
 
-  "_searchComment": "STEP 8 — precision over volume. The publish threshold rises from v3's 65 to 70, the specification's own 'possible adjacent opportunity' line, because a board that fills its bands to keep the count up is worth less than a short list a human can believe. Wrong-occupation postings are suppressed by the pipeline before this threshold is even consulted.",
+  "_searchComment": "STEP 8 — precision over volume, with the line drawn where v3 draws it. This started at 70, the specification's own 'possible adjacent opportunity' cutoff, and the first live run published six postings out of 995 — the occupational gate had already suppressed 225, and 378 more fell in the 65-69 band just underneath. Held at 65 the board keeps those, labelled honestly: 65-69 is the `low` band, so they print as Low priority and SKIP rather than being dressed up as opportunities. That is the trade this knob makes. Precision still comes from the occupational gate, which suppresses the wrong professions outright before this threshold is ever consulted; the threshold only decides how far down the plausible ones the list runs.",
   "search": {
-    "minMatchScore": 70,
+    "minMatchScore": 65,
     "maxJobsStored": 400,
     "staleAfterDays": 30,
     "staleKeepMinMatch": 88

@@ -413,11 +413,19 @@ found.
 
 ### Precision over volume
 
-v4's publish threshold is **70**, the specification's own "possible adjacent
-opportunity" line, up from v3's 65 — and wrong-occupation postings are dropped
-before the threshold is consulted. **Bands are never filled to keep the count
-up.** If few good jobs exist today, the board shows few good jobs. The standard
-it is aiming at is:
+v4's publish threshold is **65**, the same line v3 draws — and wrong-occupation
+postings are dropped before the threshold is ever consulted, which is where the
+precision actually comes from. It started at 70, the specification's own
+"possible adjacent opportunity" cutoff, and the first live run published six
+postings out of 995: the gate had suppressed 225, and 378 more sat in the band
+just underneath. At 65 those are kept and **labelled honestly** — 65-69 is the
+`low` band, so they print as *Low priority* and *SKIP* rather than being dressed
+up as opportunities.
+
+**Bands are still never filled to keep the count up.** Nothing is promoted to
+reach a number; the threshold only decides how far down the plausible postings
+the list runs. If few good jobs exist today, the board shows few good jobs. The
+standard it is aiming at is:
 
 > *"I can understand why Emily might realistically apply for each of these
 > jobs"* — not *"I can find several sentences in each description that resemble
@@ -525,8 +533,9 @@ automation requirements, or a score read off a two-line snippet.
 
 **Quality over quantity is the point.** v4 publishes far fewer postings than v1
 — fewer even than v3, since it also suppresses whole occupations.
-`search.minMatchScore` (70 in `config/profile.v4.json`, 65 in the v3 overlay) is
-the single knob for the threshold. Six jobs worth applying to beat a hundred
+`search.minMatchScore` (65 in both `config/profile.v4.json` and the v3 overlay)
+is the single knob for the threshold — raise it for a shorter, surer list, lower
+it to see further down. Six jobs worth applying to beat a hundred
 vaguely related ones — and v1 is still one click away in the header when you
 want the wide view.
 
