@@ -12,7 +12,7 @@ import assert from 'node:assert/strict';
 import { readFile } from 'node:fs/promises';
 
 import { matchTerms, relevanceOf, recencyOf, seniorityOf, evaluate } from '../scripts/lib/match.mjs';
-import { buildBoard, countTerms } from '../scripts/fetch-jobs.mjs';
+import { buildBoard, countTerms, countMatchedIn } from '../scripts/fetch-jobs.mjs';
 import { normalizeJob, dedupeJobs, dedupeKey, isSameOrganisation, hostOf } from '../scripts/lib/normalize.mjs';
 import { evaluateLocation, detectWorkType } from '../scripts/lib/location.mjs';
 import { normalizeForMatch, containsPhrase, stripHtml, toIsoDate, excerpt } from '../scripts/lib/text.mjs';
@@ -141,9 +141,76 @@ test('recency decays and unknown dates are assumed, never dropped', () => {
   assert.equal(unknown.ageDays, profile.ranking.assumedAgeDaysWhenUnknown);
 });
 
-test('evaluate returns null only when the title matches nothing', () => {
-  assert.equal(evaluate(job({ title: 'Warehouse Associate' }), profile, NOW), null);
+test('evaluate returns null only when no term appears anywhere it may', () => {
+  const nothing = job({ title: 'Warehouse Associate', description: 'Lift boxes.', tags: [] });
+  assert.equal(evaluate(nothing, profile, NOW), null);
   assert.ok(evaluate(job({ title: 'Proofreader' }), profile, NOW));
+});
+
+/* ---------------------------------------------------------------
+   Where a term was found, and what that is worth
+
+   Most sources are searched by keyword and return whatever matched their full
+   text, so a title-only rule threw away almost everything the search had just
+   found — 17 of 1,026 postings on a real run. Reading the tags and the body
+   fixes that, and the number says which it was.
+   --------------------------------------------------------------- */
+
+test('a title match outranks a tag match, which outranks a description match', () => {
+  const inTitle = evaluate(job({ title: 'Content Quality Specialist', tags: [], description: 'x' }), profile, NOW);
+  const inTags = evaluate(job({ title: 'Marketing Associate', tags: ['content quality specialist'], description: 'x' }), profile, NOW);
+  const inBody = evaluate(job({ title: 'Marketing Associate', tags: [], description: 'You will act as a content quality specialist.' }), profile, NOW);
+
+  assert.equal(inTitle.matchedIn, 'title');
+  assert.equal(inTags.matchedIn, 'tags');
+  assert.equal(inBody.matchedIn, 'description');
+  assert.ok(inTitle.relevance > inTags.relevance);
+  assert.ok(inTags.relevance > inBody.relevance);
+});
+
+test('a one-word term is decisive in a title and ignored in a paragraph', () => {
+  // Any posting on earth can mention an editor; "Editor" as a title is the job.
+  const body = job({
+    title: 'Chief Financial Officer',
+    tags: [],
+    description: 'Works with our editor and reviews proofreading from time to time.',
+  });
+  assert.equal(evaluate(body, profile, NOW), null, 'a one-word term matched in the body');
+
+  const title = job({ title: 'Editor', tags: [], description: 'x' });
+  assert.equal(evaluate(title, profile, NOW).matchedIn, 'title');
+});
+
+test('a one-word term is allowed in the tags, which are labels rather than prose', () => {
+  const tagged = job({ title: 'Marketing Associate', tags: ['proofreader'], description: 'x' });
+  assert.equal(evaluate(tagged, profile, NOW).matchedIn, 'tags');
+});
+
+test('a multi-word term may match in the body — nothing says it by accident', () => {
+  const posting = job({
+    title: 'Marketing Associate',
+    tags: [],
+    description: 'The role is effectively an editorial operations specialist embedded in the brand team.',
+  });
+  const result = evaluate(posting, profile, NOW);
+  assert.equal(result.matchedIn, 'description');
+  assert.equal(result.matchedTerm, 'editorial operations specialist');
+});
+
+test('only the top of the description is read, not the benefits boilerplate', () => {
+  const posting = job({
+    title: 'Warehouse Associate',
+    tags: [],
+    description: `${'Lorem ipsum filler. '.repeat(160)} We also employ a content quality specialist.`,
+  });
+  assert.equal(evaluate(posting, profile, NOW), null, 'matched a term past the point anyone reads');
+});
+
+test('the mix of where things matched is reported', () => {
+  const counts = countMatchedIn([
+    { matchedIn: 'title' }, { matchedIn: 'title' }, { matchedIn: 'description' },
+  ]);
+  assert.deepEqual(counts, { title: 2, tags: 0, description: 1 });
 });
 
 /* ---------------------------------------------------------------
@@ -175,8 +242,9 @@ test('nothing is dropped for being off-profile, low-scoring or the wrong occupat
   assert.deepEqual(Object.keys(built.dropped).sort(), ['location', 'noTermMatch', 'stale']);
 });
 
-test('a posting with no search term in the title is the only relevance rejection', () => {
-  const built = buildBoard([job({ title: 'Registered Nurse', url: 'https://e.com/n' })], profile, NOW);
+test('a posting with no search term anywhere is the only relevance rejection', () => {
+  const nurse = job({ title: 'Registered Nurse', url: 'https://e.com/n', tags: [], description: 'Provide patient care on a remote telehealth line.' });
+  const built = buildBoard([nurse], profile, NOW);
   assert.equal(built.jobs.length, 0);
   assert.equal(built.dropped.noTermMatch, 1);
 });

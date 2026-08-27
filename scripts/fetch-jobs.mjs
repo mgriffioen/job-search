@@ -152,6 +152,9 @@ async function main() {
     // How many published postings each term brought in. This is the honest
     // measure of whether a term is earning its place in the list.
     terms: built.termCounts,
+    // Where the term was found, across the published set. A board that is
+    // mostly description matches is a board whose title vocabulary is too thin.
+    matchedIn: countMatchedIn(built.jobs),
     freshLast48h: built.jobs.filter((j) => j.ageDays !== null && !j.ageAssumed && j.ageDays <= 2).length,
     contract: built.jobs.filter((j) => j.employmentTypes.includes('contract')).length,
     sources: sourceReports,
@@ -165,7 +168,8 @@ async function main() {
     `\nPublished ${built.jobs.length} jobs\n` +
       `  dropped: ${built.dropped.location} not remote / out of area, ` +
       `${built.dropped.stale} older than ${profile.search.maxAgeDays} days, ` +
-      `${built.dropped.noTermMatch} no search term in the title\n` +
+      `${built.dropped.noTermMatch} no search term anywhere\n` +
+      `  matched in: ${Object.entries(countMatchedIn(built.jobs)).map(([k, n]) => `${n} ${k}`).join(', ')}\n` +
       `  top terms: ${Object.entries(built.termCounts).slice(0, 8).map(([t, n]) => `${t} (${n})`).join(', ')}`
   );
 
@@ -209,6 +213,7 @@ export function buildBoard(deduped, profile, now = new Date()) {
       locationScope: location.scope,
       locationReason: location.reason,
       relevance: result.relevance,
+      matchedIn: result.matchedIn,
       matchedTerm: result.matchedTerm,
       matchedTerms: result.matchedTerms,
       seniority: result.seniority,
@@ -222,6 +227,13 @@ export function buildBoard(deduped, profile, now = new Date()) {
   kept.sort((a, b) => b.rank - a.rank);
   const jobs = kept.slice(0, profile.search.maxJobsStored);
   return { jobs, dropped, termCounts: countTerms(jobs) };
+}
+
+/** How many published postings matched in the title, the tags, the body. */
+export function countMatchedIn(jobs) {
+  const counts = { title: 0, tags: 0, description: 0 };
+  for (const job of jobs) counts[job.matchedIn] = (counts[job.matchedIn] || 0) + 1;
+  return counts;
 }
 
 /** Published postings per matched term, most productive first. */

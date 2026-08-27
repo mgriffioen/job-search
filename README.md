@@ -12,33 +12,49 @@ background, based in Kalamazoo, Michigan.
 
 One rule:
 
-> **A posting is published if its title contains one of the search terms in
-> [`config/profile.json`](config/profile.json).**
+> **A posting is published if one of the search terms in
+> [`config/profile.json`](config/profile.json) appears in it.**
 
 That is the whole matching model. Twice a day a GitHub Action asks every free
 job API it can reach for those terms, drops anything that isn't remote or isn't
 open to a Michigan resident, drops anything older than 60 days, keeps everything
-whose title matches, and commits the result. The site is a static page — no
+a term appears in, and commits the result. The site is a static page — no
 server, no database, no accounts, nothing to pay for.
 
 There is no minimum score, no penalty list, no exclusion phrases and no
-occupational gate. If the title matches, it is on the page.
+occupational gate.
 
 ### The number on a card
 
-It is **not** a verdict on the job. It says how much of the title the matched
-term accounted for — the only thing a title match can honestly tell you:
+It is **not** a verdict on the job. It says **where** the term was found, which
+is the only thing a keyword match can honestly tell you:
 
-| Title | Matched | Number |
+| Where | Number | Means |
 | --- | --- | --- |
-| Proofreader | `proofreader` | 100 |
-| Marketing Copy Editor | `marketing copy editor` | 100 |
-| Senior Copy Editor, Trust & Safety | `copy editor` | 64 |
-| Video Editor | `editor` | 70 |
+| In the **title** | 40–100 | the job *is* that role |
+| In the **tags** | 45 | the board filed it under that |
+| In the **description** | 30 | the work is mentioned |
 
-A long title is not a worse job; it is a less certain match, and it sorts lower
-for that reason alone. **Best overall** blends that number with how recently the
-posting went up.
+A title match is scored by how much of the title the term accounted for —
+`Proofreader` is 100, `Senior Copy Editor, Trust & Safety` is 64. A long title
+is not a worse job; it is a less certain match, and it sorts lower for that
+reason alone. **Best overall** blends that number with how recently the posting
+went up, so every title match sits above every description match.
+
+**One-word terms only count in the title or the tags.** `proofreader` as a title
+is the job; any posting on earth can mention an editor in passing. Multi-word
+terms like `content quality specialist` may match anywhere — nothing says that
+phrase by accident. Only the first 1,800 characters of a description are read,
+which is the part that says what the job is rather than what the company
+believes in.
+
+This matters because most sources are searched *by keyword* and return whatever
+matched their full text. A title-only rule threw away almost everything the
+search had just found — 17 postings out of 1,026 on a real run, most of them
+"Video Editor" caught by the generic term `editor`. If the description matches
+start to feel like noise, the **Title matches** tile at the top of the page (and
+the matching checkbox in Filters) collapses the list back to title matches
+only.
 
 ### Teaching it what you actually want
 
@@ -237,7 +253,10 @@ Michigan employers (Stryker, Kellanova, Perrigo, Whirlpool, WMU).
 
 - Everything on the page is remote and open to a Michigan resident — that gate
   runs before matching, so nothing needs a location sanity-check.
-- **Matched search term** on each card says which of your terms put it there.
+- **Matched search term** on each card says which of your terms put it there,
+  and whether it was found in the title, the tags or the description.
+- **Title matches** at the top, or the checkbox in Filters, collapses the list
+  to postings that are actually *titled* one of your roles.
 - **★ Save**, **✓ Applied** and **Dismiss** track progress. **Dismiss** removes
   one listing and teaches nothing; 🚫 removes it *and* teaches.
 - A notes field opens on every card — contact names, follow-up dates.

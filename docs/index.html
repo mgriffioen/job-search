@@ -8,7 +8,7 @@
 <meta name="theme-color" content="#0f172a">
 <title>Emily's Job Board</title>
 <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🔎</text></svg>">
-<link rel="stylesheet" href="styles.css?v=adf7324713">
+<link rel="stylesheet" href="styles.css?v=bc157ac204">
 </head>
 <body>
 
@@ -30,6 +30,10 @@
     <button type="button" class="stat" data-view="all">
       <span class="stat__num" id="stat-all">0</span>
       <span class="stat__label">Matches</span>
+    </button>
+    <button type="button" class="stat" data-title-filter="1">
+      <span class="stat__num" id="stat-titles">0</span>
+      <span class="stat__label">Title matches</span>
     </button>
     <button type="button" class="stat" data-age-filter="2">
       <span class="stat__num" id="stat-fresh">0</span>
@@ -112,6 +116,7 @@
             Posted within: <output id="max-age-out">any time</output>
             <input type="range" id="max-age" min="1" max="61" step="1" value="61">
           </label>
+          <label><input type="checkbox" id="only-titles"> Only postings whose <em>title</em> matches a search term</label>
           <label><input type="checkbox" id="only-contract"> Only contract or freelance</label>
           <label><input type="checkbox" id="hide-hidden" checked> Hide dismissed jobs</label>
           <label><input type="checkbox" id="hide-applied"> Hide jobs already applied to</label>
@@ -220,6 +225,6 @@
   </article>
 </template>
 
-<script src="app.js?v=52bdf649ef" type="module"></script>
+<script src="app.js?v=d5d082683c" type="module"></script>
 </body>
 </html>

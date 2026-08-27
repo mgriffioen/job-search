@@ -1,29 +1,50 @@
 /**
  * The whole matching model.
  *
- * One rule: a posting is a match if its TITLE contains one of the search terms.
- * That is it. There are no weighted axes, no penalty lists, no exclusion
- * phrases, no occupational gate and no minimum score — the previous version had
- * all of those stacked in front of each other and published one job out of
- * twelve hundred.
+ * One rule: a posting matches if one of the search terms appears in it. Where
+ * the term appears decides the number on the card, because that is the only
+ * thing a keyword match can honestly tell you:
  *
- * The number on the card is not a verdict on the job. It says how much of the
- * title the matched term accounts for, which is the only thing a title match
- * can honestly tell you:
+ *   in the TITLE       the job IS that role         → 40–100, by title coverage
+ *   in the TAGS        the board filed it as that   → 45
+ *   in the DESCRIPTION the work is mentioned        → 30
  *
- *   "Proofreader"                      → "proofreader"  is the whole title → 100
- *   "Marketing Copy Editor"            → "copy editor"  is 2 of 3 words    → 83
- *   "Senior Copy Editor, Trust & Safety" → "copy editor" is 2 of 6 words   → 67
+ * There are no weighted axes, no penalty lists, no exclusion phrases, no
+ * occupational gate and no minimum score. The previous version had all of those
+ * stacked in front of each other and published one job out of twelve hundred.
  *
- * A long title is not a worse job; it is a less certain match, and it sorts
- * lower for that reason alone. Everything that matches is published. Deciding
- * which of them are actually wanted is the ratings model's job, in the browser,
- * over time.
+ * WHY THE BODY COUNTS, AND WHY ONLY PARTLY
+ *
+ * Most sources are searched by keyword and return whatever matched their full
+ * text, so a title-only rule throws away almost everything the search just
+ * found — on a real run it kept 17 of 1,026 postings, most of them "Video
+ * Editor" caught by the generic term `editor`. Reading the body fixes that.
+ *
+ * But only MULTI-WORD terms may match in the body. A one-word term is decisive
+ * in a title and meaningless in the middle of a paragraph: "proofreader" as a
+ * title is the job, whereas any posting on earth can mention an editor. So
+ * `editor`, `proofreader` and `copywriter` must be in the title or the tags,
+ * while `content quality specialist` may be anywhere — nothing says that phrase
+ * by accident.
+ *
+ * The number is not a verdict on the job. Deciding which of these are actually
+ * wanted is the ratings model's job, in the browser, over time.
  */
 
 import { normalizeForMatch, containsPhrase, daysBetween } from './text.mjs';
 
 const clamp = (n, lo, hi) => Math.min(hi, Math.max(lo, n));
+
+/** What a match is worth when it is not in the title. */
+const TAG_RELEVANCE = 45;
+const BODY_RELEVANCE = 30;
+
+/**
+ * How much of the description is read. A posting says what the job is at the
+ * top and what the company believes in at the bottom; the boilerplate about
+ * benefits and equal opportunity is not evidence of anything.
+ */
+const BODY_CHARS = 1800;
 
 /** Words in a term or title, after normalisation. Used for the coverage ratio. */
 function wordCount(normalized) {
@@ -32,21 +53,22 @@ function wordCount(normalized) {
 }
 
 /**
- * Every search term found in the title, longest first.
+ * Every search term found in one piece of text, longest first.
  *
  * Longest wins because it is the most specific thing true about the posting:
  * "Marketing Copy Editor" matches both "editor" and "copy editor", and the
- * second is what the job is. The rest are kept so the card can show that the
- * title is a match on several counts, and so a rating learns the specific term
- * rather than the generic one.
+ * second is what the job is. The rest are kept so a rating learns the specific
+ * term as well as the generic one.
  */
-export function matchTerms(title, searchTerms) {
-  const normTitle = normalizeForMatch(title || '');
+export function matchTerms(text, searchTerms, { minWords = 1 } = {}) {
+  const norm = normalizeForMatch(text || '');
   const hits = [];
 
   for (const term of searchTerms) {
-    if (!containsPhrase(normTitle, term)) continue;
-    hits.push({ term, words: wordCount(normalizeForMatch(term)) });
+    const words = wordCount(normalizeForMatch(term));
+    if (words < minWords) continue;
+    if (!containsPhrase(norm, term)) continue;
+    hits.push({ term, words });
   }
 
   // Longest phrase first; ties broken by the order in the config, which puts
@@ -58,8 +80,8 @@ export function matchTerms(title, searchTerms) {
 /**
  * How much of the title the matched term accounts for, as 0–100.
  *
- * Floored at 40 so a genuine match on a very long title is never confused with
- * a near miss — there is no such thing as a near miss here, only matches.
+ * Floored at 40 so a genuine title match on a very long title still outranks
+ * anything found only in the tags or the body.
  */
 export function relevanceOf(title, hit) {
   if (!hit) return 0;
@@ -95,15 +117,35 @@ export function seniorityOf(title) {
 }
 
 /**
- * Scores one posting. Returns null when the title matches nothing, which is the
- * only way a posting is ever rejected on relevance.
+ * Scores one posting. Returns null when no search term appears anywhere it is
+ * allowed to, which is the only way a posting is ever rejected on relevance.
  */
 export function evaluate(job, profile, now = new Date()) {
-  const hits = matchTerms(job.title, profile.searchTerms);
+  const terms = profile.searchTerms;
+
+  let hits = matchTerms(job.title, terms);
+  let matchedIn = 'title';
+  let relevance = 0;
+
+  if (hits.length) {
+    relevance = relevanceOf(job.title, hits[0]);
+  } else {
+    // The board's own categories for the posting. A one-word term is fine here:
+    // a tag is a deliberate label, not prose.
+    hits = matchTerms((job.tags || []).join(' , '), terms);
+    matchedIn = 'tags';
+    relevance = TAG_RELEVANCE;
+
+    if (!hits.length) {
+      // Multi-word terms only — see the note at the top of this file.
+      hits = matchTerms((job.description || job.excerpt || '').slice(0, BODY_CHARS), terms, { minWords: 2 });
+      matchedIn = 'description';
+      relevance = BODY_RELEVANCE;
+    }
+  }
+
   if (!hits.length) return null;
 
-  const best = hits[0];
-  const relevance = relevanceOf(job.title, best);
   const recency = recencyOf(job.postedAt, profile.ranking, now);
 
   const { relevanceWeight, recencyWeight } = profile.ranking;
@@ -111,9 +153,12 @@ export function evaluate(job, profile, now = new Date()) {
 
   return {
     relevance,
-    // The term that decided it, plus any others the title also matched. The
-    // card shows the first and the ratings model learns from it.
-    matchedTerm: best.term,
+    // Where the term was found, so the card can say so rather than implying the
+    // posting is titled something it is not.
+    matchedIn,
+    // The term that decided it, plus any others the same text matched. The card
+    // shows the first and the ratings model learns from all of them.
+    matchedTerm: hits[0].term,
     matchedTerms: hits.slice(0, 4).map((h) => h.term),
     recency: recency.score,
     ageDays: recency.ageDays,

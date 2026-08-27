@@ -160,6 +160,7 @@ function readFilters() {
     sources: $$('#source-filters input:checked').map((i) => i.value),
     // The top of the slider means "any time" rather than 61 days.
     maxAge: maxAgeRaw >= 61 ? Infinity : maxAgeRaw,
+    onlyTitles: $('#only-titles').checked,
     onlyContract: $('#only-contract').checked,
     hideHidden: $('#hide-hidden').checked,
     hideApplied: $('#hide-applied').checked,
@@ -192,6 +193,7 @@ function applyFilters(jobs, f) {
     }
 
     if (!job.employmentTypes.some((t) => f.employment.includes(t))) return false;
+    if (f.onlyTitles && job.matchedIn !== 'title') return false;
     if (f.onlyContract && !job.employmentTypes.includes('contract')) return false;
     if (termFilterActive && !f.terms.includes(job.matchedTerm)) return false;
     if (sourceFilterActive && !job.sources.some((s) => f.sources.includes(s))) return false;
@@ -275,11 +277,16 @@ function renderCard(job) {
   if (job.seniority && job.seniority !== 'mid') chips.append(makeChip(job.seniority));
   for (const source of job.sources) chips.append(makeChip(source, 'source'));
 
+  // Say where the term was found as well as what it was: a posting whose
+  // description mentions proofreading is not a posting titled Proofreader, and
+  // a card that blurred the two would be lying about the match.
+  const WHERE = { title: 'in the title', tags: 'in the board’s tags', description: 'in the description' };
   const matched = $('[data-matched]', node);
-  matched.textContent =
-    job.matchedTerms && job.matchedTerms.length > 1
-      ? `Matched your search terms: ${job.matchedTerms.map((t) => `“${t}”`).join(', ')}`
-      : `Matched your search term “${job.matchedTerm}”`;
+  const terms = job.matchedTerms && job.matchedTerms.length > 1
+    ? `${job.matchedTerms.map((t) => `“${t}”`).join(', ')}`
+    : `“${job.matchedTerm}”`;
+  matched.textContent = `Matched ${terms} ${WHERE[job.matchedIn] || ''}`.trim();
+  matched.dataset.where = job.matchedIn;
 
   $('[data-excerpt]', node).textContent = job.excerpt || '';
   $('[data-apply]', node).href = job.applyUrl || job.url;
@@ -349,6 +356,7 @@ function updateFilterBadge(f) {
   if (f.terms.length && f.terms.length < termsInResults().length) active += 1;
   if (f.sources.length && f.sources.length < sourcesInResults().length) active += 1;
   if (f.maxAge !== Infinity) active += 1;
+  if (f.onlyTitles) active += 1;
   if (f.onlyContract) active += 1;
   if (!f.hideHidden) active += 1;
   if (f.hideApplied) active += 1;
@@ -363,6 +371,7 @@ function updateStats() {
   $('#stat-all').textContent = visible.length;
   $('#stat-fresh').textContent = visible.filter((j) => j.ageDays !== null && !j.ageAssumed && j.ageDays <= 2).length;
   $('#stat-contract').textContent = visible.filter((j) => j.employmentTypes.includes('contract')).length;
+  $('#stat-titles').textContent = visible.filter((j) => j.matchedIn === 'title').length;
   $('#stat-rated').textContent = Object.keys(state.ratings.ratings).length;
   $('#stat-saved').textContent = Object.keys(state.store.saved).length;
   $('#stat-applied').textContent = Object.keys(state.store.applied).length;
@@ -776,6 +785,7 @@ function wireEvents() {
     for (const input of $$('input[name="employment"]')) input.checked = true;
     for (const input of $$('#term-filters input, #source-filters input')) input.checked = true;
     $('#max-age').value = 61;
+    $('#only-titles').checked = false;
     $('#only-contract').checked = false;
     $('#hide-hidden').checked = true;
     $('#hide-applied').checked = false;
@@ -810,6 +820,10 @@ function wireEvents() {
     }
     if (stat.dataset.contractFilter) {
       $('#only-contract').checked = true;
+      setView('all');
+    }
+    if (stat.dataset.titleFilter) {
+      $('#only-titles').checked = true;
       setView('all');
     }
     persistFilters();
@@ -848,6 +862,7 @@ function persistFilters() {
   prefs.filters = {
     employment: $$('input[name="employment"]:checked').map((i) => i.value),
     maxAge: $('#max-age').value,
+    onlyTitles: $('#only-titles').checked,
     onlyContract: $('#only-contract').checked,
     hideHidden: $('#hide-hidden').checked,
     hideApplied: $('#hide-applied').checked,
@@ -866,6 +881,7 @@ function restorePrefs() {
     for (const input of $$('input[name="employment"]')) input.checked = f.employment.includes(input.value);
   }
   if (f.maxAge) $('#max-age').value = f.maxAge;
+  if (typeof f.onlyTitles === 'boolean') $('#only-titles').checked = f.onlyTitles;
   if (typeof f.onlyContract === 'boolean') $('#only-contract').checked = f.onlyContract;
   if (typeof f.hideHidden === 'boolean') $('#hide-hidden').checked = f.hideHidden;
   if (typeof f.hideApplied === 'boolean') $('#hide-applied').checked = f.hideApplied;
