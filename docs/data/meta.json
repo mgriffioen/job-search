@@ -1,6 +1,6 @@
 {
-  "generatedAt": "2026-08-27T13:28:36.546Z",
-  "durationMs": 25978,
+  "generatedAt": "2026-08-27T13:33:19.824Z",
+  "durationMs": 21869,
   "candidate": {
     "name": "Emily Griffioen",
     "headline": "Content & editorial QA — 10 years reviewing customer-facing marketing content",
@@ -135,28 +135,35 @@
     "maxAgeDays": 60
   },
   "counts": {
-    "fetched": 1528,
-    "unique": 1026,
-    "published": 17,
+    "fetched": 1578,
+    "unique": 1046,
+    "published": 22,
     "dropped": {
-      "location": 342,
-      "stale": 1,
-      "noTermMatch": 666
+      "location": 343,
+      "stale": 2,
+      "noTermMatch": 679
     }
   },
   "terms": {
-    "editor": 6,
-    "content reviewer": 3,
+    "editor": 7,
+    "content reviewer": 4,
+    "content quality": 2,
     "copywriter": 2,
     "quality assurance coordinator": 1,
     "product content specialist": 1,
     "quality coordinator": 1,
     "content writer": 1,
     "content designer": 1,
-    "copy editor": 1
+    "copy editor": 1,
+    "campaign qa": 1
   },
-  "freshLast48h": 5,
-  "contract": 5,
+  "matchedIn": {
+    "title": 17,
+    "tags": 4,
+    "description": 1
+  },
+  "freshLast48h": 9,
+  "contract": 9,
   "sources": [
     {
       "id": "companyboards",
@@ -210,7 +217,7 @@
         "us-remote \"production editor\": 0 results (Adzuna reports 0 total matches)",
         "us-remote \"digital editor\": 0 results (Adzuna reports 0 total matches)"
       ],
-      "ms": 7493
+      "ms": 4882
     },
     {
       "id": "jooble",
@@ -218,7 +225,7 @@
       "status": "ok",
       "fetched": 80,
       "warnings": [],
-      "ms": 4866
+      "ms": 1077
     },
     {
       "id": "remotive",
@@ -226,7 +233,7 @@
       "status": "ok",
       "fetched": 288,
       "warnings": [],
-      "ms": 554
+      "ms": 757
     },
     {
       "id": "weworkremotely",
@@ -236,7 +243,7 @@
       "warnings": [
         "remote-marketing-jobs.rss: HTTP 301 Moved Permanently"
       ],
-      "ms": 1025
+      "ms": 1927
     },
     {
       "id": "himalayas",
@@ -244,17 +251,15 @@
       "status": "ok",
       "fetched": 240,
       "warnings": [],
-      "ms": 421
+      "ms": 646
     },
     {
       "id": "jobicy",
       "label": "Jobicy",
       "status": "ok",
-      "fetched": 247,
-      "warnings": [
-        "?count=50&geo=usa&tag=product%20content: HTTP 429 Too Many Requests"
-      ],
-      "ms": 10248
+      "fetched": 297,
+      "warnings": [],
+      "ms": 10327
     },
     {
       "id": "remoteok",
@@ -262,7 +267,7 @@
       "status": "ok",
       "fetched": 99,
       "warnings": [],
-      "ms": 502
+      "ms": 675
     },
     {
       "id": "workingnomads",
@@ -270,7 +275,7 @@
       "status": "ok",
       "fetched": 40,
       "warnings": [],
-      "ms": 533
+      "ms": 674
     },
     {
       "id": "arbeitnow",
@@ -278,7 +283,7 @@
       "status": "ok",
       "fetched": 175,
       "warnings": [],
-      "ms": 206
+      "ms": 376
     }
   ]
 }
