@@ -189,8 +189,9 @@
 
   "search": {
     "_comment": "Nothing here filters on quality — only on reach and freshness.",
-    "termsPerRun": 16,
-    "broadTermsPerRun": 12,
+    "_perRunComment": "How much of the vocabulary each run actually asks the boards about. These were set when the list was 77 terms and a run took seconds; at 16 terms per run a 129-term list took four and a half days to cycle, so on any given day the board had asked about an eighth of what it knows. Each term is one HTTP request to an unmetered source, and a run finishes in about two minutes against a twenty-minute timeout, so the ceiling here is patience rather than quota.",
+    "termsPerRun": 48,
+    "broadTermsPerRun": 20,
     "jsearchTermsPerRun": 3,
     "maxAgeDays": 60,
     "maxJobsStored": 1000,
