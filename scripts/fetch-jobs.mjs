@@ -155,6 +155,10 @@ async function main() {
     // Where the term was found, across the published set. A board that is
     // mostly description matches is a board whose title vocabulary is too thin.
     matchedIn: countMatchedIn(built.jobs),
+    // A sample of what she could take but no term reached. Read this before
+    // widening the rule — it says whether the term list or the feed is the
+    // limit.
+    unmatched: built.unmatched,
     freshLast48h: built.jobs.filter((j) => j.ageDays !== null && !j.ageAssumed && j.ageDays <= 2).length,
     contract: built.jobs.filter((j) => j.employmentTypes.includes('contract')).length,
     sources: sourceReports,
@@ -186,6 +190,13 @@ export function buildBoard(deduped, profile, now = new Date()) {
   const maxAgeDays = profile.search.maxAgeDays;
   const dropped = { location: 0, stale: 0, noTermMatch: 0 };
   const kept = [];
+  /**
+   * Postings she could take that no search term reached. This is the list that
+   * answers "is the vocabulary too narrow, or does this work simply not get
+   * posted to these boards?" — and it is the only honest place to look before
+   * loosening the matching rule again.
+   */
+  const unmatched = [];
 
   for (const job of deduped) {
     const location = evaluateLocation(job, profile);
@@ -197,6 +208,9 @@ export function buildBoard(deduped, profile, now = new Date()) {
     const result = evaluate(job, profile, now);
     if (!result) {
       dropped.noTermMatch += 1;
+      if (unmatched.length < UNMATCHED_SAMPLE) {
+        unmatched.push({ title: job.title, company: job.company, source: job.sourceLabel });
+      }
       continue;
     }
 
@@ -226,8 +240,11 @@ export function buildBoard(deduped, profile, now = new Date()) {
 
   kept.sort((a, b) => b.rank - a.rank);
   const jobs = kept.slice(0, profile.search.maxJobsStored);
-  return { jobs, dropped, termCounts: countTerms(jobs) };
+  return { jobs, dropped, termCounts: countTerms(jobs), unmatched };
 }
+
+/** How many rejected titles to keep for the diagnostic above. */
+const UNMATCHED_SAMPLE = 60;
 
 /** How many published postings matched in the title, the tags, the body. */
 export function countMatchedIn(jobs) {

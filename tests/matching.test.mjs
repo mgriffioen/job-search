@@ -437,3 +437,11 @@ test('the asset stamps in docs/ are up to date', async () => {
   const stale = await outdatedStamps();
   assert.deepEqual(stale, [], `run \`npm run stamp\` and commit the result`);
 });
+
+test('the board records what it threw away, so the term list can be checked', () => {
+  const nurse = job({ title: 'Registered Nurse', url: 'https://e.com/n', tags: [], description: 'Patient care.' });
+  const built = buildBoard([nurse], profile, NOW);
+  assert.equal(built.unmatched.length, 1);
+  assert.equal(built.unmatched[0].title, 'Registered Nurse');
+  assert.ok(built.unmatched[0].company);
+});
