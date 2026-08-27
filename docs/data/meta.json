@@ -1,6 +1,6 @@
 {
-  "generatedAt": "2026-08-27T13:35:41.941Z",
-  "durationMs": 20268,
+  "generatedAt": "2026-08-27T13:38:32.134Z",
+  "durationMs": 17330,
   "candidate": {
     "name": "Emily Griffioen",
     "headline": "Content & editorial QA — 10 years reviewing customer-facing marketing content",
@@ -114,6 +114,19 @@
     "contract copy editor",
     "contract editor",
     "contract content specialist",
+    "content operations",
+    "editorial operations",
+    "editorial manager",
+    "content operations manager",
+    "curriculum writer",
+    "curriculum developer",
+    "curriculum specialist",
+    "content developer",
+    "freelance writer",
+    "staff writer",
+    "technical writer",
+    "documentation writer",
+    "proposal writer",
     "content moderator",
     "fact checker",
     "technical editor",
@@ -135,39 +148,42 @@
     "maxAgeDays": 60
   },
   "counts": {
-    "fetched": 1578,
-    "unique": 1046,
-    "published": 22,
+    "fetched": 1528,
+    "unique": 1026,
+    "published": 34,
     "dropped": {
-      "location": 343,
+      "location": 342,
       "stale": 2,
-      "noTermMatch": 679
+      "noTermMatch": 648
     }
   },
   "terms": {
     "editor": 7,
     "content reviewer": 4,
+    "curriculum writer": 3,
     "content quality": 2,
     "copywriter": 2,
+    "technical writer": 2,
+    "content operations": 2,
     "quality assurance coordinator": 1,
     "product content specialist": 1,
+    "digital content specialist": 1,
+    "proposal writer": 1,
     "quality coordinator": 1,
+    "freelance writer": 1,
     "content writer": 1,
+    "content developer": 1,
     "content designer": 1,
     "copy editor": 1,
+    "content producer": 1,
     "campaign qa": 1
   },
   "matchedIn": {
-    "title": 17,
+    "title": 28,
     "tags": 4,
-    "description": 1
+    "description": 2
   },
   "unmatched": [
-    {
-      "title": "Sr. Solutions Lead/Solutions Lead, Content Operations",
-      "company": "Norstella",
-      "source": "Adzuna"
-    },
     {
       "title": "Associate Attorney - Remote",
       "company": "YO AI Labs",
@@ -229,21 +245,6 @@
       "source": "Adzuna"
     },
     {
-      "title": "Web Content Platform Developer",
-      "company": "Bright Vision Technologies",
-      "source": "Adzuna"
-    },
-    {
-      "title": "Digital Content Project Specialist",
-      "company": "Alpha Business Solutions LLC",
-      "source": "Adzuna"
-    },
-    {
-      "title": "Director , Media and Content Marketing Operations (Remote)",
-      "company": "The E.W. Scripps Company",
-      "source": "Adzuna"
-    },
-    {
       "title": "Sr. Manager, Product Management - Air Travel Commerce Content, Remote",
       "company": "BCD Travel",
       "source": "Adzuna"
@@ -284,22 +285,7 @@
       "source": "Jooble"
     },
     {
-      "title": "Remote High School STEM Curriculum Writer (12-Month Project)",
-      "company": "ZETA schools",
-      "source": "Jooble"
-    },
-    {
-      "title": "K-5 ELA Curriculum Writer",
-      "company": "MGt",
-      "source": "Jooble"
-    },
-    {
       "title": "Writer (mindset curriculum)",
-      "company": "STNDRD",
-      "source": "Jooble"
-    },
-    {
-      "title": "Mindset Curriculum Writer - Remote, Part-Time",
       "company": "STNDRD",
       "source": "Jooble"
     },
@@ -351,11 +337,6 @@
     {
       "title": "Tier III Service Desk Engineer",
       "company": "Unio Digital",
-      "source": "Remotive"
-    },
-    {
-      "title": "Freelance Writer",
-      "company": "IAPWE",
       "source": "Remotive"
     },
     {
@@ -462,10 +443,50 @@
       "title": "Creative Strategist",
       "company": "Eyr Holistic",
       "source": "We Work Remotely"
+    },
+    {
+      "title": "Senior Manager, Global Equity",
+      "company": "Faire",
+      "source": "We Work Remotely"
+    },
+    {
+      "title": "Application Security Engineer II",
+      "company": "Abnormal",
+      "source": "We Work Remotely"
+    },
+    {
+      "title": "Critical Situation Manager",
+      "company": "Abnormal",
+      "source": "We Work Remotely"
+    },
+    {
+      "title": "Associate Observability Architect | PST | Remote",
+      "company": "Grafana Labs",
+      "source": "We Work Remotely"
+    },
+    {
+      "title": "Director, GTM Finance",
+      "company": "Customer.io",
+      "source": "We Work Remotely"
+    },
+    {
+      "title": "AI Transformation Owner, Product & Design",
+      "company": "GitLab",
+      "source": "We Work Remotely"
+    },
+    {
+      "title": "Contract Legal Assistant",
+      "company": "Customer.io",
+      "source": "We Work Remotely"
+    },
+    {
+      "title": "Engineering Manager, Experimentation",
+      "company": "LaunchDarkly",
+      "source": "We Work Remotely"
     }
   ],
-  "freshLast48h": 9,
-  "contract": 9,
+  "freshLast48h": 11,
+  "contract": 11,
   "sources": [
     {
       "id": "companyboards",
@@ -493,7 +514,7 @@
         "reserve": 12,
         "reason": "not a scheduled run — holding the metered quota for the next one"
       },
-      "ms": 1
+      "ms": 0
     },
     {
       "id": "adzuna",
@@ -519,7 +540,7 @@
         "us-remote \"production editor\": 0 results (Adzuna reports 0 total matches)",
         "us-remote \"digital editor\": 0 results (Adzuna reports 0 total matches)"
       ],
-      "ms": 3485
+      "ms": 5615
     },
     {
       "id": "jooble",
@@ -527,7 +548,7 @@
       "status": "ok",
       "fetched": 80,
       "warnings": [],
-      "ms": 659
+      "ms": 2963
     },
     {
       "id": "remotive",
@@ -535,7 +556,7 @@
       "status": "ok",
       "fetched": 288,
       "warnings": [],
-      "ms": 431
+      "ms": 474
     },
     {
       "id": "weworkremotely",
@@ -545,7 +566,7 @@
       "warnings": [
         "remote-marketing-jobs.rss: HTTP 301 Moved Permanently"
       ],
-      "ms": 1482
+      "ms": 2510
     },
     {
       "id": "himalayas",
@@ -553,15 +574,17 @@
       "status": "ok",
       "fetched": 240,
       "warnings": [],
-      "ms": 384
+      "ms": 463
     },
     {
       "id": "jobicy",
       "label": "Jobicy",
       "status": "ok",
-      "fetched": 297,
-      "warnings": [],
-      "ms": 11783
+      "fetched": 247,
+      "warnings": [
+        "?count=50&geo=usa&tag=product%20content: HTTP 429 Too Many Requests"
+      ],
+      "ms": 3521
     },
     {
       "id": "remoteok",
@@ -569,7 +592,7 @@
       "status": "ok",
       "fetched": 99,
       "warnings": [],
-      "ms": 533
+      "ms": 527
     },
     {
       "id": "workingnomads",
@@ -577,7 +600,7 @@
       "status": "ok",
       "fetched": 40,
       "warnings": [],
-      "ms": 825
+      "ms": 407
     },
     {
       "id": "arbeitnow",
@@ -585,7 +608,7 @@
       "status": "ok",
       "fetched": 175,
       "warnings": [],
-      "ms": 131
+      "ms": 180
     }
   ]
 }
