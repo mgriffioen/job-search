@@ -1,6 +1,6 @@
 {
-  "generatedAt": "2026-08-26T21:57:59.056Z",
-  "durationMs": 0,
+  "generatedAt": "2026-08-27T13:28:36.546Z",
+  "durationMs": 25978,
   "candidate": {
     "name": "Emily Griffioen",
     "headline": "Content & editorial QA — 10 years reviewing customer-facing marketing content",
@@ -135,32 +135,28 @@
     "maxAgeDays": 60
   },
   "counts": {
-    "fetched": 1734,
-    "unique": 1221,
-    "published": 26,
+    "fetched": 1528,
+    "unique": 1026,
+    "published": 17,
     "dropped": {
-      "location": 0,
-      "stale": 0,
-      "noTermMatch": 181
+      "location": 342,
+      "stale": 1,
+      "noTermMatch": 666
     }
   },
   "terms": {
-    "content specialist": 7,
+    "editor": 6,
     "content reviewer": 3,
-    "email marketing specialist": 3,
-    "quality analyst": 2,
-    "quality assurance specialist": 2,
-    "quality assurance analyst": 2,
-    "product content specialist": 1,
-    "content marketing specialist": 1,
+    "copywriter": 2,
     "quality assurance coordinator": 1,
+    "product content specialist": 1,
+    "quality coordinator": 1,
+    "content writer": 1,
     "content designer": 1,
-    "editor": 1,
-    "copywriter": 1,
-    "qa reviewer": 1
+    "copy editor": 1
   },
-  "freshLast48h": 3,
-  "contract": 8,
+  "freshLast48h": 5,
+  "contract": 5,
   "sources": [
     {
       "id": "companyboards",
@@ -188,31 +184,33 @@
         "reserve": 12,
         "reason": "not a scheduled run — holding the metered quota for the next one"
       },
-      "ms": 0
+      "ms": 1
     },
     {
       "id": "adzuna",
       "label": "Adzuna",
       "status": "ok",
-      "fetched": 171,
+      "fetched": 114,
       "warnings": [
+        "michigan-remote \"copyediting\": 0 results (Adzuna reports 0 total matches)",
+        "michigan-remote \"content reviewer\": 0 results (Adzuna reports 0 total matches)",
+        "michigan-remote \"content auditor\": 0 results (Adzuna reports 0 total matches)",
+        "michigan-remote \"quality editor\": 0 results (Adzuna reports 0 total matches)",
+        "michigan-remote \"editorial specialist\": 0 results (Adzuna reports 0 total matches)",
+        "michigan-remote \"production editor\": 0 results (Adzuna reports 0 total matches)",
+        "michigan-remote \"digital editor\": 0 results (Adzuna reports 0 total matches)",
+        "michigan-remote \"web content\": 0 results (Adzuna reports 0 total matches)",
+        "michigan-remote \"digital content\": 0 results (Adzuna reports 0 total matches)",
+        "michigan-remote \"editorial operations\": 0 results (Adzuna reports 0 total matches)",
         "michigan-remote \"product content\": 0 results (Adzuna reports 0 total matches)",
-        "michigan-remote \"catalog quality\": 0 results (Adzuna reports 0 total matches)",
-        "michigan-remote \"catalog specialist\": 0 results (Adzuna reports 0 total matches)",
-        "michigan-remote \"product information\": 0 results (Adzuna reports 0 total matches)",
-        "michigan-remote \"content specialist\": 0 results (Adzuna reports 0 total matches)",
-        "michigan-remote \"email specialist\": 0 results (Adzuna reports 0 total matches)",
-        "michigan-remote \"campaign quality\": 0 results (Adzuna reports 0 total matches)",
-        "michigan-remote \"marketing qa\": 0 results (Adzuna reports 0 total matches)",
-        "michigan-remote \"content integrity\": 0 results (Adzuna reports 0 total matches)",
-        "michigan-remote \"content audit\": 0 results (Adzuna reports 0 total matches)",
-        "us-remote \"catalog quality\": 0 results (Adzuna reports 0 total matches)",
-        "us-remote \"catalog specialist\": 0 results (Adzuna reports 0 total matches)",
-        "us-remote \"campaign quality\": 0 results (Adzuna reports 0 total matches)",
-        "us-remote \"marketing qa\": 0 results (Adzuna reports 0 total matches)",
-        "us-remote \"content audit\": 0 results (Adzuna reports 0 total matches)"
+        "us-remote \"copyediting\": 0 results (Adzuna reports 0 total matches)",
+        "us-remote \"content auditor\": 0 results (Adzuna reports 0 total matches)",
+        "us-remote \"quality editor\": 0 results (Adzuna reports 0 total matches)",
+        "us-remote \"editorial specialist\": 0 results (Adzuna reports 0 total matches)",
+        "us-remote \"production editor\": 0 results (Adzuna reports 0 total matches)",
+        "us-remote \"digital editor\": 0 results (Adzuna reports 0 total matches)"
       ],
-      "ms": 7122
+      "ms": 7493
     },
     {
       "id": "jooble",
@@ -220,7 +218,7 @@
       "status": "ok",
       "fetched": 80,
       "warnings": [],
-      "ms": 1068
+      "ms": 4866
     },
     {
       "id": "remotive",
@@ -228,17 +226,17 @@
       "status": "ok",
       "fetched": 288,
       "warnings": [],
-      "ms": 1232
+      "ms": 554
     },
     {
       "id": "weworkremotely",
       "label": "We Work Remotely",
       "status": "ok",
-      "fetched": 246,
+      "fetched": 245,
       "warnings": [
         "remote-marketing-jobs.rss: HTTP 301 Moved Permanently"
       ],
-      "ms": 1495
+      "ms": 1025
     },
     {
       "id": "himalayas",
@@ -246,15 +244,17 @@
       "status": "ok",
       "fetched": 240,
       "warnings": [],
-      "ms": 794
+      "ms": 421
     },
     {
       "id": "jobicy",
       "label": "Jobicy",
       "status": "ok",
-      "fetched": 395,
-      "warnings": [],
-      "ms": 12013
+      "fetched": 247,
+      "warnings": [
+        "?count=50&geo=usa&tag=product%20content: HTTP 429 Too Many Requests"
+      ],
+      "ms": 10248
     },
     {
       "id": "remoteok",
@@ -262,15 +262,15 @@
       "status": "ok",
       "fetched": 99,
       "warnings": [],
-      "ms": 611
+      "ms": 502
     },
     {
       "id": "workingnomads",
       "label": "Working Nomads",
       "status": "ok",
-      "fetched": 41,
+      "fetched": 40,
       "warnings": [],
-      "ms": 747
+      "ms": 533
     },
     {
       "id": "arbeitnow",
@@ -278,7 +278,7 @@
       "status": "ok",
       "fetched": 175,
       "warnings": [],
-      "ms": 274
+      "ms": 206
     }
   ]
 }
