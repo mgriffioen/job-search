@@ -22,8 +22,8 @@ function buildUrls(profile) {
   // send, because each term costs an API call here, but every term still
   // gets its turn over the next few runs.
   const queries = selectRotating(
-    profile.search.broadQueries || profile.search.queries,
-    profile.search.broadQueriesPerRun ?? 12
+    profile.broadTerms?.length ? profile.broadTerms : profile.searchTerms,
+    profile.search.broadTermsPerRun ?? 12
   );
   for (const query of queries) {
     urls.push(`https://jobicy.com/api/v2/remote-jobs?count=50&geo=usa&tag=${encodeURIComponent(query)}`);

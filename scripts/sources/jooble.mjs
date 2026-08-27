@@ -44,7 +44,7 @@ async function search(keywords, page) {
 export async function fetchJobs({ profile, warn }) {
   const jobs = [];
   const queries = selectRotating(
-    profile.search.broadQueries || profile.search.queries,
+    profile.broadTerms?.length ? profile.broadTerms : profile.searchTerms,
     QUERIES_PER_RUN
   );
 
