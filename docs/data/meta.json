@@ -1,6 +1,6 @@
 {
-  "generatedAt": "2026-08-27T13:40:32.732Z",
-  "durationMs": 50080,
+  "generatedAt": "2026-08-27T17:36:06.919Z",
+  "durationMs": 46550,
   "candidate": {
     "name": "Emily Griffioen",
     "headline": "Content & editorial QA — 10 years reviewing customer-facing marketing content",
@@ -148,13 +148,13 @@
     "maxAgeDays": 60
   },
   "counts": {
-    "fetched": 2554,
-    "unique": 1326,
-    "published": 126,
+    "fetched": 2513,
+    "unique": 1301,
+    "published": 128,
     "dropped": {
-      "location": 403,
+      "location": 401,
       "stale": 2,
-      "noTermMatch": 795
+      "noTermMatch": 770
     }
   },
   "terms": {
@@ -164,16 +164,16 @@
     "proofreader": 6,
     "content specialist": 5,
     "quality assurance coordinator": 4,
-    "content writer": 4,
     "copy editor": 4,
     "content reviewer": 4,
+    "technical writer": 4,
+    "content quality": 4,
+    "content writer": 3,
     "quality assurance specialist": 3,
-    "technical writer": 3,
     "associate editor": 2,
     "content editor": 2,
     "managing editor": 2,
     "editorial manager": 2,
-    "content quality": 2,
     "quality assurance analyst": 2,
     "product content specialist": 1,
     "proposal writer": 1,
@@ -188,9 +188,9 @@
     "campaign qa": 1
   },
   "matchedIn": {
-    "title": 114,
-    "tags": 4,
-    "description": 8
+    "title": 113,
+    "tags": 5,
+    "description": 10
   },
   "unmatched": [
     {
@@ -234,13 +234,13 @@
       "source": "Adzuna"
     },
     {
-      "title": "Provider Enrollment Quality Assurance - Remote",
-      "company": "Gainwell Technologies LLC",
+      "title": "Senior Director, Analytical Quality Assurance - Remote (Washington)",
+      "company": "Travere Therapeutics",
       "source": "Adzuna"
     },
     {
-      "title": "Senior Director, Analytical Quality Assurance - Remote (Washington)",
-      "company": "Travere Therapeutics",
+      "title": "Provider Enrollment Quality Assurance - Remote",
+      "company": "Gainwell Technologies LLC",
       "source": "Adzuna"
     },
     {
@@ -261,6 +261,16 @@
     {
       "title": "RN, Quality Assurance (Home Health) Remote",
       "company": "Adventist Health",
+      "source": "Adzuna"
+    },
+    {
+      "title": "Remote Associate Director, Quality Assurance - Analytical (Wichita)",
+      "company": "Travere Therapeutics",
+      "source": "Adzuna"
+    },
+    {
+      "title": "Remote Associate Director, Quality Assurance (Analytical) (Atlanta)",
+      "company": "Travere Therapeutics",
       "source": "Adzuna"
     },
     {
@@ -339,13 +349,13 @@
       "source": "Jooble"
     },
     {
-      "title": ".Net / Kentico Web Developer",
-      "company": "Epro Consulting",
+      "title": "Web Developer Level 1",
+      "company": "Denovo Solutions, Llc",
       "source": "Jooble"
     },
     {
-      "title": "Web Developer Level 1",
-      "company": "Denovo Solutions, Llc",
+      "title": ".Net / Kentico Web Developer",
+      "company": "Epro Consulting",
       "source": "Jooble"
     },
     {
@@ -374,13 +384,13 @@
       "source": "Jooble"
     },
     {
-      "title": "Web Developer (Mobile)",
-      "company": "SonSoft Inc.",
+      "title": "Sr Web Developer Sharepoint",
+      "company": "Horizon Consulting Llc",
       "source": "Jooble"
     },
     {
-      "title": "Sr Web Developer Sharepoint",
-      "company": "Horizon Consulting Llc",
+      "title": "Web Developer (Mobile)",
+      "company": "SonSoft Inc.",
       "source": "Jooble"
     },
     {
@@ -450,17 +460,12 @@
     },
     {
       "title": "Operations Associate",
-      "company": "Riverside Epicenter",
-      "source": "Jooble"
-    },
-    {
-      "title": "Operations Associate",
       "company": "Sunshine Tape Products Llc",
       "source": "Jooble"
     },
     {
-      "title": "Strategy & Operations Associate",
-      "company": "Entyre Gmbh",
+      "title": "Operations Associate",
+      "company": "Riverside Epicenter",
       "source": "Jooble"
     },
     {
@@ -487,15 +492,10 @@
       "title": "Senior Information Security Analyst",
       "company": "Oneaz Credit Union",
       "source": "Jooble"
-    },
-    {
-      "title": "Information Security Analyst",
-      "company": "Psfcu Careers",
-      "source": "Jooble"
     }
   ],
-  "freshLast48h": 19,
-  "contract": 50,
+  "freshLast48h": 21,
+  "contract": 53,
   "sources": [
     {
       "id": "companyboards",
@@ -518,12 +518,12 @@
         "resetAt": "2026-08-27T15:52:25.507Z"
       },
       "budget": {
-        "allowed": 0,
+        "allowed": 3,
         "spent": 0,
         "reserve": 12,
-        "reason": "not a scheduled run — holding the metered quota for the next one"
+        "reason": "188 spendable across ~1 runs left — full budget available"
       },
-      "ms": 0
+      "ms": 1
     },
     {
       "id": "adzuna",
@@ -555,7 +555,7 @@
         "us-remote \"freelance proofreader\": 0 results (Adzuna reports 0 total matches)",
         "us-remote \"editorial quality\": 0 results (Adzuna reports 0 total matches)"
       ],
-      "ms": 11421
+      "ms": 14811
     },
     {
       "id": "jooble",
@@ -563,7 +563,7 @@
       "status": "ok",
       "fetched": 200,
       "warnings": [],
-      "ms": 2128
+      "ms": 2785
     },
     {
       "id": "remotive",
@@ -571,7 +571,7 @@
       "status": "ok",
       "fetched": 864,
       "warnings": [],
-      "ms": 1350
+      "ms": 1581
     },
     {
       "id": "weworkremotely",
@@ -581,7 +581,7 @@
       "warnings": [
         "remote-marketing-jobs.rss: HTTP 301 Moved Permanently"
       ],
-      "ms": 6357
+      "ms": 1074
     },
     {
       "id": "himalayas",
@@ -589,19 +589,19 @@
       "status": "ok",
       "fetched": 240,
       "warnings": [],
-      "ms": 912
+      "ms": 745
     },
     {
       "id": "jobicy",
       "label": "Jobicy",
       "status": "ok",
-      "fetched": 407,
+      "fetched": 366,
       "warnings": [
-        "?count=50&geo=usa&tag=editorial%20quality: HTTP 429 Too Many Requests",
-        "?count=50&geo=usa&tag=content%20editor: HTTP 429 Too Many Requests",
-        "?count=50&geo=usa&tag=copy%20editor: HTTP 429 Too Many Requests"
+        "?count=50&geo=usa&tag=proofreading: HTTP 429 Too Many Requests",
+        "?count=50&geo=usa&tag=content%20quality: HTTP 429 Too Many Requests",
+        "?count=50&geo=usa&tag=editorial%20quality: HTTP 429 Too Many Requests"
       ],
-      "ms": 25300
+      "ms": 23698
     },
     {
       "id": "remoteok",
@@ -609,7 +609,7 @@
       "status": "ok",
       "fetched": 99,
       "warnings": [],
-      "ms": 780
+      "ms": 427
     },
     {
       "id": "workingnomads",
@@ -617,7 +617,7 @@
       "status": "ok",
       "fetched": 40,
       "warnings": [],
-      "ms": 542
+      "ms": 395
     },
     {
       "id": "arbeitnow",
@@ -625,7 +625,7 @@
       "status": "ok",
       "fetched": 175,
       "warnings": [],
-      "ms": 403
+      "ms": 219
     }
   ]
 }
