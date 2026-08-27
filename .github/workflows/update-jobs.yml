@@ -6,12 +6,9 @@ on:
     - cron: '10 6,16 * * *'
   workflow_dispatch:
   push:
-    # Both names are listed so a push-triggered run keeps working either side of
-    # the default-branch rename described in the README. Once that rename has
-    # happened, the second line is dead and can be deleted.
     branches:
       - main
-      - claude/job-search-qa-specialist-ny8k3g
+      - claude/job-search-simplify-izo7cj
     paths:
       - 'config/**'
       - 'scripts/**'
@@ -86,7 +83,7 @@ jobs:
             echo "The affected source skips itself; every other source still runs."
           } >> "$GITHUB_STEP_SUMMARY"
 
-      - name: Fetch and score job postings
+      - name: Fetch and match job postings
         env:
           ADZUNA_APP_ID: ${{ secrets.ADZUNA_APP_ID }}
           ADZUNA_APP_KEY: ${{ secrets.ADZUNA_APP_KEY }}
@@ -104,10 +101,8 @@ jobs:
         run: |
           git config user.name  "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          # The whole data directory: the board now writes one set of files per
-          # matching model (docs/data for v1, docs/data/v2 for v2), and naming
-          # the two v1 files individually would silently drop v2 every run.
-          git add docs/data
+          # One board, two files.
+          git add docs/data/jobs.json docs/data/meta.json
           if git diff --staged --quiet; then
             echo "No change in listings."
             exit 0

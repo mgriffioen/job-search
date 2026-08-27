@@ -39,8 +39,8 @@ export async function fetchJobs({ profile, warn }) {
   // send, because each term costs an API call here, but every term still
   // gets its turn over the next few runs.
   const queries = selectRotating(
-    profile.search.broadQueries || profile.search.queries,
-    profile.search.broadQueriesPerRun ?? 12
+    profile.broadTerms?.length ? profile.broadTerms : profile.searchTerms,
+    profile.search.broadTermsPerRun ?? 12
   );
   const remoteOnly = profile.location.remoteOnly !== false;
 

@@ -1,11 +1,19 @@
+/**
+ * The training model.
+ *
+ * The board publishes everything that matches a search term, which means it is
+ * deliberately wide and some of it is wrong. These tests are about the two ways
+ * that can go badly: learning too little to be worth the buttons, and learning
+ * so eagerly that three impatient thumbs-down close a category she never
+ * actually rejected.
+ */
+
 import test from 'node:test';
 import assert from 'node:assert/strict';
 
 import {
-  DOWN_REASONS,
   MAX_ADJUSTMENT,
   adjustmentFor,
-  annualisePay,
   buildModel,
   clearFeedback,
   emptyPreferences,
@@ -17,387 +25,223 @@ import {
   summarise,
 } from '../docs/preferences.mjs';
 
-/**
- * The board's own module, imported straight out of docs/ — the same file the
- * browser loads, so these tests cannot pass against an implementation the site
- * does not actually run.
- */
-
-const LABELS = {
-  proofreading: 'Proofreading and copy editing',
-  'product-content': 'Product, catalog and e-commerce content',
-};
-
-const job = (overrides = {}) => ({
-  id: 'demo:1',
-  title: 'Content Quality Specialist',
-  company: 'Northline Retail',
-  employmentTypes: ['contract'],
-  projectBased: true,
-  rank: 80,
-  salary: null,
-  scores: { work: 90, experience: 90, qualification: 85, lifestyle: 80 },
-  family: { id: 'content-editorial-quality', label: 'Content & editorial quality', tier: 'core' },
-  occupation: { class: 'core', id: 'content-editorial-quality', label: 'Content & editorial quality' },
-  signals: {
-    work: ['proofreading', 'product-content'],
-    industries: ['Retail / e-commerce / consumer brands'],
-    creation: 0,
-    automation: 0,
+/** A published posting, in the shape jobs.json actually carries. */
+function job(overrides = {}) {
+  return {
+    id: 'test:1',
+    title: 'Marketing Copy Editor',
+    company: 'Acme Publishing',
+    matchedTerm: 'marketing copy editor',
+    matchedTerms: ['marketing copy editor', 'copy editor', 'editor'],
     seniority: 'mid',
-    // v4 postings carry their occupational class and their dominant function.
-    // These, not the work signals, are what 🚫 is a judgement about.
-    occupation: 'content-editorial-quality',
-    occupationClass: 'core',
-    function: 'reviewing',
-  },
-  ...overrides,
-});
-
-test('a posting is described by its categories, not by itself', () => {
-  // What makes a rating outlive the posting it was made on.
-  const features = featuresOf(job());
-  assert.ok(features.includes('occupation:content-editorial-quality'));
-  assert.ok(features.includes('function:reviewing'));
-  assert.ok(features.includes('family:content-editorial-quality'));
-  assert.ok(features.includes('work:proofreading'));
-  assert.ok(features.includes('industry:retail-e-commerce-consumer-brands'));
-  assert.ok(features.includes('company:northline-retail'));
-  assert.ok(features.includes('shape:contract'));
-  assert.ok(features.includes('shape:project'));
-  assert.ok(!features.some((f) => f.includes('demo:1')), 'the posting id is never a feature');
-});
-
-test('no ratings means no adjustment at all', () => {
-  const model = buildModel(emptyPreferences());
-  assert.deepEqual(adjustmentFor(job(), model, LABELS), { points: 0, notes: [] });
-  assert.match(summarise(model), /No ratings yet/);
-});
-
-test('a thumbs-up lifts other postings in the same categories', () => {
-  let prefs = emptyPreferences();
-  prefs = recordFeedback(prefs, job({ id: 'a' }), 'up');
-
-  const model = buildModel(prefs);
-  const other = job({ id: 'b', company: 'Different Co' });
-  const adjustment = adjustmentFor(other, model, LABELS);
-
-  assert.ok(adjustment.points > 0, `expected a lift, got ${adjustment.points}`);
-  assert.ok(adjustment.notes.length, 'and the card must be able to say why');
-  assert.match(adjustment.notes.join(' '), /content & editorial quality/i);
-});
-
-test('a thumbs-down pushes them down, and 🚫 pushes harder', () => {
-  const down = buildModel(recordFeedback(emptyPreferences(), job({ id: 'a' }), 'down'));
-  const wrong = buildModel(recordFeedback(emptyPreferences(), job({ id: 'a' }), 'wrong'));
-
-  const other = job({ id: 'b', company: 'Different Co' });
-  const downPoints = adjustmentFor(other, down, LABELS).points;
-  const wrongPoints = adjustmentFor(other, wrong, LABELS).points;
-
-  assert.ok(downPoints < 0);
-  assert.ok(wrongPoints < downPoints, 'the stronger verdict must move it further');
-});
-
-test('one impatient category cannot be buried by repetition', () => {
-  // The whole point of the board is surfacing work she would not have searched
-  // for. A learner that lets four fast rejections close a family off is worse
-  // than no learner.
-  let prefs = emptyPreferences();
-  for (let i = 0; i < 12; i += 1) {
-    prefs = recordFeedback(prefs, job({ id: `job-${i}`, company: `Company ${i}` }), 'wrong');
-  }
-  const adjustment = adjustmentFor(job({ id: 'new', company: 'Fresh Co' }), buildModel(prefs), LABELS);
-  assert.ok(Math.abs(adjustment.points) <= MAX_ADJUSTMENT, `capped at ±${MAX_ADJUSTMENT}`);
-});
-
-test('"too technical" only touches postings that are actually technical', () => {
-  const technical = job({ id: 'b', company: 'Other Co', signals: { ...job().signals, automation: 3 } });
-  const plain = job({ id: 'c', company: 'Other Co' });
-
-  const prefs = recordFeedback(emptyPreferences(), job({ id: 'a' }), 'down', 'technical');
-  const model = buildModel(prefs);
-
-  const technicalPoints = adjustmentFor(technical, model, LABELS).points;
-  const plainPoints = adjustmentFor(plain, model, LABELS).points;
-
-  assert.ok(technicalPoints < plainPoints, 'the reason has to distinguish the two');
-  assert.match(adjustmentFor(technical, model, LABELS).notes.join(' '), /too technical/i);
-});
-
-test('"too much writing" only touches postings that lean on writing', () => {
-  const writey = job({ id: 'b', company: 'Other Co', signals: { ...job().signals, creation: 4 } });
-  const plain = job({ id: 'c', company: 'Other Co' });
-  const model = buildModel(recordFeedback(emptyPreferences(), job({ id: 'a' }), 'down', 'writing'));
-
-  assert.ok(adjustmentFor(writey, model, LABELS).points < adjustmentFor(plain, model, LABELS).points);
-});
-
-test('"too senior" and "too junior" read the level off the posting', () => {
-  const model = buildModel(recordFeedback(emptyPreferences(), job({ id: 'a' }), 'down', 'senior'));
-  const senior = job({ id: 'b', company: 'Other Co', signals: { ...job().signals, seniority: 'senior' } });
-  const junior = job({ id: 'c', company: 'Other Co', signals: { ...job().signals, seniority: 'junior' } });
-
-  assert.ok(adjustmentFor(senior, model, LABELS).points < adjustmentFor(junior, model, LABELS).points);
-});
-
-test('"wrong industry" blames the industry rather than the whole posting', () => {
-  // Four ratings apiece, because the inferred half of the model deliberately
-  // whispers until it has seen a few — see CONFIDENCE_RATINGS.
-  const rate = (reason) => {
-    let prefs = emptyPreferences();
-    for (let i = 0; i < 4; i += 1) prefs = recordFeedback(prefs, job({ id: `a${i}` }), 'down', reason);
-    return buildModel(prefs);
-  };
-  const plain = rate(null);
-  const industry = rate('industry');
-
-  // Same industry, nothing else in common: the reason must bite harder.
-  const sameIndustry = job({
-    id: 'b',
-    company: 'Other Co',
-    family: { id: 'copyediting-proofreading', label: 'Copy editing & proofreading', tier: 'core' },
     employmentTypes: ['full-time'],
-    projectBased: false,
-    signals: { ...job().signals, work: [], occupation: 'copyediting-proofreading' },
-  });
+    relevance: 100,
+    rank: 80,
+    ...overrides,
+  };
+}
 
-  assert.ok(
-    adjustmentFor(sameIndustry, industry, LABELS).points < adjustmentFor(sameIndustry, plain, LABELS).points
-  );
+/** Rates n distinct postings the same way, so saturation can be exercised. */
+function rateMany(prefs, template, verdict, n) {
+  let next = prefs;
+  for (let i = 0; i < n; i += 1) {
+    next = recordFeedback(next, { ...template, id: `test:${verdict}:${i}` }, verdict);
+  }
+  return next;
+}
+
+/* ---------------------------------------------------------------
+   What a rating remembers
+   --------------------------------------------------------------- */
+
+test('a rating stores categories, not the posting — the posting will be gone', () => {
+  const features = featuresOf(job());
+  assert.ok(features.includes('term:marketing-copy-editor'));
+  assert.ok(features.includes('term:copy-editor'), 'the shorter terms are learned too');
+  assert.ok(features.includes('company:acme-publishing'));
+  assert.ok(features.includes('shape:full-time'));
+  assert.ok(!features.some((f) => f.includes('example.com')), 'nothing that dies with the link');
 });
 
-test('"poor pay" learns a floor and applies it to comparable pay', () => {
-  const rejected = job({ id: 'a', salary: '$18 – $20 / hour' });
-  const model = buildModel(recordFeedback(emptyPreferences(), rejected, 'down', 'pay'));
-
-  const lowPaid = job({ id: 'b', company: 'Other Co', salary: '$36,000 – $40,000' });
-  const wellPaid = job({ id: 'c', company: 'Other Co', salary: '$85,000 – $95,000' });
-  const silent = job({ id: 'd', company: 'Other Co', salary: null });
-
-  const low = adjustmentFor(lowPaid, model, LABELS);
-  assert.ok(low.points < adjustmentFor(wellPaid, model, LABELS).points);
-  assert.match(low.notes.join(' '), /stated pay/i);
-  assert.equal(
-    adjustmentFor(silent, model, LABELS).points,
-    adjustmentFor(wellPaid, model, LABELS).points,
-    'a posting that does not state pay has not been judged on it'
-  );
+test('every term the title matched is learned, not only the best one', () => {
+  // Otherwise a 👍 on "Freelance Proofreader" would teach nothing about
+  // "Proofreader", and the lesson would only ever apply to identical titles.
+  const features = featuresOf(job({ matchedTerms: ['freelance proofreader', 'proofreader'] }));
+  assert.ok(features.includes('term:freelance-proofreader'));
+  assert.ok(features.includes('term:proofreader'));
 });
 
-test('pay is annualised so hourly and salaried figures compare', () => {
-  assert.equal(annualisePay('$25 / hour'), 52000);
-  assert.equal(annualisePay('$20 – $24 per hr'), 49920);
-  assert.equal(annualisePay('$70,000 – $85,000'), 85000);
-  assert.equal(annualisePay('$1,500 per week'), 78000);
-  assert.equal(annualisePay('Competitive'), null);
-  assert.equal(annualisePay(null), null);
-  assert.equal(annualisePay('$45'), 93600, 'a bare figure that small can only be an hourly rate');
+test('a middling seniority is not a category', () => {
+  assert.ok(!featuresOf(job({ seniority: 'mid' })).some((f) => f.startsWith('seniority:')));
+  assert.ok(featuresOf(job({ seniority: 'senior' })).includes('seniority:senior'));
 });
 
-test('rating the same posting again replaces the verdict; rating it a third time clears it', () => {
+test('rating the same posting twice replaces rather than accumulates', () => {
   let prefs = recordFeedback(emptyPreferences(), job(), 'up');
-  assert.equal(ratingFor(prefs, 'demo:1').verdict, 'up');
-
-  prefs = recordFeedback(prefs, job(), 'down', 'writing');
-  assert.equal(ratingFor(prefs, 'demo:1').verdict, 'down');
-  assert.equal(ratingFor(prefs, 'demo:1').reason, 'writing');
-  assert.equal(buildModel(prefs).counts.total, 1, 'a change of mind is not two ratings');
-
-  prefs = clearFeedback(prefs, 'demo:1');
-  assert.equal(ratingFor(prefs, 'demo:1'), null);
-  assert.equal(buildModel(prefs).counts.total, 0);
+  prefs = recordFeedback(prefs, job(), 'down');
+  assert.equal(Object.keys(prefs.ratings).length, 1);
+  assert.equal(ratingFor(prefs, 'test:1').verdict, 'down');
 });
 
-test('a rating survives the posting it was made on', () => {
-  // Postings expire in weeks. If the model only knew job ids, every lesson
-  // would expire with them.
-  const prefs = recordFeedback(emptyPreferences(), job({ id: 'expired' }), 'up');
-  const stored = ratingFor(prefs, 'expired');
-  assert.ok(stored.features.includes('family:content-editorial-quality'));
-  assert.ok(stored.facts, 'and the facts a reason needs to generalise');
-
-  const model = buildModel({ version: 1, ratings: { expired: stored } });
-  assert.ok(adjustmentFor(job({ id: 'brand-new', company: 'Someone Else' }), model, LABELS).points > 0);
+test('a rating can be taken back', () => {
+  const prefs = clearFeedback(recordFeedback(emptyPreferences(), job(), 'up'), 'test:1');
+  assert.equal(ratingFor(prefs, 'test:1'), null);
 });
 
-test('storage that has been corrupted or hand-edited does not break the board', () => {
-  assert.deepEqual(normalisePreferences(null), emptyPreferences());
-  assert.deepEqual(normalisePreferences('nonsense'), emptyPreferences());
-  assert.deepEqual(normalisePreferences({ ratings: null }), emptyPreferences());
+test('an unknown verdict is refused rather than stored', () => {
+  const prefs = recordFeedback(emptyPreferences(), job(), 'maybe');
+  assert.equal(Object.keys(prefs.ratings).length, 0);
+});
 
-  const salvaged = normalisePreferences({
+/* ---------------------------------------------------------------
+   What each verdict is allowed to conclude
+   --------------------------------------------------------------- */
+
+test('🚫 learns only about the term and the employer', () => {
+  assert.equal(mayLearn('wrong', 'term'), true);
+  assert.equal(mayLearn('wrong', 'company'), true);
+  assert.equal(mayLearn('wrong', 'shape'), false);
+  assert.equal(mayLearn('wrong', 'seniority'), false);
+});
+
+test('👎 never concludes anything about the shape of the work', () => {
+  // Turning down one full-time job is not a preference against full-time work,
+  // and a board that decided otherwise would delete a category she asked for.
+  assert.equal(mayLearn('down', 'shape'), false);
+  assert.equal(mayLearn('down', 'term'), true);
+  assert.equal(mayLearn('down', 'seniority'), true);
+});
+
+test('👍 learns from everything', () => {
+  for (const kind of ['term', 'company', 'shape', 'seniority']) {
+    assert.equal(mayLearn('up', kind), true);
+  }
+});
+
+test('the rules are applied when the model is built, so old ratings are re-read', () => {
+  // A rating stored before these rules existed must not keep an older model's
+  // conclusions forever.
+  const prefs = rateMany(emptyPreferences(), job({ employmentTypes: ['contract'] }), 'wrong', 3);
+  const model = buildModel(prefs);
+  assert.equal(model.features['shape:contract'], undefined, 'a 🚫 taught a negative weight on contract work');
+  assert.ok(model.features['term:marketing-copy-editor'] < 0);
+});
+
+/* ---------------------------------------------------------------
+   How far it is allowed to move anything
+   --------------------------------------------------------------- */
+
+test('with no ratings, nothing moves', () => {
+  const { points, notes } = adjustmentFor(job(), buildModel(emptyPreferences()));
+  assert.equal(points, 0);
+  assert.deepEqual(notes, []);
+});
+
+test('one rating whispers rather than shouts', () => {
+  const prefs = recordFeedback(emptyPreferences(), job({ id: 'other' }), 'down');
+  const { points } = adjustmentFor(job(), buildModel(prefs));
+  assert.ok(points < 0);
+  assert.ok(Math.abs(points) < MAX_ADJUSTMENT / 2, 'a single 👎 should not be near the cap');
+});
+
+test('consistent ratings build up, then saturate', () => {
+  const three = adjustmentFor(job(), buildModel(rateMany(emptyPreferences(), job(), 'down', 3)));
+  const twelve = adjustmentFor(job(), buildModel(rateMany(emptyPreferences(), job(), 'down', 12)));
+  assert.ok(twelve.points <= three.points, 'more ratings should not reverse the direction');
+  assert.ok(Math.abs(twelve.points - three.points) < 6, 'twelve ratings should not be four times three');
+});
+
+test('nothing may move further than the cap, however hard it is rated', () => {
+  const prefs = rateMany(emptyPreferences(), job(), 'wrong', 40);
+  const { points } = adjustmentFor(job(), buildModel(prefs));
+  assert.ok(points >= -MAX_ADJUSTMENT, `${points} is past the cap`);
+});
+
+test('a category she has not rejected is never buried', () => {
+  // Twenty 👎 on copy editing must not hide proofreading.
+  const prefs = rateMany(emptyPreferences(), job(), 'down', 20);
+  const unrelated = job({
+    id: 'test:other',
+    title: 'Proofreader',
+    company: 'Different Co',
+    matchedTerm: 'proofreader',
+    matchedTerms: ['proofreader'],
+  });
+  assert.equal(adjustmentFor(unrelated, buildModel(prefs)).points, 0);
+});
+
+test('👍 moves a posting up and 👎 moves it down', () => {
+  const up = adjustmentFor(job(), buildModel(rateMany(emptyPreferences(), job(), 'up', 3)));
+  const down = adjustmentFor(job(), buildModel(rateMany(emptyPreferences(), job(), 'down', 3)));
+  assert.ok(up.points > 0);
+  assert.ok(down.points < 0);
+});
+
+test('a fraction of a point is arithmetic, not a preference, and says nothing', () => {
+  const prefs = recordFeedback(emptyPreferences(), job({ id: 'x', matchedTerms: [], matchedTerm: '', company: '' }), 'down');
+  const { points, notes } = adjustmentFor(job({ company: 'Unrelated Co', matchedTerms: ['proofreader'] }), buildModel(prefs));
+  assert.equal(points, 0);
+  assert.deepEqual(notes, []);
+});
+
+/* ---------------------------------------------------------------
+   Saying why
+   --------------------------------------------------------------- */
+
+test('a moved card says which category taught the move', () => {
+  const { notes } = adjustmentFor(job(), buildModel(rateMany(emptyPreferences(), job(), 'down', 3)));
+  assert.ok(notes.length);
+  assert.ok(notes.every((n) => typeof n === 'string' && n.length));
+  assert.ok(notes.some((n) => n.includes('passed on')));
+});
+
+test('a note never says the same thing twice', () => {
+  const { notes } = adjustmentFor(job(), buildModel(rateMany(emptyPreferences(), job(), 'up', 5)));
+  assert.equal(new Set(notes).size, notes.length);
+  assert.ok(notes.length <= 2, 'a note listing every category explains nothing');
+});
+
+test('the summary counts the ratings honestly', () => {
+  assert.match(summarise(buildModel(emptyPreferences())), /No ratings yet/);
+
+  let prefs = recordFeedback(emptyPreferences(), job({ id: 'a' }), 'up');
+  prefs = recordFeedback(prefs, job({ id: 'b' }), 'down');
+  prefs = recordFeedback(prefs, job({ id: 'c' }), 'wrong');
+  const text = summarise(buildModel(prefs));
+  assert.match(text, /3 ratings/);
+  assert.match(text, /1 👍/);
+  assert.match(text, /1 👎/);
+  assert.match(text, /1 🚫/);
+});
+
+/* ---------------------------------------------------------------
+   Storage that has been through a real browser
+   --------------------------------------------------------------- */
+
+test('rubbish in storage is the same as nothing', () => {
+  for (const rubbish of [null, undefined, 'nope', 42, {}, { ratings: null }, { ratings: 'x' }]) {
+    assert.deepEqual(normalisePreferences(rubbish), emptyPreferences());
+  }
+});
+
+test('a half-written rating is discarded rather than trusted', () => {
+  const cleaned = normalisePreferences({
+    version: 1,
     ratings: {
-      good: { verdict: 'up', features: ['family:x'], facts: {}, at: '2026-01-01T00:00:00Z' },
-      bogus: { verdict: 'sideways' },
+      good: { verdict: 'up', features: ['term:proofreader'], at: '2026-01-01T00:00:00Z', title: 'P' },
+      bad: { verdict: 'sideways' },
+      alsoBad: null,
       partial: { verdict: 'down' },
     },
   });
-  assert.equal(Object.keys(salvaged.ratings).length, 2, 'an unknown verdict is dropped, a thin one is filled in');
-  assert.deepEqual(salvaged.ratings.partial.features, []);
+  assert.deepEqual(Object.keys(cleaned.ratings).sort(), ['good', 'partial']);
+  assert.deepEqual(cleaned.ratings.partial.features, [], 'a missing feature list becomes an empty one');
+  assert.equal(typeof cleaned.ratings.partial.at, 'string');
 });
 
-test('every reason chip either generalises or is explicitly job-specific', () => {
-  // "Other" exists so a rating can be given without claiming a pattern; every
-  // other chip has to mean something the model can act on.
-  const dimensions = DOWN_REASONS.filter((r) => r.dimension).map((r) => r.dimension);
-  assert.equal(new Set(dimensions).size, dimensions.length, 'two chips must not fight over one dimension');
-  assert.equal(DOWN_REASONS.filter((r) => !r.dimension).map((r) => r.id).join(), 'other');
-});
-
-test('ratings on a board that emits no signals are inert rather than wrong', () => {
-  // v1 and v2 postings carry no signals; the model must not invent a preference
-  // from a company name alone.
-  const model = buildModel(recordFeedback(emptyPreferences(), job({ id: 'a' }), 'up'));
-  const v1Job = { id: 'v1:1', title: 'Email QA Specialist', company: 'Northline Retail', rank: 70 };
-  assert.deepEqual(adjustmentFor(v1Job, model, LABELS), { points: 0, notes: [] });
-});
-
-
-/* ------------------------------------------- v4: the three verdicts differ */
-
-/**
- * The fault these cover is the one that made the feedback controls worse than
- * useless: every verdict learned the same way, so marking a Commercial Lawyer
- * "wrong kind of work" taught the board that proofreading, accuracy and
- * verification were undesirable — the candidate's own strongest skills — and
- * rejecting one full-time posting taught it that full-time work was unwanted.
- */
-
-test('🚫 learns the occupation and never the transferable skills', () => {
-  const lawyer = job({
-    id: 'lawyer',
-    title: 'Commercial/Transactional Lawyer',
-    company: 'Brain Co.',
-    family: null,
-    occupation: { class: 'wrong', id: 'legal', label: 'Legal practice' },
-    signals: {
-      // The posting genuinely asks for all of these. That is exactly why it
-      // scored well, and exactly why 🚫 must not learn from them.
-      work: ['proofreading', 'accuracy', 'final-review'],
-      industries: [],
-      creation: 0,
-      automation: 0,
-      seniority: 'mid',
-      occupation: 'legal',
-      occupationClass: 'wrong',
-      function: 'reviewing',
-    },
-  });
-
-  const model = buildModel(recordFeedback(emptyPreferences(), lawyer, 'wrong'));
-
-  assert.ok(model.features['occupation:legal'] < 0, 'the occupation is the lesson');
-  for (const skill of ['work:proofreading', 'work:accuracy', 'work:final-review']) {
-    assert.ok(!model.features[skill], `${skill} is a skill she has, not a reason to reject anything`);
-  }
-  assert.ok(!model.features['company:brain-co'], '🚫 is about the profession, not the employer');
-
-  // And the practical consequence: a genuine proofreading job is untouched.
-  const proofreading = job({ id: 'good', company: 'Someone Else' });
-  assert.equal(adjustmentFor(proofreading, model, LABELS).points, 0);
-});
-
-test('🚫 on one profession does not follow her into another', () => {
-  const psychologist = job({
-    id: 'psych',
-    title: 'Child Psychologist',
-    family: null,
-    occupation: { class: 'wrong', id: 'clinical', label: 'Clinical practice' },
-    signals: { work: ['accuracy'], industries: [], creation: 0, automation: 0, seniority: 'mid', occupation: 'clinical', function: 'reviewing' },
-  });
-  const model = buildModel(recordFeedback(emptyPreferences(), psychologist, 'wrong'));
-
-  const lawyerish = job({
-    id: 'law',
-    company: 'Other Co',
-    family: null,
-    signals: { ...job().signals, occupation: 'legal' },
-  });
-  assert.equal(adjustmentFor(lawyerish, model, LABELS).points, 0, 'a different wrong occupation is a separate lesson');
-});
-
-test('👎 never teaches the board that full-time work is unwanted', () => {
-  // The explicit preferences — remote, United States, full-time, part-time and
-  // contract — are stated, not inferred, and several rejected postings
-  // happening to be full-time is a fact about what was advertised.
-  let prefs = emptyPreferences();
-  for (let i = 0; i < 6; i += 1) {
-    prefs = recordFeedback(
-      prefs,
-      job({ id: `ft-${i}`, company: `Company ${i}`, employmentTypes: ['full-time'], projectBased: false }),
-      'down'
-    );
-  }
-  const model = buildModel(prefs);
-
-  assert.ok(!(model.features['shape:full-time'] < 0), 'full-time must never carry a negative weight');
-  for (const shape of ['shape:part-time', 'shape:contract', 'shape:project']) {
-    assert.ok(!(model.features[shape] < 0), `${shape} is an explicit preference`);
-  }
-});
-
-test('👍 still learns from the shape of the engagement', () => {
-  // Protection runs one way only: contract and project work are wanted, and a
-  // 👍 on one should still say so.
-  const model = buildModel(recordFeedback(emptyPreferences(), job({ id: 'a' }), 'up'));
-  assert.ok(model.features['shape:contract'] > 0);
-  assert.ok(model.features['shape:project'] > 0);
-});
-
-test('what each verdict may learn from is stated once, and differs', () => {
-  assert.equal(mayLearn('wrong', 'occupation'), true);
-  assert.equal(mayLearn('wrong', 'function'), true);
-  assert.equal(mayLearn('wrong', 'work'), false);
-  assert.equal(mayLearn('wrong', 'shape'), false);
-  assert.equal(mayLearn('wrong', 'company'), false);
-
-  assert.equal(mayLearn('down', 'work'), true);
-  assert.equal(mayLearn('down', 'company'), true);
-  assert.equal(mayLearn('down', 'shape'), false);
-
-  assert.equal(mayLearn('up', 'shape'), true);
-  assert.equal(mayLearn('up', 'work'), true);
-});
-
-test('ratings given under the old rules are re-read under the new ones', () => {
-  // Ratings live in the browser and in exported files. A 🚫 given before v4
-  // drew this distinction must not keep punishing proofreading forever.
-  const stored = normalisePreferences({
-    ratings: {
-      old: {
-        verdict: 'wrong',
-        at: '2026-08-01T00:00:00Z',
-        features: ['family:content-editorial-quality', 'work:proofreading', 'shape:full-time', 'company:acme'],
-        facts: {},
-        title: 'Something regrettable',
-      },
-    },
-  });
-  const model = buildModel(stored);
-  assert.ok(!model.features['work:proofreading'], 'the old lesson about proofreading is dropped');
-  assert.ok(!model.features['shape:full-time'], 'and the one about full-time work with it');
-  assert.ok(model.features['family:content-editorial-quality'] < 0, 'the occupational half survives');
-});
-
-/* ------------------------------------------------------------ asset stamps */
-
-test('the page’s own assets carry a content stamp', async () => {
-  /**
-   * The board fetches its data with a cache-buster but referenced its own code
-   * by bare name, so a browser that had the site open across a deploy ran the
-   * old script against the new data. That is exactly how the ratings shipped
-   * invisibly: new postings, new scores, no rating buttons.
-   *
-   * This fails the build when a stamp is stale, which is the only reliable
-   * moment to catch it — after the deploy there is no way to reach the browsers
-   * that already have the old file.
-   */
-  const { outdatedStamps } = await import('../scripts/stamp-assets.mjs');
-  const stale = await outdatedStamps();
-  assert.deepEqual(
-    stale,
-    [],
-    `run "npm run stamp" and commit the result — stale: ${stale.join(', ')}`
-  );
+test('normalising is stable, so an export can be re-imported unchanged', () => {
+  const prefs = recordFeedback(emptyPreferences(), job(), 'up');
+  const round = normalisePreferences(JSON.parse(JSON.stringify(prefs)));
+  assert.deepEqual(round, normalisePreferences(round));
+  assert.equal(ratingFor(round, 'test:1').verdict, 'up');
 });

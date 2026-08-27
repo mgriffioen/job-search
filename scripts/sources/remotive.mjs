@@ -18,7 +18,7 @@ export async function fetchJobs({ profile, warn }) {
   // Unmetered but rate-limited, so a fixed number of terms per run — rotated,
   // because the list runs well past 16 and a plain slice would mean the terms
   // at the bottom were never searched here at all.
-  const queries = selectRotating(profile.search.queries, 16);
+  const queries = selectRotating(profile.searchTerms, profile.search.termsPerRun ?? 16);
 
   for (const query of queries) {
     const url = `https://remotive.com/api/remote-jobs?search=${encodeURIComponent(query)}&limit=60`;

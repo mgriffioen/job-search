@@ -3,12 +3,12 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<meta name="description" content="Ranked remote job matches for Emily Griffioen — QA, email marketing, editorial.">
+<meta name="description" content="Remote editorial, proofreading and content QA jobs open to Michigan.">
 <meta name="color-scheme" content="light dark">
 <meta name="theme-color" content="#0f172a">
 <title>Emily's Job Board</title>
 <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🔎</text></svg>">
-<link rel="stylesheet" href="styles.css?v=dfb93f04ba">
+<link rel="stylesheet" href="styles.css?v=bc157ac204">
 </head>
 <body>
 
@@ -18,46 +18,34 @@
   <div class="masthead__inner">
     <div class="masthead__title">
       <h1>Emily's Job Board</h1>
-      <p class="masthead__sub" id="tagline">Content &amp; editorial QA · proofreading · e-commerce content — remote roles open to Michigan</p>
+      <p class="masthead__sub" id="tagline">Every remote posting carrying one of your search terms — nothing filtered out on top of that.</p>
     </div>
     <div class="masthead__meta">
-      <!-- Four matching models over the same postings. The choice is in the URL
-           so a particular board can be linked or bookmarked. -->
-      <div class="boardswitch" role="group" aria-label="Matching model">
-        <button type="button" class="boardswitch__btn" data-board="v4" aria-pressed="true">v4 · occupation</button>
-        <button type="button" class="boardswitch__btn" data-board="v3" aria-pressed="false">v3 · fit</button>
-        <button type="button" class="boardswitch__btn" data-board="v2" aria-pressed="false">v2 · ability</button>
-        <button type="button" class="boardswitch__btn" data-board="v1" aria-pressed="false">v1 · title</button>
-      </div>
       <button type="button" class="icon-btn" id="theme-toggle" title="Switch theme" aria-label="Switch theme">◐</button>
       <p class="updated" id="updated">Loading…</p>
     </div>
   </div>
 
   <div class="statbar" id="statbar" hidden>
-    <button type="button" class="stat" id="stat-top-tile" data-tier-filter="strong">
-      <span class="stat__num" id="stat-strong">0</span>
-      <span class="stat__label" id="stat-top-label">Strong match</span>
+    <button type="button" class="stat" data-view="all">
+      <span class="stat__num" id="stat-all">0</span>
+      <span class="stat__label">Matches</span>
     </button>
-    <button type="button" class="stat" id="stat-second-tile" data-tier-filter="good">
-      <span class="stat__num" id="stat-good">0</span>
-      <span class="stat__label" id="stat-second-label">Good match</span>
-    </button>
-    <button type="button" class="stat" id="stat-newdir-tile" data-newdir-filter="1" hidden>
-      <span class="stat__num" id="stat-newdir">0</span>
-      <span class="stat__label">New directions</span>
-    </button>
-    <button type="button" class="stat" id="stat-surprise-tile" data-surprise-filter="1" hidden>
-      <span class="stat__num" id="stat-surprise">0</span>
-      <span class="stat__label">Surprise me</span>
-    </button>
-    <button type="button" class="stat" data-project-filter="1">
-      <span class="stat__num" id="stat-project">0</span>
-      <span class="stat__label">Contract / freelance</span>
+    <button type="button" class="stat" data-title-filter="1">
+      <span class="stat__num" id="stat-titles">0</span>
+      <span class="stat__label">Title matches</span>
     </button>
     <button type="button" class="stat" data-age-filter="2">
       <span class="stat__num" id="stat-fresh">0</span>
       <span class="stat__label">New in 48h</span>
+    </button>
+    <button type="button" class="stat" data-contract-filter="1">
+      <span class="stat__num" id="stat-contract">0</span>
+      <span class="stat__label">Contract / freelance</span>
+    </button>
+    <button type="button" class="stat" data-view="rated">
+      <span class="stat__num" id="stat-rated">0</span>
+      <span class="stat__label">Rated</span>
     </button>
     <button type="button" class="stat" data-view="saved">
       <span class="stat__num" id="stat-saved">0</span>
@@ -74,6 +62,7 @@
   <button type="button" class="tab is-active" data-view="all">All matches</button>
   <button type="button" class="tab" data-view="saved">★ Saved</button>
   <button type="button" class="tab" data-view="applied">✓ Applied</button>
+  <button type="button" class="tab" data-view="rated">Rated</button>
   <button type="button" class="tab" data-view="hidden">Hidden</button>
 </nav>
 
@@ -89,7 +78,7 @@
         <span class="field__label">Sort by</span>
         <select id="sort">
           <option value="rank">Best overall</option>
-          <option value="match">Highest match</option>
+          <option value="relevance">Closest title match</option>
           <option value="new">Most recent</option>
           <option value="company">Company A–Z</option>
         </select>
@@ -101,17 +90,19 @@
 
       <div class="filters__grid">
         <fieldset class="filterset">
-          <legend>Remote scope</legend>
-          <label><input type="checkbox" name="scope" value="remote-anywhere" checked> Open anywhere</label>
-          <label><input type="checkbox" name="scope" value="remote-us" checked> US-eligible</label>
-        </fieldset>
-
-        <fieldset class="filterset">
           <legend>Schedule</legend>
           <label><input type="checkbox" name="employment" value="full-time" checked> Full-time</label>
           <label><input type="checkbox" name="employment" value="part-time" checked> Part-time</label>
           <label><input type="checkbox" name="employment" value="contract" checked> Contract</label>
           <label><input type="checkbox" name="employment" value="unspecified" checked> Unspecified</label>
+        </fieldset>
+
+        <!-- The search terms that actually brought something back this run, with
+             their counts. This is the closest thing the board has to a category
+             filter, and it is built from the results rather than declared. -->
+        <fieldset class="filterset">
+          <legend>Matched search term</legend>
+          <div id="term-filters" class="filterset__scroll"></div>
         </fieldset>
 
         <fieldset class="filterset">
@@ -122,17 +113,11 @@
         <fieldset class="filterset">
           <legend>Thresholds</legend>
           <label class="range">
-            Minimum match: <output id="min-match-out">0</output>
-            <input type="range" id="min-match" min="0" max="90" step="5" value="0">
-          </label>
-          <label class="range">
             Posted within: <output id="max-age-out">any time</output>
-            <input type="range" id="max-age" min="1" max="46" step="1" value="46">
+            <input type="range" id="max-age" min="1" max="61" step="1" value="61">
           </label>
-          <label><input type="checkbox" id="only-project"> Only contract, freelance or project-based</label>
-          <label id="only-open-row" hidden><input type="checkbox" id="only-open"> Only postings confirmed still open <span class="hint">(v3)</span></label>
-          <label id="only-newdir-row" hidden><input type="checkbox" id="only-newdir"> Only roles outside your current title <span class="hint">(v2)</span></label>
-          <label id="only-surprise-row" hidden><input type="checkbox" id="only-surprise"> Only the Surprise Me shelf <span class="hint">(v4)</span></label>
+          <label><input type="checkbox" id="only-titles"> Only postings whose <em>title</em> matches a search term</label>
+          <label><input type="checkbox" id="only-contract"> Only contract or freelance</label>
           <label><input type="checkbox" id="hide-hidden" checked> Hide dismissed jobs</label>
           <label><input type="checkbox" id="hide-applied"> Hide jobs already applied to</label>
         </fieldset>
@@ -143,9 +128,9 @@
         <button type="button" class="btn btn--ghost" id="export-csv">Export saved + applied to CSV</button>
       </div>
 
-      <!-- v3 only: what the 👍 / 👎 / 🚫 buttons have taught the ranking so far,
-           and the way to move it to another browser or start again. -->
-      <div class="tuning" id="tuning" hidden>
+      <!-- What the 👍 / 👎 / 🚫 buttons have taught the order so far, and the
+           way to move it to another browser or start again. -->
+      <div class="tuning" id="tuning">
         <p class="tuning__summary" id="tuning-summary"></p>
         <div class="tuning__actions">
           <button type="button" class="btn btn--ghost" id="export-ratings">Export ratings</button>
@@ -156,17 +141,6 @@
       </div>
     </details>
   </form>
-
-  <!-- v4 only: one to three postings whose title is nothing she would have
-       searched for and whose work turns out to be hers anyway. This is how an
-       obscure title like "Digital Content Integrity Coordinator" gets found. -->
-  <section class="surprise" id="surprise" aria-label="Surprise me" hidden>
-    <div class="surprise__head">
-      <h2>✨ Surprise me</h2>
-      <p class="surprise__sub">Titles you would never have searched for, doing work that turns out to be yours.</p>
-    </div>
-    <div class="surprise__list" id="surprise-list"></div>
-  </section>
 
   <p class="resultline" id="resultline" aria-live="polite"></p>
 
@@ -207,8 +181,8 @@
   <article class="card" tabindex="0">
     <div class="card__scorecol">
       <div class="ring" data-ring>
-        <span class="ring__num" data-match>0</span>
-        <span class="ring__cap">match</span>
+        <span class="ring__num" data-relevance>0</span>
+        <span class="ring__cap">title</span>
       </div>
       <span class="freshness" data-age></span>
       <span class="rec" data-rec hidden></span>
@@ -222,59 +196,11 @@
 
       <ul class="chips" data-chips></ul>
 
-      <!-- v4 only: the occupational verdict, before any of the fit scores.
-           Whether she plausibly belongs in this occupation is the question that
-           has to be answered first; the four axes only mean something after it. -->
-      <p class="occupation" data-occupation hidden></p>
-
-      <!-- v3 only: the four axes the specification scores separately, because
-           one number cannot say whether a job is the wrong work or the right
-           work with a requirement she does not meet. -->
-      <div class="fitbars" data-fitbars hidden></div>
-
-      <!-- v2 only: an unfamiliar job title is useless without the reason it is
-           being suggested, so the reason travels with it. -->
-      <p class="card__newdir" data-newdir hidden></p>
-
-      <!-- v3 only: the plain-English account of why this posting matched. -->
-      <p class="card__why" data-whymatched hidden></p>
+      <!-- The only explanation the board owes: which of your search terms put
+           this on the page. Everything else about it is yours to judge. -->
+      <p class="card__matched" data-matched></p>
 
       <p class="card__excerpt" data-excerpt></p>
-
-      <details class="report" data-report hidden>
-        <summary data-report-summary>Evidence, gaps and cautions</summary>
-        <div class="report__grid">
-          <section class="report__block" data-evidence-block hidden>
-            <h4>Your strongest evidence</h4>
-            <ul data-evidence></ul>
-          </section>
-          <section class="report__block" data-learnable-block hidden>
-            <h4>Learnable gaps</h4>
-            <ul data-learnable></ul>
-          </section>
-          <section class="report__block report__block--warn" data-truegap-block hidden>
-            <h4>True experience gaps</h4>
-            <ul data-truegaps></ul>
-          </section>
-          <section class="report__block" data-mode-block hidden>
-            <h4>Reviewing or creating?</h4>
-            <ul data-mode></ul>
-          </section>
-          <section class="report__block" data-ai-block hidden>
-            <h4>AI: tool, or the work?</h4>
-            <ul data-ai></ul>
-          </section>
-          <section class="report__block report__block--warn" data-watch-block hidden>
-            <h4>Watch out for</h4>
-            <ul data-watchouts></ul>
-          </section>
-        </div>
-      </details>
-
-      <details class="why">
-        <summary data-why-summary>Why it matched</summary>
-        <ul class="why__list" data-reasons></ul>
-      </details>
 
       <div class="card__actions">
         <a class="btn btn--primary" data-apply target="_blank" rel="noopener noreferrer">Open posting →</a>
@@ -283,19 +209,12 @@
         <button type="button" class="btn btn--ghost" data-action="hide">Dismiss</button>
       </div>
 
-      <!-- v3 only: teaches the ranking rather than acting on this one posting.
-           The reason row appears after 👎, because "not for me" says a job was
-           wrong and "too technical" says which part of it was. -->
-      <div class="feedback" data-feedback hidden>
-        <span class="feedback__lead">Tune the ranking:</span>
+      <!-- Teaches the order rather than acting on this one posting. -->
+      <div class="feedback" data-feedback>
+        <span class="feedback__lead">Train the order:</span>
         <button type="button" class="vote" data-verdict="up" aria-label="More like this" title="More of this kind of work, higher up the list.">👍 <span>More like this</span></button>
-        <button type="button" class="vote" data-verdict="down" aria-label="Not for me" title="Push work like this down. You can say why.">👎 <span>Not for me</span></button>
-        <button type="button" class="vote vote--stop" data-verdict="wrong" aria-label="Wrong kind of work" title="Hide this and push work like it well down the list.">🚫 <span>Wrong kind of work</span></button>
-      </div>
-
-      <div class="reasons" data-reason-picker hidden>
-        <span class="reasons__lead">Why? <span class="hint">(optional — it makes the lesson more precise)</span></span>
-        <div class="reasons__chips" data-reason-chips></div>
+        <button type="button" class="vote" data-verdict="down" aria-label="Not for me" title="Push work like this down.">👎 <span>Not for me</span></button>
+        <button type="button" class="vote vote--stop" data-verdict="wrong" aria-label="Wrong kind of work" title="Hide this and push everything that matched the same term well down.">🚫 <span>Wrong kind of work</span></button>
       </div>
 
       <label class="note">
@@ -306,6 +225,6 @@
   </article>
 </template>
 
-<script src="app.js?v=51bb0727c6" type="module"></script>
+<script src="app.js?v=baffb09685" type="module"></script>
 </body>
 </html>

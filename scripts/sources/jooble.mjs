@@ -29,7 +29,7 @@ export const skipReason = 'JOOBLE_API_KEY not set — see README';
 // terms rather than the specific ones — and takes them from the shared rotation
 // so a term added to the profile reaches this source too, which a hard-coded
 // list here quietly prevented for months.
-const QUERIES_PER_RUN = 4;
+const QUERIES_PER_RUN = 10;
 
 async function search(keywords, page) {
   const body = await request(`https://jooble.org/api/${process.env.JOOBLE_API_KEY}`, {
@@ -44,7 +44,7 @@ async function search(keywords, page) {
 export async function fetchJobs({ profile, warn }) {
   const jobs = [];
   const queries = selectRotating(
-    profile.search.broadQueries || profile.search.queries,
+    profile.broadTerms?.length ? profile.broadTerms : profile.searchTerms,
     QUERIES_PER_RUN
   );
 

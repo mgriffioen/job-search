@@ -176,7 +176,7 @@ export async function fetchJobs({ profile, warn, previous, record = () => {} }) 
   const settings = profile.search.jsearchQuota ?? {};
   const reserve = settings.reserve ?? 0;
   const runsPerDay = settings.runsPerDay ?? 2;
-  const maxPerRun = profile.search.jsearchQueriesPerRun ?? 3;
+  const maxPerRun = profile.search.jsearchTermsPerRun ?? 3;
 
   // The previous run's reading, carried in meta.json. The decision has to be
   // made before the first request, which is the one moment no fresh reading of
@@ -210,15 +210,12 @@ export async function fetchJobs({ profile, warn, previous, record = () => {} }) 
     return jobs;
   }
 
-  // The priority shortlist, not the full seventy-term list: a budget of three
-  // requests should be spent on the job families that matter most, not on
-  // whichever slice of the long list the rotation happens to land on.
-  const queries = selectQueries(
-    profile.search.priorityQueries?.length ? profile.search.priorityQueries : profile.search.queries,
-    budget.allowed,
-    new Date(),
-    runsPerDay
-  );
+  // The top of the term list, not the whole of it: a budget of three requests
+  // should be spent on the roles she is most directly after, which is what the
+  // order of config/profile.json's searchTerms means. The window still rotates
+  // within that shortlist so it is not the same three terms every run.
+  const shortlist = profile.searchTerms.slice(0, 24);
+  const queries = selectQueries(shortlist, budget.allowed, new Date(), runsPerDay);
   console.log(`  · ${label}: budget ${budget.allowed}/${maxPerRun} request(s) — ${budget.reason}`);
 
   for (const query of queries) {
