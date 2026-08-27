@@ -913,9 +913,11 @@ function renderHeader() {
   $('#updated').textContent = `Updated ${ago} · ${meta.counts.published} of ${meta.counts.unique} postings matched`;
 
   const termCount = meta.searchTerms?.length ?? 0;
+  const titles = meta.matchedIn?.title ?? 0;
   $('#tagline').textContent =
-    `Every remote posting open to Michigan whose title matches one of your ${termCount} search terms. ` +
-    'Nothing else is filtered out — rate the cards to teach the order.';
+    `Every remote posting open to Michigan carrying one of your ${termCount} search terms` +
+    (titles ? ` — ${titles} of them in the job title` : '') +
+    '. Nothing else is filtered out; rate the cards to teach the order.';
 }
 
 async function init() {
