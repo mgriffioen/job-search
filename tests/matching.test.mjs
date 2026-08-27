@@ -11,7 +11,7 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import { readFile } from 'node:fs/promises';
 
-import { matchTerms, relevanceOf, recencyOf, seniorityOf, evaluate } from '../scripts/lib/match.mjs';
+import { matchTerms, relevanceOf, recencyOf, seniorityOf, evaluate, looselyContains } from '../scripts/lib/match.mjs';
 import { buildBoard, countTerms, countMatchedIn } from '../scripts/fetch-jobs.mjs';
 import { normalizeJob, dedupeJobs, dedupeKey, isSameOrganisation, hostOf } from '../scripts/lib/normalize.mjs';
 import { evaluateLocation, detectWorkType } from '../scripts/lib/location.mjs';
@@ -444,4 +444,53 @@ test('the board records what it threw away, so the term list can be checked', ()
   assert.equal(built.unmatched.length, 1);
   assert.equal(built.unmatched[0].title, 'Registered Nurse');
   assert.ok(built.unmatched[0].company);
+});
+
+/* ---------------------------------------------------------------
+   A word slipped into the middle of the title
+
+   Job titles insert a word — Project, Quality, Marketing — as a matter of
+   routine, and a strict phrase match calls the result nothing at all. These
+   are the real misses that came back in the unmatched sample.
+   --------------------------------------------------------------- */
+
+test('a title with one word inserted into the term still matches', () => {
+  const result = evaluate(job({ title: 'Digital Content Project Specialist', tags: [], description: 'x' }), profile, NOW);
+  assert.ok(result, '"Digital Content Project Specialist" matched nothing');
+  assert.equal(result.matchedIn, 'title');
+  assert.equal(result.matchedTerm, 'digital content specialist');
+});
+
+test('a loose title match scores below an exact one', () => {
+  const exact = evaluate(job({ title: 'Digital Content Specialist', tags: [], description: 'x' }), profile, NOW);
+  const loose = evaluate(job({ title: 'Digital Content Project Specialist', tags: [], description: 'x' }), profile, NOW);
+  assert.ok(exact.relevance > loose.relevance);
+});
+
+test('the words must be in order and close together, not merely present', () => {
+  const norm = (s) => normalizeForMatch(s);
+  assert.ok(looselyContains(norm('Digital Content Project Specialist'), 'digital content specialist'));
+  assert.ok(looselyContains(norm('Content Quality Assurance Specialist'), 'content quality specialist'));
+
+  // Out of order, and far apart: not the same role.
+  assert.equal(looselyContains(norm('Specialist, Enterprise Content'), 'content specialist'), false);
+  assert.equal(
+    looselyContains(norm('Content Manager for Partner Programs and Field Enablement Specialist'), 'content specialist'),
+    false,
+    'a title with the words at opposite ends is not that role'
+  );
+});
+
+test('a one-word term is never loosened — there is nothing to loosen', () => {
+  assert.equal(looselyContains(normalizeForMatch('Video Editor'), 'editor'), false);
+});
+
+test('the vocabulary covers the roles the unmatched sample turned up', () => {
+  // Every one of these was a real posting the board threw away.
+  for (const term of ['content operations', 'curriculum writer', 'freelance writer', 'editorial operations']) {
+    assert.ok(profile.searchTerms.includes(term), `missing search term: ${term}`);
+  }
+  for (const title of ['Sr. Solutions Lead, Content Operations', 'K-5 ELA Curriculum Writer', 'Freelance Writer']) {
+    assert.ok(matchTerms(title, profile.searchTerms).length, `still no match for: ${title}`);
+  }
 });

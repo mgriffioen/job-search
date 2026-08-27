@@ -37,6 +37,8 @@ const clamp = (n, lo, hi) => Math.min(hi, Math.max(lo, n));
 
 /** What a match is worth when it is not in the title. */
 const TAG_RELEVANCE = 45;
+/** The most a title match with a word inserted into it may score. */
+const LOOSE_TITLE_MAX = 85;
 const BODY_RELEVANCE = 30;
 
 /**
@@ -50,6 +52,45 @@ const BODY_CHARS = 1800;
 function wordCount(normalized) {
   const trimmed = normalized.trim();
   return trimmed ? trimmed.split(' ').length : 0;
+}
+
+/**
+ * How far apart a term's words may drift and still be the same role.
+ *
+ * "Digital Content Project Specialist" is a `digital content specialist`; a
+ * strict phrase match says it is nothing at all. Job titles insert a word —
+ * Project, Quality, Marketing, Senior — as a matter of routine, and refusing
+ * those costs real postings.
+ *
+ * Two is the whole allowance, and the words must still appear IN ORDER, so
+ * this stays a near-miss on the phrase rather than a bag of words: it accepts
+ * "Digital Content Project Specialist" and still refuses a title that merely
+ * happens to contain "content" and "specialist" at opposite ends.
+ */
+const MAX_GAP_WORDS = 2;
+
+/**
+ * Whether a term's words appear in the title in order, within a tight window.
+ * Only used after an exact phrase match has already failed.
+ */
+export function looselyContains(normalizedTitle, term) {
+  const needle = normalizeForMatch(term).trim().split(' ').filter(Boolean);
+  if (needle.length < 2) return false;
+
+  const words = normalizedTitle.trim().split(' ').filter(Boolean);
+  let start = -1;
+  let at = 0;
+
+  for (let i = 0; i < words.length; i += 1) {
+    if (words[i] !== needle[at]) continue;
+    if (at === 0) start = i;
+    at += 1;
+    if (at === needle.length) {
+      // The span used must not exceed the phrase plus its allowance.
+      return i - start + 1 <= needle.length + MAX_GAP_WORDS;
+    }
+  }
+  return false;
 }
 
 /**
@@ -127,9 +168,23 @@ export function evaluate(job, profile, now = new Date()) {
   let matchedIn = 'title';
   let relevance = 0;
 
-  if (hits.length) {
-    relevance = relevanceOf(job.title, hits[0]);
+  if (!hits.length) {
+    // The title says the role but slipped a word into the middle of it.
+    // Capped below an exact phrase match, because it is less certain.
+    const normTitle = normalizeForMatch(job.title || '');
+    const loose = terms
+      .filter((term) => looselyContains(normTitle, term))
+      .map((term) => ({ term, words: wordCount(normalizeForMatch(term)) }))
+      .sort((a, b) => b.words - a.words || terms.indexOf(a.term) - terms.indexOf(b.term));
+    if (loose.length) {
+      hits = loose;
+      relevance = Math.min(relevanceOf(job.title, loose[0]), LOOSE_TITLE_MAX);
+    }
   } else {
+    relevance = relevanceOf(job.title, hits[0]);
+  }
+
+  if (!hits.length) {
     // The board's own categories for the posting. A one-word term is fine here:
     // a tag is a deliberate label, not prose.
     hits = matchTerms((job.tags || []).join(' , '), terms);

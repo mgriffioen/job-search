@@ -41,6 +41,13 @@ is not a worse job; it is a less certain match, and it sorts lower for that
 reason alone. **Best overall** blends that number with how recently the posting
 went up, so every title match sits above every description match.
 
+**A word may be slipped into the middle of a term.** "Digital Content Project
+Specialist" is a `digital content specialist`; titles insert Project, Quality or
+Marketing as a matter of routine. The term's words must still appear *in order*
+and within two words of their natural span, so this is a near-miss on the
+phrase and not a bag of words — a title with "content" and "specialist" at
+opposite ends is still not that role. A loosened match is capped at 85.
+
 **One-word terms only count in the title or the tags.** `proofreader` as a title
 is the job; any posting on earth can mention an editor in passing. Multi-word
 terms like `content quality specialist` may match anywhere — nothing says that
