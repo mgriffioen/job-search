@@ -1,6 +1,6 @@
 {
-  "generatedAt": "2026-08-29T12:39:01.556Z",
-  "durationMs": 48080,
+  "generatedAt": "2026-08-29T19:23:26.482Z",
+  "durationMs": 38390,
   "candidate": {
     "name": "Emily Griffioen",
     "headline": "Content & editorial QA — 10 years reviewing customer-facing marketing content",
@@ -148,13 +148,13 @@
     "maxAgeDays": 60
   },
   "counts": {
-    "fetched": 2552,
-    "unique": 1080,
-    "published": 67,
+    "fetched": 2571,
+    "unique": 1162,
+    "published": 68,
     "dropped": {
-      "location": 387,
+      "location": 418,
       "stale": 2,
-      "noTermMatch": 624
+      "noTermMatch": 674
     }
   },
   "terms": {
@@ -162,34 +162,34 @@
     "proofreader": 8,
     "content specialist": 5,
     "copy editor": 4,
-    "content operations": 4,
     "content reviewer": 3,
     "marketing qa": 3,
-    "quality assurance analyst": 2,
-    "qa analyst": 2,
-    "content editor": 2,
+    "content editor": 3,
+    "content operations": 3,
+    "quality analyst": 2,
+    "copywriter": 2,
+    "quality specialist": 2,
     "managing editor": 2,
     "editorial manager": 2,
     "technical writer": 2,
     "content quality": 2,
     "quality assurance specialist": 1,
-    "quality assurance coordinator": 1,
+    "qa analyst": 1,
+    "email marketing specialist": 1,
     "digital content specialist": 1,
-    "quality analyst": 1,
     "campaign operations specialist": 1,
     "freelance writer": 1,
     "content developer": 1,
+    "editorial operations": 1,
     "qa reviewer": 1,
-    "quality specialist": 1,
     "content designer": 1,
     "content producer": 1,
-    "copywriter": 1,
-    "editorial operations": 1
+    "content writer": 1
   },
   "matchedIn": {
-    "title": 60,
-    "tags": 1,
-    "description": 6
+    "title": 59,
+    "tags": 5,
+    "description": 4
   },
   "unmatched": [
     {
@@ -233,22 +233,17 @@
       "source": "Adzuna"
     },
     {
-      "title": "Lawyer - Remote",
-      "company": "YO HR Consultancy",
-      "source": "Adzuna"
-    },
-    {
-      "title": "Law/Legal Expert - Remote",
-      "company": "YO HR Consultancy",
-      "source": "Adzuna"
-    },
-    {
-      "title": "Law/Legal Expert - Remote",
+      "title": "Attorney - Remote",
       "company": "YO AI Labs",
       "source": "Adzuna"
     },
     {
       "title": "Lawyer - Remote",
+      "company": "YO AI Labs",
+      "source": "Adzuna"
+    },
+    {
+      "title": "Law/Legal Expert - Remote",
       "company": "YO AI Labs",
       "source": "Adzuna"
     },
@@ -258,13 +253,18 @@
       "source": "Adzuna"
     },
     {
-      "title": "BigLaw lawyers - Remote",
+      "title": "Lawyer - Remote",
+      "company": "YO HR Consultancy",
+      "source": "Adzuna"
+    },
+    {
+      "title": "Law/Legal Expert - Remote",
       "company": "YO HR Consultancy",
       "source": "Adzuna"
     },
     {
       "title": "Associate Attorney - Remote",
-      "company": "YO HR Consultancy",
+      "company": "YO AI Labs",
       "source": "Adzuna"
     },
     {
@@ -273,8 +273,13 @@
       "source": "Adzuna"
     },
     {
+      "title": "BigLaw lawyers - Remote",
+      "company": "YO HR Consultancy",
+      "source": "Adzuna"
+    },
+    {
       "title": "Associate Attorney - Remote",
-      "company": "YO AI Labs",
+      "company": "YO HR Consultancy",
       "source": "Adzuna"
     },
     {
@@ -288,18 +293,8 @@
       "source": "Adzuna"
     },
     {
-      "title": "Vehicle Operations Logistics Specialist I (Manheim)",
-      "company": "Cox Enterprises",
-      "source": "Jooble"
-    },
-    {
       "title": "Senior Product Manager, Learning Content",
       "company": "TPR Education, LLC",
-      "source": "Jooble"
-    },
-    {
-      "title": "Senior Catalog Product Manager - Remote-First",
-      "company": "Parachute Health, LLC",
       "source": "Jooble"
     },
     {
@@ -313,8 +308,13 @@
       "source": "Jooble"
     },
     {
-      "title": "Construction Information Specialist",
-      "company": "Dodge-construction-network",
+      "title": "Information Security Engineer",
+      "company": "Oportun",
+      "source": "Jooble"
+    },
+    {
+      "title": "Information Security Engineer",
+      "company": "Moonpay",
       "source": "Jooble"
     },
     {
@@ -323,13 +323,8 @@
       "source": "Jooble"
     },
     {
-      "title": "Information Security Engineer",
-      "company": "Oportun",
-      "source": "Jooble"
-    },
-    {
-      "title": "Information Security Engineer",
-      "company": "Moonpay",
+      "title": "Construction Information Specialist",
+      "company": "Dodge-construction-network",
       "source": "Jooble"
     },
     {
@@ -343,11 +338,6 @@
       "source": "Jooble"
     },
     {
-      "title": "Director of Information Security",
-      "company": "Constructor",
-      "source": "Jooble"
-    },
-    {
       "title": "Manager of Information Security",
       "company": "Clasp",
       "source": "Jooble"
@@ -358,12 +348,12 @@
       "source": "Jooble"
     },
     {
-      "title": "Information Systems Security Officer",
-      "company": "General Dynamics Information Technology",
+      "title": "Director of Information Security",
+      "company": "Constructor",
       "source": "Jooble"
     },
     {
-      "title": "Information Security Analyst Principal",
+      "title": "Information Systems Security Officer",
       "company": "General Dynamics Information Technology",
       "source": "Jooble"
     },
@@ -373,8 +363,8 @@
       "source": "Jooble"
     },
     {
-      "title": "Remote (Senior) Information Security Architect (f/m/d)",
-      "company": "GLS Germany GmbH & Co. OHG",
+      "title": "Information Security Analyst II",
+      "company": "Salem Health Hospitals & Clinics",
       "source": "Jooble"
     },
     {
@@ -383,18 +373,23 @@
       "source": "Jooble"
     },
     {
-      "title": "(IND) Information Systems Engineer 1",
-      "company": "V R Della Infotech Inc",
+      "title": "Information Security Analyst Principal",
+      "company": "General Dynamics Information Technology",
       "source": "Jooble"
     },
     {
-      "title": "Information Security Analyst II",
-      "company": "Salem Health Hospitals & Clinics",
+      "title": "Remote (Senior) Information Security Architect (f/m/d)",
+      "company": "GLS Germany GmbH & Co. OHG",
       "source": "Jooble"
     },
     {
       "title": "Senior Information Technology (IT) Auditor",
       "company": "Port of Seattle",
+      "source": "Jooble"
+    },
+    {
+      "title": "Remote Security Analyst I, Information Technology",
+      "company": "Cision",
       "source": "Jooble"
     },
     {
@@ -408,11 +403,6 @@
       "source": "Jooble"
     },
     {
-      "title": "Email Marketing Assistant",
-      "company": "YES Communities",
-      "source": "Jooble"
-    },
-    {
       "title": "Project Manager III (Global Campaign Project Manager)",
       "company": "Expedite Technology Solutions",
       "source": "Jooble"
@@ -423,33 +413,18 @@
       "source": "Jooble"
     },
     {
-      "title": "Campaign Manager",
-      "company": "Virtual Vocations Inc",
-      "source": "Jooble"
-    },
-    {
       "title": "Remote Inbound CSR for Donor Campaigns",
       "company": "ACD Direct",
       "source": "Jooble"
     },
     {
-      "title": "Senior Quality Manager",
+      "title": "Campaign Manager",
       "company": "Virtual Vocations Inc",
       "source": "Jooble"
     },
     {
-      "title": "Remote Paid Search Marketing Manager: Growth & Optimization",
-      "company": "Overstock.Com",
-      "source": "Jooble"
-    },
-    {
-      "title": "Remote Senior Product Manager (Measurement)",
-      "company": "StackAdapt",
-      "source": "Jooble"
-    },
-    {
-      "title": "Integrated Marketing Program Manager",
-      "company": "HelloKindred",
+      "title": "Senior Quality Manager",
+      "company": "Virtual Vocations Inc",
       "source": "Jooble"
     },
     {
@@ -491,10 +466,35 @@
       "title": "Vice President, Technology & Digital Strategy",
       "company": "Shatterproof",
       "source": "Remotive"
+    },
+    {
+      "title": "Senior Data Engineer",
+      "company": "Lemon.io",
+      "source": "Remotive"
+    },
+    {
+      "title": "Head of Marketing & Communications",
+      "company": "garden3d",
+      "source": "Remotive"
+    },
+    {
+      "title": "Tech Lead Full-Stack Rails Engineer",
+      "company": "Mitre Media",
+      "source": "Remotive"
+    },
+    {
+      "title": "Face Deduplication Collection",
+      "company": "TELUS Digital",
+      "source": "Remotive"
+    },
+    {
+      "title": "Remote Office Assistant",
+      "company": "Coalition Technologies",
+      "source": "Remotive"
     }
   ],
-  "freshLast48h": 16,
-  "contract": 15,
+  "freshLast48h": 22,
+  "contract": 14,
   "sources": [
     {
       "id": "companyboards",
@@ -522,7 +522,7 @@
         "reserve": 12,
         "reason": "188 spendable across ~1 runs left — full budget available"
       },
-      "ms": 1
+      "ms": 0
     },
     {
       "id": "adzuna",
@@ -553,7 +553,7 @@
         "us-remote \"production editor\": 0 results (Adzuna reports 0 total matches)",
         "us-remote \"digital editor\": 0 results (Adzuna reports 0 total matches)"
       ],
-      "ms": 13116
+      "ms": 10379
     },
     {
       "id": "jooble",
@@ -561,7 +561,7 @@
       "status": "ok",
       "fetched": 200,
       "warnings": [],
-      "ms": 2167
+      "ms": 2171
     },
     {
       "id": "remotive",
@@ -569,7 +569,7 @@
       "status": "ok",
       "fetched": 912,
       "warnings": [],
-      "ms": 2232
+      "ms": 1954
     },
     {
       "id": "weworkremotely",
@@ -579,7 +579,7 @@
       "warnings": [
         "remote-marketing-jobs.rss: HTTP 301 Moved Permanently"
       ],
-      "ms": 1579
+      "ms": 1958
     },
     {
       "id": "himalayas",
@@ -587,19 +587,15 @@
       "status": "ok",
       "fetched": 240,
       "warnings": [],
-      "ms": 644
+      "ms": 668
     },
     {
       "id": "jobicy",
       "label": "Jobicy",
       "status": "ok",
-      "fetched": 358,
-      "warnings": [
-        "?count=50&geo=usa&tag=content%20reviewer: HTTP 429 Too Many Requests",
-        "?count=50&geo=usa&tag=content%20auditor: HTTP 429 Too Many Requests",
-        "?count=50&geo=usa&tag=quality%20editor: HTTP 429 Too Many Requests"
-      ],
-      "ms": 25934
+      "fetched": 377,
+      "warnings": [],
+      "ms": 18978
     },
     {
       "id": "remoteok",
@@ -607,7 +603,7 @@
       "status": "ok",
       "fetched": 100,
       "warnings": [],
-      "ms": 660
+      "ms": 565
     },
     {
       "id": "workingnomads",
@@ -615,7 +611,7 @@
       "status": "ok",
       "fetched": 44,
       "warnings": [],
-      "ms": 731
+      "ms": 756
     },
     {
       "id": "arbeitnow",
@@ -623,7 +619,7 @@
       "status": "ok",
       "fetched": 175,
       "warnings": [],
-      "ms": 258
+      "ms": 222
     }
   ]
 }
