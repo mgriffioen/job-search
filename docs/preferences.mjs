@@ -60,6 +60,42 @@ export const VERDICTS = {
 };
 
 /**
+ * The optional follow-up to 👎.
+ *
+ * "Not for me" tells you a posting was wrong. "Too much writing" tells you
+ * WHICH PART was wrong, and that is what lets a single rating generalise
+ * correctly instead of quietly marking down the employer and the search term
+ * for a fault that belonged to neither.
+ *
+ * `dimension` is the fact the reason generalises through; every one of these is
+ * a field the board actually publishes, so a reason can never be a promise the
+ * data cannot keep. A reason with a null dimension affects only this posting.
+ *
+ * "Wrong industry" is deliberately absent: this board carries no industry
+ * field, and a chip that silently did nothing would be worse than no chip.
+ */
+export const DOWN_REASONS = [
+  { id: 'writing', label: 'Too much writing', dimension: 'writing' },
+  { id: 'senior', label: 'Too senior', dimension: 'senior' },
+  { id: 'junior', label: 'Too junior', dimension: 'junior' },
+  { id: 'pay', label: 'Pay too low', dimension: 'pay' },
+  { id: 'flexible', label: 'Not flexible enough', dimension: 'flexible' },
+  { id: 'other', label: 'Other', dimension: null },
+];
+
+/**
+ * How much one saturated dimension is worth. Larger than a feature weight,
+ * because a reason is something she said rather than something inferred.
+ */
+const DIMENSION_WEIGHT = { writing: 3, senior: 4, junior: 4, flexible: 3 };
+
+/** A dimension stops accumulating after this many ratings name it. */
+const DIMENSION_SATURATION = 3;
+
+/** Flat penalty for a posting at or below pay she has already turned down. */
+const PAY_PENALTY = 5;
+
+/**
  * What each verdict may learn from.
  *
  * `shape` (full-time, part-time, contract, project) is protected outright:
@@ -116,6 +152,45 @@ const slug = (text) =>
     .replace(/^-+|-+$/g, '')
     .slice(0, 40);
 
+/**
+ * Stated pay as a comparable yearly figure, or null when the posting does not
+ * say. Hourly, weekly and monthly rates are annualised so "pay too low" learned
+ * from a contract rate still recognises a poorly-paid salaried role.
+ */
+export function annualisePay(text) {
+  if (!text) return null;
+  const raw = String(text).toLowerCase();
+  const numbers = [...raw.matchAll(/\d[\d,]*(?:\.\d+)?/g)]
+    .map((m) => Number(m[0].replace(/,/g, '')))
+    .filter((n) => Number.isFinite(n) && n > 0);
+  if (!numbers.length) return null;
+
+  // The top of a range: a posting offering "$40,000 – $90,000" has not offered
+  // $40,000, and judging it on the bottom would reject it for a number nobody
+  // put on the table.
+  const top = Math.max(...numbers);
+  if (/hour|hourly|\/\s*hr|per hr|an hour/.test(raw)) return Math.round(top * 2080);
+  if (/week/.test(raw)) return Math.round(top * 52);
+  if (/month/.test(raw)) return Math.round(top * 12);
+  // No unit stated: a figure under a few hundred can only be an hourly rate.
+  if (top < 400) return Math.round(top * 2080);
+  return Math.round(top);
+}
+
+/**
+ * The facts a reason generalises through, snapshotted with the rating so it
+ * outlives the posting.
+ */
+export function factsOf(job) {
+  return {
+    mode: job.mode || null,
+    seniority: job.seniority || null,
+    pay: annualisePay(job.salary),
+    // Contract, freelance and part-time work is what "flexible" means here.
+    flexible: (job.employmentTypes || []).some((type) => type === 'contract' || type === 'part-time'),
+  };
+}
+
 export function emptyPreferences() {
   return { version: 1, ratings: {} };
 }
@@ -130,8 +205,12 @@ export function normalisePreferences(raw) {
     if (!rating || !VERDICTS[rating.verdict]) continue;
     ratings[id] = {
       verdict: rating.verdict,
+      // Only a reason the current build knows about survives; an unrecognised
+      // one becomes a plain 👎 rather than a dimension nothing applies.
+      reason: DOWN_REASONS.some((r) => r.id === rating.reason) ? rating.reason : null,
       at: typeof rating.at === 'string' ? rating.at : new Date().toISOString(),
       features: Array.isArray(rating.features) ? rating.features.filter((f) => typeof f === 'string') : [],
+      facts: rating.facts && typeof rating.facts === 'object' ? rating.facts : {},
       title: typeof rating.title === 'string' ? rating.title : '',
       term: typeof rating.term === 'string' ? rating.term : '',
     };
@@ -162,17 +241,36 @@ export function featuresOf(job) {
   return features;
 }
 
-/** Records a verdict, replacing any previous one for that posting. */
-export function recordFeedback(preferences, job, verdict) {
+/**
+ * Records a verdict, replacing any previous one for that posting.
+ *
+ * The reason only means anything on a 👎: a 👍 has nothing to explain, and a 🚫
+ * already says what was wrong.
+ */
+export function recordFeedback(preferences, job, verdict, reason = null) {
   if (!VERDICTS[verdict]) return preferences;
   const next = normalisePreferences(preferences);
   next.ratings[job.id] = {
     verdict,
+    reason: verdict === 'down' && DOWN_REASONS.some((r) => r.id === reason) ? reason : null,
     at: new Date().toISOString(),
     features: featuresOf(job),
+    facts: factsOf(job),
     title: job.title || '',
     term: job.matchedTerm || '',
   };
+  return next;
+}
+
+/**
+ * Sets or clears the reason on a rating that already exists, without disturbing
+ * the verdict or its timestamp — pressing a chip is not re-rating the job.
+ */
+export function setReason(preferences, jobId, reason) {
+  const next = normalisePreferences(preferences);
+  const rating = next.ratings[jobId];
+  if (!rating || rating.verdict !== 'down') return next;
+  rating.reason = DOWN_REASONS.some((r) => r.id === reason) ? reason : null;
   return next;
 }
 
@@ -194,12 +292,28 @@ export function ratingFor(preferences, jobId) {
 export function buildModel(preferences) {
   const prefs = normalisePreferences(preferences);
   const features = Object.create(null);
+  const dimensions = Object.create(null);
   const counts = { up: 0, down: 0, wrong: 0, total: 0 };
+  let payFloor = null;
 
   for (const rating of Object.values(prefs.ratings)) {
     const verdict = VERDICTS[rating.verdict];
     counts[rating.verdict] += 1;
     counts.total += 1;
+
+    const reason = DOWN_REASONS.find((r) => r.id === rating.reason) || null;
+
+    /**
+     * A named reason REDIRECTS the blame rather than adding to it.
+     *
+     * "Too much writing" says the fault was the shape of the work, so the
+     * search term, the employer and the seniority should not also be marked
+     * down for it — otherwise saying WHY would punish a posting harder than
+     * saying nothing, which is the opposite of what the chips are for. The
+     * features still count for something, because the posting was still
+     * turned down.
+     */
+    const featureShare = reason?.dimension ? 0.4 : 1;
 
     for (const feature of rating.features) {
       /**
@@ -209,12 +323,28 @@ export function buildModel(preferences) {
        * model's conclusions forever.
        */
       if (!mayLearn(rating.verdict, feature.split(':')[0])) continue;
-      features[feature] = (features[feature] || 0) + verdict.weight;
+      features[feature] = (features[feature] || 0) + verdict.weight * featureShare;
+    }
+
+    if (reason?.dimension && reason.dimension !== 'pay') {
+      dimensions[reason.dimension] = (dimensions[reason.dimension] || 0) + 1;
+    }
+
+    /**
+     * The best pay she has actually turned down becomes the line: a posting
+     * offering that or less has been judged already. Charged directly rather
+     * than through a dimension count, because a floor is not something that
+     * gets more true the more often it is said.
+     */
+    if (reason?.dimension === 'pay' && rating.facts?.pay) {
+      payFloor = payFloor === null ? rating.facts.pay : Math.max(payFloor, rating.facts.pay);
     }
   }
 
   return {
     features,
+    dimensions,
+    payFloor,
     counts,
     confidence: Math.min(1, counts.total / CONFIDENCE_RATINGS),
   };
@@ -245,6 +375,7 @@ function describeFeature(feature, job) {
 export function adjustmentFor(job, model) {
   if (!model || !model.counts.total) return { points: 0, notes: [] };
 
+
   const contributions = [];
   const byKind = Object.create(null);
 
@@ -264,6 +395,38 @@ export function adjustmentFor(job, model) {
     points += clamp(total, -(KIND_CAP[kind] ?? 3), KIND_CAP[kind] ?? 3) * (model.confidence ?? 1);
   }
 
+  /**
+   * The reason chips, applied to this posting's own facts.
+   *
+   * Deliberately NOT scaled by confidence. The rest of the model is inference
+   * from categories and should whisper until there is evidence; "too senior" is
+   * a statement, and applies in full the first time she makes it.
+   */
+  const facts = factsOf(job);
+  const named = [];
+  const dimension = (id) => Math.min(model.dimensions?.[id] || 0, DIMENSION_SATURATION);
+
+  if (facts.mode === 'writing' && dimension('writing')) {
+    points -= DIMENSION_WEIGHT.writing * dimension('writing');
+    named.push('you have said “too much writing” before, and this role makes content rather than checks it');
+  }
+  if (facts.seniority === 'senior' && dimension('senior')) {
+    points -= DIMENSION_WEIGHT.senior * dimension('senior');
+    named.push('you have passed on senior-titled roles');
+  }
+  if (facts.seniority === 'junior' && dimension('junior')) {
+    points -= DIMENSION_WEIGHT.junior * dimension('junior');
+    named.push('you have passed on junior-titled roles');
+  }
+  if (!facts.flexible && dimension('flexible')) {
+    points -= DIMENSION_WEIGHT.flexible * dimension('flexible');
+    named.push('you have passed on roles with no flexibility on offer');
+  }
+  if (model.payFloor && facts.pay && facts.pay <= model.payFloor) {
+    points -= PAY_PENALTY;
+    named.push('the stated pay is at or below what you have turned down');
+  }
+
   const total = clamp(Math.round(points * 10) / 10, -MAX_ADJUSTMENT, MAX_ADJUSTMENT);
 
   // A fraction of a point is not a preference, it is arithmetic bleeding from
@@ -276,13 +439,14 @@ export function adjustmentFor(job, model) {
    * Two features can describe themselves the same way, and a note that says the
    * same thing twice reads as a bug. Name each category once, strongest first.
    */
-  const notes = [];
-  const named = new Set();
+  // The stated reasons lead: she said those, the categories were inferred.
+  const notes = [...named];
+  const seen = new Set();
   for (const contribution of contributions) {
-    if (notes.length >= 2) break;
+    if (notes.length >= 3) break;
     const name = describeFeature(contribution.feature, job);
-    if (!name || named.has(name)) continue;
-    named.add(name);
+    if (!name || seen.has(name)) continue;
+    seen.add(name);
     notes.push(
       contribution.value > 0
         ? `you rated other “${name}” postings up`
@@ -290,7 +454,7 @@ export function adjustmentFor(job, model) {
     );
   }
 
-  return { points: total, notes };
+  return { points: total, notes: notes.slice(0, 3) };
 }
 
 /** One-line summary for the filter panel. */

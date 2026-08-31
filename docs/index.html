@@ -8,7 +8,7 @@
 <meta name="theme-color" content="#0f172a">
 <title>Emily's Job Board</title>
 <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🔎</text></svg>">
-<link rel="stylesheet" href="styles.css?v=bc157ac204">
+<link rel="stylesheet" href="styles.css?v=580fdea3b9">
 </head>
 <body>
 
@@ -217,6 +217,14 @@
         <button type="button" class="vote vote--stop" data-verdict="wrong" aria-label="Wrong kind of work" title="Hide this and push everything that matched the same term well down.">🚫 <span>Wrong kind of work</span></button>
       </div>
 
+      <!-- Appears after 👎. "Not for me" says a posting was wrong; the reason
+           says which part, and that is what lets one rating generalise instead
+           of marking down the employer for a fault that was not theirs. -->
+      <div class="reasons" data-reason-picker hidden>
+        <span class="reasons__lead">Why? <span class="hint">(optional — it makes the lesson more precise)</span></span>
+        <div class="reasons__chips" data-reason-chips></div>
+      </div>
+
       <label class="note">
         <span class="note__label">Notes</span>
         <textarea data-note rows="2" placeholder="Contact name, follow-up date, tailored résumé version…"></textarea>
@@ -225,6 +233,6 @@
   </article>
 </template>
 
-<script src="app.js?v=baffb09685" type="module"></script>
+<script src="app.js?v=2b27bdaddc" type="module"></script>
 </body>
 </html>

@@ -144,6 +144,19 @@ export function recencyOf(postedAt, ranking, now = new Date()) {
 }
 
 /**
+ * Whether the matched term describes making content or checking it.
+ *
+ * Not a filter and not part of the score — it is what lets the "Too much
+ * writing" reason under a 👎 generalise past the one posting it was said on.
+ * Anything not listed as writing is treated as review work, because that is the
+ * safer mistake: calling a proofreading job "writing" would teach the wrong
+ * lesson, while missing one merely teaches less.
+ */
+export function modeOf(term, writingTerms = []) {
+  return writingTerms.includes(term) ? 'writing' : 'reviewing';
+}
+
+/**
  * Coarse seniority from the title alone. Not used for filtering — it is one of
  * the things a 👎 can learn from, so that "too senior" generalises past the one
  * posting it was said on.
@@ -219,6 +232,8 @@ export function evaluate(job, profile, now = new Date()) {
     ageDays: recency.ageDays,
     ageAssumed: recency.assumed,
     seniority: seniorityOf(job.title),
+    // Making content, or checking it. Carried so a rating can learn from it.
+    mode: modeOf(hits[0].term, profile.writingTerms),
     rank,
   };
 }

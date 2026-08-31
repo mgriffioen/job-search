@@ -12,6 +12,7 @@
  */
 
 import {
+  DOWN_REASONS,
   adjustmentFor,
   buildModel,
   clearFeedback,
@@ -19,8 +20,9 @@ import {
   normalisePreferences,
   ratingFor,
   recordFeedback,
+  setReason,
   summarise,
-} from './preferences.mjs?v=c07dd4b1dc';
+} from './preferences.mjs?v=76ea5d2684';
 
 const STORE_KEY = 'emily-job-board:v1';
 const PREFS_KEY = 'emily-job-board:prefs:v1';
@@ -311,10 +313,39 @@ function renderCard(job) {
     button.classList.toggle('is-on', rating?.verdict === button.dataset.verdict);
   }
 
+  renderReasons(node, rating);
+
   const note = $('[data-note]', node);
   note.value = state.store.notes[job.id] || '';
 
   return node;
+}
+
+/**
+ * The reason chips. Only shown on a card carrying a 👎 — a 👍 has nothing to
+ * explain, and a 🚫 has already said what was wrong.
+ */
+function renderReasons(node, rating) {
+  const picker = $('[data-reason-picker]', node);
+  if (!rating || rating.verdict !== 'down') {
+    picker.hidden = true;
+    return;
+  }
+
+  picker.hidden = false;
+  const chips = $('[data-reason-chips]', picker);
+  chips.replaceChildren();
+
+  for (const reason of DOWN_REASONS) {
+    const chip = document.createElement('button');
+    chip.type = 'button';
+    chip.className = 'reasonchip';
+    chip.dataset.reason = reason.id;
+    chip.textContent = reason.label;
+    chip.classList.toggle('is-on', rating.reason === reason.id);
+    chip.setAttribute('aria-pressed', String(rating.reason === reason.id));
+    chips.append(chip);
+  }
 }
 
 function render() {
@@ -412,6 +443,20 @@ function handleVerdict(verdict, id) {
     ? clearFeedback(state.ratings, id)
     : recordFeedback(state.ratings, job, verdict);
 
+  saveRatings();
+  refreshRanking();
+  render();
+}
+
+/**
+ * Sets or clears the reason, leaving the 👎 alone. Pressing the chip that is
+ * already on takes it back off, so a mis-tap is one click to undo.
+ */
+function handleReason(reasonId, id) {
+  const existing = ratingFor(state.ratings, id);
+  if (!existing || existing.verdict !== 'down') return;
+
+  state.ratings = setReason(state.ratings, id, existing.reason === reasonId ? null : reasonId);
   saveRatings();
   refreshRanking();
   render();
@@ -837,6 +882,12 @@ function wireEvents() {
     const vote = event.target.closest('.vote');
     if (vote) {
       handleVerdict(vote.dataset.verdict, card.dataset.id);
+      return;
+    }
+
+    const reason = event.target.closest('.reasonchip');
+    if (reason) {
+      handleReason(reason.dataset.reason, card.dataset.id);
       return;
     }
 
