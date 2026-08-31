@@ -1,6 +1,6 @@
 {
-  "generatedAt": "2026-08-31T18:08:23.599Z",
-  "durationMs": 43187,
+  "generatedAt": "2026-08-31T21:27:27.039Z",
+  "durationMs": 38776,
   "candidate": {
     "name": "Emily Griffioen",
     "headline": "Content & editorial QA — 10 years reviewing customer-facing marketing content",
@@ -148,34 +148,33 @@
     "maxAgeDays": 60
   },
   "counts": {
-    "fetched": 2773,
-    "unique": 1341,
-    "published": 118,
+    "fetched": 2746,
+    "unique": 1307,
+    "published": 106,
     "dropped": {
-      "location": 414,
+      "location": 411,
       "stale": 3,
-      "noTermMatch": 806
+      "noTermMatch": 787
     }
   },
   "terms": {
     "email marketing specialist": 38,
-    "editor": 13,
+    "editor": 11,
     "content specialist": 10,
     "marketing qa": 6,
-    "content quality": 5,
-    "content writer": 4,
     "quality assurance analyst": 4,
-    "content reviewer": 4,
-    "qa analyst": 3,
-    "content marketing specialist": 3,
     "quality assurance coordinator": 3,
+    "content reviewer": 3,
     "curriculum writer": 3,
+    "quality specialist": 3,
+    "qa analyst": 2,
+    "content marketing specialist": 2,
     "copywriter": 2,
-    "quality specialist": 2,
+    "content writer": 2,
     "quality assurance specialist": 2,
     "technical writer": 2,
+    "content quality": 2,
     "content operations": 2,
-    "technical editor": 1,
     "digital content specialist": 1,
     "quality analyst": 1,
     "freelance writer": 1,
@@ -183,15 +182,13 @@
     "content developer": 1,
     "e-commerce content specialist": 1,
     "content designer": 1,
-    "documentation specialist": 1,
-    "curriculum developer": 1,
     "content producer": 1,
     "copy editor": 1
   },
   "matchedIn": {
-    "title": 102,
-    "tags": 3,
-    "description": 13
+    "title": 95,
+    "tags": 1,
+    "description": 10
   },
   "unmatched": [
     {
@@ -215,16 +212,6 @@
       "source": "Adzuna"
     },
     {
-      "title": "Lawyer - Remote",
-      "company": "YO HR Consultancy",
-      "source": "Adzuna"
-    },
-    {
-      "title": "Law/Legal Expert - Remote",
-      "company": "YO HR Consultancy",
-      "source": "Adzuna"
-    },
-    {
       "title": "Law/Legal Expert - Remote",
       "company": "YO AI Labs",
       "source": "Adzuna"
@@ -245,12 +232,12 @@
       "source": "Adzuna"
     },
     {
-      "title": "BigLaw lawyers - Remote",
+      "title": "Lawyer - Remote",
       "company": "YO HR Consultancy",
       "source": "Adzuna"
     },
     {
-      "title": "Associate Attorney - Remote",
+      "title": "Law/Legal Expert - Remote",
       "company": "YO HR Consultancy",
       "source": "Adzuna"
     },
@@ -272,6 +259,11 @@
     {
       "title": "Digital Content Manager (Remote)",
       "company": "Cleo Consulting Inc.",
+      "source": "Adzuna"
+    },
+    {
+      "title": "100% Remote || K-12 || Digital Content Manager & Vendor Coordination Specialist",
+      "company": "Noblesoft Technologies Inc.",
       "source": "Adzuna"
     },
     {
@@ -405,13 +397,13 @@
       "source": "Jooble"
     },
     {
-      "title": "Remote Inbound CSR for Donor Campaigns",
-      "company": "ACD Direct",
+      "title": "Campaign Manager",
+      "company": "Virtual Vocations Inc",
       "source": "Jooble"
     },
     {
-      "title": "Campaign Manager",
-      "company": "Virtual Vocations Inc",
+      "title": "Remote Inbound CSR for Donor Campaigns",
+      "company": "ACD Direct",
       "source": "Jooble"
     },
     {
@@ -442,6 +434,11 @@
     {
       "title": "Remote Marketing Manager, Events & Integrated Campaigns",
       "company": "K1X, Inc.",
+      "source": "Jooble"
+    },
+    {
+      "title": "History and Political Science Assessment Author",
+      "company": "SaidGig",
       "source": "Jooble"
     },
     {
@@ -495,11 +492,11 @@
       "source": "Remotive"
     }
   ],
-  "freshLast48h": 22,
-  "contract": 54,
+  "freshLast48h": 12,
+  "contract": 49,
   "modes": {
-    "writing": 58,
-    "reviewing": 60
+    "writing": 54,
+    "reviewing": 52
   },
   "sources": [
     {
@@ -523,10 +520,10 @@
         "resetAt": "2026-08-27T15:52:25.507Z"
       },
       "budget": {
-        "allowed": 0,
+        "allowed": 3,
         "spent": 0,
         "reserve": 12,
-        "reason": "not a scheduled run — holding the metered quota for the next one"
+        "reason": "188 spendable across ~1 runs left — full budget available"
       },
       "ms": 1
     },
@@ -534,7 +531,7 @@
       "id": "adzuna",
       "label": "Adzuna",
       "status": "ok",
-      "fetched": 317,
+      "fetched": 318,
       "warnings": [
         "michigan-remote \"copyediting\": 0 results (Adzuna reports 0 total matches)",
         "michigan-remote \"content reviewer\": 0 results (Adzuna reports 0 total matches)",
@@ -560,7 +557,7 @@
         "us-remote \"catalog quality\": 0 results (Adzuna reports 0 total matches)",
         "us-remote \"campaign quality\": 0 results (Adzuna reports 0 total matches)"
       ],
-      "ms": 10037
+      "ms": 13561
     },
     {
       "id": "jooble",
@@ -568,7 +565,7 @@
       "status": "ok",
       "fetched": 200,
       "warnings": [],
-      "ms": 2440
+      "ms": 2490
     },
     {
       "id": "remotive",
@@ -576,7 +573,7 @@
       "status": "ok",
       "fetched": 912,
       "warnings": [],
-      "ms": 1632
+      "ms": 1577
     },
     {
       "id": "weworkremotely",
@@ -586,7 +583,7 @@
       "warnings": [
         "remote-marketing-jobs.rss: HTTP 301 Moved Permanently"
       ],
-      "ms": 1819
+      "ms": 904
     },
     {
       "id": "himalayas",
@@ -594,15 +591,17 @@
       "status": "ok",
       "fetched": 240,
       "warnings": [],
-      "ms": 579
+      "ms": 566
     },
     {
       "id": "jobicy",
       "label": "Jobicy",
       "status": "ok",
-      "fetched": 556,
-      "warnings": [],
-      "ms": 23470
+      "fetched": 528,
+      "warnings": [
+        "?count=50&geo=usa&tag=content%20integrity: HTTP 429 Too Many Requests"
+      ],
+      "ms": 17530
     },
     {
       "id": "remoteok",
@@ -610,7 +609,7 @@
       "status": "ok",
       "fetched": 100,
       "warnings": [],
-      "ms": 871
+      "ms": 593
     },
     {
       "id": "workingnomads",
@@ -618,7 +617,7 @@
       "status": "ok",
       "fetched": 45,
       "warnings": [],
-      "ms": 1206
+      "ms": 499
     },
     {
       "id": "arbeitnow",
@@ -626,7 +625,7 @@
       "status": "ok",
       "fetched": 175,
       "warnings": [],
-      "ms": 261
+      "ms": 224
     }
   ]
 }
