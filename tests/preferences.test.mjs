@@ -12,7 +12,11 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 
 import {
+  DOWN_REASONS,
   MAX_ADJUSTMENT,
+  annualisePay,
+  factsOf,
+  setReason,
   adjustmentFor,
   buildModel,
   clearFeedback,
@@ -198,7 +202,7 @@ test('a moved card says which category taught the move', () => {
 test('a note never says the same thing twice', () => {
   const { notes } = adjustmentFor(job(), buildModel(rateMany(emptyPreferences(), job(), 'up', 5)));
   assert.equal(new Set(notes).size, notes.length);
-  assert.ok(notes.length <= 2, 'a note listing every category explains nothing');
+  assert.ok(notes.length <= 3, 'a note listing every category explains nothing');
 });
 
 test('the summary counts the ratings honestly', () => {
@@ -244,4 +248,178 @@ test('normalising is stable, so an export can be re-imported unchanged', () => {
   const round = normalisePreferences(JSON.parse(JSON.stringify(prefs)));
   assert.deepEqual(round, normalisePreferences(round));
   assert.equal(ratingFor(round, 'test:1').verdict, 'up');
+});
+
+/* ---------------------------------------------------------------
+   The "why" behind a 👎
+
+   "Not for me" says a posting was wrong. The reason says which part, and that
+   is the whole point: it lets one rating generalise correctly instead of
+   quietly marking down the employer and the search term for a fault that
+   belonged to neither.
+   --------------------------------------------------------------- */
+
+test('every reason generalises through a fact the board actually publishes', () => {
+  const facts = factsOf(job({ salary: '$50,000 – $60,000', seniority: 'senior', mode: 'writing' }));
+  for (const reason of DOWN_REASONS) {
+    if (!reason.dimension) continue;
+    const known = ['writing', 'senior', 'junior', 'pay', 'flexible'];
+    assert.ok(known.includes(reason.dimension), `${reason.id} generalises through nothing`);
+  }
+  assert.equal(facts.mode, 'writing');
+  assert.equal(facts.seniority, 'senior');
+  assert.equal(facts.pay, 60000);
+});
+
+test('a reason is only kept on a 👎', () => {
+  const up = recordFeedback(emptyPreferences(), job(), 'up', 'writing');
+  assert.equal(ratingFor(up, 'test:1').reason, null);
+  const down = recordFeedback(emptyPreferences(), job(), 'down', 'writing');
+  assert.equal(ratingFor(down, 'test:1').reason, 'writing');
+});
+
+test('an unrecognised reason becomes a plain 👎 rather than a dead dimension', () => {
+  const prefs = recordFeedback(emptyPreferences(), job(), 'down', 'astrology');
+  assert.equal(ratingFor(prefs, 'test:1').reason, null);
+});
+
+test('setting a reason does not disturb the verdict or re-date the rating', () => {
+  const prefs = recordFeedback(emptyPreferences(), job(), 'down');
+  const at = ratingFor(prefs, 'test:1').at;
+  const withReason = setReason(prefs, 'test:1', 'senior');
+  assert.equal(ratingFor(withReason, 'test:1').verdict, 'down');
+  assert.equal(ratingFor(withReason, 'test:1').reason, 'senior');
+  assert.equal(ratingFor(withReason, 'test:1').at, at);
+});
+
+test('a reason can be taken back off without losing the 👎', () => {
+  const prefs = setReason(recordFeedback(emptyPreferences(), job(), 'down', 'senior'), 'test:1', null);
+  assert.equal(ratingFor(prefs, 'test:1').verdict, 'down');
+  assert.equal(ratingFor(prefs, 'test:1').reason, null);
+});
+
+test('a reason cannot be attached to a 👍 after the fact', () => {
+  const prefs = setReason(recordFeedback(emptyPreferences(), job(), 'up'), 'test:1', 'senior');
+  assert.equal(ratingFor(prefs, 'test:1').reason ?? null, null);
+});
+
+test('SAYING WHY NEVER PUNISHES HARDER THAN SAYING NOTHING', () => {
+  // The reason redirects blame; it does not add to it. If naming the fault cost
+  // the posting more than staying silent, the chips would be a trap.
+  const writer = job({ mode: 'writing' });
+  const silent = adjustmentFor(writer, buildModel(rateMany(emptyPreferences(), writer, 'down', 3)));
+
+  let named = emptyPreferences();
+  for (let i = 0; i < 3; i += 1) {
+    named = recordFeedback(named, { ...writer, id: `w:${i}` }, 'down', 'writing');
+  }
+  const explained = adjustmentFor(writer, buildModel(named));
+
+  assert.ok(explained.points <= 0 && silent.points <= 0);
+  assert.ok(
+    Math.abs(explained.points) <= Math.abs(silent.points) + 6,
+    `naming the reason cost ${explained.points} against ${silent.points} for saying nothing`
+  );
+});
+
+test('"too much writing" moves writing roles and leaves reviewing ones alone', () => {
+  let prefs = emptyPreferences();
+  for (let i = 0; i < 3; i += 1) {
+    prefs = recordFeedback(prefs, { ...job({ mode: 'writing' }), id: `w:${i}`, company: `Co ${i}` }, 'down', 'writing');
+  }
+  const model = buildModel(prefs);
+
+  const anotherWriter = job({ id: 'w:new', title: 'Staff Writer', company: 'Elsewhere', mode: 'writing', matchedTerms: ['staff writer'], matchedTerm: 'staff writer' });
+  const reviewer = job({ id: 'r:new', title: 'Proofreader', company: 'Elsewhere', mode: 'reviewing', matchedTerms: ['proofreader'], matchedTerm: 'proofreader' });
+
+  assert.ok(adjustmentFor(anotherWriter, model).points < 0, 'a different writing role was not moved');
+  assert.equal(adjustmentFor(reviewer, model).points, 0, 'a reviewing role was punished for writing');
+});
+
+test('"too senior" learns the seniority and not the search term', () => {
+  let prefs = emptyPreferences();
+  for (let i = 0; i < 3; i += 1) {
+    prefs = recordFeedback(prefs, { ...job({ seniority: 'senior' }), id: `s:${i}`, company: `Co ${i}` }, 'down', 'senior');
+  }
+  const model = buildModel(prefs);
+
+  const unrelated = { company: 'Elsewhere', matchedTerm: 'proofreader', matchedTerms: ['proofreader'] };
+  const senior = job({ id: 's:new', ...unrelated, seniority: 'senior' });
+  const mid = job({ id: 'm:new', ...unrelated, seniority: 'mid' });
+  assert.ok(adjustmentFor(senior, model).points < adjustmentFor(mid, model).points);
+});
+
+test('a stated reason applies in full the first time, unlike an inference', () => {
+  // One 👎 is a data point and whispers. One "too senior" is a statement.
+  const senior = job({ seniority: 'senior' });
+  const bare = adjustmentFor(senior, buildModel(recordFeedback(emptyPreferences(), job({ id: 'x', seniority: 'senior' }), 'down')));
+  const stated = adjustmentFor(senior, buildModel(recordFeedback(emptyPreferences(), job({ id: 'x', seniority: 'senior' }), 'down', 'senior')));
+  assert.ok(Math.abs(stated.points) > Math.abs(bare.points));
+});
+
+test('"pay too low" sets a floor, and the floor is the best pay turned down', () => {
+  let prefs = recordFeedback(emptyPreferences(), job({ id: 'p1', salary: '$40,000' }), 'down', 'pay');
+  prefs = recordFeedback(prefs, job({ id: 'p2', salary: '$55,000' }), 'down', 'pay');
+  const model = buildModel(prefs);
+  assert.equal(model.payFloor, 55000);
+
+  const unrelated = { company: 'Elsewhere', matchedTerm: 'proofreader', matchedTerms: ['proofreader'] };
+  const below = job({ id: 'p3', ...unrelated, salary: '$50,000' });
+  const above = job({ id: 'p4', ...unrelated, salary: '$95,000' });
+  assert.ok(adjustmentFor(below, model).points < 0);
+  assert.equal(adjustmentFor(above, model).points, 0);
+});
+
+test('pay is annualised so an hourly rate is comparable with a salary', () => {
+  assert.equal(annualisePay('$30/hr'), 62400);
+  assert.equal(annualisePay('$1,500 per week'), 78000);
+  assert.equal(annualisePay('$8,000 a month'), 96000);
+  assert.equal(annualisePay('$75,000 – $82,000'), 82000, 'a range is judged on its top, not its bottom');
+  assert.equal(annualisePay('Competitive'), null);
+  assert.equal(annualisePay(null), null);
+});
+
+test('"not flexible" moves full-time-only roles and not contract ones', () => {
+  let prefs = emptyPreferences();
+  for (let i = 0; i < 3; i += 1) {
+    prefs = recordFeedback(prefs, { ...job(), id: `f:${i}`, company: `Co ${i}`, employmentTypes: ['full-time'] }, 'down', 'flexible');
+  }
+  const model = buildModel(prefs);
+
+  const unrelated = { company: 'Elsewhere', matchedTerm: 'proofreader', matchedTerms: ['proofreader'] };
+  const rigid = job({ id: 'f:new', ...unrelated, employmentTypes: ['full-time'] });
+  const flexible = job({ id: 'c:new', ...unrelated, employmentTypes: ['contract'] });
+  assert.ok(adjustmentFor(rigid, model).points < 0);
+  assert.equal(adjustmentFor(flexible, model).points, 0);
+});
+
+test('a stated reason is explained on the card before the inferred categories', () => {
+  let prefs = emptyPreferences();
+  for (let i = 0; i < 3; i += 1) {
+    prefs = recordFeedback(prefs, { ...job({ seniority: 'senior' }), id: `s:${i}` }, 'down', 'senior');
+  }
+  const { notes } = adjustmentFor(job({ seniority: 'senior' }), buildModel(prefs));
+  assert.ok(notes.length);
+  assert.match(notes[0], /senior/, 'the reason she gave should lead the explanation');
+});
+
+test('the cap still holds once reasons are stacked on top of categories', () => {
+  let prefs = emptyPreferences();
+  const nasty = job({ mode: 'writing', seniority: 'senior', employmentTypes: ['full-time'], salary: '$30,000' });
+  for (let i = 0; i < 12; i += 1) {
+    prefs = recordFeedback(prefs, { ...nasty, id: `n:${i}` }, 'down', ['writing', 'senior', 'flexible', 'pay'][i % 4]);
+  }
+  const { points } = adjustmentFor(nasty, buildModel(prefs));
+  assert.ok(points >= -MAX_ADJUSTMENT, `${points} is past the cap`);
+});
+
+test('old ratings with no reason still work', () => {
+  const legacy = normalisePreferences({
+    version: 1,
+    ratings: { a: { verdict: 'down', features: ['term:proofreader'], at: '2026-01-01T00:00:00Z' } },
+  });
+  const model = buildModel(legacy);
+  assert.equal(model.counts.down, 1);
+  assert.equal(model.payFloor, null);
+  assert.equal(Object.keys(model.dimensions).length, 0);
 });

@@ -187,6 +187,26 @@
     "proofreading"
   ],
 
+  "_writingTermsComment": "Which search terms describe work that MAKES content rather than checks it. NOTHING is filtered on this — it exists only so the 'Too much writing' reason under 👎 can generalise past the one posting it was said on. A term not listed here is treated as review work, which is the safer default: mislabelling a proofreading job as writing would teach the wrong lesson, while missing one merely teaches less.",
+  "writingTerms": [
+    "content writer",
+    "copywriter",
+    "marketing copywriter",
+    "freelance writer",
+    "staff writer",
+    "technical writer",
+    "documentation writer",
+    "proposal writer",
+    "curriculum writer",
+    "curriculum developer",
+    "content developer",
+    "content designer",
+    "content producer",
+    "email marketing specialist",
+    "content marketing specialist",
+    "digital content specialist"
+  ],
+
   "search": {
     "_comment": "Nothing here filters on quality — only on reach and freshness.",
     "_perRunComment": "How much of the vocabulary each run actually asks the boards about. These were set when the list was 77 terms and a run took seconds; at 16 terms per run a 129-term list took four and a half days to cycle, so on any given day the board had asked about an eighth of what it knows. Each term is one HTTP request to an unmetered source, and a run finishes in about two minutes against a twenty-minute timeout, so the ceiling here is patience rather than quota.",

@@ -1,6 +1,6 @@
 {
-  "generatedAt": "2026-08-31T13:41:45.443Z",
-  "durationMs": 39315,
+  "generatedAt": "2026-08-31T18:08:23.599Z",
+  "durationMs": 43187,
   "candidate": {
     "name": "Emily Griffioen",
     "headline": "Content & editorial QA — 10 years reviewing customer-facing marketing content",
@@ -148,32 +148,34 @@
     "maxAgeDays": 60
   },
   "counts": {
-    "fetched": 2771,
-    "unique": 1326,
-    "published": 112,
+    "fetched": 2773,
+    "unique": 1341,
+    "published": 118,
     "dropped": {
-      "location": 409,
+      "location": 414,
       "stale": 3,
-      "noTermMatch": 802
+      "noTermMatch": 806
     }
   },
   "terms": {
     "email marketing specialist": 38,
-    "editor": 14,
-    "content specialist": 11,
-    "marketing qa": 5,
+    "editor": 13,
+    "content specialist": 10,
+    "marketing qa": 6,
+    "content quality": 5,
+    "content writer": 4,
     "quality assurance analyst": 4,
+    "content reviewer": 4,
+    "qa analyst": 3,
+    "content marketing specialist": 3,
     "quality assurance coordinator": 3,
-    "content reviewer": 3,
-    "quality specialist": 3,
     "curriculum writer": 3,
-    "content writer": 3,
-    "content operations": 3,
-    "technical writer": 3,
-    "content marketing specialist": 2,
     "copywriter": 2,
+    "quality specialist": 2,
     "quality assurance specialist": 2,
-    "content quality": 2,
+    "technical writer": 2,
+    "content operations": 2,
+    "technical editor": 1,
     "digital content specialist": 1,
     "quality analyst": 1,
     "freelance writer": 1,
@@ -182,14 +184,14 @@
     "e-commerce content specialist": 1,
     "content designer": 1,
     "documentation specialist": 1,
-    "qa specialist": 1,
+    "curriculum developer": 1,
     "content producer": 1,
     "copy editor": 1
   },
   "matchedIn": {
-    "title": 97,
-    "tags": 5,
-    "description": 10
+    "title": 102,
+    "tags": 3,
+    "description": 13
   },
   "unmatched": [
     {
@@ -493,8 +495,12 @@
       "source": "Remotive"
     }
   ],
-  "freshLast48h": 18,
-  "contract": 51,
+  "freshLast48h": 22,
+  "contract": 54,
+  "modes": {
+    "writing": 58,
+    "reviewing": 60
+  },
   "sources": [
     {
       "id": "companyboards",
@@ -517,12 +523,12 @@
         "resetAt": "2026-08-27T15:52:25.507Z"
       },
       "budget": {
-        "allowed": 3,
+        "allowed": 0,
         "spent": 0,
         "reserve": 12,
-        "reason": "188 spendable across ~1 runs left — full budget available"
+        "reason": "not a scheduled run — holding the metered quota for the next one"
       },
-      "ms": 2
+      "ms": 1
     },
     {
       "id": "adzuna",
@@ -554,7 +560,7 @@
         "us-remote \"catalog quality\": 0 results (Adzuna reports 0 total matches)",
         "us-remote \"campaign quality\": 0 results (Adzuna reports 0 total matches)"
       ],
-      "ms": 9662
+      "ms": 10037
     },
     {
       "id": "jooble",
@@ -562,7 +568,7 @@
       "status": "ok",
       "fetched": 200,
       "warnings": [],
-      "ms": 2093
+      "ms": 2440
     },
     {
       "id": "remotive",
@@ -570,17 +576,17 @@
       "status": "ok",
       "fetched": 912,
       "warnings": [],
-      "ms": 1123
+      "ms": 1632
     },
     {
       "id": "weworkremotely",
       "label": "We Work Remotely",
       "status": "ok",
-      "fetched": 229,
+      "fetched": 230,
       "warnings": [
         "remote-marketing-jobs.rss: HTTP 301 Moved Permanently"
       ],
-      "ms": 1869
+      "ms": 1819
     },
     {
       "id": "himalayas",
@@ -588,7 +594,7 @@
       "status": "ok",
       "fetched": 240,
       "warnings": [],
-      "ms": 464
+      "ms": 579
     },
     {
       "id": "jobicy",
@@ -596,7 +602,7 @@
       "status": "ok",
       "fetched": 556,
       "warnings": [],
-      "ms": 21628
+      "ms": 23470
     },
     {
       "id": "remoteok",
@@ -604,15 +610,15 @@
       "status": "ok",
       "fetched": 100,
       "warnings": [],
-      "ms": 572
+      "ms": 871
     },
     {
       "id": "workingnomads",
       "label": "Working Nomads",
       "status": "ok",
-      "fetched": 44,
+      "fetched": 45,
       "warnings": [],
-      "ms": 858
+      "ms": 1206
     },
     {
       "id": "arbeitnow",
@@ -620,7 +626,7 @@
       "status": "ok",
       "fetched": 175,
       "warnings": [],
-      "ms": 147
+      "ms": 261
     }
   ]
 }

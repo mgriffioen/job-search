@@ -70,9 +70,39 @@ the buttons under each card are for:
 
 - **👍 More like this** — right kind of work. Learns from everything about it.
 - **👎 Not for me** — this posting is not wanted, but the category may be fine.
-  Learns cautiously.
+  Learns cautiously, and asks **why**.
 - **🚫 Wrong kind of work** — the term that found this should not have. Hides it,
   and learns hard about that term and that employer.
+
+### Saying why
+
+A 👎 opens a row of optional reasons. "Not for me" says a posting was wrong;
+the reason says *which part* was wrong, and that is what lets one rating
+generalise correctly instead of quietly marking down the employer and the
+search term for a fault that belonged to neither.
+
+| Reason | Generalises through |
+| --- | --- |
+| Too much writing | roles that **make** content rather than check it |
+| Too senior / Too junior | the seniority read from the job title |
+| Pay too low | the best pay you have turned down becomes a floor |
+| Not flexible enough | postings offering neither contract nor part-time |
+| Other | nothing — it affects only this posting |
+
+Two things make the chips safe to use. **Naming the fault never costs a posting
+more than staying silent**: a reason *redirects* blame rather than adding to it,
+so the search term and the employer absorb less of it, not more. And a reason is
+applied **in full from the first time you give it** — the rest of the model
+whispers until there is evidence behind it, because it is inferring; "too
+senior" is something you said.
+
+Which reason applies to a posting is decided from fields the board actually
+publishes, so a chip can never be a promise the data cannot keep. "Wrong
+industry" is deliberately absent for that reason: there is no industry field,
+and a chip that silently did nothing would be worse than no chip. Writing versus
+reviewing comes from `writingTerms` in `config/profile.json` — a term not listed
+there is treated as review work, because mislabelling a proofreading job as
+writing would teach the wrong lesson while missing one merely teaches less.
 
 Each rating stores the *categories* the posting belonged to, not the posting —
 the search term its title matched, the employer, the shape of the engagement,

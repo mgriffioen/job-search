@@ -69,6 +69,7 @@ async function main() {
   // make the ratings model treat one category as two.
   profile.searchTerms = [...new Set(profile.searchTerms)];
   profile.broadTerms = [...new Set(profile.broadTerms)];
+  profile.writingTerms = [...new Set(profile.writingTerms ?? [])];
 
   // The last run's meta.json is the only state that survives between runs, and
   // it is committed with every update. A metered source reads its own previous
@@ -161,6 +162,11 @@ async function main() {
     unmatched: built.unmatched,
     freshLast48h: built.jobs.filter((j) => j.ageDays !== null && !j.ageAssumed && j.ageDays <= 2).length,
     contract: built.jobs.filter((j) => j.employmentTypes.includes('contract')).length,
+    // How the published set splits between making content and checking it.
+    modes: {
+      writing: built.jobs.filter((j) => j.mode === 'writing').length,
+      reviewing: built.jobs.filter((j) => j.mode === 'reviewing').length,
+    },
     sources: sourceReports,
   };
 
@@ -231,6 +237,7 @@ export function buildBoard(deduped, profile, now = new Date()) {
       matchedTerm: result.matchedTerm,
       matchedTerms: result.matchedTerms,
       seniority: result.seniority,
+      mode: result.mode,
       recency: result.recency,
       ageDays: result.ageDays,
       ageAssumed: result.ageAssumed,
