@@ -1,6 +1,6 @@
 {
-  "generatedAt": "2026-09-01T21:12:46.168Z",
-  "durationMs": 42761,
+  "generatedAt": "2026-09-01T22:17:44.414Z",
+  "durationMs": 46195,
   "candidate": {
     "name": "Emily Griffioen",
     "headline": "Content & editorial QA — 10 years reviewing customer-facing marketing content",
@@ -148,20 +148,20 @@
     "maxAgeDays": 60
   },
   "counts": {
-    "fetched": 2747,
-    "unique": 1360,
-    "published": 126,
+    "fetched": 2754,
+    "unique": 1339,
+    "published": 127,
     "dropped": {
-      "location": 388,
-      "stale": 3,
-      "noTermMatch": 843
+      "location": 378,
+      "stale": 6,
+      "noTermMatch": 828
     }
   },
   "terms": {
-    "email marketing specialist": 34,
+    "email marketing specialist": 31,
     "editor": 18,
+    "content reviewer": 12,
     "content specialist": 12,
-    "content reviewer": 9,
     "copywriter": 9,
     "content writer": 7,
     "quality assurance analyst": 5,
@@ -181,6 +181,7 @@
     "qa specialist": 1,
     "freelance writer": 1,
     "copyediting specialist": 1,
+    "campaign operations specialist": 1,
     "freelance content editor": 1,
     "content developer": 1,
     "quality specialist": 1,
@@ -190,9 +191,9 @@
     "content producer": 1
   },
   "matchedIn": {
-    "title": 115,
+    "title": 119,
     "tags": 0,
-    "description": 11
+    "description": 8
   },
   "unmatched": [
     {
@@ -391,13 +392,13 @@
       "source": "Adzuna"
     },
     {
-      "title": "Field Marketing Specialist",
-      "company": "Spotfire",
+      "title": "English Generalist",
+      "company": "AuraOne Human Data",
       "source": "Jooble"
     },
     {
-      "title": "English Generalist",
-      "company": "AuraOne Human Data",
+      "title": "Field Marketing Specialist",
+      "company": "Spotfire",
       "source": "Jooble"
     },
     {
@@ -406,13 +407,13 @@
       "source": "Jooble"
     },
     {
-      "title": "Senior Content Marketing Manager",
-      "company": "Loopio",
+      "title": "Document Specialist",
+      "company": "Swyft Filings",
       "source": "Jooble"
     },
     {
-      "title": "Document Specialist",
-      "company": "Swyft Filings",
+      "title": "Senior Content Marketing Manager",
+      "company": "Loopio",
       "source": "Jooble"
     },
     {
@@ -471,8 +472,8 @@
       "source": "Jooble"
     },
     {
-      "title": "Global Client Executive",
-      "company": "NetApp",
+      "title": "Senior Product Manager, Learning Content",
+      "company": "TPR Education, LLC",
       "source": "Jooble"
     },
     {
@@ -496,26 +497,27 @@
       "source": "Remotive"
     }
   ],
-  "freshLast48h": 25,
-  "contract": 51,
+  "freshLast48h": 26,
+  "contract": 54,
   "modes": {
-    "writing": 59,
-    "reviewing": 67
+    "writing": 56,
+    "reviewing": 71
   },
-  "technical": 0,
+  "technical": 5,
   "industries": {
-    "Marketing & advertising": 18,
+    "Marketing & advertising": 15,
     "Healthcare & life sciences": 7,
     "Media & publishing": 5,
+    "Finance & insurance": 4,
     "Nonprofit & government": 3,
     "Travel & hospitality": 3,
-    "Finance & insurance": 3,
     "Education & training": 3,
     "Software & technology": 2,
     "Retail & e-commerce": 2,
     "Legal": 2,
     "Real estate & construction": 2,
     "Crypto & gaming": 1,
+    "AI training & data annotation": 1,
     "Staffing & recruiting": 1
   },
   "sources": [
@@ -577,7 +579,7 @@
         "us-remote \"assessment editor\": 0 results (Adzuna reports 0 total matches)",
         "us-remote \"curriculum editor\": 0 results (Adzuna reports 0 total matches)"
       ],
-      "ms": 13451
+      "ms": 11890
     },
     {
       "id": "jooble",
@@ -585,7 +587,7 @@
       "status": "ok",
       "fetched": 197,
       "warnings": [],
-      "ms": 2417
+      "ms": 1827
     },
     {
       "id": "remotive",
@@ -593,7 +595,7 @@
       "status": "ok",
       "fetched": 864,
       "warnings": [],
-      "ms": 1290
+      "ms": 2119
     },
     {
       "id": "weworkremotely",
@@ -603,7 +605,7 @@
       "warnings": [
         "remote-marketing-jobs.rss: HTTP 301 Moved Permanently"
       ],
-      "ms": 1106
+      "ms": 1506
     },
     {
       "id": "himalayas",
@@ -611,18 +613,15 @@
       "status": "ok",
       "fetched": 240,
       "warnings": [],
-      "ms": 518
+      "ms": 732
     },
     {
       "id": "jobicy",
       "label": "Jobicy",
       "status": "ok",
-      "fetched": 611,
-      "warnings": [
-        "?count=50&geo=usa&tag=curriculum%20editor: HTTP 429 Too Many Requests",
-        "?count=50&geo=usa&tag=freelance%20editor: HTTP 429 Too Many Requests"
-      ],
-      "ms": 21914
+      "fetched": 618,
+      "warnings": [],
+      "ms": 25263
     },
     {
       "id": "remoteok",
@@ -630,7 +629,7 @@
       "status": "ok",
       "fetched": 100,
       "warnings": [],
-      "ms": 455
+      "ms": 799
     },
     {
       "id": "workingnomads",
@@ -638,7 +637,7 @@
       "status": "ok",
       "fetched": 45,
       "warnings": [],
-      "ms": 452
+      "ms": 828
     },
     {
       "id": "arbeitnow",
@@ -646,7 +645,7 @@
       "status": "ok",
       "fetched": 175,
       "warnings": [],
-      "ms": 231
+      "ms": 280
     }
   ]
 }
