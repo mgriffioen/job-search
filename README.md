@@ -175,13 +175,14 @@ Repo **Actions → Update job listings → Run workflow**
 It takes a minute or two. When it finishes, the site has jobs on it. From then
 on it runs itself at roughly 2am and noon Eastern.
 
-> **Rename the default branch to `main`.** GitHub only registers scheduled and
-> manually-run workflows from the **default branch**, so whichever branch this
-> lands on needs to be it. **Settings → Branches → pencil icon → `main` →
-> Rename branch** does the whole job in one move: it repoints the default,
-> carries the Pages source across, retargets open pull requests, and leaves a
-> redirect so existing clones keep working. Creating a `main` branch by hand
-> instead leaves two trunks, one of them a decoy.
+> **The default branch is `main`, and it matters which branch that is.** GitHub
+> only registers scheduled and manually-run workflows from the **default
+> branch**, and GitHub Pages serves `/docs` from it — so the twice-daily update
+> and the site both follow it. If it ever needs changing again, use
+> **Settings → Branches → pencil icon → Rename branch**, which repoints the
+> default, carries the Pages source across, retargets open pull requests and
+> leaves a redirect so existing clones keep working. Creating a branch by hand
+> and hoping it takes over leaves two trunks, one of them a decoy.
 
 ---
 
