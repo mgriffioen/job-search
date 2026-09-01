@@ -13,6 +13,8 @@ import assert from 'node:assert/strict';
 
 import {
   DOWN_REASONS,
+  reasonApplies,
+  reasonUnavailableBecause,
   MAX_ADJUSTMENT,
   annualisePay,
   factsOf,
@@ -263,7 +265,7 @@ test('every reason generalises through a fact the board actually publishes', () 
   const facts = factsOf(job({ salary: '$50,000 – $60,000', seniority: 'senior', mode: 'writing' }));
   for (const reason of DOWN_REASONS) {
     if (!reason.dimension) continue;
-    const known = ['writing', 'senior', 'junior', 'pay', 'flexible'];
+    const known = ['writing', 'technical', 'industry', 'senior', 'junior', 'pay', 'flexible'];
     assert.ok(known.includes(reason.dimension), `${reason.id} generalises through nothing`);
   }
   assert.equal(facts.mode, 'writing');
@@ -272,9 +274,10 @@ test('every reason generalises through a fact the board actually publishes', () 
 });
 
 test('a reason is only kept on a 👎', () => {
-  const up = recordFeedback(emptyPreferences(), job(), 'up', 'writing');
+  const writer = job({ mode: 'writing' });
+  const up = recordFeedback(emptyPreferences(), writer, 'up', 'writing');
   assert.equal(ratingFor(up, 'test:1').reason, null);
-  const down = recordFeedback(emptyPreferences(), job(), 'down', 'writing');
+  const down = recordFeedback(emptyPreferences(), writer, 'down', 'writing');
   assert.equal(ratingFor(down, 'test:1').reason, 'writing');
 });
 
@@ -284,22 +287,25 @@ test('an unrecognised reason becomes a plain 👎 rather than a dead dimension',
 });
 
 test('setting a reason does not disturb the verdict or re-date the rating', () => {
-  const prefs = recordFeedback(emptyPreferences(), job(), 'down');
+  const senior = job({ seniority: 'senior' });
+  const prefs = recordFeedback(emptyPreferences(), senior, 'down');
   const at = ratingFor(prefs, 'test:1').at;
-  const withReason = setReason(prefs, 'test:1', 'senior');
+  const withReason = setReason(prefs, senior, 'senior');
   assert.equal(ratingFor(withReason, 'test:1').verdict, 'down');
   assert.equal(ratingFor(withReason, 'test:1').reason, 'senior');
   assert.equal(ratingFor(withReason, 'test:1').at, at);
 });
 
 test('a reason can be taken back off without losing the 👎', () => {
-  const prefs = setReason(recordFeedback(emptyPreferences(), job(), 'down', 'senior'), 'test:1', null);
+  const senior = job({ seniority: 'senior' });
+  const prefs = setReason(recordFeedback(emptyPreferences(), senior, 'down', 'senior'), senior, null);
   assert.equal(ratingFor(prefs, 'test:1').verdict, 'down');
   assert.equal(ratingFor(prefs, 'test:1').reason, null);
 });
 
 test('a reason cannot be attached to a 👍 after the fact', () => {
-  const prefs = setReason(recordFeedback(emptyPreferences(), job(), 'up'), 'test:1', 'senior');
+  const senior = job({ seniority: 'senior' });
+  const prefs = setReason(recordFeedback(emptyPreferences(), senior, 'up'), senior, 'senior');
   assert.equal(ratingFor(prefs, 'test:1').reason ?? null, null);
 });
 
@@ -422,4 +428,152 @@ test('old ratings with no reason still work', () => {
   assert.equal(model.counts.down, 1);
   assert.equal(model.payFloor, null);
   assert.equal(Object.keys(model.dimensions).length, 0);
+});
+
+/* ---------------------------------------------------------------
+   The two reasons that read the posting rather than its title
+   --------------------------------------------------------------- */
+
+test('the chips are the eight the board offers, in order', () => {
+  assert.deepEqual(
+    DOWN_REASONS.map((r) => r.label),
+    ['Too much writing', 'Too technical', 'Wrong industry', 'Too senior', 'Too junior', 'Poor pay', 'Not flexible', 'Other']
+  );
+});
+
+test('"too technical" moves technical postings and leaves the rest alone', () => {
+  let prefs = emptyPreferences();
+  for (let i = 0; i < 3; i += 1) {
+    prefs = recordFeedback(prefs, { ...job(), id: `t:${i}`, company: `Co ${i}`, technical: true }, 'down', 'technical');
+  }
+  const model = buildModel(prefs);
+
+  const unrelated = { company: 'Elsewhere', matchedTerm: 'proofreader', matchedTerms: ['proofreader'] };
+  const technical = job({ id: 't:new', ...unrelated, technical: true });
+  const plain = job({ id: 'p:new', ...unrelated, technical: false });
+
+  assert.ok(adjustmentFor(technical, model).points < 0);
+  assert.equal(adjustmentFor(plain, model).points, 0, 'a non-technical posting was punished for coding');
+});
+
+test('"wrong industry" blames the industry named, and only that one', () => {
+  let prefs = emptyPreferences();
+  for (let i = 0; i < 3; i += 1) {
+    prefs = recordFeedback(
+      prefs,
+      { ...job(), id: `i:${i}`, company: `Co ${i}`, industries: ['Legal'] },
+      'down',
+      'industry'
+    );
+  }
+  const model = buildModel(prefs);
+  assert.equal(model.blamedIndustries.Legal, 3);
+
+  const unrelated = { company: 'Elsewhere', matchedTerm: 'proofreader', matchedTerms: ['proofreader'] };
+  const legal = job({ id: 'l:new', ...unrelated, industries: ['Legal'] });
+  const other = job({ id: 'o:new', ...unrelated, industries: ['Retail & e-commerce'] });
+  const none = job({ id: 'n:new', ...unrelated, industries: [] });
+
+  assert.ok(adjustmentFor(legal, model).points < 0);
+  assert.equal(adjustmentFor(other, model).points, 0, 'an unrelated industry was punished');
+  assert.equal(adjustmentFor(none, model).points, 0, 'a posting with no industry was punished');
+});
+
+test('naming the industry beats saying nothing, or the chip would be pointless', () => {
+  // Charged directly rather than through the feature score, where the
+  // saturation clamp would have swallowed it.
+  const build = (reason) => {
+    let prefs = emptyPreferences();
+    for (let i = 0; i < 3; i += 1) {
+      prefs = recordFeedback(prefs, { ...job(), id: `x:${i}`, company: `Co ${i}`, industries: ['Legal'] }, 'down', reason);
+    }
+    return buildModel(prefs);
+  };
+  const unrelated = { company: 'Elsewhere', matchedTerm: 'proofreader', matchedTerms: ['proofreader'] };
+  const probe = job({ id: 'probe', ...unrelated, industries: ['Legal'] });
+
+  const named = adjustmentFor(probe, build('industry')).points;
+  const silent = adjustmentFor(probe, build(null)).points;
+  assert.ok(named < silent, `naming the industry (${named}) should reach further than silence (${silent})`);
+});
+
+test('a card says which industry it was marked down for', () => {
+  let prefs = emptyPreferences();
+  for (let i = 0; i < 3; i += 1) {
+    prefs = recordFeedback(prefs, { ...job(), id: `i:${i}`, industries: ['Healthcare & life sciences'] }, 'down', 'industry');
+  }
+  const { notes } = adjustmentFor(job({ industries: ['Healthcare & life sciences'] }), buildModel(prefs));
+  assert.ok(notes.some((n) => /healthcare/i.test(n)), notes.join(' | '));
+});
+
+test('a 👎 still learns the industry generally, even with no reason given', () => {
+  let prefs = emptyPreferences();
+  for (let i = 0; i < 3; i += 1) {
+    prefs = recordFeedback(prefs, { ...job(), id: `g:${i}`, company: `Co ${i}`, industries: ['Crypto & gaming'] }, 'down');
+  }
+  const model = buildModel(prefs);
+  assert.ok(model.features['industry:crypto-gaming'] < 0);
+});
+
+/* ---------------------------------------------------------------
+   A reason is only offered where it can say something
+
+   This is not tidiness. A reason REDIRECTS blame away from the search term and
+   the employer and onto the fact it names, so choosing one that names nothing
+   teaches LESS than a bare 👎 would have. A chip that quietly weakens the
+   lesson is worse than no chip.
+   --------------------------------------------------------------- */
+
+test('each reason applies only where the posting can answer for it', () => {
+  assert.equal(reasonApplies('writing', job({ mode: 'writing' })), true);
+  assert.equal(reasonApplies('writing', job({ mode: 'reviewing' })), false);
+
+  assert.equal(reasonApplies('technical', job({ technical: true })), true);
+  assert.equal(reasonApplies('technical', job({ technical: false })), false);
+
+  assert.equal(reasonApplies('industry', job({ industries: ['Legal'] })), true);
+  assert.equal(reasonApplies('industry', job({ industries: [] })), false);
+
+  assert.equal(reasonApplies('senior', job({ seniority: 'senior' })), true);
+  assert.equal(reasonApplies('senior', job({ seniority: 'mid' })), false);
+  assert.equal(reasonApplies('junior', job({ seniority: 'junior' })), true);
+
+  assert.equal(reasonApplies('pay', job({ salary: '$60,000' })), true);
+  assert.equal(reasonApplies('pay', job({ salary: null })), false);
+
+  assert.equal(reasonApplies('flexible', job({ employmentTypes: ['full-time'] })), true);
+  assert.equal(reasonApplies('flexible', job({ employmentTypes: ['contract'] })), false);
+
+  // "Other" names nothing on purpose, so it always applies.
+  assert.equal(reasonApplies('other', job()), true);
+});
+
+test('a reason that cannot apply is never stored, however it is set', () => {
+  const reviewer = job({ mode: 'reviewing' });
+  assert.equal(ratingFor(recordFeedback(emptyPreferences(), reviewer, 'down', 'writing'), 'test:1').reason, null);
+
+  const bare = recordFeedback(emptyPreferences(), reviewer, 'down');
+  assert.equal(ratingFor(setReason(bare, reviewer, 'writing'), 'test:1').reason, null);
+});
+
+test('an inapplicable reason never costs more than saying nothing', () => {
+  // The failure this guards against: the reason is stored, redirects blame away
+  // from the term and the employer, and then generalises through a fact that
+  // is not there — leaving the rating weaker than a plain 👎.
+  const reviewer = job({ mode: 'reviewing' });
+  const silent = adjustmentFor(reviewer, buildModel(rateMany(emptyPreferences(), reviewer, 'down', 3)));
+
+  let attempted = emptyPreferences();
+  for (let i = 0; i < 3; i += 1) {
+    attempted = recordFeedback(attempted, { ...reviewer, id: `r:${i}` }, 'down', 'writing');
+  }
+  assert.equal(adjustmentFor(reviewer, buildModel(attempted)).points, silent.points);
+});
+
+test('every reason explains why it is unavailable', () => {
+  for (const reason of DOWN_REASONS) {
+    if (reason.id === 'other') continue;
+    const why = reasonUnavailableBecause(reason.id, job());
+    assert.ok(typeof why === 'string' && why.length > 10, `${reason.id} gives no explanation`);
+  }
 });

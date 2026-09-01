@@ -207,6 +207,39 @@
     "digital content specialist"
   ],
 
+  "_signalsComment": "Vocabulary for the two 👎 reasons that have to read the posting rather than its title — 'Too technical' and 'Wrong industry'. NOTHING is filtered on either. They exist so those reasons can generalise past the one posting they were said on, and they are only ever consulted after she has pressed the chip.",
+
+  "_technicalComment": "Writing code AS THE JOB. Technical literacy is never counted here: HTML, CSS, templates, spreadsheets, Jira and CMSs are her daily tools and are deliberately absent from this list — which is what makes ONE hit enough. Every phrase below is decisive on its own, and half the sources return only a snippet, so requiring two found nothing at all: 122 of 126 published postings contained none of these and the four that did contained exactly one.",
+  "technicalPhrases": [
+    "selenium", "cypress", "playwright", "appium", "webdriver",
+    "test automation", "automated test", "automated tests", "automated testing",
+    "automation framework", "test framework", "test scripts", "sdet",
+    "unit test", "unit testing", "junit", "testng", "pytest",
+    "ci/cd", "jenkins", "api testing", "api automation", "rest assured", "postman",
+    "java", "python", "typescript", "javascript", "c#", ".net", "golang", "kubernetes",
+    "sql queries", "write code", "writing code", "scripting", "programming",
+    "software development", "object-oriented", "software engineer"
+  ],
+
+  "_industriesComment": "Which line of business a posting is in. Neutral rather than a list of favourites: every one of these has to be blameable, because 'Wrong industry' is only useful if it can name the industry she actually meant. A posting matching none of them simply carries no industry, and that chip does nothing to it.",
+  "industries": [
+    { "label": "Retail & e-commerce", "phrases": ["retail", "e-commerce", "ecommerce", "direct to consumer", "dtc", "merchandising", "omnichannel", "consumer brands", "shopify"] },
+    { "label": "Marketing & advertising", "phrases": ["digital marketing", "advertising", "marketing agency", "creative agency", "ad agency", "martech", "media buying", "brand studio"] },
+    { "label": "Education & training", "phrases": ["edtech", "curriculum", "higher education", "k-12", "school district", "university", "assessment", "learning company", "instructional design"] },
+    { "label": "Healthcare & life sciences", "phrases": ["healthcare", "health care", "clinical", "patient", "medical", "hospital", "pharmaceutical", "pharma", "biotech", "telehealth", "ehr"] },
+    { "label": "Finance & insurance", "phrases": ["fintech", "banking", "insurance", "lending", "mortgage", "investment", "accounting", "payments", "underwriting", "loan servicing"] },
+    { "label": "Legal", "phrases": ["law firm", "legal", "attorney", "litigation", "paralegal", "counsel"] },
+    { "label": "Software & technology", "phrases": ["saas", "software company", "developer platform", "cloud platform", "b2b software", "devops", "infrastructure"] },
+    { "label": "Media & publishing", "phrases": ["publisher", "publishing", "newsroom", "journalism", "magazine", "broadcast", "podcast", "editorial team"] },
+    { "label": "Nonprofit & government", "phrases": ["nonprofit", "non-profit", "ngo", "charity", "foundation", "public sector", "government", "municipal", "federal agency"] },
+    { "label": "Travel & hospitality", "phrases": ["travel", "hospitality", "hotel", "airline", "tourism", "restaurant"] },
+    { "label": "Crypto & gaming", "phrases": ["crypto", "blockchain", "web3", "nft", "igaming", "casino", "betting", "sportsbook", "gambling"] },
+    { "label": "Real estate & construction", "phrases": ["real estate", "property management", "construction", "architecture firm", "realtor"] },
+    { "label": "Manufacturing & logistics", "phrases": ["manufacturing", "logistics", "supply chain", "warehouse", "freight", "industrial"] },
+    { "label": "Staffing & recruiting", "phrases": ["staffing", "recruiting agency", "recruitment agency", "talent acquisition firm"] },
+    { "label": "AI training & data annotation", "phrases": ["ai trainer", "ai training", "data annotation", "model evaluation", "data labeling", "rlhf", "prompt engineering", "training data"] }
+  ],
+
   "search": {
     "_comment": "Nothing here filters on quality — only on reach and freshness.",
     "_perRunComment": "How much of the vocabulary each run actually asks the boards about. These were set when the list was 77 terms and a run took seconds; at 16 terms per run a 129-term list took four and a half days to cycle, so on any given day the board had asked about an eighth of what it knows. Each term is one HTTP request to an unmetered source, and a run finishes in about two minutes against a twenty-minute timeout, so the ceiling here is patience rather than quota.",

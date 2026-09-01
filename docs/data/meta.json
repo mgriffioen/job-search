@@ -1,6 +1,6 @@
 {
-  "generatedAt": "2026-09-01T19:22:43.845Z",
-  "durationMs": 43246,
+  "generatedAt": "2026-09-01T22:17:44.414Z",
+  "durationMs": 46195,
   "candidate": {
     "name": "Emily Griffioen",
     "headline": "Content & editorial QA — 10 years reviewing customer-facing marketing content",
@@ -148,32 +148,30 @@
     "maxAgeDays": 60
   },
   "counts": {
-    "fetched": 2746,
-    "unique": 1325,
-    "published": 132,
+    "fetched": 2754,
+    "unique": 1339,
+    "published": 127,
     "dropped": {
-      "location": 387,
-      "stale": 3,
-      "noTermMatch": 803
+      "location": 378,
+      "stale": 6,
+      "noTermMatch": 828
     }
   },
   "terms": {
-    "email marketing specialist": 34,
+    "email marketing specialist": 31,
     "editor": 18,
     "content reviewer": 12,
     "content specialist": 12,
-    "content writer": 8,
-    "copywriter": 8,
-    "quality assurance analyst": 4,
+    "copywriter": 9,
+    "content writer": 7,
+    "quality assurance analyst": 5,
     "quality assurance specialist": 3,
     "content operations": 3,
-    "marketing qa": 2,
     "content marketing specialist": 2,
+    "marketing qa": 2,
     "technical writer": 2,
     "editorial specialist": 2,
     "quality assurance coordinator": 2,
-    "content developer": 2,
-    "content quality": 2,
     "content editor": 1,
     "web content specialist": 1,
     "editorial coordinator": 1,
@@ -183,18 +181,19 @@
     "qa specialist": 1,
     "freelance writer": 1,
     "copyediting specialist": 1,
+    "campaign operations specialist": 1,
     "freelance content editor": 1,
+    "content developer": 1,
     "quality specialist": 1,
     "managing editor": 1,
     "content designer": 1,
-    "proposal writer": 1,
-    "content producer": 1,
-    "editorial quality": 1
+    "associate editor": 1,
+    "content producer": 1
   },
   "matchedIn": {
-    "title": 114,
-    "tags": 4,
-    "description": 14
+    "title": 119,
+    "tags": 0,
+    "description": 8
   },
   "unmatched": [
     {
@@ -473,11 +472,6 @@
       "source": "Jooble"
     },
     {
-      "title": "Global Client Executive",
-      "company": "NetApp",
-      "source": "Jooble"
-    },
-    {
       "title": "Senior Product Manager, Learning Content",
       "company": "TPR Education, LLC",
       "source": "Jooble"
@@ -496,13 +490,35 @@
       "title": "Senior Golang Developer",
       "company": "Lemon.io",
       "source": "Remotive"
+    },
+    {
+      "title": "Senior Data Engineer",
+      "company": "Lemon.io",
+      "source": "Remotive"
     }
   ],
-  "freshLast48h": 29,
-  "contract": 56,
+  "freshLast48h": 26,
+  "contract": 54,
   "modes": {
-    "writing": 61,
+    "writing": 56,
     "reviewing": 71
+  },
+  "technical": 5,
+  "industries": {
+    "Marketing & advertising": 15,
+    "Healthcare & life sciences": 7,
+    "Media & publishing": 5,
+    "Finance & insurance": 4,
+    "Nonprofit & government": 3,
+    "Travel & hospitality": 3,
+    "Education & training": 3,
+    "Software & technology": 2,
+    "Retail & e-commerce": 2,
+    "Legal": 2,
+    "Real estate & construction": 2,
+    "Crypto & gaming": 1,
+    "AI training & data annotation": 1,
+    "Staffing & recruiting": 1
   },
   "sources": [
     {
@@ -526,12 +542,12 @@
         "resetAt": "2026-08-27T15:52:25.507Z"
       },
       "budget": {
-        "allowed": 3,
+        "allowed": 0,
         "spent": 0,
         "reserve": 12,
-        "reason": "188 spendable across ~1 runs left — full budget available"
+        "reason": "not a scheduled run — holding the metered quota for the next one"
       },
-      "ms": 0
+      "ms": 1
     },
     {
       "id": "adzuna",
@@ -563,7 +579,7 @@
         "us-remote \"assessment editor\": 0 results (Adzuna reports 0 total matches)",
         "us-remote \"curriculum editor\": 0 results (Adzuna reports 0 total matches)"
       ],
-      "ms": 14332
+      "ms": 11890
     },
     {
       "id": "jooble",
@@ -571,7 +587,7 @@
       "status": "ok",
       "fetched": 197,
       "warnings": [],
-      "ms": 2687
+      "ms": 1827
     },
     {
       "id": "remotive",
@@ -579,17 +595,17 @@
       "status": "ok",
       "fetched": 864,
       "warnings": [],
-      "ms": 1378
+      "ms": 2119
     },
     {
       "id": "weworkremotely",
       "label": "We Work Remotely",
       "status": "ok",
-      "fetched": 227,
+      "fetched": 228,
       "warnings": [
         "remote-marketing-jobs.rss: HTTP 301 Moved Permanently"
       ],
-      "ms": 1149
+      "ms": 1506
     },
     {
       "id": "himalayas",
@@ -597,17 +613,15 @@
       "status": "ok",
       "fetched": 240,
       "warnings": [],
-      "ms": 434
+      "ms": 732
     },
     {
       "id": "jobicy",
       "label": "Jobicy",
       "status": "ok",
-      "fetched": 611,
-      "warnings": [
-        "?count=50&geo=usa&tag=freelance%20editor: HTTP 429 Too Many Requests"
-      ],
-      "ms": 20010
+      "fetched": 618,
+      "warnings": [],
+      "ms": 25263
     },
     {
       "id": "remoteok",
@@ -615,7 +629,7 @@
       "status": "ok",
       "fetched": 100,
       "warnings": [],
-      "ms": 1346
+      "ms": 799
     },
     {
       "id": "workingnomads",
@@ -623,7 +637,7 @@
       "status": "ok",
       "fetched": 45,
       "warnings": [],
-      "ms": 341
+      "ms": 828
     },
     {
       "id": "arbeitnow",
@@ -631,7 +645,7 @@
       "status": "ok",
       "fetched": 175,
       "warnings": [],
-      "ms": 672
+      "ms": 280
     }
   ]
 }
