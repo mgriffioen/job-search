@@ -76,18 +76,90 @@ export const VERDICTS = {
  */
 export const DOWN_REASONS = [
   { id: 'writing', label: 'Too much writing', dimension: 'writing' },
+  { id: 'technical', label: 'Too technical', dimension: 'technical' },
+  { id: 'industry', label: 'Wrong industry', dimension: 'industry' },
   { id: 'senior', label: 'Too senior', dimension: 'senior' },
   { id: 'junior', label: 'Too junior', dimension: 'junior' },
-  { id: 'pay', label: 'Pay too low', dimension: 'pay' },
-  { id: 'flexible', label: 'Not flexible enough', dimension: 'flexible' },
+  { id: 'pay', label: 'Poor pay', dimension: 'pay' },
+  { id: 'flexible', label: 'Not flexible', dimension: 'flexible' },
   { id: 'other', label: 'Other', dimension: null },
 ];
+
+/**
+ * Whether a reason can say anything about this particular posting.
+ *
+ * This matters more than it looks. A reason REDIRECTS blame away from the
+ * search term and the employer and onto the fact it names — so choosing one
+ * that names nothing does not merely fail to generalise, it makes the rating
+ * teach LESS than saying nothing at all would have. "Wrong industry" on a
+ * posting whose industry the board could not identify is a strictly worse
+ * rating than a bare 👎.
+ *
+ * So the page offers a reason only where it applies, and says why when it does
+ * not. "Other" always applies: it names nothing on purpose.
+ */
+export function reasonApplies(reasonId, job) {
+  const facts = factsOf(job);
+  switch (reasonId) {
+    case 'writing':
+      return facts.mode === 'writing';
+    case 'technical':
+      return facts.technical;
+    case 'industry':
+      return facts.industries.length > 0;
+    case 'senior':
+      return facts.seniority === 'senior';
+    case 'junior':
+      return facts.seniority === 'junior';
+    case 'pay':
+      return facts.pay !== null;
+    case 'flexible':
+      // Nothing to say about flexibility on a posting that is already contract
+      // or part-time.
+      return !facts.flexible;
+    default:
+      return true;
+  }
+}
+
+/** Why a reason is not on offer for this posting, for the chip's tooltip. */
+export function reasonUnavailableBecause(reasonId, job) {
+  const facts = factsOf(job);
+  switch (reasonId) {
+    case 'writing':
+      return 'This posting is review work, not content creation.';
+    case 'technical':
+      return 'This posting does not treat writing code as the job.';
+    case 'industry':
+      return 'The board could not tell what industry this posting is in, so it has no industry to learn from.';
+    case 'senior':
+      return 'This title is not a senior one.';
+    case 'junior':
+      return 'This title is not a junior one.';
+    case 'pay':
+      return 'This posting does not state its pay.';
+    case 'flexible':
+      return `This posting already offers ${(job.employmentTypes || []).filter((x) => x === 'contract' || x === 'part-time').join(' or ') || 'flexible'} work.`;
+    default:
+      return '';
+  }
+}
 
 /**
  * How much one saturated dimension is worth. Larger than a feature weight,
  * because a reason is something she said rather than something inferred.
  */
-const DIMENSION_WEIGHT = { writing: 3, senior: 4, junior: 4, flexible: 3 };
+const DIMENSION_WEIGHT = { writing: 3, technical: 3, senior: 4, junior: 4, flexible: 3 };
+
+/**
+ * "Wrong industry" per rating that named it, charged to that industry alone.
+ *
+ * Kept separate from the dimension counts because it is the one reason that
+ * names a *category* rather than a property: "too senior" is true of a posting,
+ * "wrong industry" is true of healthcare. Charging it through a shared counter
+ * would have punished every industry for the one she meant.
+ */
+const INDUSTRY_PENALTY = 2.5;
 
 /** A dimension stops accumulating after this many ratings name it. */
 const DIMENSION_SATURATION = 3;
@@ -118,7 +190,7 @@ export function mayLearn(verdict, kind) {
  * because two bad postings from the same outfit usually means the third is bad
  * too. Seniority is a hint, not a category.
  */
-const FEATURE_WEIGHT = { term: 3.0, company: 1.8, seniority: 1.0, shape: 0.8 };
+const FEATURE_WEIGHT = { term: 3.0, company: 1.8, industry: 1.2, seniority: 1.0, shape: 0.8 };
 
 /** Consistent ratings stop counting after this many — see the note above. */
 const FEATURE_SATURATION = 3;
@@ -128,7 +200,7 @@ const FEATURE_SATURATION = 3;
  * signal where the evidence is rather than letting the weakest features win by
  * weight of numbers.
  */
-const KIND_CAP = { term: 12, company: 5, seniority: 3, shape: 2 };
+const KIND_CAP = { term: 12, company: 5, industry: 4, seniority: 3, shape: 2 };
 
 /** Below this the model has not learned enough to be worth saying out loud. */
 const MIN_VISIBLE = 1.5;
@@ -184,6 +256,8 @@ export function annualisePay(text) {
 export function factsOf(job) {
   return {
     mode: job.mode || null,
+    technical: Boolean(job.technical),
+    industries: job.industries || [],
     seniority: job.seniority || null,
     pay: annualisePay(job.salary),
     // Contract, freelance and part-time work is what "flexible" means here.
@@ -233,6 +307,7 @@ export function featuresOf(job) {
     features.push(`term:${slug(term)}`);
   }
   if (job.company) features.push(`company:${slug(job.company)}`);
+  for (const label of job.industries || []) features.push(`industry:${slug(label)}`);
   if (job.seniority && job.seniority !== 'mid') features.push(`seniority:${job.seniority}`);
   for (const type of job.employmentTypes || []) {
     if (type !== 'unspecified') features.push(`shape:${type}`);
@@ -252,7 +327,9 @@ export function recordFeedback(preferences, job, verdict, reason = null) {
   const next = normalisePreferences(preferences);
   next.ratings[job.id] = {
     verdict,
-    reason: verdict === 'down' && DOWN_REASONS.some((r) => r.id === reason) ? reason : null,
+    reason: verdict === 'down' && DOWN_REASONS.some((r) => r.id === reason) && reasonApplies(reason, job)
+      ? reason
+      : null,
     at: new Date().toISOString(),
     features: featuresOf(job),
     facts: factsOf(job),
@@ -266,11 +343,11 @@ export function recordFeedback(preferences, job, verdict, reason = null) {
  * Sets or clears the reason on a rating that already exists, without disturbing
  * the verdict or its timestamp — pressing a chip is not re-rating the job.
  */
-export function setReason(preferences, jobId, reason) {
+export function setReason(preferences, job, reason) {
   const next = normalisePreferences(preferences);
-  const rating = next.ratings[jobId];
+  const rating = next.ratings[job.id];
   if (!rating || rating.verdict !== 'down') return next;
-  rating.reason = DOWN_REASONS.some((r) => r.id === reason) ? reason : null;
+  rating.reason = DOWN_REASONS.some((r) => r.id === reason) && reasonApplies(reason, job) ? reason : null;
   return next;
 }
 
@@ -293,6 +370,7 @@ export function buildModel(preferences) {
   const prefs = normalisePreferences(preferences);
   const features = Object.create(null);
   const dimensions = Object.create(null);
+  const blamedIndustries = Object.create(null);
   const counts = { up: 0, down: 0, wrong: 0, total: 0 };
   let payFloor = null;
 
@@ -326,8 +404,20 @@ export function buildModel(preferences) {
       features[feature] = (features[feature] || 0) + verdict.weight * featureShare;
     }
 
-    if (reason?.dimension && reason.dimension !== 'pay') {
+    if (reason?.dimension && reason.dimension !== 'pay' && reason.dimension !== 'industry') {
       dimensions[reason.dimension] = (dimensions[reason.dimension] || 0) + 1;
+    }
+
+    /**
+     * "Wrong industry" names the industry as the fault, so it is charged
+     * against that industry directly rather than added to the feature score,
+     * where the saturation clamp would have swallowed it and saying which
+     * industry was wrong would have made no difference at all.
+     */
+    if (reason?.dimension === 'industry') {
+      for (const label of rating.facts?.industries || []) {
+        blamedIndustries[label] = (blamedIndustries[label] || 0) + 1;
+      }
     }
 
     /**
@@ -344,6 +434,7 @@ export function buildModel(preferences) {
   return {
     features,
     dimensions,
+    blamedIndustries,
     payFloor,
     counts,
     confidence: Math.min(1, counts.total / CONFIDENCE_RATINGS),
@@ -359,6 +450,8 @@ function describeFeature(feature, job) {
       return (job.matchedTerms || [job.matchedTerm]).find((t) => slug(t) === value) || value.replace(/-/g, ' ');
     case 'company':
       return job.company || 'this employer';
+    case 'industry':
+      return (job.industries || []).find((l) => slug(l) === value) || value.replace(/-/g, ' ');
     case 'seniority':
       return value === 'senior' ? 'senior-titled roles' : 'junior-titled roles';
     case 'shape':
@@ -409,6 +502,16 @@ export function adjustmentFor(job, model) {
   if (facts.mode === 'writing' && dimension('writing')) {
     points -= DIMENSION_WEIGHT.writing * dimension('writing');
     named.push('you have said “too much writing” before, and this role makes content rather than checks it');
+  }
+  if (facts.technical && dimension('technical')) {
+    points -= DIMENSION_WEIGHT.technical * dimension('technical');
+    named.push('you have said “too technical” before, and this posting treats writing code as the job');
+  }
+  for (const label of facts.industries) {
+    const blamed = Math.min(model.blamedIndustries?.[label] || 0, DIMENSION_SATURATION);
+    if (!blamed) continue;
+    points -= INDUSTRY_PENALTY * blamed;
+    named.push(`you have called ${label.toLowerCase()} the wrong industry before`);
   }
   if (facts.seniority === 'senior' && dimension('senior')) {
     points -= DIMENSION_WEIGHT.senior * dimension('senior');

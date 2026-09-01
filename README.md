@@ -84,10 +84,18 @@ search term for a fault that belonged to neither.
 | Reason | Generalises through |
 | --- | --- |
 | Too much writing | roles that **make** content rather than check it |
+| Too technical | postings that treat writing code as the job |
+| Wrong industry | the line of business, charged to that industry alone |
 | Too senior / Too junior | the seniority read from the job title |
-| Pay too low | the best pay you have turned down becomes a floor |
-| Not flexible enough | postings offering neither contract nor part-time |
+| Poor pay | the best pay you have turned down becomes a floor |
+| Not flexible | postings offering neither contract nor part-time |
 | Other | nothing — it affects only this posting |
+
+**A reason is only offered where it can say something.** On a posting with no
+stated pay, "Poor pay" is greyed out and says why. This is not tidiness: a
+reason *redirects* blame away from the search term and the employer and onto
+the fact it names, so choosing one that names nothing would teach **less** than
+a plain 👎. A chip that quietly weakened the lesson would be worse than no chip.
 
 Two things make the chips safe to use. **Naming the fault never costs a posting
 more than staying silent**: a reason *redirects* blame rather than adding to it,
@@ -96,13 +104,22 @@ applied **in full from the first time you give it** — the rest of the model
 whispers until there is evidence behind it, because it is inferring; "too
 senior" is something you said.
 
-Which reason applies to a posting is decided from fields the board actually
-publishes, so a chip can never be a promise the data cannot keep. "Wrong
-industry" is deliberately absent for that reason: there is no industry field,
-and a chip that silently did nothing would be worse than no chip. Writing versus
-reviewing comes from `writingTerms` in `config/profile.json` — a term not listed
-there is treated as review work, because mislabelling a proofreading job as
-writing would teach the wrong lesson while missing one merely teaches less.
+Every reason is decided from a field the board actually publishes, so a chip can
+never be a promise the data cannot keep. Three of them need vocabulary, all of
+it in `config/profile.json` and none of it used for filtering:
+
+- **`writingTerms`** — which search terms describe making content rather than
+  checking it. A term not listed is treated as review work, because
+  mislabelling a proofreading job as writing would teach the wrong lesson while
+  missing one merely teaches less.
+- **`technicalPhrases`** — writing code *as the job*. Technical literacy is
+  never counted: HTML, CSS, templates and spreadsheets are daily tools and are
+  nowhere near this list. Two hits are needed, because one passing mention of an
+  API is not a programming job.
+- **`industries`** — 15 lines of business, deliberately neutral rather than a
+  list of favourites, because "Wrong industry" is only useful if it can name the
+  industry you actually meant. A posting matching none carries no industry, and
+  that chip is greyed out on it.
 
 Each rating stores the *categories* the posting belonged to, not the posting —
 the search term its title matched, the employer, the shape of the engagement,

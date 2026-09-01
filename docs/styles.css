@@ -828,7 +828,7 @@ textarea { resize: vertical; }
 
 .reasonchip {
   appearance: none;
-  border: 1px dashed var(--line);
+  border: 1px solid var(--line);
   border-radius: 999px;
   background: transparent;
   color: var(--text-soft);
@@ -841,9 +841,16 @@ textarea { resize: vertical; }
 .reasonchip:hover { border-color: var(--accent); color: var(--text); }
 
 .reasonchip.is-on {
-  border-style: solid;
   border-color: transparent;
   background: var(--possible-soft);
   color: var(--possible);
   font-weight: 650;
 }
+
+/* A reason that names nothing about this posting: still shown, so the set is
+   the same on every card, but not selectable. */
+.reasonchip:disabled {
+  opacity: .38;
+  cursor: not-allowed;
+}
+.reasonchip:disabled:hover { border-color: var(--line); color: var(--text-soft); }

@@ -19,6 +19,7 @@ import { fileURLToPath } from 'node:url';
 import { normalizeJob, dedupeJobs } from './lib/normalize.mjs';
 import { evaluateLocation } from './lib/location.mjs';
 import { evaluate } from './lib/match.mjs';
+import { detectTechnical, detectIndustries } from './lib/signals.mjs';
 
 import * as remotive from './sources/remotive.mjs';
 import * as remoteok from './sources/remoteok.mjs';
@@ -70,6 +71,8 @@ async function main() {
   profile.searchTerms = [...new Set(profile.searchTerms)];
   profile.broadTerms = [...new Set(profile.broadTerms)];
   profile.writingTerms = [...new Set(profile.writingTerms ?? [])];
+  profile.technicalPhrases = [...new Set(profile.technicalPhrases ?? [])];
+  profile.industries = profile.industries ?? [];
 
   // The last run's meta.json is the only state that survives between runs, and
   // it is committed with every update. A metered source reads its own previous
@@ -167,6 +170,10 @@ async function main() {
       writing: built.jobs.filter((j) => j.mode === 'writing').length,
       reviewing: built.jobs.filter((j) => j.mode === 'reviewing').length,
     },
+    // What the 👎 reasons have to work with, so a chip that can never reach
+    // anything shows up here rather than in a shrug on the page.
+    technical: built.jobs.filter((j) => j.technical).length,
+    industries: countIndustries(built.jobs),
     sources: sourceReports,
   };
 
@@ -225,6 +232,15 @@ export function buildBoard(deduped, profile, now = new Date()) {
       continue;
     }
 
+    /**
+     * Read before the description is dropped: these are what the "Too
+     * technical" and "Wrong industry" reasons generalise through, and the
+     * excerpt that survives into jobs.json is far too short to compute them
+     * in the browser.
+     */
+    const technical = detectTechnical(job, profile.technicalPhrases);
+    const industries = detectIndustries(job, profile.industries);
+
     // The full description is only needed for matching — keep the file small.
     const { description, ...rest } = job;
 
@@ -238,6 +254,9 @@ export function buildBoard(deduped, profile, now = new Date()) {
       matchedTerms: result.matchedTerms,
       seniority: result.seniority,
       mode: result.mode,
+      // Neither is filtered on; both exist for the 👎 reasons.
+      technical: technical.technical,
+      industries,
       recency: result.recency,
       ageDays: result.ageDays,
       ageAssumed: result.ageAssumed,
@@ -258,6 +277,15 @@ export function countMatchedIn(jobs) {
   const counts = { title: 0, tags: 0, description: 0 };
   for (const job of jobs) counts[job.matchedIn] = (counts[job.matchedIn] || 0) + 1;
   return counts;
+}
+
+/** Published postings per industry, most common first. */
+export function countIndustries(jobs) {
+  const counts = {};
+  for (const job of jobs) {
+    for (const label of job.industries || []) counts[label] = (counts[label] || 0) + 1;
+  }
+  return Object.fromEntries(Object.entries(counts).sort((a, b) => b[1] - a[1]));
 }
 
 /** Published postings per matched term, most productive first. */

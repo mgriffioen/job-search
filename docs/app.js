@@ -19,10 +19,12 @@ import {
   emptyPreferences,
   normalisePreferences,
   ratingFor,
+  reasonApplies,
+  reasonUnavailableBecause,
   recordFeedback,
   setReason,
   summarise,
-} from './preferences.mjs?v=76ea5d2684';
+} from './preferences.mjs?v=bc9ed00b81';
 
 const STORE_KEY = 'emily-job-board:v1';
 const PREFS_KEY = 'emily-job-board:prefs:v1';
@@ -313,7 +315,7 @@ function renderCard(job) {
     button.classList.toggle('is-on', rating?.verdict === button.dataset.verdict);
   }
 
-  renderReasons(node, rating);
+  renderReasons(node, job, rating);
 
   const note = $('[data-note]', node);
   note.value = state.store.notes[job.id] || '';
@@ -325,7 +327,7 @@ function renderCard(job) {
  * The reason chips. Only shown on a card carrying a 👎 — a 👍 has nothing to
  * explain, and a 🚫 has already said what was wrong.
  */
-function renderReasons(node, rating) {
+function renderReasons(node, job, rating) {
   const picker = $('[data-reason-picker]', node);
   if (!rating || rating.verdict !== 'down') {
     picker.hidden = true;
@@ -342,8 +344,22 @@ function renderReasons(node, rating) {
     chip.className = 'reasonchip';
     chip.dataset.reason = reason.id;
     chip.textContent = reason.label;
-    chip.classList.toggle('is-on', rating.reason === reason.id);
-    chip.setAttribute('aria-pressed', String(rating.reason === reason.id));
+
+    /**
+     * A reason that names nothing about this posting is offered but not
+     * selectable, and says why. Choosing one would redirect blame onto a fact
+     * that is not there, which teaches less than a bare 👎 — so the chip is
+     * shown (the set stays the same on every card, which is easier to learn)
+     * and disabled.
+     */
+    if (!reasonApplies(reason.id, job)) {
+      chip.disabled = true;
+      chip.title = reasonUnavailableBecause(reason.id, job);
+    } else {
+      chip.classList.toggle('is-on', rating.reason === reason.id);
+      chip.setAttribute('aria-pressed', String(rating.reason === reason.id));
+    }
+
     chips.append(chip);
   }
 }
@@ -456,7 +472,10 @@ function handleReason(reasonId, id) {
   const existing = ratingFor(state.ratings, id);
   if (!existing || existing.verdict !== 'down') return;
 
-  state.ratings = setReason(state.ratings, id, existing.reason === reasonId ? null : reasonId);
+  const job = state.jobs.find((j) => j.id === id);
+  if (!job) return;
+
+  state.ratings = setReason(state.ratings, job, existing.reason === reasonId ? null : reasonId);
   saveRatings();
   refreshRanking();
   render();
