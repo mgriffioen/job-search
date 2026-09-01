@@ -494,3 +494,69 @@ test('the vocabulary covers the roles the unmatched sample turned up', () => {
     assert.ok(matchTerms(title, profile.searchTerms).length, `still no match for: ${title}`);
   }
 });
+
+/* ---------------------------------------------------------------
+   The signals behind the 👎 reasons
+
+   Neither is filtered on. They exist so "Too technical" and "Wrong industry"
+   can generalise past the one posting they were said on.
+   --------------------------------------------------------------- */
+
+test('her daily tools are never "too technical"', async () => {
+  const { detectTechnical } = await import('../scripts/lib/signals.mjs');
+  // This is the property that matters most: HTML, CSS, a CMS and Jira are what
+  // she works in. A board that called those technical would grey out the chip
+  // on the wrong half of the page.
+  for (const description of [
+    'Review marketing emails for accuracy. Comfortable editing HTML and using a CMS. Work in Jira.',
+    'QA HTML email templates across clients. Basic HTML and CSS knowledge required. Use Litmus and Figma.',
+    'Proofread long-form copy against the house style guide. Strong attention to detail.',
+  ]) {
+    const result = detectTechnical({ title: 'Content QA Specialist', description, tags: [] }, profile.technicalPhrases);
+    assert.equal(result.technical, false, `wrongly called technical: ${description.slice(0, 50)}`);
+  }
+});
+
+test('writing code as the job is "too technical"', async () => {
+  const { detectTechnical } = await import('../scripts/lib/signals.mjs');
+  for (const description of [
+    'Execute automated test scripts using Selenium and maintain the test framework.',
+    'You will write code in Python and own our CI/CD pipeline.',
+    'Seeking an SDET to build automated testing suites.',
+  ]) {
+    const result = detectTechnical({ title: 'QA Engineer', description, tags: [] }, profile.technicalPhrases);
+    assert.equal(result.technical, true, `missed: ${description.slice(0, 50)}`);
+  }
+});
+
+test('one decisive phrase is enough, because none of them are her daily tools', () => {
+  // The list is what licenses the threshold of one. If a daily tool ever gets
+  // added to it, this test is the one that should start failing.
+  const dailyTools = ['html', 'css', 'cms', 'jira', 'excel', 'word', 'figma', 'litmus', 'wordpress'];
+  for (const tool of dailyTools) {
+    assert.ok(!profile.technicalPhrases.includes(tool), `"${tool}" must never be a technical phrase`);
+  }
+});
+
+test('an industry is only claimed when the posting says so', async () => {
+  const { detectIndustries } = await import('../scripts/lib/signals.mjs');
+  assert.deepEqual(
+    detectIndustries({ title: 'Copy Editor', description: 'Edit copy for a hospital network and clinical teams.', tags: [] }, profile.industries),
+    ['Healthcare & life sciences']
+  );
+  assert.deepEqual(
+    detectIndustries({ title: 'Copy Editor', description: 'Edit copy.', tags: [] }, profile.industries),
+    [],
+    'a posting that names no industry must not be given one to blame'
+  );
+});
+
+test('a posting is never filed under more than two industries', async () => {
+  const { detectIndustries } = await import('../scripts/lib/signals.mjs');
+  const busy = {
+    title: 'Content Editor',
+    description: 'Retail e-commerce fintech banking healthcare clinical legal attorney travel hotel crypto blockchain.',
+    tags: [],
+  };
+  assert.ok(detectIndustries(busy, profile.industries).length <= 2);
+});

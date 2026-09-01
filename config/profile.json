@@ -209,7 +209,7 @@
 
   "_signalsComment": "Vocabulary for the two 👎 reasons that have to read the posting rather than its title — 'Too technical' and 'Wrong industry'. NOTHING is filtered on either. They exist so those reasons can generalise past the one posting they were said on, and they are only ever consulted after she has pressed the chip.",
 
-  "_technicalComment": "Writing code AS THE JOB. Technical literacy is never counted here: HTML, CSS, templates and spreadsheets are her daily tools and belong nowhere near this list. Two hits are needed before a posting counts as technical, because one passing mention of an API is not a programming job.",
+  "_technicalComment": "Writing code AS THE JOB. Technical literacy is never counted here: HTML, CSS, templates, spreadsheets, Jira and CMSs are her daily tools and are deliberately absent from this list — which is what makes ONE hit enough. Every phrase below is decisive on its own, and half the sources return only a snippet, so requiring two found nothing at all: 122 of 126 published postings contained none of these and the four that did contained exactly one.",
   "technicalPhrases": [
     "selenium", "cypress", "playwright", "appium", "webdriver",
     "test automation", "automated test", "automated tests", "automated testing",
@@ -218,7 +218,7 @@
     "ci/cd", "jenkins", "api testing", "api automation", "rest assured", "postman",
     "java", "python", "typescript", "javascript", "c#", ".net", "golang", "kubernetes",
     "sql queries", "write code", "writing code", "scripting", "programming",
-    "software development", "object-oriented", "software engineer", "back end", "front end"
+    "software development", "object-oriented", "software engineer"
   ],
 
   "_industriesComment": "Which line of business a posting is in. Neutral rather than a list of favourites: every one of these has to be blameable, because 'Wrong industry' is only useful if it can name the industry she actually meant. A posting matching none of them simply carries no industry, and that chip does nothing to it.",

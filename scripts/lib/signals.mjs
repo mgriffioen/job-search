@@ -23,12 +23,20 @@ const BODY_CHARS = 1800;
 /**
  * How many technical phrases before a posting counts as technical.
  *
- * Two, not one. Technical literacy is not the complaint — HTML, CSS, templates
- * and spreadsheets are her daily tools — and a single passing mention of an API
- * or a CMS is not a programming job. Two is the line between "you will work
- * alongside engineers" and "you will be one".
+ * One, because the list is built to make one enough. Technical literacy is not
+ * the complaint — HTML, CSS, templates, spreadsheets, Jira and CMSs are her
+ * daily tools and appear nowhere in it — so every phrase left is decisive on
+ * its own: "sdet", "test automation", "write code".
+ *
+ * This started at two, on the reasoning that one passing mention should not
+ * convict a posting. Measured against the real board, two found nothing at all:
+ * 122 of 126 published postings contained none of these phrases and the other
+ * four contained exactly one — among them a Quality Assurance Analyst asking
+ * for automated tests, which is exactly the posting the chip exists for. Half
+ * the sources return a snippet rather than a full description, so a
+ * two-mention rule was really a rule about how verbose the board was.
  */
-const TECHNICAL_THRESHOLD = 2;
+const TECHNICAL_THRESHOLD = 1;
 
 /** The searchable text of a posting: title, tags, and the top of the body. */
 function haystack(job) {

@@ -113,9 +113,11 @@ it in `config/profile.json` and none of it used for filtering:
   mislabelling a proofreading job as writing would teach the wrong lesson while
   missing one merely teaches less.
 - **`technicalPhrases`** — writing code *as the job*. Technical literacy is
-  never counted: HTML, CSS, templates and spreadsheets are daily tools and are
-  nowhere near this list. Two hits are needed, because one passing mention of an
-  API is not a programming job.
+  never counted: HTML, CSS, templates, spreadsheets, Jira and CMSs are daily
+  tools and appear nowhere in the list. That absence is what makes **one** hit
+  enough — every phrase left is decisive on its own (`sdet`, `test automation`,
+  `write code`). Add a daily tool to this list and the chip starts greying out
+  the wrong half of the page.
 - **`industries`** — 15 lines of business, deliberately neutral rather than a
   list of favourites, because "Wrong industry" is only useful if it can name the
   industry you actually meant. A posting matching none carries no industry, and
