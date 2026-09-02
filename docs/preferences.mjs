@@ -86,20 +86,35 @@ export const DOWN_REASONS = [
 ];
 
 /**
- * Whether a reason can say anything about this particular posting.
+ * Whether a reason has something on THIS posting to generalise through.
  *
- * This matters more than it looks. A reason REDIRECTS blame away from the
- * search term and the employer and onto the fact it names — so choosing one
- * that names nothing does not merely fail to generalise, it makes the rating
- * teach LESS than saying nothing at all would have. "Wrong industry" on a
- * posting whose industry the board could not identify is a strictly worse
- * rating than a bare 👎.
+ * Every reason is always offered. This decides one thing only: whether the
+ * blame redirect below applies. An earlier version used it to disable chips,
+ * which was a mistake worth recording — on a real board it left most cards
+ * offering two of the eight, and the row read as broken.
  *
- * So the page offers a reason only where it applies, and says why when it does
- * not. "Other" always applies: it names nothing on purpose.
+ * The mistake underneath was treating the board's reading as the authority.
+ * Seniority is guessed from the title and industry from a phrase list; both are
+ * often wrong, and she is the one who read the posting. "Too senior" on a job
+ * this code called mid-level is her correcting it, and it still teaches every
+ * posting the board *did* call senior. What must not happen is a reason costing
+ * more than silence — that is what the redirect is for, and it is why this
+ * function still exists.
  */
 export function reasonApplies(reasonId, job) {
-  const facts = factsOf(job);
+  return reasonAppliesToFacts(reasonId, factsOf(job));
+}
+
+/** The same question, asked of a rating's stored facts rather than a posting. */
+export function reasonAppliesToFacts(reasonId, snapshot = {}) {
+  const facts = {
+    mode: snapshot.mode ?? null,
+    technical: Boolean(snapshot.technical),
+    industries: snapshot.industries || [],
+    seniority: snapshot.seniority ?? null,
+    pay: snapshot.pay ?? null,
+    flexible: Boolean(snapshot.flexible),
+  };
   switch (reasonId) {
     case 'writing':
       return facts.mode === 'writing';
@@ -122,26 +137,25 @@ export function reasonApplies(reasonId, job) {
   }
 }
 
-/** Why a reason is not on offer for this posting, for the chip's tooltip. */
-export function reasonUnavailableBecause(reasonId, job) {
-  const facts = factsOf(job);
+/** What each reason teaches, for the chip's tooltip. */
+export function reasonExplains(reasonId) {
   switch (reasonId) {
     case 'writing':
-      return 'This posting is review work, not content creation.';
+      return 'Pushes down roles that make content rather than check it.';
     case 'technical':
-      return 'This posting does not treat writing code as the job.';
+      return 'Pushes down postings that treat writing code as the job.';
     case 'industry':
-      return 'The board could not tell what industry this posting is in, so it has no industry to learn from.';
+      return 'Pushes down this posting’s industry.';
     case 'senior':
-      return 'This title is not a senior one.';
+      return 'Pushes down senior-titled roles.';
     case 'junior':
-      return 'This title is not a junior one.';
+      return 'Pushes down junior-titled roles.';
     case 'pay':
-      return 'This posting does not state its pay.';
+      return 'Treats this pay as the floor, and pushes down anything at or below it.';
     case 'flexible':
-      return `This posting already offers ${(job.employmentTypes || []).filter((x) => x === 'contract' || x === 'part-time').join(' or ') || 'flexible'} work.`;
+      return 'Pushes down roles offering neither contract nor part-time work.';
     default:
-      return '';
+      return 'Recorded against this posting only.';
   }
 }
 
@@ -327,9 +341,7 @@ export function recordFeedback(preferences, job, verdict, reason = null) {
   const next = normalisePreferences(preferences);
   next.ratings[job.id] = {
     verdict,
-    reason: verdict === 'down' && DOWN_REASONS.some((r) => r.id === reason) && reasonApplies(reason, job)
-      ? reason
-      : null,
+    reason: verdict === 'down' && DOWN_REASONS.some((r) => r.id === reason) ? reason : null,
     at: new Date().toISOString(),
     features: featuresOf(job),
     facts: factsOf(job),
@@ -347,7 +359,7 @@ export function setReason(preferences, job, reason) {
   const next = normalisePreferences(preferences);
   const rating = next.ratings[job.id];
   if (!rating || rating.verdict !== 'down') return next;
-  rating.reason = DOWN_REASONS.some((r) => r.id === reason) && reasonApplies(reason, job) ? reason : null;
+  rating.reason = DOWN_REASONS.some((r) => r.id === reason) ? reason : null;
   return next;
 }
 
@@ -387,11 +399,18 @@ export function buildModel(preferences) {
      * "Too much writing" says the fault was the shape of the work, so the
      * search term, the employer and the seniority should not also be marked
      * down for it — otherwise saying WHY would punish a posting harder than
-     * saying nothing, which is the opposite of what the chips are for. The
-     * features still count for something, because the posting was still
-     * turned down.
+     * saying nothing, which is the opposite of what the chips are for.
+     *
+     * The redirect only happens when there is somewhere for the blame to go.
+     * She can say "too senior" about a posting this code read as mid-level —
+     * she read it and this code guessed — and that is worth recording and
+     * worth teaching to every posting the board *did* call senior. But with no
+     * senior flag on THIS posting there is nothing here to carry the weight, so
+     * the features keep all of it and the rating costs exactly what a bare 👎
+     * costs. A reason must never make a rating teach less than silence.
      */
-    const featureShare = reason?.dimension ? 0.4 : 1;
+    const redirects = Boolean(reason?.dimension) && reasonAppliesToFacts(reason.id, rating.facts);
+    const featureShare = redirects ? 0.4 : 1;
 
     for (const feature of rating.features) {
       /**
@@ -404,6 +423,12 @@ export function buildModel(preferences) {
       features[feature] = (features[feature] || 0) + verdict.weight * featureShare;
     }
 
+    /**
+     * Counted whatever this posting looked like. The dimension is a statement
+     * about the kind of work she wants, and it is applied later to whichever
+     * postings carry the matching fact — so "too senior", said once on a title
+     * this code misread, still moves the roles it read correctly.
+     */
     if (reason?.dimension && reason.dimension !== 'pay' && reason.dimension !== 'industry') {
       dimensions[reason.dimension] = (dimensions[reason.dimension] || 0) + 1;
     }
