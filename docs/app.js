@@ -19,12 +19,11 @@ import {
   emptyPreferences,
   normalisePreferences,
   ratingFor,
-  reasonApplies,
-  reasonUnavailableBecause,
+  reasonExplains,
   recordFeedback,
   setReason,
   summarise,
-} from './preferences.mjs?v=bc9ed00b81';
+} from './preferences.mjs?v=953db519a1';
 
 const STORE_KEY = 'emily-job-board:v1';
 const PREFS_KEY = 'emily-job-board:prefs:v1';
@@ -345,20 +344,12 @@ function renderReasons(node, job, rating) {
     chip.dataset.reason = reason.id;
     chip.textContent = reason.label;
 
-    /**
-     * A reason that names nothing about this posting is offered but not
-     * selectable, and says why. Choosing one would redirect blame onto a fact
-     * that is not there, which teaches less than a bare 👎 — so the chip is
-     * shown (the set stays the same on every card, which is easier to learn)
-     * and disabled.
-     */
-    if (!reasonApplies(reason.id, job)) {
-      chip.disabled = true;
-      chip.title = reasonUnavailableBecause(reason.id, job);
-    } else {
-      chip.classList.toggle('is-on', rating.reason === reason.id);
-      chip.setAttribute('aria-pressed', String(rating.reason === reason.id));
-    }
+    // Every reason is selectable on every card. She read the posting; the
+    // board only guessed at it, and a chip she cannot press is a chip that
+    // tells her she is wrong about her own reason.
+    chip.title = reasonExplains(reason.id);
+    chip.classList.toggle('is-on', rating.reason === reason.id);
+    chip.setAttribute('aria-pressed', String(rating.reason === reason.id));
 
     chips.append(chip);
   }

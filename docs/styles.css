@@ -846,11 +846,3 @@ textarea { resize: vertical; }
   color: var(--possible);
   font-weight: 650;
 }
-
-/* A reason that names nothing about this posting: still shown, so the set is
-   the same on every card, but not selectable. */
-.reasonchip:disabled {
-  opacity: .38;
-  cursor: not-allowed;
-}
-.reasonchip:disabled:hover { border-color: var(--line); color: var(--text-soft); }

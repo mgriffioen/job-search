@@ -91,11 +91,17 @@ search term for a fault that belonged to neither.
 | Not flexible | postings offering neither contract nor part-time |
 | Other | nothing — it affects only this posting |
 
-**A reason is only offered where it can say something.** On a posting with no
-stated pay, "Poor pay" is greyed out and says why. This is not tidiness: a
-reason *redirects* blame away from the search term and the employer and onto
-the fact it names, so choosing one that names nothing would teach **less** than
-a plain 👎. A chip that quietly weakened the lesson would be worse than no chip.
+**Every reason is selectable on every card.** The board's reading of a posting
+is a guess — seniority comes from the title, industry from a phrase list — and
+you are the one who read the job. "Too senior" on a title this code called
+mid-level is you correcting it, and it still teaches every posting the board
+*did* read as senior.
+
+What that cannot do is cost you anything. A reason *redirects* blame away from
+the search term and the employer and onto the fact it names, and the redirect
+only fires when that fact is actually on the posting. Give a reason with nothing
+here to carry it and the rating costs exactly what a plain 👎 costs — never
+less.
 
 Two things make the chips safe to use. **Naming the fault never costs a posting
 more than staying silent**: a reason *redirects* blame rather than adding to it,

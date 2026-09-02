@@ -14,7 +14,7 @@ import assert from 'node:assert/strict';
 import {
   DOWN_REASONS,
   reasonApplies,
-  reasonUnavailableBecause,
+  reasonExplains,
   MAX_ADJUSTMENT,
   annualisePay,
   factsOf,
@@ -524,7 +524,7 @@ test('a 👎 still learns the industry generally, even with no reason given', ()
    lesson is worse than no chip.
    --------------------------------------------------------------- */
 
-test('each reason applies only where the posting can answer for it', () => {
+test('reasonApplies reports whether a posting can carry the blame', () => {
   assert.equal(reasonApplies('writing', job({ mode: 'writing' })), true);
   assert.equal(reasonApplies('writing', job({ mode: 'reviewing' })), false);
 
@@ -548,32 +548,62 @@ test('each reason applies only where the posting can answer for it', () => {
   assert.equal(reasonApplies('other', job()), true);
 });
 
-test('a reason that cannot apply is never stored, however it is set', () => {
+test('a reason is recorded on any posting, whatever the board made of it', () => {
+  // She read the posting; this code only guessed at it. A reason she cannot
+  // give is a reason the board is overruling, and an earlier version did
+  // exactly that — leaving most cards offering two of the eight chips.
   const reviewer = job({ mode: 'reviewing' });
-  assert.equal(ratingFor(recordFeedback(emptyPreferences(), reviewer, 'down', 'writing'), 'test:1').reason, null);
+  assert.equal(ratingFor(recordFeedback(emptyPreferences(), reviewer, 'down', 'writing'), 'test:1').reason, 'writing');
 
   const bare = recordFeedback(emptyPreferences(), reviewer, 'down');
-  assert.equal(ratingFor(setReason(bare, reviewer, 'writing'), 'test:1').reason, null);
+  assert.equal(ratingFor(setReason(bare, reviewer, 'writing'), 'test:1').reason, 'writing');
 });
 
-test('an inapplicable reason never costs more than saying nothing', () => {
-  // The failure this guards against: the reason is stored, redirects blame away
-  // from the term and the employer, and then generalises through a fact that
-  // is not there — leaving the rating weaker than a plain 👎.
+test('a reason given on a posting the board read differently still teaches', () => {
+  // "Too senior" said on a title this code called mid-level must still move
+  // the postings it did call senior. Otherwise correcting the board is a
+  // rating thrown away.
+  let prefs = emptyPreferences();
+  for (let i = 0; i < 3; i += 1) {
+    prefs = recordFeedback(prefs, { ...job({ seniority: 'mid' }), id: `m:${i}`, company: `Co ${i}` }, 'down', 'senior');
+  }
+  const model = buildModel(prefs);
+  assert.equal(model.dimensions.senior, 3, 'the statement was discarded');
+
+  const unrelated = { company: 'Elsewhere', matchedTerm: 'proofreader', matchedTerms: ['proofreader'] };
+  const senior = job({ id: 's:new', ...unrelated, seniority: 'senior' });
+  const mid = job({ id: 'm:new', ...unrelated, seniority: 'mid' });
+  assert.ok(adjustmentFor(senior, model).points < 0, 'senior roles were not moved');
+  assert.equal(adjustmentFor(mid, model).points, 0);
+});
+
+test('a reason with nothing here to carry it costs exactly what silence costs', () => {
+  // The blame redirect only fires where there is a fact to redirect onto. With
+  // none on this posting, the features keep their full weight, so the rating is
+  // never weaker than a plain 👎 — the failure this guards against.
   const reviewer = job({ mode: 'reviewing' });
   const silent = adjustmentFor(reviewer, buildModel(rateMany(emptyPreferences(), reviewer, 'down', 3)));
 
-  let attempted = emptyPreferences();
+  let named = emptyPreferences();
   for (let i = 0; i < 3; i += 1) {
-    attempted = recordFeedback(attempted, { ...reviewer, id: `r:${i}` }, 'down', 'writing');
+    named = recordFeedback(named, { ...reviewer, id: `r:${i}` }, 'down', 'writing');
   }
-  assert.equal(adjustmentFor(reviewer, buildModel(attempted)).points, silent.points);
+  assert.equal(adjustmentFor(reviewer, buildModel(named)).points, silent.points);
 });
 
-test('every reason explains why it is unavailable', () => {
+test('every reason says what it teaches', () => {
   for (const reason of DOWN_REASONS) {
-    if (reason.id === 'other') continue;
-    const why = reasonUnavailableBecause(reason.id, job());
-    assert.ok(typeof why === 'string' && why.length > 10, `${reason.id} gives no explanation`);
+    const what = reasonExplains(reason.id);
+    assert.ok(typeof what === 'string' && what.length > 10, `${reason.id} explains nothing`);
+  }
+});
+
+test('every chip is selectable on every posting', () => {
+  // The regression that prompted this: on a real board most cards offered two
+  // of the eight, and the row read as though the choices had been lost.
+  const bare = { id: 'x', title: 'Proofreader', company: 'Acme', matchedTerm: 'proofreader', matchedTerms: ['proofreader'], employmentTypes: ['contract'], seniority: 'mid', mode: 'reviewing', technical: false, industries: [], relevance: 100, rank: 80 };
+  for (const reason of DOWN_REASONS) {
+    const prefs = recordFeedback(emptyPreferences(), bare, 'down', reason.id);
+    assert.equal(ratingFor(prefs, 'x').reason, reason.id, `${reason.id} was refused`);
   }
 });
