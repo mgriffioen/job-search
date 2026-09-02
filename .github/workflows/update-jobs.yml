@@ -6,9 +6,11 @@ on:
     - cron: '10 6,16 * * *'
   workflow_dispatch:
   push:
+    # The default branch only. Feature branches deliberately do not trigger a
+    # listings run: it would spend API quota to publish data that is thrown
+    # away when the branch merges.
     branches:
       - main
-      - claude/job-search-simplify-izo7cj
     paths:
       - 'config/**'
       - 'scripts/**'
