@@ -321,7 +321,10 @@ Michigan employers (Stryker, Kellanova, Perrigo, Whirlpool, WMU).
 - **Title matches** at the top, or the checkbox in Filters, collapses the list
   to postings that are actually *titled* one of your roles.
 - **★ Save**, **✓ Applied** and **Dismiss** track progress. **Dismiss** removes
-  one listing and teaches nothing; 🚫 removes it *and* teaches.
+  one listing and teaches nothing; 🚫 removes it *and* teaches. 👍 and 👎 never
+  remove anything — a rated card stays exactly where it is, so you can add a
+  reason to it, and the board settles into its new order the next time you
+  change a filter, a sort or a tab.
 - A notes field opens on every card — contact names, follow-up dates.
 - **Export saved + applied to CSV** produces an application tracker.
 - Everything you save stays in that browser's local storage. It is never

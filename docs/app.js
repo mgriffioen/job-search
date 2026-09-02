@@ -38,6 +38,21 @@ const state = {
   ratings: emptyPreferences(),
   model: null,
   adjustments: new Map(),
+  /**
+   * The visual order to hold on to, or null to sort freely.
+   *
+   * Rating a card re-ranks the whole board, and re-ranking used to move the
+   * card out from under the cursor — occasionally by one position in the list,
+   * but two thousand pixels down the page, because every card is rebuilt and
+   * the scroll goes back to the top. Pressing 👎 halfway down a long list
+   * looked exactly like the card being deleted, and the reason chips that
+   * appear underneath it went with it.
+   *
+   * So a rating holds the order it was given in. Everything else — a filter, a
+   * sort, a tab, a reload — releases it and the board settles into its new
+   * shape.
+   */
+  frozenOrder: null,
 };
 
 /* ---------------------------------------------------------------
@@ -112,6 +127,25 @@ function refreshRanking() {
 }
 
 const adjustmentOf = (job) => state.adjustments.get(job.id) || { points: 0, notes: [] };
+
+/** Hold the order exactly as it is on screen right now. */
+function freezeOrder() {
+  state.frozenOrder = $$('.card').map((card) => card.dataset.id);
+}
+
+/** Let the board settle into its true order on the next render. */
+function thawOrder() {
+  state.frozenOrder = null;
+}
+
+/** Re-imposes the held order over a freshly sorted list. */
+function applyFrozenOrder(jobs) {
+  if (!state.frozenOrder) return jobs;
+  const at = new Map(state.frozenOrder.map((id, index) => [id, index]));
+  // Anything the held order has never seen sorts after it, keeping the order
+  // the sort just gave it.
+  return [...jobs].sort((a, b) => (at.get(a.id) ?? Infinity) - (at.get(b.id) ?? Infinity));
+}
 
 /** Where a posting actually sorts: the board's rank, plus what she has taught it. */
 const tunedRank = (job) => job.rank + adjustmentOf(job).points;
@@ -358,14 +392,19 @@ function renderReasons(node, job, rating) {
 function render() {
   const f = readFilters();
   const filtered = applyFilters(state.jobs, f);
-  const sorted = sortJobs(filtered, f.sort);
+  const sorted = applyFrozenOrder(sortJobs(filtered, f.sort));
 
   const results = $('#results');
+  // Every card is rebuilt, which drops the page back to the top unless the
+  // scroll is put back. On a long list that alone reads as the card you just
+  // pressed having been deleted.
+  const scrollY = window.scrollY;
   results.replaceChildren();
 
   const fragment = document.createDocumentFragment();
   for (const job of sorted) fragment.append(renderCard(job));
   results.append(fragment);
+  window.scrollTo(0, scrollY);
 
   const line = $('#resultline');
   line.textContent = sorted.length
@@ -446,6 +485,9 @@ function handleVerdict(verdict, id) {
   if (!job) return;
 
   const existing = ratingFor(state.ratings, id);
+  // Held before the model changes, so the card stays under the cursor and its
+  // reason chips are reachable.
+  freezeOrder();
   state.ratings = existing?.verdict === verdict
     ? clearFeedback(state.ratings, id)
     : recordFeedback(state.ratings, job, verdict);
@@ -466,6 +508,7 @@ function handleReason(reasonId, id) {
   const job = state.jobs.find((j) => j.id === id);
   if (!job) return;
 
+  freezeOrder();
   state.ratings = setReason(state.ratings, job, existing.reason === reasonId ? null : reasonId);
   saveRatings();
   refreshRanking();
@@ -493,6 +536,7 @@ async function importRatings(file) {
     }
     state.ratings = merged;
     saveRatings();
+    thawOrder();
     refreshRanking();
     render();
   } catch {
@@ -505,6 +549,7 @@ function resetRatings() {
   if (!window.confirm('Delete every rating and start the training again?')) return;
   state.ratings = emptyPreferences();
   saveRatings();
+  thawOrder();
   refreshRanking();
   render();
 }
@@ -810,6 +855,7 @@ function cycleTheme() {
    --------------------------------------------------------------- */
 
 function setView(view) {
+  thawOrder();
   state.view = view;
   for (const tab of $$('.tab')) tab.classList.toggle('is-active', tab.dataset.view === view);
   render();
@@ -819,6 +865,7 @@ let searchTimer = null;
 
 function wireEvents() {
   $('#controls').addEventListener('input', (event) => {
+    thawOrder();
     if (event.target.id === 'q') {
       clearTimeout(searchTimer);
       searchTimer = setTimeout(render, 120);
@@ -829,6 +876,7 @@ function wireEvents() {
   });
 
   $('#controls').addEventListener('change', () => {
+    thawOrder();
     render();
     persistFilters();
   });
@@ -836,6 +884,7 @@ function wireEvents() {
   $('#controls').addEventListener('submit', (event) => event.preventDefault());
 
   $('#reset-filters').addEventListener('click', () => {
+    thawOrder();
     $('#q').value = '';
     for (const input of $$('input[name="employment"]')) input.checked = true;
     for (const input of $$('#term-filters input, #source-filters input')) input.checked = true;
