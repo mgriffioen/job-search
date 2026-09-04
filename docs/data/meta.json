@@ -1,6 +1,6 @@
 {
-  "generatedAt": "2026-09-03T19:16:52.777Z",
-  "durationMs": 41416,
+  "generatedAt": "2026-09-04T11:13:14.612Z",
+  "durationMs": 41356,
   "candidate": {
     "name": "Emily Griffioen",
     "headline": "Content & editorial QA — 10 years reviewing customer-facing marketing content",
@@ -148,52 +148,175 @@
     "maxAgeDays": 60
   },
   "counts": {
-    "fetched": 2527,
-    "unique": 1281,
-    "published": 120,
+    "fetched": 2694,
+    "unique": 1343,
+    "published": 108,
     "dropped": {
-      "location": 400,
+      "location": 413,
       "stale": 1,
-      "noTermMatch": 760
+      "noTermMatch": 821
     }
   },
   "terms": {
-    "email marketing specialist": 35,
-    "editor": 28,
-    "proofreader": 8,
+    "email marketing specialist": 37,
+    "editor": 12,
+    "content specialist": 10,
     "quality assurance analyst": 7,
-    "copywriter": 5,
-    "content specialist": 3,
-    "proposal writer": 3,
-    "technical writer": 3,
+    "qa analyst": 4,
+    "marketing qa": 4,
+    "quality specialist": 4,
+    "curriculum writer": 4,
+    "quality assurance specialist": 3,
     "content reviewer": 3,
-    "content writer": 2,
-    "copy editor": 2,
-    "marketing qa": 2,
-    "associate editor": 2,
+    "quality analyst": 2,
+    "qa specialist": 2,
     "quality assurance coordinator": 2,
-    "quality assurance specialist": 2,
-    "managing editor": 2,
-    "editorial manager": 2,
+    "content writer": 2,
+    "content designer": 2,
+    "content operations": 2,
+    "managing editor": 1,
+    "technical writer": 1,
+    "digital content specialist": 1,
+    "copywriter": 1,
     "freelance writer": 1,
-    "qa specialist": 1,
-    "qa analyst": 1,
     "campaign operations specialist": 1,
-    "qa reviewer": 1,
-    "content designer": 1,
-    "content producer": 1,
-    "content editor": 1,
-    "content operations": 1
+    "content marketing specialist": 1,
+    "content developer": 1
   },
   "matchedIn": {
-    "title": 113,
-    "tags": 1,
+    "title": 97,
+    "tags": 5,
     "description": 6
   },
   "unmatched": [
     {
+      "title": "Senior Database Engineer",
+      "company": "Humana",
+      "source": "Adzuna"
+    },
+    {
       "title": "Quality Management System Manager",
       "company": "Carhartt",
+      "source": "Adzuna"
+    },
+    {
+      "title": "Legal AI Trainer - Remote",
+      "company": "YO AI Labs",
+      "source": "Adzuna"
+    },
+    {
+      "title": "US Attorney - Remote",
+      "company": "YO AI Labs",
+      "source": "Adzuna"
+    },
+    {
+      "title": "Lawyer - Remote",
+      "company": "YO AI Labs",
+      "source": "Adzuna"
+    },
+    {
+      "title": "Corporate Attorney - Remote",
+      "company": "YO AI Labs",
+      "source": "Adzuna"
+    },
+    {
+      "title": "82303 Lawyer",
+      "company": "Cephas Consultancy Services Private Limited",
+      "source": "Adzuna"
+    },
+    {
+      "title": "72303 BigLaw lawyers",
+      "company": "Cephas Consultancy Services Private Limited",
+      "source": "Adzuna"
+    },
+    {
+      "title": "Law/Legal Expert - Remote",
+      "company": "YO HR Consultancy",
+      "source": "Adzuna"
+    },
+    {
+      "title": "Law/Legal Expert - Remote",
+      "company": "YO AI Labs",
+      "source": "Adzuna"
+    },
+    {
+      "title": "Associate Attorney - Remote",
+      "company": "YO AI Labs",
+      "source": "Adzuna"
+    },
+    {
+      "title": "BigLaw lawyers - Remote",
+      "company": "YO HR Consultancy",
+      "source": "Adzuna"
+    },
+    {
+      "title": "BigLaw lawyers - Remote",
+      "company": "YO AI Labs",
+      "source": "Adzuna"
+    },
+    {
+      "title": "Video Editors and Quality Controllers - Remote Opportunity",
+      "company": "LILT",
+      "source": "Adzuna"
+    },
+    {
+      "title": "Digital Content Manager (Remote)",
+      "company": "Cleo Consulting Inc.",
+      "source": "Adzuna"
+    },
+    {
+      "title": "Digital Content Manager & Vendor Coordination Specialist - Remote",
+      "company": "Smart IMS Inc",
+      "source": "Adzuna"
+    },
+    {
+      "title": "Digital Content Manager & Vendor Coordination Specialist - remote",
+      "company": "Novalink Solutions LLC",
+      "source": "Adzuna"
+    },
+    {
+      "title": "100% Remote || K-12 || Digital Content Manager & Vendor Coordination Specialist",
+      "company": "Noblesoft Technologies",
+      "source": "Adzuna"
+    },
+    {
+      "title": "Marketing Intern",
+      "company": "NAVIX Diagnostix, Inc.",
+      "source": "Adzuna"
+    },
+    {
+      "title": "Remote Operations Producer II",
+      "company": "The Walt Disney Company",
+      "source": "Adzuna"
+    },
+    {
+      "title": "Sr. Manager, Product Management - Air Travel Commerce Content, Remote",
+      "company": "BCD Travel",
+      "source": "Adzuna"
+    },
+    {
+      "title": "Director, Product Marketing – Premium Content & Data Remote - United States (New York)",
+      "company": "AlphaSense, Inc.",
+      "source": "Adzuna"
+    },
+    {
+      "title": "Data Entry Associate",
+      "company": "Sunrift Adventures",
+      "source": "Adzuna"
+    },
+    {
+      "title": "Data Entry Specialist – Administrative (Remote)",
+      "company": "PulseMediaNL",
+      "source": "Adzuna"
+    },
+    {
+      "title": "Content Creator",
+      "company": "Elite Escapes",
+      "source": "Adzuna"
+    },
+    {
+      "title": "Social Media Manager 63715169122",
+      "company": "Somewhere",
       "source": "Adzuna"
     },
     {
@@ -234,11 +357,6 @@
     {
       "title": "Remote Data Entry & Email Marketing Contractor – Call Now (405) 801-9601 Phoenix, AZ",
       "company": "Transportation Hiring Hub",
-      "source": "Adzuna"
-    },
-    {
-      "title": "Software Quality Assurance Engineer - Remote",
-      "company": "Broadridge",
       "source": "Adzuna"
     },
     {
@@ -287,188 +405,53 @@
       "source": "Adzuna"
     },
     {
-      "title": "Senior Machine Learning Engineer - Content and Contributor Intelligence (Remote - United States)",
-      "company": "Yelp, Inc.",
-      "source": "Adzuna"
-    },
-    {
-      "title": "Volunteer Editors & Copy Editors — Rock & Art | Remote, Worldwide",
-      "company": "Rock and Art UK",
-      "source": "Adzuna"
-    },
-    {
-      "title": "Video Editors and Quality Controllers - Remote Opportunity",
-      "company": "LILT",
-      "source": "Adzuna"
-    },
-    {
-      "title": "UGC Content Creator",
-      "company": "DREAMLABS",
-      "source": "Adzuna"
-    },
-    {
-      "title": "Administrative Support Specialist / Reader (for Visually Impaired Employee)",
-      "company": "KMRG, LLC",
-      "source": "Adzuna"
-    },
-    {
-      "title": "Accessibility Support Specialist – Reader/Scribe",
-      "company": "KMRG, LLC",
-      "source": "Adzuna"
-    },
-    {
-      "title": "Personal Assistant - Reader/Scribe",
-      "company": "KMRG, LLC",
-      "source": "Adzuna"
-    },
-    {
-      "title": "82303 Lawyer",
-      "company": "Cephas Consultancy Services Private Limited",
-      "source": "Adzuna"
-    },
-    {
-      "title": "72303 BigLaw lawyers",
-      "company": "Cephas Consultancy Services Private Limited",
-      "source": "Adzuna"
-    },
-    {
-      "title": "Digital Content Admin",
-      "company": "Collabera",
+      "title": "Email Marketing Coordinator",
+      "company": "Everyday Health",
       "source": "Jooble"
     },
     {
-      "title": "UI Front End Developer",
-      "company": "Jobsbridge",
+      "title": "Email Marketing Manager",
+      "company": "WOW Remote Teams",
       "source": "Jooble"
     },
     {
-      "title": "Java, Scala, Groovy Software Engineer",
-      "company": "Hireup.net",
+      "title": "Project Manager III (Global Campaign Project Manager)",
+      "company": "Expedite Technology Solutions",
       "source": "Jooble"
     },
     {
-      "title": "Intranet Web Developer",
-      "company": "Partnered Staffing",
+      "title": "Senior Nonprofit Fundraising Campaign Lead (Remote)",
+      "company": "Allegiance Group Co.",
       "source": "Jooble"
     },
     {
-      "title": "Web Developer",
-      "company": "Esri",
+      "title": "Marketing Campaign Manager",
+      "company": "AceStack LLC",
       "source": "Jooble"
     },
     {
-      "title": ".Net / Kentico Web Developer",
-      "company": "Epro Consulting",
+      "title": "Remote Adobe Marketing Tech Specialist & AI QA",
+      "company": "YO AI Labs",
       "source": "Jooble"
     },
     {
-      "title": "Web Developer Level 1",
-      "company": "Denovo Solutions, Llc",
+      "title": "Integrated Marketing Manager",
+      "company": "Sunrise Systems",
       "source": "Jooble"
     },
     {
-      "title": "UX/UI Developer",
-      "company": "Stemxpert Llc",
+      "title": "Senior Integrated AI Producer",
+      "company": "Brandtech+",
       "source": "Jooble"
     },
     {
-      "title": "Front End Web Developer",
-      "company": "Dealervero",
+      "title": "Remote Marketing Manager, Events & Integrated Campaigns",
+      "company": "K1X, Inc.",
       "source": "Jooble"
     },
     {
-      "title": "LMS Admin",
-      "company": "360 IT Professionals Inc.",
-      "source": "Jooble"
-    },
-    {
-      "title": "Front End Web Developer",
-      "company": "Growth By Design Llc",
-      "source": "Jooble"
-    },
-    {
-      "title": "Web Developer",
-      "company": "S4 Inc.",
-      "source": "Jooble"
-    },
-    {
-      "title": "Web Developer",
-      "company": "Veredus",
-      "source": "Jooble"
-    },
-    {
-      "title": "Web Developer (Mobile)",
-      "company": "SonSoft Inc.",
-      "source": "Jooble"
-    },
-    {
-      "title": "WEb developer",
-      "company": "krg technology",
-      "source": "Jooble"
-    },
-    {
-      "title": "Remote Digital Content Strategist: Conversion Copy & Campaigns",
-      "company": "Missio",
-      "source": "Jooble"
-    },
-    {
-      "title": "Account Mngr Ecomm",
-      "company": "DHI",
-      "source": "Jooble"
-    },
-    {
-      "title": "Remote Digital Media Specialist & Campaigns",
-      "company": "KNAPP North America",
-      "source": "Jooble"
-    },
-    {
-      "title": "Marketing Technologist (Remote)",
-      "company": "Kohl's",
-      "source": "Jooble"
-    },
-    {
-      "title": "CypJob: Internal Operations Associate_dgatCmHj",
-      "company": "[module Company Name]",
-      "source": "Jooble"
-    },
-    {
-      "title": "Bay 3 Operations Associate",
-      "company": "I M S C O",
-      "source": "Jooble"
-    },
-    {
-      "title": "Operations Associate",
-      "company": "Landus Cooperative",
-      "source": "Jooble"
-    },
-    {
-      "title": "Operations Associate I, In-Vivo Resource Center",
-      "company": "Biogen Sandbox",
-      "source": "Jooble"
-    },
-    {
-      "title": "Operations Associate",
-      "company": "Riverside Epicenter",
-      "source": "Jooble"
-    },
-    {
-      "title": "Operations Associate",
-      "company": "Sourced Adventures",
-      "source": "Jooble"
-    },
-    {
-      "title": "Strategy & Operations Associate",
-      "company": "Entyre Gmbh",
-      "source": "Jooble"
-    },
-    {
-      "title": "Operations Associate",
-      "company": "Holman Frenia Allison, P.c.",
-      "source": "Jooble"
-    },
-    {
-      "title": "Operations associate",
-      "company": "Naturalvert",
+      "title": "Remote Integrated Marketing Specialist - Brand & Content",
+      "company": "Stream Realty",
       "source": "Jooble"
     },
     {
@@ -477,41 +460,57 @@
       "source": "Jooble"
     },
     {
-      "title": "Remote Cataloging & Metadata Librarian — MARC/RDA Expert",
-      "company": "Library Systems & Services Llc",
+      "title": "Senior Machine Learning Engineer - Recommendation - Revive It Recruitment - Remote",
+      "company": "Revive It Recruitment United States and Saudi Arabia Full-ti...",
       "source": "Jooble"
     },
     {
-      "title": "Software Engineer (Python / C++) ML Platform & Production Integration",
-      "company": "Velo3d",
+      "title": "Product Manager - Game Based Learning",
+      "company": "Stride, Inc.",
       "source": "Jooble"
     },
     {
-      "title": "Senior Software Engineer - Information Products Team",
-      "company": "Wellmark Llc",
+      "title": "Writer (mindset curriculum)",
+      "company": "STNDRD",
       "source": "Jooble"
+    },
+    {
+      "title": "Senior React Full-stack Developer",
+      "company": "Lemon.io",
+      "source": "Remotive"
+    },
+    {
+      "title": "Senior DevOps Engineer",
+      "company": "Lemon.io",
+      "source": "Remotive"
+    },
+    {
+      "title": "Senior Golang Developer",
+      "company": "Lemon.io",
+      "source": "Remotive"
     }
   ],
-  "freshLast48h": 13,
-  "contract": 45,
+  "freshLast48h": 20,
+  "contract": 53,
   "modes": {
     "writing": 51,
-    "reviewing": 69
+    "reviewing": 57
   },
-  "technical": 3,
+  "technical": 8,
   "industries": {
-    "Marketing & advertising": 15,
-    "Finance & insurance": 7,
-    "Retail & e-commerce": 4,
-    "Media & publishing": 4,
-    "Healthcare & life sciences": 4,
-    "Software & technology": 4,
-    "Travel & hospitality": 3,
-    "Legal": 3,
-    "Education & training": 3,
-    "Staffing & recruiting": 3,
-    "Crypto & gaming": 2,
-    "Real estate & construction": 2
+    "Marketing & advertising": 13,
+    "Healthcare & life sciences": 9,
+    "Education & training": 6,
+    "Finance & insurance": 5,
+    "AI training & data annotation": 3,
+    "Travel & hospitality": 2,
+    "Legal": 2,
+    "Manufacturing & logistics": 1,
+    "Media & publishing": 1,
+    "Staffing & recruiting": 1,
+    "Software & technology": 1,
+    "Crypto & gaming": 1,
+    "Real estate & construction": 1
   },
   "sources": [
     {
@@ -546,32 +545,33 @@
       "id": "adzuna",
       "label": "Adzuna",
       "status": "ok",
-      "fetched": 303,
+      "fetched": 328,
       "warnings": [
+        "michigan-remote \"copyediting\": 0 results (Adzuna reports 0 total matches)",
+        "michigan-remote \"content reviewer\": 0 results (Adzuna reports 0 total matches)",
+        "michigan-remote \"content auditor\": 0 results (Adzuna reports 0 total matches)",
+        "michigan-remote \"quality editor\": 0 results (Adzuna reports 0 total matches)",
+        "michigan-remote \"editorial specialist\": 0 results (Adzuna reports 0 total matches)",
+        "michigan-remote \"production editor\": 0 results (Adzuna reports 0 total matches)",
+        "michigan-remote \"digital editor\": 0 results (Adzuna reports 0 total matches)",
+        "michigan-remote \"web content\": 0 results (Adzuna reports 0 total matches)",
+        "michigan-remote \"digital content\": 0 results (Adzuna reports 0 total matches)",
+        "michigan-remote \"editorial operations\": 0 results (Adzuna reports 0 total matches)",
+        "michigan-remote \"product content\": 0 results (Adzuna reports 0 total matches)",
+        "michigan-remote \"catalog quality\": 0 results (Adzuna reports 0 total matches)",
+        "michigan-remote \"content specialist\": 0 results (Adzuna reports 0 total matches)",
         "michigan-remote \"campaign quality\": 0 results (Adzuna reports 0 total matches)",
         "michigan-remote \"marketing qa\": 0 results (Adzuna reports 0 total matches)",
         "michigan-remote \"content integrity\": 0 results (Adzuna reports 0 total matches)",
-        "michigan-remote \"content audit\": 0 results (Adzuna reports 0 total matches)",
-        "michigan-remote \"assessment editor\": 0 results (Adzuna reports 0 total matches)",
-        "michigan-remote \"learning content\": 0 results (Adzuna reports 0 total matches)",
-        "michigan-remote \"curriculum editor\": 0 results (Adzuna reports 0 total matches)",
-        "michigan-remote \"freelance editor\": 0 results (Adzuna reports 0 total matches)",
-        "michigan-remote \"freelance proofreader\": 0 results (Adzuna reports 0 total matches)",
-        "michigan-remote \"contract editor\": 0 results (Adzuna reports 0 total matches)",
-        "michigan-remote \"proofreading\": 0 results (Adzuna reports 0 total matches)",
-        "michigan-remote \"editorial quality\": 0 results (Adzuna reports 0 total matches)",
-        "michigan-remote \"content editor\": 0 results (Adzuna reports 0 total matches)",
-        "michigan-remote \"copy editor\": 0 results (Adzuna reports 0 total matches)",
-        "michigan-remote \"proofreader\": 0 results (Adzuna reports 0 total matches)",
-        "us-remote \"campaign quality\": 0 results (Adzuna reports 0 total matches)",
-        "us-remote \"content audit\": 0 results (Adzuna reports 0 total matches)",
-        "us-remote \"assessment editor\": 0 results (Adzuna reports 0 total matches)",
-        "us-remote \"curriculum editor\": 0 results (Adzuna reports 0 total matches)",
-        "us-remote \"freelance editor\": 0 results (Adzuna reports 0 total matches)",
-        "us-remote \"freelance proofreader\": 0 results (Adzuna reports 0 total matches)",
-        "us-remote \"editorial quality\": 0 results (Adzuna reports 0 total matches)"
+        "us-remote \"copyediting\": 0 results (Adzuna reports 0 total matches)",
+        "us-remote \"content auditor\": 0 results (Adzuna reports 0 total matches)",
+        "us-remote \"editorial specialist\": 0 results (Adzuna reports 0 total matches)",
+        "us-remote \"production editor\": 0 results (Adzuna reports 0 total matches)",
+        "us-remote \"digital editor\": 0 results (Adzuna reports 0 total matches)",
+        "us-remote \"catalog quality\": 0 results (Adzuna reports 0 total matches)",
+        "us-remote \"campaign quality\": 0 results (Adzuna reports 0 total matches)"
       ],
-      "ms": 12033
+      "ms": 10634
     },
     {
       "id": "jooble",
@@ -579,25 +579,25 @@
       "status": "ok",
       "fetched": 200,
       "warnings": [],
-      "ms": 3004
+      "ms": 2185
     },
     {
       "id": "remotive",
       "label": "Remotive",
       "status": "ok",
-      "fetched": 816,
+      "fetched": 864,
       "warnings": [],
-      "ms": 1347
+      "ms": 988
     },
     {
       "id": "weworkremotely",
       "label": "We Work Remotely",
       "status": "ok",
-      "fetched": 204,
+      "fetched": 181,
       "warnings": [
         "remote-marketing-jobs.rss: HTTP 301 Moved Permanently"
       ],
-      "ms": 1279
+      "ms": 1486
     },
     {
       "id": "himalayas",
@@ -605,15 +605,15 @@
       "status": "ok",
       "fetched": 240,
       "warnings": [],
-      "ms": 629
+      "ms": 411
     },
     {
       "id": "jobicy",
       "label": "Jobicy",
       "status": "ok",
-      "fetched": 447,
+      "fetched": 561,
       "warnings": [],
-      "ms": 20324
+      "ms": 23242
     },
     {
       "id": "remoteok",
@@ -621,15 +621,15 @@
       "status": "ok",
       "fetched": 100,
       "warnings": [],
-      "ms": 842
+      "ms": 512
     },
     {
       "id": "workingnomads",
       "label": "Working Nomads",
       "status": "ok",
-      "fetched": 45,
+      "fetched": 46,
       "warnings": [],
-      "ms": 899
+      "ms": 823
     },
     {
       "id": "arbeitnow",
@@ -637,7 +637,7 @@
       "status": "ok",
       "fetched": 175,
       "warnings": [],
-      "ms": 255
+      "ms": 154
     }
   ]
 }
