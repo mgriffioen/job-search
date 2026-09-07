@@ -1,6 +1,6 @@
 {
-  "generatedAt": "2026-09-07T12:25:05.589Z",
-  "durationMs": 37757,
+  "generatedAt": "2026-09-07T19:55:39.890Z",
+  "durationMs": 38750,
   "candidate": {
     "name": "Emily Griffioen",
     "headline": "Content & editorial QA — 10 years reviewing customer-facing marketing content",
@@ -148,26 +148,28 @@
     "maxAgeDays": 60
   },
   "counts": {
-    "fetched": 2663,
-    "unique": 1377,
-    "published": 99,
+    "fetched": 2681,
+    "unique": 1407,
+    "published": 104,
     "dropped": {
-      "location": 475,
+      "location": 447,
       "stale": 1,
-      "noTermMatch": 802
+      "noTermMatch": 855
     }
   },
   "terms": {
     "email marketing specialist": 36,
     "editor": 16,
-    "content specialist": 9,
-    "quality assurance analyst": 7,
+    "quality assurance analyst": 9,
+    "content specialist": 8,
     "curriculum writer": 5,
+    "qa analyst": 3,
     "marketing qa": 3,
     "content reviewer": 3,
-    "qa analyst": 2,
+    "quality specialist": 2,
     "quality analyst": 2,
     "quality assurance specialist": 2,
+    "proposal writer": 2,
     "content operations": 2,
     "freelance writer": 1,
     "managing editor": 1,
@@ -177,15 +179,14 @@
     "campaign operations specialist": 1,
     "content marketing specialist": 1,
     "content developer": 1,
-    "quality specialist": 1,
-    "proposal writer": 1,
-    "content designer": 1,
-    "editorial quality": 1
+    "content writer": 1,
+    "content coordinator": 1,
+    "content designer": 1
   },
   "matchedIn": {
-    "title": 92,
-    "tags": 2,
-    "description": 5
+    "title": 96,
+    "tags": 4,
+    "description": 4
   },
   "unmatched": [
     {
@@ -199,11 +200,6 @@
       "source": "Adzuna"
     },
     {
-      "title": "Law/Legal Expert - Remote",
-      "company": "YO AI Labs",
-      "source": "Adzuna"
-    },
-    {
       "title": "82303 Lawyer",
       "company": "Cephas Consultancy Services Private Limited",
       "source": "Adzuna"
@@ -214,7 +210,7 @@
       "source": "Adzuna"
     },
     {
-      "title": "Legal AI Trainer - Remote",
+      "title": "Law/Legal Expert - Remote",
       "company": "YO AI Labs",
       "source": "Adzuna"
     },
@@ -234,6 +230,16 @@
       "source": "Adzuna"
     },
     {
+      "title": "Legal AI Trainer - Remote",
+      "company": "YO AI Labs",
+      "source": "Adzuna"
+    },
+    {
+      "title": "BigLaw lawyers - Remote",
+      "company": "YO HR Consultancy",
+      "source": "Adzuna"
+    },
+    {
       "title": "BigLaw lawyers - Remote",
       "company": "YO AI Labs",
       "source": "Adzuna"
@@ -241,11 +247,6 @@
     {
       "title": "Associate Attorney - Remote",
       "company": "YO AI Labs",
-      "source": "Adzuna"
-    },
-    {
-      "title": "BigLaw lawyers - Remote",
-      "company": "YO HR Consultancy",
       "source": "Adzuna"
     },
     {
@@ -291,11 +292,6 @@
     {
       "title": "Data Entry Specialist – Administrative (Remote)",
       "company": "PulseMediaNL",
-      "source": "Adzuna"
-    },
-    {
-      "title": "Senior Database Engineer",
-      "company": "Humana",
       "source": "Adzuna"
     },
     {
@@ -459,13 +455,18 @@
       "source": "Jooble"
     },
     {
-      "title": "Director of Integrated Marketing — Remote/East Coast",
-      "company": "Sunrise Systems, Inc.",
+      "title": "Junior QA Tester - Remote (USA)",
+      "company": "Ace It Careers",
       "source": "Jooble"
     },
     {
       "title": "Integrated Marketing Manager",
       "company": "Sunrise Systems",
+      "source": "Jooble"
+    },
+    {
+      "title": "Integrated Designer (German/English Fluent)New",
+      "company": "OliverPlus",
       "source": "Jooble"
     },
     {
@@ -479,35 +480,37 @@
       "source": "Jooble"
     },
     {
-      "title": "Senior GenAI Integrated Producer",
-      "company": "Brandtech+",
-      "source": "Jooble"
-    },
-    {
       "title": "Remote Industry Segment & Programs Lead - Systems Integrator",
       "company": "MHEDA",
       "source": "Jooble"
+    },
+    {
+      "title": "Senior GenAI Integrated Producer",
+      "company": "Brandtech+",
+      "source": "Jooble"
     }
   ],
-  "freshLast48h": 8,
-  "contract": 55,
+  "freshLast48h": 11,
+  "contract": 58,
   "modes": {
-    "writing": 48,
-    "reviewing": 51
+    "writing": 50,
+    "reviewing": 54
   },
   "technical": 5,
   "industries": {
-    "Education & training": 8,
+    "Education & training": 10,
+    "Healthcare & life sciences": 9,
     "Marketing & advertising": 7,
-    "Healthcare & life sciences": 5,
     "Finance & insurance": 5,
     "AI training & data annotation": 4,
-    "Legal": 2,
-    "Media & publishing": 1,
+    "Media & publishing": 2,
+    "Nonprofit & government": 2,
+    "Legal": 1,
     "Staffing & recruiting": 1,
     "Real estate & construction": 1,
     "Software & technology": 1,
-    "Crypto & gaming": 1
+    "Crypto & gaming": 1,
+    "Retail & e-commerce": 1
   },
   "sources": [
     {
@@ -536,13 +539,13 @@
         "reserve": 12,
         "reason": "188 spendable across ~1 runs left — full budget available"
       },
-      "ms": 2
+      "ms": 1
     },
     {
       "id": "adzuna",
       "label": "Adzuna",
       "status": "ok",
-      "fetched": 279,
+      "fetched": 278,
       "warnings": [
         "michigan-remote \"copyediting\": 0 results (Adzuna reports 0 total matches)",
         "michigan-remote \"content reviewer\": 0 results (Adzuna reports 0 total matches)",
@@ -570,7 +573,7 @@
         "us-remote \"catalog quality\": 0 results (Adzuna reports 0 total matches)",
         "us-remote \"campaign quality\": 0 results (Adzuna reports 0 total matches)"
       ],
-      "ms": 11745
+      "ms": 12077
     },
     {
       "id": "jooble",
@@ -578,7 +581,7 @@
       "status": "ok",
       "fetched": 200,
       "warnings": [],
-      "ms": 2468
+      "ms": 2379
     },
     {
       "id": "remotive",
@@ -586,7 +589,7 @@
       "status": "ok",
       "fetched": 816,
       "warnings": [],
-      "ms": 1692
+      "ms": 1232
     },
     {
       "id": "weworkremotely",
@@ -596,7 +599,7 @@
       "warnings": [
         "remote-marketing-jobs.rss: HTTP 301 Moved Permanently"
       ],
-      "ms": 1212
+      "ms": 1170
     },
     {
       "id": "himalayas",
@@ -604,15 +607,15 @@
       "status": "ok",
       "fetched": 240,
       "warnings": [],
-      "ms": 619
+      "ms": 529
     },
     {
       "id": "jobicy",
       "label": "Jobicy",
       "status": "ok",
-      "fetched": 564,
+      "fetched": 568,
       "warnings": [],
-      "ms": 17643
+      "ms": 18911
     },
     {
       "id": "remoteok",
@@ -620,15 +623,15 @@
       "status": "ok",
       "fetched": 100,
       "warnings": [],
-      "ms": 595
+      "ms": 484
     },
     {
       "id": "workingnomads",
       "label": "Working Nomads",
       "status": "ok",
-      "fetched": 32,
+      "fetched": 47,
       "warnings": [],
-      "ms": 642
+      "ms": 527
     },
     {
       "id": "arbeitnow",
@@ -636,7 +639,7 @@
       "status": "ok",
       "fetched": 250,
       "warnings": [],
-      "ms": 313
+      "ms": 476
     }
   ]
 }
