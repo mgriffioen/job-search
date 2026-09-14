@@ -1,6 +1,6 @@
 {
-  "generatedAt": "2026-09-14T12:39:21.352Z",
-  "durationMs": 38547,
+  "generatedAt": "2026-09-14T20:17:34.708Z",
+  "durationMs": 44475,
   "candidate": {
     "name": "Emily Griffioen",
     "headline": "Content & editorial QA — 10 years reviewing customer-facing marketing content",
@@ -148,44 +148,44 @@
     "maxAgeDays": 60
   },
   "counts": {
-    "fetched": 2580,
-    "unique": 1409,
-    "published": 104,
+    "fetched": 2579,
+    "unique": 1403,
+    "published": 111,
     "dropped": {
-      "location": 496,
+      "location": 489,
       "stale": 2,
-      "noTermMatch": 807
+      "noTermMatch": 801
     }
   },
   "terms": {
-    "email marketing specialist": 37,
-    "editor": 11,
-    "content specialist": 8,
+    "email marketing specialist": 38,
+    "editor": 15,
+    "content specialist": 10,
     "quality assurance analyst": 7,
     "quality assurance specialist": 6,
     "qa analyst": 5,
-    "content writer": 3,
+    "content writer": 4,
     "curriculum writer": 3,
     "content operations": 3,
-    "quality analyst": 2,
     "content designer": 2,
     "marketing qa": 2,
-    "documentation specialist": 2,
+    "quality specialist": 2,
     "copywriter": 2,
     "content reviewer": 2,
+    "managing editor": 1,
     "freelance writer": 1,
+    "quality analyst": 1,
     "assessment editor": 1,
+    "documentation specialist": 1,
     "content producer": 1,
-    "content marketing specialist": 1,
     "campaign operations specialist": 1,
+    "content marketing specialist": 1,
     "qa specialist": 1,
-    "content developer": 1,
-    "technical writer": 1,
-    "quality specialist": 1
+    "content developer": 1
   },
   "matchedIn": {
-    "title": 94,
-    "tags": 4,
+    "title": 105,
+    "tags": 0,
     "description": 6
   },
   "unmatched": [
@@ -215,11 +215,6 @@
       "source": "Adzuna"
     },
     {
-      "title": "Law/Legal Expert - Remote",
-      "company": "YO HR Consultancy",
-      "source": "Adzuna"
-    },
-    {
       "title": "Lawyer - Remote",
       "company": "YO AI Labs",
       "source": "Adzuna"
@@ -236,22 +231,27 @@
     },
     {
       "title": "Law/Legal Expert - Remote",
-      "company": "YO AI Labs",
-      "source": "Adzuna"
-    },
-    {
-      "title": "BigLaw lawyers - Remote",
       "company": "YO HR Consultancy",
       "source": "Adzuna"
     },
     {
-      "title": "BigLaw lawyers - Remote",
+      "title": "Law/Legal Expert - Remote",
       "company": "YO AI Labs",
       "source": "Adzuna"
     },
     {
       "title": "Associate Attorney - Remote",
       "company": "YO AI Labs",
+      "source": "Adzuna"
+    },
+    {
+      "title": "BigLaw lawyers - Remote",
+      "company": "YO AI Labs",
+      "source": "Adzuna"
+    },
+    {
+      "title": "BigLaw lawyers - Remote",
+      "company": "YO HR Consultancy",
       "source": "Adzuna"
     },
     {
@@ -370,28 +370,18 @@
       "source": "Adzuna"
     },
     {
-      "title": "CX Quality Assurance Manager - Remote MT",
-      "company": "Gainwell Technologies LLC",
-      "source": "Adzuna"
-    },
-    {
       "title": "Property Claims Quality Assurance Supervisor (Remote)",
       "company": "California FAIR Plan Association",
       "source": "Adzuna"
     },
     {
-      "title": "Call Center Quality Assurance Supervisor - Remote CA",
+      "title": "CX Quality Assurance Manager - Remote MT",
       "company": "Gainwell Technologies LLC",
       "source": "Adzuna"
     },
     {
-      "title": "Quality Assurance Manager Sr. - Secret (Remote) with Security Clearance",
-      "company": "Xcelerate Solutions",
-      "source": "Adzuna"
-    },
-    {
-      "title": "RN, Quality Assurance (Home Health) Remote",
-      "company": "Adventist Health",
+      "title": "Call Center Quality Assurance Supervisor - Remote CA",
+      "company": "Gainwell Technologies LLC",
       "source": "Adzuna"
     },
     {
@@ -415,13 +405,13 @@
       "source": "Adzuna"
     },
     {
-      "title": "Senior Consultant, Food Safety and Quality Assurance",
-      "company": "Intertek",
+      "title": "Computer Systems Quality Assurance (CSQA)",
+      "company": "ClifyX",
       "source": "Adzuna"
     },
     {
-      "title": "Senior Software Quality Assurance Engineer",
-      "company": "Na Oiwi Kane",
+      "title": "Senior Consultant, Food Safety and Quality Assurance",
+      "company": "Intertek",
       "source": "Adzuna"
     },
     {
@@ -455,11 +445,6 @@
       "source": "Jooble"
     },
     {
-      "title": "Account Manager | AllConnect",
-      "company": "Red Ventures",
-      "source": "Jooble"
-    },
-    {
       "title": "Indonesian Part-Time Linguistic QA Tester (Remote - US Based)",
       "company": "Welocalize",
       "source": "Jooble"
@@ -475,39 +460,55 @@
       "source": "Jooble"
     },
     {
-      "title": "Remote QA Tester- U.S. Client Projects",
-      "company": "Ace It Careers",
+      "title": "Quality Assurance Engineer",
+      "company": "Katalyst Healthcares & Life Sciences",
       "source": "Jooble"
     },
     {
-      "title": "QA Tester",
-      "company": "Software Technology Inc",
+      "title": "Integrated Marketing Manager",
+      "company": "Sunrise Systems, Inc.",
       "source": "Jooble"
     },
     {
-      "title": "Junior QA Tester - Remote (USA)",
-      "company": "Ace It Careers",
+      "title": "Integrated Designer (German/English Fluent)New",
+      "company": "OliverPlus",
+      "source": "Jooble"
+    },
+    {
+      "title": "Remote Marketing Manager, Events & Integrated Campaigns",
+      "company": "K1X, Inc.",
+      "source": "Jooble"
+    },
+    {
+      "title": "Remote Integrated Marketing Intern: ABM & Campaign Analytics",
+      "company": "Southwire Company, LLC",
+      "source": "Jooble"
+    },
+    {
+      "title": "Accounts Payable Analyst",
+      "company": "Empire Auto Parts",
       "source": "Jooble"
     }
   ],
-  "freshLast48h": 15,
-  "contract": 56,
+  "freshLast48h": 20,
+  "contract": 58,
   "modes": {
-    "writing": 52,
-    "reviewing": 52
+    "writing": 53,
+    "reviewing": 58
   },
-  "technical": 7,
+  "technical": 8,
   "industries": {
     "Marketing & advertising": 11,
-    "Education & training": 8,
-    "Healthcare & life sciences": 6,
-    "AI training & data annotation": 3,
+    "Education & training": 10,
+    "Healthcare & life sciences": 5,
+    "Media & publishing": 4,
+    "AI training & data annotation": 4,
+    "Manufacturing & logistics": 3,
+    "Legal": 2,
     "Nonprofit & government": 2,
-    "Media & publishing": 2,
     "Software & technology": 2,
-    "Manufacturing & logistics": 1,
-    "Legal": 1,
     "Real estate & construction": 1,
+    "Retail & e-commerce": 1,
     "Finance & insurance": 1,
     "Crypto & gaming": 1,
     "Staffing & recruiting": 1
@@ -545,7 +546,7 @@
       "id": "adzuna",
       "label": "Adzuna",
       "status": "ok",
-      "fetched": 239,
+      "fetched": 240,
       "warnings": [
         "michigan-remote \"copyediting\": 0 results (Adzuna reports 0 total matches)",
         "michigan-remote \"content reviewer\": 0 results (Adzuna reports 0 total matches)",
@@ -573,7 +574,7 @@
         "us-remote \"campaign quality\": 0 results (Adzuna reports 0 total matches)",
         "us-remote \"marketing qa\": 0 results (Adzuna reports 0 total matches)"
       ],
-      "ms": 10715
+      "ms": 9350
     },
     {
       "id": "jooble",
@@ -581,7 +582,7 @@
       "status": "ok",
       "fetched": 200,
       "warnings": [],
-      "ms": 2433
+      "ms": 2149
     },
     {
       "id": "remotive",
@@ -589,7 +590,7 @@
       "status": "ok",
       "fetched": 768,
       "warnings": [],
-      "ms": 1942
+      "ms": 1626
     },
     {
       "id": "weworkremotely",
@@ -599,7 +600,7 @@
       "warnings": [
         "remote-marketing-jobs.rss: HTTP 301 Moved Permanently"
       ],
-      "ms": 1416
+      "ms": 1442
     },
     {
       "id": "himalayas",
@@ -607,15 +608,15 @@
       "status": "ok",
       "fetched": 240,
       "warnings": [],
-      "ms": 693
+      "ms": 903
     },
     {
       "id": "jobicy",
       "label": "Jobicy",
       "status": "ok",
-      "fetched": 572,
+      "fetched": 570,
       "warnings": [],
-      "ms": 18727
+      "ms": 26440
     },
     {
       "id": "remoteok",
@@ -623,7 +624,7 @@
       "status": "ok",
       "fetched": 99,
       "warnings": [],
-      "ms": 785
+      "ms": 620
     },
     {
       "id": "workingnomads",
@@ -631,7 +632,7 @@
       "status": "ok",
       "fetched": 45,
       "warnings": [],
-      "ms": 709
+      "ms": 722
     },
     {
       "id": "arbeitnow",
@@ -639,7 +640,7 @@
       "status": "ok",
       "fetched": 250,
       "warnings": [],
-      "ms": 392
+      "ms": 502
     }
   ]
 }
