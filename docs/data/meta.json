@@ -1,6 +1,6 @@
 {
-  "generatedAt": "2026-09-21T12:42:11.130Z",
-  "durationMs": 72779,
+  "generatedAt": "2026-09-21T20:24:44.066Z",
+  "durationMs": 48353,
   "candidate": {
     "name": "Emily Griffioen",
     "headline": "Content & editorial QA — 10 years reviewing customer-facing marketing content",
@@ -148,52 +148,50 @@
     "maxAgeDays": 60
   },
   "counts": {
-    "fetched": 2712,
-    "unique": 1424,
-    "published": 115,
+    "fetched": 2721,
+    "unique": 1418,
+    "published": 114,
     "dropped": {
-      "location": 515,
+      "location": 506,
       "stale": 2,
-      "noTermMatch": 792
+      "noTermMatch": 796
     }
   },
   "terms": {
-    "email marketing specialist": 42,
+    "email marketing specialist": 43,
     "editor": 10,
-    "qa analyst": 7,
-    "quality assurance analyst": 7,
-    "quality assurance specialist": 6,
-    "content specialist": 6,
+    "content specialist": 7,
+    "qa analyst": 6,
+    "quality assurance analyst": 6,
+    "quality assurance specialist": 5,
     "copywriter": 3,
+    "content writer": 3,
     "freelance writer": 2,
     "quality analyst": 2,
-    "content reviewer": 2,
     "quality specialist": 2,
-    "content writer": 2,
+    "content reviewer": 2,
     "content designer": 2,
     "curriculum writer": 2,
-    "content developer": 2,
+    "marketing qa": 2,
+    "qa specialist": 2,
     "content operations": 2,
     "managing editor": 1,
     "proposal writer": 1,
-    "quality coordinator": 1,
     "content operations specialist": 1,
     "production editor": 1,
     "product information specialist": 1,
-    "content qa specialist": 1,
     "assessment editor": 1,
-    "editorial operations": 1,
-    "marketing qa": 1,
-    "content marketing specialist": 1,
+    "content qa specialist": 1,
     "campaign operations specialist": 1,
-    "qa specialist": 1,
+    "content marketing specialist": 1,
+    "content developer": 1,
     "campaign qa": 1,
     "technical writer": 1,
     "content quality": 1
   },
   "matchedIn": {
-    "title": 103,
-    "tags": 1,
+    "title": 99,
+    "tags": 4,
     "description": 11
   },
   "unmatched": [
@@ -218,17 +216,12 @@
       "source": "Adzuna"
     },
     {
-      "title": "Lawyer - Remote",
-      "company": "YO AI Labs",
-      "source": "Adzuna"
-    },
-    {
-      "title": "Law/Legal Expert - Remote",
-      "company": "YO AI Labs",
-      "source": "Adzuna"
-    },
-    {
       "title": "US Attorney - Remote",
+      "company": "YO AI Labs",
+      "source": "Adzuna"
+    },
+    {
+      "title": "Lawyer - Remote",
       "company": "YO AI Labs",
       "source": "Adzuna"
     },
@@ -238,12 +231,17 @@
       "source": "Adzuna"
     },
     {
-      "title": "Associate Attorney - Remote",
+      "title": "Law/Legal Expert - Remote",
       "company": "YO AI Labs",
       "source": "Adzuna"
     },
     {
       "title": "BigLaw lawyers - Remote",
+      "company": "YO AI Labs",
+      "source": "Adzuna"
+    },
+    {
+      "title": "Associate Attorney - Remote",
       "company": "YO AI Labs",
       "source": "Adzuna"
     },
@@ -320,6 +318,11 @@
     {
       "title": "Remote Business Email Marketing Agent – Nationwide – Call Now (405) 801-9601 Fort Worth, TX",
       "company": "HOSPITALITY HIRING HUB",
+      "source": "Adzuna"
+    },
+    {
+      "title": "Remote Business Email Marketing Agent – Nationwide – Call Now (405) 801-9601 El Paso, TX",
+      "company": "T",
       "source": "Adzuna"
     },
     {
@@ -448,18 +451,13 @@
       "source": "Jooble"
     },
     {
-      "title": "Operations Associate",
-      "company": "Venturetech Solutions",
-      "source": "Jooble"
-    },
-    {
-      "title": "Account Manager | AllConnect",
-      "company": "Red Ventures",
-      "source": "Jooble"
-    },
-    {
       "title": "Associate Director, Email & GTM Campaigns - Remote Work",
       "company": "BairesDev",
+      "source": "Jooble"
+    },
+    {
+      "title": "Remote Adobe Campaign Classic Engineer",
+      "company": "HR Pundits",
       "source": "Jooble"
     },
     {
@@ -468,50 +466,50 @@
       "source": "Jooble"
     },
     {
-      "title": "Indonesian Part-Time Linguistic QA Tester (Remote - US Based)",
-      "company": "Welocalize",
-      "source": "Jooble"
-    },
-    {
       "title": "Sr. Communications & Email Marketing Associate",
       "company": "NinjaHoldings",
-      "source": "Jooble"
-    },
-    {
-      "title": "Google Ads Specialist (Remote, Phoenix)",
-      "company": "Blacksmith Agency",
-      "source": "Jooble"
-    },
-    {
-      "title": "QA Tester",
-      "company": "Discover Technologies",
-      "source": "Jooble"
-    },
-    {
-      "title": "Sr. Oracle OIM QA Tester (Oracle Identity Manager) (No H1B)",
-      "company": "SonSoft Inc.",
       "source": "Jooble"
     },
     {
       "title": "Integration Specialist - Web Content",
       "company": "InstantServe LLC",
       "source": "Jooble"
+    },
+    {
+      "title": "Integrated Marketing Manager",
+      "company": "Sunrise Systems, Inc.",
+      "source": "Jooble"
+    },
+    {
+      "title": "Integrated Marketing Program Manager",
+      "company": "HelloKindred",
+      "source": "Jooble"
+    },
+    {
+      "title": "Remote Senior Channel Marketing Lead for System Integrators",
+      "company": "Motorola Solutions",
+      "source": "Jooble"
+    },
+    {
+      "title": "Founding DevRel Engineer - Remote AI Integrations",
+      "company": "Coral Bricks AI",
+      "source": "Jooble"
     }
   ],
-  "freshLast48h": 13,
-  "contract": 58,
+  "freshLast48h": 15,
+  "contract": 54,
   "modes": {
-    "writing": 58,
-    "reviewing": 57
+    "writing": 59,
+    "reviewing": 55
   },
-  "technical": 3,
+  "technical": 4,
   "industries": {
-    "Marketing & advertising": 14,
-    "Education & training": 10,
-    "Healthcare & life sciences": 9,
-    "Finance & insurance": 4,
+    "Marketing & advertising": 16,
+    "Education & training": 9,
+    "Healthcare & life sciences": 7,
+    "Nonprofit & government": 5,
+    "Finance & insurance": 5,
     "AI training & data annotation": 4,
-    "Nonprofit & government": 3,
     "Media & publishing": 3,
     "Staffing & recruiting": 3,
     "Software & technology": 3,
@@ -579,7 +577,7 @@
         "us-remote \"campaign quality\": 0 results (Adzuna reports 0 total matches)",
         "us-remote \"marketing qa\": 0 results (Adzuna reports 0 total matches)"
       ],
-      "ms": 27699
+      "ms": 11710
     },
     {
       "id": "jooble",
@@ -587,7 +585,7 @@
       "status": "ok",
       "fetched": 200,
       "warnings": [],
-      "ms": 2822
+      "ms": 2401
     },
     {
       "id": "remotive",
@@ -595,7 +593,7 @@
       "status": "ok",
       "fetched": 864,
       "warnings": [],
-      "ms": 1789
+      "ms": 1857
     },
     {
       "id": "weworkremotely",
@@ -605,7 +603,7 @@
       "warnings": [
         "remote-marketing-jobs.rss: HTTP 301 Moved Permanently"
       ],
-      "ms": 1200
+      "ms": 1412
     },
     {
       "id": "himalayas",
@@ -613,15 +611,15 @@
       "status": "ok",
       "fetched": 240,
       "warnings": [],
-      "ms": 651
+      "ms": 489
     },
     {
       "id": "jobicy",
       "label": "Jobicy",
       "status": "ok",
-      "fetched": 561,
+      "fetched": 569,
       "warnings": [],
-      "ms": 22719
+      "ms": 28217
     },
     {
       "id": "remoteok",
@@ -629,15 +627,15 @@
       "status": "ok",
       "fetched": 99,
       "warnings": [],
-      "ms": 13962
+      "ms": 539
     },
     {
       "id": "workingnomads",
       "label": "Working Nomads",
       "status": "ok",
-      "fetched": 54,
+      "fetched": 55,
       "warnings": [],
-      "ms": 622
+      "ms": 776
     },
     {
       "id": "arbeitnow",
@@ -645,7 +643,7 @@
       "status": "ok",
       "fetched": 250,
       "warnings": [],
-      "ms": 448
+      "ms": 237
     }
   ]
 }
