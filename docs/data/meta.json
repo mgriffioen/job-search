@@ -1,6 +1,6 @@
 {
-  "generatedAt": "2026-09-28T13:46:52.295Z",
-  "durationMs": 44072,
+  "generatedAt": "2026-09-28T21:57:09.375Z",
+  "durationMs": 37172,
   "candidate": {
     "name": "Emily Griffioen",
     "headline": "Content & editorial QA — 10 years reviewing customer-facing marketing content",
@@ -149,37 +149,37 @@
   },
   "counts": {
     "fetched": 2680,
-    "unique": 1490,
-    "published": 112,
+    "unique": 1529,
+    "published": 110,
     "dropped": {
-      "location": 543,
-      "stale": 3,
-      "noTermMatch": 832
+      "location": 573,
+      "stale": 2,
+      "noTermMatch": 844
     }
   },
   "terms": {
-    "email marketing specialist": 42,
-    "editor": 11,
-    "content specialist": 8,
-    "quality assurance analyst": 7,
-    "qa analyst": 5,
-    "quality assurance specialist": 4,
-    "freelance writer": 3,
-    "content writer": 3,
-    "curriculum writer": 3,
-    "marketing qa": 3,
+    "email marketing specialist": 43,
+    "editor": 13,
+    "quality assurance analyst": 9,
+    "qa analyst": 6,
+    "content specialist": 6,
+    "quality assurance specialist": 3,
+    "freelance writer": 2,
     "quality specialist": 2,
     "content reviewer": 2,
+    "curriculum writer": 2,
+    "marketing qa": 2,
     "content designer": 2,
     "content operations": 2,
     "managing editor": 1,
     "quality analyst": 1,
     "content operations specialist": 1,
     "e-commerce content specialist": 1,
-    "curriculum editor": 1,
-    "content qa": 1,
+    "content writer": 1,
+    "marketing copywriter": 1,
     "product information specialist": 1,
     "assessment editor": 1,
+    "documentation specialist": 1,
     "content marketing specialist": 1,
     "copywriter": 1,
     "qa specialist": 1,
@@ -189,7 +189,7 @@
     "content quality": 1
   },
   "matchedIn": {
-    "title": 97,
+    "title": 95,
     "tags": 2,
     "description": 13
   },
@@ -225,12 +225,12 @@
       "source": "Adzuna"
     },
     {
-      "title": "Legal AI Trainer - Remote",
+      "title": "US Attorney - Remote",
       "company": "YO AI Labs",
       "source": "Adzuna"
     },
     {
-      "title": "US Attorney - Remote",
+      "title": "Legal AI Trainer - Remote",
       "company": "YO AI Labs",
       "source": "Adzuna"
     },
@@ -245,12 +245,12 @@
       "source": "Adzuna"
     },
     {
-      "title": "BigLaw lawyers - Remote",
+      "title": "Associate Attorney - Remote",
       "company": "YO AI Labs",
       "source": "Adzuna"
     },
     {
-      "title": "Associate Attorney - Remote",
+      "title": "BigLaw lawyers - Remote",
       "company": "YO AI Labs",
       "source": "Adzuna"
     },
@@ -302,11 +302,6 @@
     {
       "title": "Data Entry Specialist – Administrative (Remote)",
       "company": "PulseMediaNL",
-      "source": "Adzuna"
-    },
-    {
-      "title": "Senior Database Engineer",
-      "company": "Humana",
       "source": "Adzuna"
     },
     {
@@ -455,11 +450,6 @@
       "source": "Jooble"
     },
     {
-      "title": "Remote Ad Operations Manager: Lead & Optimize Campaigns",
-      "company": "StackAdapt",
-      "source": "Jooble"
-    },
-    {
       "title": "Marketing Campaign Manager",
       "company": "AceStack LLC",
       "source": "Jooble"
@@ -480,41 +470,51 @@
       "source": "Jooble"
     },
     {
-      "title": "Remote Marketing Coordinator - Content & Campaigns",
-      "company": "Measured",
+      "title": "Remote Ad Operations & Analytics Lead — Scale Campaigns",
+      "company": "Mosaec",
       "source": "Jooble"
     },
     {
-      "title": "Remote Inbound CSR for Donor Campaigns",
-      "company": "ACD Direct",
+      "title": "Meta Lead-Gen Growth Specialist for Home Services",
+      "company": "SwiftSocial LLC",
       "source": "Jooble"
     },
     {
-      "title": "Operations Associate",
-      "company": "Venturetech Solutions",
+      "title": "Email & GTM Campaigns Manager (USA) - Remote Work",
+      "company": "BairesDev",
+      "source": "Jooble"
+    },
+    {
+      "title": "Senior Paid Advertising Strategist - Ecommerce",
+      "company": "Powerdigitalmarketing",
+      "source": "Jooble"
+    },
+    {
+      "title": "Senior Paid Advertising Strategist, Fashion",
+      "company": "Powerdigitalmarketing",
       "source": "Jooble"
     }
   ],
-  "freshLast48h": 9,
+  "freshLast48h": 8,
   "contract": 59,
   "modes": {
-    "writing": 57,
+    "writing": 55,
     "reviewing": 55
   },
   "technical": 2,
   "industries": {
-    "Marketing & advertising": 18,
+    "Marketing & advertising": 17,
     "Education & training": 8,
-    "Healthcare & life sciences": 6,
-    "AI training & data annotation": 5,
-    "Media & publishing": 3,
+    "Healthcare & life sciences": 7,
+    "AI training & data annotation": 4,
     "Staffing & recruiting": 3,
     "Finance & insurance": 3,
-    "Software & technology": 3,
     "Nonprofit & government": 2,
+    "Media & publishing": 2,
     "Retail & e-commerce": 2,
-    "Manufacturing & logistics": 1,
+    "Software & technology": 2,
     "Legal": 1,
+    "Manufacturing & logistics": 1,
     "Crypto & gaming": 1
   },
   "sources": [
@@ -550,7 +550,7 @@
       "id": "adzuna",
       "label": "Adzuna",
       "status": "ok",
-      "fetched": 241,
+      "fetched": 239,
       "warnings": [
         "michigan-remote \"copyediting\": 0 results (Adzuna reports 0 total matches)",
         "michigan-remote \"content reviewer\": 0 results (Adzuna reports 0 total matches)",
@@ -577,7 +577,7 @@
         "us-remote \"campaign quality\": 0 results (Adzuna reports 0 total matches)",
         "us-remote \"marketing qa\": 0 results (Adzuna reports 0 total matches)"
       ],
-      "ms": 16741
+      "ms": 12385
     },
     {
       "id": "jooble",
@@ -585,7 +585,7 @@
       "status": "ok",
       "fetched": 200,
       "warnings": [],
-      "ms": 2913
+      "ms": 2436
     },
     {
       "id": "remotive",
@@ -593,17 +593,17 @@
       "status": "ok",
       "fetched": 768,
       "warnings": [],
-      "ms": 1396
+      "ms": 1201
     },
     {
       "id": "weworkremotely",
       "label": "We Work Remotely",
       "status": "ok",
-      "fetched": 184,
+      "fetched": 188,
       "warnings": [
         "remote-marketing-jobs.rss: HTTP 301 Moved Permanently"
       ],
-      "ms": 881
+      "ms": 1337
     },
     {
       "id": "himalayas",
@@ -611,15 +611,15 @@
       "status": "ok",
       "fetched": 240,
       "warnings": [],
-      "ms": 655
+      "ms": 604
     },
     {
       "id": "jobicy",
       "label": "Jobicy",
       "status": "ok",
-      "fetched": 576,
+      "fetched": 573,
       "warnings": [],
-      "ms": 19454
+      "ms": 17151
     },
     {
       "id": "remoteok",
@@ -627,15 +627,15 @@
       "status": "ok",
       "fetched": 99,
       "warnings": [],
-      "ms": 419
+      "ms": 559
     },
     {
       "id": "workingnomads",
       "label": "Working Nomads",
       "status": "ok",
-      "fetched": 52,
+      "fetched": 53,
       "warnings": [],
-      "ms": 298
+      "ms": 499
     },
     {
       "id": "arbeitnow",
@@ -643,7 +643,7 @@
       "status": "ok",
       "fetched": 326,
       "warnings": [],
-      "ms": 385
+      "ms": 274
     }
   ]
 }
