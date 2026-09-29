@@ -1,6 +1,6 @@
 {
-  "generatedAt": "2026-09-29T12:46:39.322Z",
-  "durationMs": 38969,
+  "generatedAt": "2026-09-29T20:43:51.094Z",
+  "durationMs": 46034,
   "candidate": {
     "name": "Emily Griffioen",
     "headline": "Content & editorial QA — 10 years reviewing customer-facing marketing content",
@@ -148,50 +148,52 @@
     "maxAgeDays": 60
   },
   "counts": {
-    "fetched": 2698,
-    "unique": 1482,
-    "published": 107,
+    "fetched": 2713,
+    "unique": 1511,
+    "published": 113,
     "dropped": {
-      "location": 501,
+      "location": 550,
       "stale": 2,
-      "noTermMatch": 872
+      "noTermMatch": 846
     }
   },
   "terms": {
-    "email marketing specialist": 37,
-    "editor": 10,
-    "content specialist": 8,
-    "quality assurance analyst": 7,
-    "content reviewer": 5,
-    "content writer": 5,
-    "content quality": 3,
+    "email marketing specialist": 39,
+    "content specialist": 9,
+    "editor": 8,
+    "content reviewer": 6,
+    "content writer": 6,
+    "quality assurance analyst": 6,
+    "copywriter": 4,
     "quality assurance specialist": 3,
     "content operations": 3,
     "freelance writer": 2,
     "editorial specialist": 2,
-    "copywriter": 2,
+    "content quality": 2,
     "content designer": 2,
     "content developer": 2,
     "qa analyst": 2,
+    "web content specialist": 2,
     "technical editor": 1,
     "editorial coordinator": 1,
     "copy editor": 1,
     "content editor": 1,
     "content operations specialist": 1,
+    "content coordinator": 1,
     "e-commerce content specialist": 1,
-    "marketing copywriter": 1,
     "product information specialist": 1,
-    "copyediting specialist": 1,
-    "documentation specialist": 1,
+    "managing editor": 1,
+    "quality specialist": 1,
+    "editorial assistant": 1,
     "content marketing specialist": 1,
     "qa specialist": 1,
     "technical writer": 1,
     "campaign qa": 1
   },
   "matchedIn": {
-    "title": 90,
+    "title": 95,
     "tags": 2,
-    "description": 15
+    "description": 16
   },
   "unmatched": [
     {
@@ -220,12 +222,12 @@
       "source": "Adzuna"
     },
     {
-      "title": "Journalist - Remote",
+      "title": "Journalist/Writer - Remote",
       "company": "YO AI Labs",
       "source": "Adzuna"
     },
     {
-      "title": "Journalist/Writer - Remote",
+      "title": "Journalist - Remote",
       "company": "YO AI Labs",
       "source": "Adzuna"
     },
@@ -242,11 +244,6 @@
     {
       "title": "Director, Enterprise Managed Services Sales",
       "company": "Broadcast Management Group",
-      "source": "Adzuna"
-    },
-    {
-      "title": "Agile Product Owner - Content (Remote)",
-      "company": "Blue Cross and Blue Shield of North Carolina",
       "source": "Adzuna"
     },
     {
@@ -310,16 +307,6 @@
       "source": "Adzuna"
     },
     {
-      "title": "Call Center Quality Assurance Supervisor - Remote CA",
-      "company": "Gainwell Technologies LLC",
-      "source": "Adzuna"
-    },
-    {
-      "title": "Quality Assurance Automation Engineer (Remote)",
-      "company": "Caterpillar Inc.",
-      "source": "Adzuna"
-    },
-    {
       "title": "Senior Director, Quality Assurance (Remote)",
       "company": "Elevar Therapeutics",
       "source": "Adzuna"
@@ -345,28 +332,23 @@
       "source": "Adzuna"
     },
     {
-      "title": "Junior Product Analyst, Quality Assurance and Delivery - Remote",
-      "company": "UnitedHealth Group",
-      "source": "Adzuna"
-    },
-    {
-      "title": "Quality Assurance Manager Sr. - Secret (Remote) with Security Clearance",
-      "company": "Xcelerate Solutions",
-      "source": "Adzuna"
-    },
-    {
-      "title": "Manager, Quality Assurance & Training (NON REMOTE POSITION)",
-      "company": "Amynta Agency",
-      "source": "Adzuna"
-    },
-    {
       "title": "Quality Assurance Data Automation Engineer - Remote",
       "company": "Genesis10",
       "source": "Adzuna"
     },
     {
-      "title": "Remote LTC Pharmacy Quality Assurance Technician",
-      "company": "Symbria",
+      "title": "Call Center Quality Assurance Supervisor - Remote CA",
+      "company": "Gainwell Technologies LLC",
+      "source": "Adzuna"
+    },
+    {
+      "title": "Junior Product Analyst, Quality Assurance and Delivery - Remote",
+      "company": "UnitedHealth Group",
+      "source": "Adzuna"
+    },
+    {
+      "title": "Manager, Quality Assurance & Training (NON REMOTE POSITION)",
+      "company": "Amynta Agency",
       "source": "Adzuna"
     },
     {
@@ -395,6 +377,11 @@
       "source": "Adzuna"
     },
     {
+      "title": "Quality Assurance Tester",
+      "company": "Trident Consulting",
+      "source": "Adzuna"
+    },
+    {
       "title": "Nurse Practitioner, Clinical Lead ACCESS PROGRAM (Part Time)",
       "company": "Withings",
       "source": "Adzuna"
@@ -413,6 +400,11 @@
       "title": "Freelance Video News Producer",
       "company": "TCWGlobal",
       "source": "Adzuna"
+    },
+    {
+      "title": "Internal Communications Specialist",
+      "company": "Strive Pharmacy",
+      "source": "Jooble"
     },
     {
       "title": "Document Specialist",
@@ -465,8 +457,8 @@
       "source": "Jooble"
     },
     {
-      "title": "Editorial Associate",
-      "company": "Virtual Vocations Inc",
+      "title": "Editorial Lead, Conference Programming",
+      "company": "Ragan Communications",
       "source": "Jooble"
     },
     {
@@ -475,44 +467,53 @@
       "source": "Jooble"
     },
     {
-      "title": "Editorial Lead, Conference Programming",
-      "company": "Ragan Communications",
+      "title": "Digital Marketing Account Manager",
+      "company": "Wisevu",
       "source": "Jooble"
     },
     {
-      "title": "Remote Copy Strategist",
-      "company": "Virtual Vocations Inc",
+      "title": "UX Web Designer: Brand-Driven Wireframes & Interactions",
+      "company": "Uniting Holding",
       "source": "Jooble"
     },
     {
-      "title": "Digital Content Admin",
-      "company": "Collabera",
+      "title": "QBL Payroll Tax Operations and Services Specialist - Remote",
+      "company": "Intuit",
       "source": "Jooble"
     },
     {
-      "title": "UI Front End Developer",
-      "company": "Jobsbridge",
+      "title": "Global Client Executive",
+      "company": "NetApp",
       "source": "Jooble"
+    },
+    {
+      "title": "Frontend Web Application Developer",
+      "company": "KoboToolbox",
+      "source": "Remotive"
+    },
+    {
+      "title": "Senior Shopify Developer",
+      "company": "Sanctuary Computer Inc",
+      "source": "Remotive"
     }
   ],
-  "freshLast48h": 10,
-  "contract": 56,
+  "freshLast48h": 15,
+  "contract": 55,
   "modes": {
-    "writing": 53,
-    "reviewing": 54
+    "writing": 57,
+    "reviewing": 56
   },
   "technical": 2,
   "industries": {
-    "Marketing & advertising": 18,
-    "Healthcare & life sciences": 7,
+    "Marketing & advertising": 20,
+    "Healthcare & life sciences": 5,
+    "Education & training": 5,
     "Finance & insurance": 4,
-    "Education & training": 4,
-    "Media & publishing": 3,
+    "Media & publishing": 4,
+    "Retail & e-commerce": 3,
     "Legal": 2,
-    "Retail & e-commerce": 2,
+    "Nonprofit & government": 2,
     "Software & technology": 2,
-    "Manufacturing & logistics": 1,
-    "Nonprofit & government": 1,
     "Crypto & gaming": 1,
     "Real estate & construction": 1,
     "Staffing & recruiting": 1
@@ -544,13 +545,13 @@
         "reserve": 12,
         "reason": "188 spendable across ~1 runs left — full budget available"
       },
-      "ms": 0
+      "ms": 1
     },
     {
       "id": "adzuna",
       "label": "Adzuna",
       "status": "ok",
-      "fetched": 197,
+      "fetched": 196,
       "warnings": [
         "michigan-remote \"production editor\": 0 results (Adzuna reports 0 total matches)",
         "michigan-remote \"digital editor\": 0 results (Adzuna reports 0 total matches)",
@@ -577,7 +578,7 @@
         "us-remote \"assessment editor\": 0 results (Adzuna reports 0 total matches)",
         "us-remote \"curriculum editor\": 0 results (Adzuna reports 0 total matches)"
       ],
-      "ms": 11428
+      "ms": 12074
     },
     {
       "id": "jooble",
@@ -585,7 +586,7 @@
       "status": "ok",
       "fetched": 196,
       "warnings": [],
-      "ms": 2229
+      "ms": 2406
     },
     {
       "id": "remotive",
@@ -593,17 +594,17 @@
       "status": "ok",
       "fetched": 768,
       "warnings": [],
-      "ms": 1137
+      "ms": 1376
     },
     {
       "id": "weworkremotely",
       "label": "We Work Remotely",
       "status": "ok",
-      "fetched": 198,
+      "fetched": 208,
       "warnings": [
         "remote-marketing-jobs.rss: HTTP 301 Moved Permanently"
       ],
-      "ms": 1534
+      "ms": 2601
     },
     {
       "id": "himalayas",
@@ -611,15 +612,15 @@
       "status": "ok",
       "fetched": 240,
       "warnings": [],
-      "ms": 446
+      "ms": 447
     },
     {
       "id": "jobicy",
       "label": "Jobicy",
       "status": "ok",
-      "fetched": 627,
+      "fetched": 631,
       "warnings": [],
-      "ms": 20098
+      "ms": 25036
     },
     {
       "id": "remoteok",
@@ -627,15 +628,15 @@
       "status": "ok",
       "fetched": 99,
       "warnings": [],
-      "ms": 427
+      "ms": 455
     },
     {
       "id": "workingnomads",
       "label": "Working Nomads",
       "status": "ok",
-      "fetched": 54,
+      "fetched": 57,
       "warnings": [],
-      "ms": 360
+      "ms": 354
     },
     {
       "id": "arbeitnow",
@@ -643,7 +644,7 @@
       "status": "ok",
       "fetched": 326,
       "warnings": [],
-      "ms": 339
+      "ms": 324
     }
   ]
 }
