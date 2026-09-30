@@ -1,6 +1,6 @@
 {
-  "generatedAt": "2026-09-30T12:29:03.254Z",
-  "durationMs": 46309,
+  "generatedAt": "2026-09-30T20:47:30.512Z",
+  "durationMs": 44970,
   "candidate": {
     "name": "Emily Griffioen",
     "headline": "Content & editorial QA — 10 years reviewing customer-facing marketing content",
@@ -148,55 +148,55 @@
     "maxAgeDays": 60
   },
   "counts": {
-    "fetched": 2669,
-    "unique": 1513,
-    "published": 141,
+    "fetched": 2705,
+    "unique": 1518,
+    "published": 140,
     "dropped": {
-      "location": 561,
-      "stale": 4,
-      "noTermMatch": 807
+      "location": 543,
+      "stale": 3,
+      "noTermMatch": 832
     }
   },
   "terms": {
-    "email marketing specialist": 38,
-    "editor": 31,
+    "email marketing specialist": 36,
+    "editor": 30,
     "content specialist": 10,
-    "quality assurance analyst": 7,
     "copywriter": 6,
+    "quality assurance analyst": 6,
+    "content writer": 5,
     "technical writer": 5,
-    "proofreader": 5,
+    "proofreader": 4,
     "content editor": 3,
-    "content writer": 3,
     "quality assurance specialist": 3,
+    "technical editor": 2,
+    "managing editor": 2,
+    "copy editor": 2,
     "curriculum writer": 2,
     "content designer": 2,
     "quality specialist": 2,
     "qa analyst": 2,
     "editorial manager": 2,
-    "content operations": 2,
-    "technical editor": 1,
+    "proposal writer": 1,
     "freelance writer": 1,
-    "copy editor": 1,
     "content operations specialist": 1,
     "e-commerce content specialist": 1,
     "product information specialist": 1,
     "content reviewer": 1,
     "assessment editor": 1,
     "editorial proofreader": 1,
-    "quality analyst": 1,
-    "editorial assistant": 1,
+    "quality coordinator": 1,
     "content developer": 1,
     "content marketing specialist": 1,
     "qa specialist": 1,
-    "digital content editor": 1,
+    "content operations": 1,
     "campaign qa": 1,
     "content quality": 1,
     "editorial quality": 1
   },
   "matchedIn": {
-    "title": 122,
-    "tags": 3,
-    "description": 16
+    "title": 123,
+    "tags": 2,
+    "description": 15
   },
   "unmatched": [
     {
@@ -212,6 +212,11 @@
     {
       "title": "Online Adjunct - Statistics Instructor",
       "company": "Employment at Southwestern Michigan College",
+      "source": "Adzuna"
+    },
+    {
+      "title": "Agile Product Owner - Content (Remote)",
+      "company": "Blue Cross and Blue Shield of North Carolina",
       "source": "Adzuna"
     },
     {
@@ -300,13 +305,13 @@
       "source": "Adzuna"
     },
     {
-      "title": "Senior Software Quality Assurance Engineer (Remote - Louisiana Only)",
-      "company": "Blue Cross and Blue Shield of Louisiana",
+      "title": "Food Safety & GMP Quality Assurance Consultant Part time (Remote)",
+      "company": "Pace® Analytical Services",
       "source": "Adzuna"
     },
     {
-      "title": "Call Center Quality Assurance Supervisor - Remote CA",
-      "company": "Gainwell Technologies LLC",
+      "title": "Senior Software Quality Assurance Engineer (Remote - Louisiana Only)",
+      "company": "Blue Cross and Blue Shield of Louisiana",
       "source": "Adzuna"
     },
     {
@@ -317,6 +322,11 @@
     {
       "title": "Manager, Quality Assurance & Training (NON REMOTE POSITION)",
       "company": "Amynta Agency",
+      "source": "Adzuna"
+    },
+    {
+      "title": "Quality Assurance Associate (Public Trust) W2 Only",
+      "company": "Xoriant Corporation",
       "source": "Adzuna"
     },
     {
@@ -342,6 +352,11 @@
     {
       "title": "Corporate Attorney - Remote",
       "company": "YO AI Labs",
+      "source": "Adzuna"
+    },
+    {
+      "title": "Testing / Quality Assurance Lead",
+      "company": "Apex Systems",
       "source": "Adzuna"
     },
     {
@@ -390,23 +405,13 @@
       "source": "Adzuna"
     },
     {
-      "title": "Accounts Payable Analyst",
-      "company": "Empire Auto Parts",
-      "source": "Jooble"
-    },
-    {
-      "title": "Accounts Receivable Manager",
-      "company": "Springside Chestnut Hill Academy",
-      "source": "Jooble"
-    },
-    {
-      "title": "Office Manager- Beach Properties of Hilton Head",
-      "company": "Towne Family Of Companies",
-      "source": "Jooble"
-    },
-    {
       "title": "Learning Experience Designer",
       "company": "DDI | Development Dimensions International",
+      "source": "Jooble"
+    },
+    {
+      "title": "Learning & Development Attorney, Title Services",
+      "company": "Old Republic Title",
       "source": "Jooble"
     },
     {
@@ -440,8 +445,28 @@
       "source": "Jooble"
     },
     {
+      "title": "Summer 2027, Remote Internship, Editorial Adult",
+      "company": "Bertelsmann",
+      "source": "Jooble"
+    },
+    {
+      "title": "Editorial Intern, Fiction (Part-Time)",
+      "company": "Bertelsmann-Jobs",
+      "source": "Jooble"
+    },
+    {
       "title": "Digital Content Admin",
       "company": "Collabera",
+      "source": "Jooble"
+    },
+    {
+      "title": "Lead ML Engineer",
+      "company": "Versant Limited",
+      "source": "Jooble"
+    },
+    {
+      "title": "Software Engineer (Platform Engineering)",
+      "company": "Versant Limited",
       "source": "Jooble"
     },
     {
@@ -460,33 +485,8 @@
       "source": "Jooble"
     },
     {
-      "title": "Lead ML Engineer",
-      "company": "Versant Limited",
-      "source": "Jooble"
-    },
-    {
-      "title": "Software Engineer (Platform Engineering)",
-      "company": "Versant Limited",
-      "source": "Jooble"
-    },
-    {
-      "title": "Account Manager, Jewelry & Watches",
-      "company": "Financial Times",
-      "source": "Jooble"
-    },
-    {
-      "title": "Business & Documentation Admin (Procurement & Operations)",
-      "company": "Agile Defense",
-      "source": "Jooble"
-    },
-    {
-      "title": "Senior Software Engineer, AI Platforms and Products",
-      "company": "The New York Times Company",
-      "source": "Jooble"
-    },
-    {
-      "title": "Contract Recruiter News/Media or Digital Platforms and Ventures (DPV)",
-      "company": "Versant Limited",
+      "title": "Marketing Manager I",
+      "company": "SGS",
       "source": "Jooble"
     },
     {
@@ -495,33 +495,31 @@
       "source": "Jooble"
     },
     {
-      "title": "Marketing Manager I",
-      "company": "SGS",
+      "title": "Content Lead",
+      "company": "Jobgether",
       "source": "Jooble"
     }
   ],
-  "freshLast48h": 29,
-  "contract": 76,
+  "freshLast48h": 32,
+  "contract": 72,
   "modes": {
-    "writing": 59,
-    "reviewing": 82
+    "writing": 60,
+    "reviewing": 80
   },
-  "technical": 3,
+  "technical": 1,
   "industries": {
     "Marketing & advertising": 21,
-    "Education & training": 12,
-    "Healthcare & life sciences": 11,
-    "Media & publishing": 7,
-    "Finance & insurance": 6,
-    "Retail & e-commerce": 3,
+    "Healthcare & life sciences": 13,
+    "Education & training": 10,
+    "Finance & insurance": 5,
+    "Media & publishing": 4,
+    "Nonprofit & government": 3,
     "AI training & data annotation": 3,
-    "Nonprofit & government": 2,
+    "Retail & e-commerce": 2,
     "Software & technology": 2,
     "Travel & hospitality": 1,
     "Real estate & construction": 1,
     "Legal": 1,
-    "Manufacturing & logistics": 1,
-    "Crypto & gaming": 1,
     "Staffing & recruiting": 1
   },
   "sources": [
@@ -551,15 +549,16 @@
         "reserve": 12,
         "reason": "188 spendable across ~1 runs left — full budget available"
       },
-      "ms": 1
+      "ms": 0
     },
     {
       "id": "adzuna",
       "label": "Adzuna",
       "status": "ok",
-      "fetched": 285,
+      "fetched": 284,
       "warnings": [
         "michigan-remote \"editorial operations\": 0 results (Adzuna reports 0 total matches)",
+        "michigan-remote \"product content\": 0 results (Adzuna reports 0 total matches)",
         "michigan-remote \"catalog quality\": 0 results (Adzuna reports 0 total matches)",
         "michigan-remote \"product information\": 0 results (Adzuna reports 0 total matches)",
         "michigan-remote \"content specialist\": 0 results (Adzuna reports 0 total matches)",
@@ -582,7 +581,7 @@
         "us-remote \"curriculum editor\": 0 results (Adzuna reports 0 total matches)",
         "us-remote \"freelance proofreader\": 0 results (Adzuna reports 0 total matches)"
       ],
-      "ms": 11210
+      "ms": 14003
     },
     {
       "id": "jooble",
@@ -590,7 +589,7 @@
       "status": "ok",
       "fetched": 200,
       "warnings": [],
-      "ms": 2344
+      "ms": 2375
     },
     {
       "id": "remotive",
@@ -598,17 +597,17 @@
       "status": "ok",
       "fetched": 768,
       "warnings": [],
-      "ms": 1577
+      "ms": 1877
     },
     {
       "id": "weworkremotely",
       "label": "We Work Remotely",
       "status": "ok",
-      "fetched": 210,
+      "fetched": 217,
       "warnings": [
         "remote-marketing-jobs.rss: HTTP 301 Moved Permanently"
       ],
-      "ms": 1574
+      "ms": 2587
     },
     {
       "id": "himalayas",
@@ -616,18 +615,15 @@
       "status": "ok",
       "fetched": 240,
       "warnings": [],
-      "ms": 613
+      "ms": 642
     },
     {
       "id": "jobicy",
       "label": "Jobicy",
       "status": "ok",
-      "fetched": 490,
-      "warnings": [
-        "?count=50&geo=usa&tag=contract%20editor: HTTP 429 Too Many Requests",
-        "?count=50&geo=usa&tag=editor: HTTP 429 Too Many Requests"
-      ],
-      "ms": 26166
+      "fetched": 519,
+      "warnings": [],
+      "ms": 21452
     },
     {
       "id": "remoteok",
@@ -635,7 +631,7 @@
       "status": "ok",
       "fetched": 99,
       "warnings": [],
-      "ms": 695
+      "ms": 512
     },
     {
       "id": "workingnomads",
@@ -643,7 +639,7 @@
       "status": "ok",
       "fetched": 56,
       "warnings": [],
-      "ms": 609
+      "ms": 595
     },
     {
       "id": "arbeitnow",
@@ -651,7 +647,7 @@
       "status": "ok",
       "fetched": 326,
       "warnings": [],
-      "ms": 600
+      "ms": 358
     }
   ]
 }
