@@ -1,6 +1,6 @@
 {
-  "generatedAt": "2026-10-01T13:07:51.715Z",
-  "durationMs": 42432,
+  "generatedAt": "2026-10-01T21:00:08.688Z",
+  "durationMs": 97007,
   "candidate": {
     "name": "Emily Griffioen",
     "headline": "Content & editorial QA — 10 years reviewing customer-facing marketing content",
@@ -148,46 +148,45 @@
     "maxAgeDays": 60
   },
   "counts": {
-    "fetched": 2361,
-    "unique": 1280,
-    "published": 114,
+    "fetched": 2348,
+    "unique": 1261,
+    "published": 116,
     "dropped": {
-      "location": 524,
+      "location": 531,
       "stale": 1,
-      "noTermMatch": 641
+      "noTermMatch": 613
     }
   },
   "terms": {
-    "email marketing specialist": 34,
-    "editor": 22,
-    "content specialist": 8,
+    "email marketing specialist": 35,
+    "editor": 21,
+    "content specialist": 7,
     "content writer": 6,
     "quality assurance analyst": 6,
     "content editor": 5,
     "copywriter": 5,
     "technical writer": 4,
+    "content operations": 4,
+    "quality analyst": 3,
     "quality assurance specialist": 3,
-    "content developer": 2,
-    "content operations": 2,
+    "content reviewer": 2,
     "qa specialist": 2,
     "content quality": 2,
     "editorial manager": 2,
     "freelance writer": 1,
     "editorial specialist": 1,
     "proposal writer": 1,
-    "quality analyst": 1,
-    "content reviewer": 1,
     "managing editor": 1,
     "qa reviewer": 1,
     "content designer": 1,
+    "content developer": 1,
     "proofreader": 1,
-    "web content specialist": 1,
     "qa analyst": 1
   },
   "matchedIn": {
     "title": 99,
-    "tags": 2,
-    "description": 13
+    "tags": 5,
+    "description": 12
   },
   "unmatched": [
     {
@@ -301,6 +300,11 @@
       "source": "Adzuna"
     },
     {
+      "title": "Property Claims Quality Assurance Supervisor (Remote)",
+      "company": "California FAIR Plan Association",
+      "source": "Adzuna"
+    },
+    {
       "title": "Manager, Quality Assurance & Training (NON REMOTE POSITION)",
       "company": "Amynta Agency",
       "source": "Adzuna"
@@ -313,11 +317,6 @@
     {
       "title": "Quality Assurance Associate (Public Trust) W2 Only",
       "company": "Xoriant Corporation",
-      "source": "Adzuna"
-    },
-    {
-      "title": "Computer Systems Quality Assurance (CSQA)",
-      "company": "ClifyX",
       "source": "Adzuna"
     },
     {
@@ -396,6 +395,11 @@
       "source": "Jooble"
     },
     {
+      "title": "Web Developer",
+      "company": "Presence",
+      "source": "Jooble"
+    },
+    {
       "title": "Web Specialist",
       "company": "Medical Decicion Logic Inc",
       "source": "Jooble"
@@ -408,6 +412,11 @@
     {
       "title": "UX Web Designer: Brand-Driven Wireframes & Interactions",
       "company": "Uniting Holding",
+      "source": "Jooble"
+    },
+    {
+      "title": "Digital Marketing & Web Strategist",
+      "company": "Presence",
       "source": "Jooble"
     },
     {
@@ -441,18 +450,23 @@
       "source": "Jooble"
     },
     {
+      "title": "Catalog Data Lead — Remote Optional",
+      "company": "Paycom",
+      "source": "Jooble"
+    },
+    {
       "title": "Ecommerce Product Catalog & Research Analyst",
       "company": "Uvation",
       "source": "Jooble"
     },
     {
-      "title": "FSA Cost Catalog Manager (no remote)",
-      "company": "GE Vernova",
+      "title": "National Workforce Information Representative",
+      "company": "Jobgether",
       "source": "Jooble"
     },
     {
-      "title": "National Workforce Information Representative",
-      "company": "Jobgether",
+      "title": "Principal Information Security Analyst - Information Risk Management",
+      "company": "Nike",
       "source": "Jooble"
     },
     {
@@ -474,42 +488,26 @@
       "title": "Product Solutions Analyst",
       "company": "Accela",
       "source": "Jooble"
-    },
-    {
-      "title": "Associate Product Designer",
-      "company": "SRS Acquiom",
-      "source": "Jooble"
-    },
-    {
-      "title": "Product Marketing Associate",
-      "company": "Edelman Financial Engines, LLC",
-      "source": "Jooble"
-    },
-    {
-      "title": "Director of Product",
-      "company": "Prefect",
-      "source": "Jooble"
     }
   ],
-  "freshLast48h": 27,
-  "contract": 53,
+  "freshLast48h": 28,
+  "contract": 54,
   "modes": {
     "writing": 54,
-    "reviewing": 60
+    "reviewing": 62
   },
-  "technical": 1,
+  "technical": 0,
   "industries": {
-    "Marketing & advertising": 18,
+    "Marketing & advertising": 17,
     "Education & training": 9,
-    "Healthcare & life sciences": 6,
+    "Healthcare & life sciences": 7,
     "Nonprofit & government": 3,
+    "Legal": 2,
     "Software & technology": 2,
     "AI training & data annotation": 2,
-    "Retail & e-commerce": 2,
-    "Media & publishing": 2,
-    "Legal": 1,
     "Travel & hospitality": 1,
-    "Crypto & gaming": 1,
+    "Retail & e-commerce": 1,
+    "Media & publishing": 1,
     "Finance & insurance": 1,
     "Staffing & recruiting": 1
   },
@@ -540,7 +538,7 @@
         "reserve": 12,
         "reason": "188 spendable across ~1 runs left — full budget available"
       },
-      "ms": 0
+      "ms": 1
     },
     {
       "id": "adzuna",
@@ -572,7 +570,7 @@
         "us-remote \"editorial quality\": 0 results (Adzuna reports 0 total matches)",
         "us-remote \"copy editor\": 0 results (Adzuna reports 0 total matches)"
       ],
-      "ms": 12323
+      "ms": 67773
     },
     {
       "id": "jooble",
@@ -580,7 +578,7 @@
       "status": "ok",
       "fetched": 200,
       "warnings": [],
-      "ms": 2664
+      "ms": 2518
     },
     {
       "id": "remotive",
@@ -588,7 +586,7 @@
       "status": "ok",
       "fetched": 768,
       "warnings": [],
-      "ms": 1280
+      "ms": 1264
     },
     {
       "id": "weworkremotely",
@@ -598,7 +596,7 @@
       "warnings": [
         "remote-marketing-jobs.rss: HTTP 301 Moved Permanently"
       ],
-      "ms": 2981
+      "ms": 1560
     },
     {
       "id": "himalayas",
@@ -606,18 +604,18 @@
       "status": "ok",
       "fetched": 240,
       "warnings": [],
-      "ms": 501
+      "ms": 770
     },
     {
       "id": "jobicy",
       "label": "Jobicy",
       "status": "ok",
-      "fetched": 214,
+      "fetched": 199,
       "warnings": [
         "?count=50&geo=usa&tag=contract%20editor: HTTP 429 Too Many Requests",
         "?count=50&geo=usa&tag=editorial: HTTP 429 Too Many Requests"
       ],
-      "ms": 20830
+      "ms": 21230
     },
     {
       "id": "remoteok",
@@ -625,15 +623,15 @@
       "status": "ok",
       "fetched": 99,
       "warnings": [],
-      "ms": 437
+      "ms": 474
     },
     {
       "id": "workingnomads",
       "label": "Working Nomads",
       "status": "ok",
-      "fetched": 57,
+      "fetched": 59,
       "warnings": [],
-      "ms": 394
+      "ms": 406
     },
     {
       "id": "arbeitnow",
@@ -641,7 +639,7 @@
       "status": "ok",
       "fetched": 326,
       "warnings": [],
-      "ms": 270
+      "ms": 301
     }
   ]
 }
