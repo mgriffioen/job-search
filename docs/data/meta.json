@@ -1,6 +1,6 @@
 {
-  "generatedAt": "2026-10-02T12:27:36.015Z",
-  "durationMs": 42799,
+  "generatedAt": "2026-10-02T20:41:24.541Z",
+  "durationMs": 43729,
   "candidate": {
     "name": "Emily Griffioen",
     "headline": "Content & editorial QA — 10 years reviewing customer-facing marketing content",
@@ -148,48 +148,47 @@
     "maxAgeDays": 60
   },
   "counts": {
-    "fetched": 2285,
-    "unique": 1131,
-    "published": 96,
+    "fetched": 2303,
+    "unique": 1181,
+    "published": 97,
     "dropped": {
-      "location": 473,
+      "location": 491,
       "stale": 3,
-      "noTermMatch": 559
+      "noTermMatch": 590
     }
   },
   "terms": {
-    "editor": 24,
-    "content writer": 10,
+    "editor": 25,
+    "content writer": 11,
     "content editor": 9,
-    "copy editor": 6,
+    "copy editor": 7,
     "copywriter": 6,
-    "technical writer": 4,
-    "qa analyst": 3,
-    "qa specialist": 3,
-    "documentation specialist": 3,
+    "technical writer": 5,
+    "content developer": 3,
+    "proofreader": 3,
     "content reviewer": 3,
     "content quality": 3,
-    "quality analyst": 2,
-    "content specialist": 2,
-    "proofreader": 2,
     "editorial manager": 2,
-    "freelance editor": 1,
+    "quality analyst": 2,
+    "qa analyst": 2,
+    "content specialist": 2,
     "managing editor": 1,
     "marketing copy editor": 1,
     "technical editor": 1,
-    "quality assurance specialist": 1,
+    "qa specialist": 1,
     "freelance writer": 1,
     "editorial specialist": 1,
     "proposal writer": 1,
+    "editorial proofreader": 1,
     "editorial reviewer": 1,
     "editorial assistant": 1,
-    "email marketing specialist": 1,
+    "content marketing specialist": 1,
     "content designer": 1,
-    "content developer": 1,
+    "associate editor": 1,
     "editorial quality": 1
   },
   "matchedIn": {
-    "title": 86,
+    "title": 87,
     "tags": 5,
     "description": 5
   },
@@ -230,6 +229,11 @@
       "source": "Adzuna"
     },
     {
+      "title": "Summer 2027, Remote Internship, Production Editorial and Managing Editorial",
+      "company": "Penguin Random House",
+      "source": "Adzuna"
+    },
+    {
       "title": "Lawyer - Remote, Contract",
       "company": "Xperteez Technology",
       "source": "Adzuna"
@@ -255,6 +259,16 @@
       "source": "Adzuna"
     },
     {
+      "title": "Law/Legal Expert - Remote",
+      "company": "YO AI Labs",
+      "source": "Adzuna"
+    },
+    {
+      "title": "US Attorney - Remote",
+      "company": "YO AI Labs",
+      "source": "Adzuna"
+    },
+    {
       "title": "Legal AI Trainer - Remote",
       "company": "YO AI Labs",
       "source": "Adzuna"
@@ -265,12 +279,7 @@
       "source": "Adzuna"
     },
     {
-      "title": "US Attorney - Remote",
-      "company": "YO AI Labs",
-      "source": "Adzuna"
-    },
-    {
-      "title": "Law/Legal Expert - Remote",
+      "title": "BigLaw lawyers - Remote",
       "company": "YO AI Labs",
       "source": "Adzuna"
     },
@@ -280,9 +289,9 @@
       "source": "Adzuna"
     },
     {
-      "title": "BigLaw lawyers - Remote",
-      "company": "YO AI Labs",
-      "source": "Adzuna"
+      "title": "Remote Live Captioner: Real-Time Subtitling",
+      "company": "Keywords Studios Plc.",
+      "source": "Jooble"
     },
     {
       "title": "Creative Writer - Literature & Humanities (Remote)",
@@ -310,13 +319,8 @@
       "source": "Jooble"
     },
     {
-      "title": "Summer 2027, Remote Internship, Editorial Childrens",
-      "company": "Bertelsmann-Jobs",
-      "source": "Jooble"
-    },
-    {
-      "title": "Communications Coordinator",
-      "company": "iHeartMedia",
+      "title": "Advertising Sales Executive",
+      "company": "Social Publication",
       "source": "Jooble"
     },
     {
@@ -345,18 +349,18 @@
       "source": "Jooble"
     },
     {
-      "title": "Advertising Sales Executive",
-      "company": "Social Publication",
-      "source": "Jooble"
-    },
-    {
       "title": "Social & Influence Lead",
       "company": "Parloa",
       "source": "Jooble"
     },
     {
-      "title": "Word Processor / Document Specialists - Remote (Dallas-Based)",
-      "company": "Burnett Specialists Staffing | Recruiting",
+      "title": "Integrated Campaigns Manager",
+      "company": "Stripe",
+      "source": "Jooble"
+    },
+    {
+      "title": "Designer, Brand & Marketing",
+      "company": "Splice",
       "source": "Jooble"
     },
     {
@@ -370,8 +374,18 @@
       "source": "Jooble"
     },
     {
-      "title": "Quality Control Auditor",
-      "company": "Virtual Vocations Inc",
+      "title": "Content Strategist III",
+      "company": "eTeam",
+      "source": "Jooble"
+    },
+    {
+      "title": "Senior Editorial Director - Remote Strategic Communications Leader",
+      "company": "University of California",
+      "source": "Jooble"
+    },
+    {
+      "title": "Remote Editorial Expert - Data Labelling",
+      "company": "Workada",
       "source": "Jooble"
     },
     {
@@ -408,6 +422,16 @@
       "title": "Tier III Service Desk Engineer",
       "company": "Unio Digital",
       "source": "Remotive"
+    },
+    {
+      "title": "Web Designer, eCRM",
+      "company": "Humane World for Animals",
+      "source": "We Work Remotely"
+    },
+    {
+      "title": "PART-TIME Remote Administrative Scheduler",
+      "company": "Paragon Planners",
+      "source": "We Work Remotely"
     },
     {
       "title": "Finance Manager I, Platform",
@@ -468,53 +492,28 @@
       "title": "Analytics Engineering Manager, Data Platform & Governance",
       "company": "LawnStarter",
       "source": "We Work Remotely"
-    },
-    {
-      "title": "Japanese Speaking Customer Service Agent - for Netflix Japan",
-      "company": "Limitless Technology",
-      "source": "We Work Remotely"
-    },
-    {
-      "title": "Senior Account Executive - UHV Payors",
-      "company": "Melio",
-      "source": "We Work Remotely"
-    },
-    {
-      "title": "Manager, Enterprise Sales",
-      "company": "Hex Technologies",
-      "source": "We Work Remotely"
-    },
-    {
-      "title": "Marketing Coordinator",
-      "company": "Doximity",
-      "source": "We Work Remotely"
-    },
-    {
-      "title": "Commercial Data Scientist",
-      "company": "Doximity",
-      "source": "We Work Remotely"
     }
   ],
-  "freshLast48h": 26,
-  "contract": 49,
+  "freshLast48h": 32,
+  "contract": 50,
   "modes": {
-    "writing": 25,
-    "reviewing": 71
+    "writing": 29,
+    "reviewing": 68
   },
-  "technical": 1,
+  "technical": 3,
   "industries": {
-    "Marketing & advertising": 10,
     "Healthcare & life sciences": 9,
-    "Education & training": 7,
-    "Media & publishing": 4,
-    "AI training & data annotation": 4,
-    "Travel & hospitality": 3,
-    "Software & technology": 3,
-    "Finance & insurance": 3,
+    "Education & training": 9,
+    "Marketing & advertising": 9,
+    "AI training & data annotation": 7,
+    "Media & publishing": 5,
+    "Finance & insurance": 5,
+    "Travel & hospitality": 2,
     "Real estate & construction": 2,
-    "Manufacturing & logistics": 1,
+    "Software & technology": 2,
+    "Retail & e-commerce": 2,
+    "Crypto & gaming": 1,
     "Legal": 1,
-    "Retail & e-commerce": 1,
     "Nonprofit & government": 1,
     "Staffing & recruiting": 1
   },
@@ -581,7 +580,7 @@
         "us-remote \"quality editor\": 0 results (Adzuna reports 0 total matches)",
         "us-remote \"editorial specialist\": 0 results (Adzuna reports 0 total matches)"
       ],
-      "ms": 7144
+      "ms": 8594
     },
     {
       "id": "jooble",
@@ -589,7 +588,7 @@
       "status": "ok",
       "fetched": 200,
       "warnings": [],
-      "ms": 1802
+      "ms": 2106
     },
     {
       "id": "remotive",
@@ -597,17 +596,17 @@
       "status": "ok",
       "fetched": 816,
       "warnings": [],
-      "ms": 957
+      "ms": 1431
     },
     {
       "id": "weworkremotely",
       "label": "We Work Remotely",
       "status": "ok",
-      "fetched": 212,
+      "fetched": 213,
       "warnings": [
         "remote-marketing-jobs.rss: HTTP 301 Moved Permanently"
       ],
-      "ms": 1794
+      "ms": 2579
     },
     {
       "id": "himalayas",
@@ -615,19 +614,19 @@
       "status": "ok",
       "fetched": 240,
       "warnings": [],
-      "ms": 474
+      "ms": 490
     },
     {
       "id": "jobicy",
       "label": "Jobicy",
       "status": "ok",
-      "fetched": 142,
+      "fetched": 159,
       "warnings": [
         "?count=50&geo=usa&tag=copy%20editor: HTTP 429 Too Many Requests",
         "?count=50&geo=usa&tag=proofreader: HTTP 429 Too Many Requests",
         "?count=50&geo=usa&tag=copyediting: HTTP 429 Too Many Requests"
       ],
-      "ms": 27838
+      "ms": 26036
     },
     {
       "id": "remoteok",
@@ -635,7 +634,7 @@
       "status": "ok",
       "fetched": 99,
       "warnings": [],
-      "ms": 978
+      "ms": 528
     },
     {
       "id": "workingnomads",
@@ -643,7 +642,7 @@
       "status": "ok",
       "fetched": 59,
       "warnings": [],
-      "ms": 828
+      "ms": 939
     },
     {
       "id": "arbeitnow",
@@ -651,7 +650,7 @@
       "status": "ok",
       "fetched": 326,
       "warnings": [],
-      "ms": 319
+      "ms": 320
     }
   ]
 }
