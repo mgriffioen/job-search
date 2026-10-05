@@ -1,6 +1,6 @@
 {
-  "generatedAt": "2026-10-05T14:29:21.737Z",
-  "durationMs": 37511,
+  "generatedAt": "2026-10-05T22:35:50.093Z",
+  "durationMs": 43311,
   "candidate": {
     "name": "Emily Griffioen",
     "headline": "Content & editorial QA — 10 years reviewing customer-facing marketing content",
@@ -148,47 +148,48 @@
     "maxAgeDays": 60
   },
   "counts": {
-    "fetched": 2491,
-    "unique": 1335,
+    "fetched": 2500,
+    "unique": 1347,
     "published": 94,
     "dropped": {
-      "location": 567,
+      "location": 554,
       "stale": 1,
-      "noTermMatch": 673
+      "noTermMatch": 698
     }
   },
   "terms": {
-    "email marketing specialist": 36,
+    "email marketing specialist": 34,
     "editor": 9,
     "content specialist": 8,
+    "qa analyst": 5,
     "quality assurance analyst": 5,
     "quality assurance specialist": 4,
     "content reviewer": 4,
-    "qa analyst": 3,
     "copywriter": 3,
     "content marketing specialist": 2,
-    "quality analyst": 2,
     "curriculum writer": 2,
     "content writer": 2,
     "content editor": 1,
     "production editor": 1,
-    "content qa specialist": 1,
+    "quality analyst": 1,
     "qa specialist": 1,
+    "content qa specialist": 1,
     "content operations specialist": 1,
     "e-commerce content specialist": 1,
     "marketing qa": 1,
     "product information specialist": 1,
-    "documentation specialist": 1,
-    "technical writer": 1,
+    "campaign operations specialist": 1,
+    "proposal writer": 1,
     "content designer": 1,
     "content developer": 1,
+    "content operations": 1,
     "quality specialist": 1,
     "content quality": 1
   },
   "matchedIn": {
-    "title": 80,
-    "tags": 4,
-    "description": 10
+    "title": 79,
+    "tags": 3,
+    "description": 12
   },
   "unmatched": [
     {
@@ -377,8 +378,8 @@
       "source": "Adzuna"
     },
     {
-      "title": "Property Claims Quality Assurance Supervisor (Remote)",
-      "company": "California FAIR Plan Association",
+      "title": "Call Center Quality Assurance Lead - Remote CA",
+      "company": "Gainwell Technologies LLC",
       "source": "Adzuna"
     },
     {
@@ -482,36 +483,34 @@
       "source": "Jooble"
     },
     {
-      "title": "Senior Paid Advertising Strategist - Ecommerce",
-      "company": "Powerdigitalmarketing",
+      "title": "Remote Adobe Campaign Classic Engineer",
+      "company": "H R PUNDITS INC",
       "source": "Jooble"
     },
     {
-      "title": "Senior Product Marketing Manager",
-      "company": "Knak",
+      "title": "Senior Paid Advertising Strategist - Ecommerce",
+      "company": "Powerdigitalmarketing",
       "source": "Jooble"
     }
   ],
-  "freshLast48h": 13,
-  "contract": 49,
+  "freshLast48h": 16,
+  "contract": 52,
   "modes": {
-    "writing": 48,
-    "reviewing": 46
+    "writing": 46,
+    "reviewing": 48
   },
-  "technical": 2,
+  "technical": 5,
   "industries": {
-    "Marketing & advertising": 19,
+    "Marketing & advertising": 18,
     "Education & training": 6,
-    "Healthcare & life sciences": 5,
+    "Healthcare & life sciences": 4,
     "AI training & data annotation": 3,
     "Finance & insurance": 2,
     "Software & technology": 2,
+    "Media & publishing": 2,
+    "Nonprofit & government": 2,
     "Manufacturing & logistics": 1,
     "Retail & e-commerce": 1,
-    "Media & publishing": 1,
-    "Real estate & construction": 1,
-    "Legal": 1,
-    "Nonprofit & government": 1,
     "Staffing & recruiting": 1
   },
   "sources": [
@@ -577,7 +576,7 @@
         "us-remote \"campaign quality\": 0 results (Adzuna reports 0 total matches)",
         "us-remote \"marketing qa\": 0 results (Adzuna reports 0 total matches)"
       ],
-      "ms": 9718
+      "ms": 13831
     },
     {
       "id": "jooble",
@@ -585,7 +584,7 @@
       "status": "ok",
       "fetched": 200,
       "warnings": [],
-      "ms": 2523
+      "ms": 2834
     },
     {
       "id": "remotive",
@@ -593,17 +592,17 @@
       "status": "ok",
       "fetched": 816,
       "warnings": [],
-      "ms": 1274
+      "ms": 1401
     },
     {
       "id": "weworkremotely",
       "label": "We Work Remotely",
       "status": "ok",
-      "fetched": 215,
+      "fetched": 220,
       "warnings": [
         "remote-marketing-jobs.rss: HTTP 301 Moved Permanently"
       ],
-      "ms": 1377
+      "ms": 1766
     },
     {
       "id": "himalayas",
@@ -611,15 +610,15 @@
       "status": "ok",
       "fetched": 240,
       "warnings": [],
-      "ms": 519
+      "ms": 664
     },
     {
       "id": "jobicy",
       "label": "Jobicy",
       "status": "ok",
-      "fetched": 348,
+      "fetched": 352,
       "warnings": [],
-      "ms": 19924
+      "ms": 18967
     },
     {
       "id": "remoteok",
@@ -627,7 +626,7 @@
       "status": "ok",
       "fetched": 99,
       "warnings": [],
-      "ms": 682
+      "ms": 836
     },
     {
       "id": "workingnomads",
@@ -635,7 +634,7 @@
       "status": "ok",
       "fetched": 56,
       "warnings": [],
-      "ms": 769
+      "ms": 2057
     },
     {
       "id": "arbeitnow",
@@ -643,7 +642,7 @@
       "status": "ok",
       "fetched": 325,
       "warnings": [],
-      "ms": 268
+      "ms": 353
     }
   ]
 }
