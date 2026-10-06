@@ -1,6 +1,6 @@
 {
-  "generatedAt": "2026-10-06T13:14:52.942Z",
-  "durationMs": 49747,
+  "generatedAt": "2026-10-06T20:57:30.721Z",
+  "durationMs": 37275,
   "candidate": {
     "name": "Emily Griffioen",
     "headline": "Content & editorial QA — 10 years reviewing customer-facing marketing content",
@@ -148,48 +148,54 @@
     "maxAgeDays": 60
   },
   "counts": {
-    "fetched": 2584,
-    "unique": 1354,
-    "published": 101,
+    "fetched": 2599,
+    "unique": 1350,
+    "published": 105,
     "dropped": {
-      "location": 539,
+      "location": 521,
       "stale": 1,
-      "noTermMatch": 713
+      "noTermMatch": 723
     }
   },
   "terms": {
-    "email marketing specialist": 33,
-    "editor": 11,
-    "content specialist": 8,
-    "content reviewer": 7,
-    "copywriter": 5,
-    "quality assurance analyst": 5,
-    "content writer": 3,
-    "qa specialist": 3,
+    "email marketing specialist": 35,
+    "editor": 12,
+    "content specialist": 9,
+    "content reviewer": 8,
+    "copywriter": 7,
+    "content writer": 4,
+    "quality assurance analyst": 4,
     "quality assurance specialist": 3,
-    "content developer": 3,
     "content editor": 2,
-    "production editor": 2,
     "content marketing specialist": 2,
-    "qa analyst": 2,
     "content quality": 2,
+    "qa analyst": 2,
+    "content developer": 2,
+    "digital content specialist": 1,
+    "production editor": 1,
     "technical editor": 1,
-    "marketing copywriter": 1,
     "editorial specialist": 1,
     "freelance editorial": 1,
+    "qa specialist": 1,
+    "proposal writer": 1,
+    "quality analyst": 1,
     "content operations specialist": 1,
-    "copy editor": 1,
     "e-commerce content specialist": 1,
     "product information specialist": 1,
-    "content designer": 1,
-    "quality specialist": 1
+    "freelance writer": 1,
+    "content designer": 1
   },
   "matchedIn": {
-    "title": 88,
+    "title": 92,
     "tags": 3,
     "description": 10
   },
   "unmatched": [
+    {
+      "title": "Remote Business Email Marketing Agent – Nationwide – Call Now (405) 801-9601 Detroit, MI",
+      "company": "Transportation Hiring Hub",
+      "source": "Adzuna"
+    },
     {
       "title": "Quality Management System Manager",
       "company": "Carhartt",
@@ -243,11 +249,6 @@
     {
       "title": "Pharmaceutical Sales - Neuroscience Hospital Specialist - Bakersfield, CA",
       "company": "Otsuka",
-      "source": "Adzuna"
-    },
-    {
-      "title": "Data Entry Specialist – Administrative (Remote)",
-      "company": "PulseMediaNL",
       "source": "Adzuna"
     },
     {
@@ -321,16 +322,6 @@
       "source": "Adzuna"
     },
     {
-      "title": "Work From Home Ad Posting Specialist – Call Now (405) 801-9601 Colorado Springs, CO",
-      "company": "Transportation Hiring Hub",
-      "source": "Adzuna"
-    },
-    {
-      "title": "Remote Marketing Support & Data Entry Agent – Call Now (405) 801-9601 Atlanta, GA",
-      "company": "Transportation Hiring Hub",
-      "source": "Adzuna"
-    },
-    {
       "title": "Call Center Quality Assurance Lead - Remote CA",
       "company": "Gainwell Technologies LLC",
       "source": "Adzuna"
@@ -358,6 +349,11 @@
     {
       "title": "Senior Software Quality Assurance Engineer (Remote - Louisiana Only)",
       "company": "Blue Cross and Blue Shield of Louisiana",
+      "source": "Adzuna"
+    },
+    {
+      "title": "Property Claims Quality Assurance Supervisor (Remote)",
+      "company": "California FAIR Plan Association",
       "source": "Adzuna"
     },
     {
@@ -393,11 +389,6 @@
     {
       "title": "Survey Project Manager - Right of Way Mapping",
       "company": "Dewberry",
-      "source": "Adzuna"
-    },
-    {
-      "title": "Senior GIS Software QA Engineer",
-      "company": "Na Oiwi Kane",
       "source": "Adzuna"
     },
     {
@@ -456,13 +447,33 @@
       "source": "Jooble"
     },
     {
+      "title": "Proposal Manager",
+      "company": "Panorama Education",
+      "source": "Jooble"
+    },
+    {
       "title": "Domain Expert: Research & Publishing (LaTeX / Overleaf)",
       "company": "Turing",
       "source": "Jooble"
     },
     {
+      "title": "Distributed Organizer",
+      "company": "United We Dream Network, Inc.",
+      "source": "Jooble"
+    },
+    {
+      "title": "Customer Advocacy Contractor",
+      "company": "AlertMedia",
+      "source": "Jooble"
+    },
+    {
       "title": "Marketing and Communications Specialist",
       "company": "Centering Healthcare Institute",
+      "source": "Jooble"
+    },
+    {
+      "title": "Internal Communications Specialist",
+      "company": "Strive Pharmacy",
       "source": "Jooble"
     },
     {
@@ -479,34 +490,25 @@
       "title": "Medical Auditor - Remote",
       "company": "YO AI Labs",
       "source": "Jooble"
-    },
-    {
-      "title": "Compliance Auditor",
-      "company": "Axtella",
-      "source": "Jooble"
-    },
-    {
-      "title": "INTERNAL AUDITOR (REMOTE)",
-      "company": "Compass Corporate",
-      "source": "Jooble"
     }
   ],
-  "freshLast48h": 6,
-  "contract": 49,
+  "freshLast48h": 16,
+  "contract": 51,
   "modes": {
-    "writing": 48,
-    "reviewing": 53
+    "writing": 54,
+    "reviewing": 51
   },
   "technical": 3,
   "industries": {
-    "Marketing & advertising": 19,
-    "Healthcare & life sciences": 5,
+    "Marketing & advertising": 21,
+    "Healthcare & life sciences": 7,
     "Media & publishing": 5,
-    "Finance & insurance": 2,
+    "Finance & insurance": 4,
     "Software & technology": 2,
+    "Legal": 2,
     "Education & training": 2,
     "Staffing & recruiting": 2,
-    "Legal": 1,
+    "Crypto & gaming": 2,
     "Retail & e-commerce": 1,
     "Real estate & construction": 1,
     "Nonprofit & government": 1
@@ -544,7 +546,7 @@
       "id": "adzuna",
       "label": "Adzuna",
       "status": "ok",
-      "fetched": 189,
+      "fetched": 191,
       "warnings": [
         "michigan-remote \"production editor\": 0 results (Adzuna reports 0 total matches)",
         "michigan-remote \"digital editor\": 0 results (Adzuna reports 0 total matches)",
@@ -573,15 +575,15 @@
         "us-remote \"assessment editor\": 0 results (Adzuna reports 0 total matches)",
         "us-remote \"curriculum editor\": 0 results (Adzuna reports 0 total matches)"
       ],
-      "ms": 21983
+      "ms": 10875
     },
     {
       "id": "jooble",
       "label": "Jooble",
       "status": "ok",
-      "fetched": 198,
+      "fetched": 200,
       "warnings": [],
-      "ms": 2402
+      "ms": 2984
     },
     {
       "id": "remotive",
@@ -589,7 +591,7 @@
       "status": "ok",
       "fetched": 864,
       "warnings": [],
-      "ms": 3266
+      "ms": 2160
     },
     {
       "id": "weworkremotely",
@@ -599,7 +601,7 @@
       "warnings": [
         "remote-marketing-jobs.rss: HTTP 301 Moved Permanently"
       ],
-      "ms": 1353
+      "ms": 1367
     },
     {
       "id": "himalayas",
@@ -607,15 +609,15 @@
       "status": "ok",
       "fetched": 240,
       "warnings": [],
-      "ms": 973
+      "ms": 740
     },
     {
       "id": "jobicy",
       "label": "Jobicy",
       "status": "ok",
-      "fetched": 398,
+      "fetched": 409,
       "warnings": [],
-      "ms": 17217
+      "ms": 16525
     },
     {
       "id": "remoteok",
@@ -623,7 +625,7 @@
       "status": "ok",
       "fetched": 99,
       "warnings": [],
-      "ms": 678
+      "ms": 514
     },
     {
       "id": "workingnomads",
@@ -631,7 +633,7 @@
       "status": "ok",
       "fetched": 56,
       "warnings": [],
-      "ms": 671
+      "ms": 848
     },
     {
       "id": "arbeitnow",
@@ -639,7 +641,7 @@
       "status": "ok",
       "fetched": 325,
       "warnings": [],
-      "ms": 419
+      "ms": 477
     }
   ]
 }
