@@ -1,6 +1,6 @@
 {
-  "generatedAt": "2026-10-07T13:15:24.079Z",
-  "durationMs": 68591,
+  "generatedAt": "2026-10-07T21:16:25.872Z",
+  "durationMs": 41534,
   "candidate": {
     "name": "Emily Griffioen",
     "headline": "Content & editorial QA — 10 years reviewing customer-facing marketing content",
@@ -148,68 +148,57 @@
     "maxAgeDays": 60
   },
   "counts": {
-    "fetched": 2611,
-    "unique": 1354,
-    "published": 131,
+    "fetched": 2607,
+    "unique": 1394,
+    "published": 130,
     "dropped": {
-      "location": 526,
-      "stale": 3,
-      "noTermMatch": 694
+      "location": 559,
+      "stale": 1,
+      "noTermMatch": 704
     }
   },
   "terms": {
-    "editor": 36,
-    "email marketing specialist": 29,
-    "content specialist": 10,
-    "quality assurance analyst": 5,
-    "content writer": 5,
-    "content editor": 4,
-    "copywriter": 4,
+    "editor": 34,
+    "email marketing specialist": 28,
+    "content specialist": 9,
+    "proofreader": 8,
+    "copywriter": 7,
+    "quality assurance analyst": 6,
     "quality assurance specialist": 4,
-    "proofreader": 3,
-    "qa analyst": 3,
-    "editorial assistant": 2,
+    "qa analyst": 4,
+    "content editor": 2,
     "content marketing specialist": 2,
     "freelance editorial": 2,
+    "curriculum writer": 2,
+    "content writer": 2,
     "content reviewer": 2,
-    "documentation writer": 2,
     "editorial manager": 2,
-    "production editor": 1,
     "digital content specialist": 1,
+    "managing editor": 1,
+    "editorial assistant": 1,
     "editorial qa specialist": 1,
+    "content coordinator": 1,
+    "copy editor": 1,
     "qa specialist": 1,
     "content operations specialist": 1,
     "e-commerce content specialist": 1,
-    "managing editor": 1,
-    "marketing copywriter": 1,
-    "copy editor": 1,
+    "editorial proofreader": 1,
+    "quality analyst": 1,
     "content designer": 1,
     "technical writer": 1,
     "content developer": 1,
-    "freelance writer": 1,
-    "content operations": 1,
-    "editorial quality": 1,
-    "content quality": 1
+    "content quality": 1,
+    "editorial quality": 1
   },
   "matchedIn": {
-    "title": 122,
-    "tags": 5,
+    "title": 124,
+    "tags": 2,
     "description": 4
   },
   "unmatched": [
     {
-      "title": "Agile Product Owner - Content (Remote)",
-      "company": "Eccalon LLC",
-      "source": "Adzuna"
-    },
-    {
       "title": "Remote Business Email Marketing Agent – Nationwide – Call Now (405) 801-9601 Detroit, MI",
       "company": "Transportation Hiring Hub",
-      "source": "Adzuna"
-    },
-    {
-      "title": "Quality Management System Manager",
-      "company": "Carhartt",
       "source": "Adzuna"
     },
     {
@@ -223,12 +212,12 @@
       "source": "Adzuna"
     },
     {
-      "title": "Dev Ops Engineer",
+      "title": "Engineer Digital Design",
       "company": "ClickOut Media",
       "source": "Adzuna"
     },
     {
-      "title": "Engineer Digital Design",
+      "title": "Dev Ops Engineer",
       "company": "ClickOut Media",
       "source": "Adzuna"
     },
@@ -338,8 +327,13 @@
       "source": "Adzuna"
     },
     {
-      "title": "Quality Assurance Leader (Remote)",
-      "company": "VAYAN GROUP, LLC",
+      "title": "Work From Home Ad Posting Specialist – Call Now (405) 801-9601 Colorado Springs, CO",
+      "company": "Transportation Hiring Hub",
+      "source": "Adzuna"
+    },
+    {
+      "title": "Remote Marketing Support & Data Entry Agent – Call Now (405) 801-9601 Atlanta, GA",
+      "company": "Transportation Hiring Hub",
       "source": "Adzuna"
     },
     {
@@ -353,11 +347,6 @@
       "source": "Adzuna"
     },
     {
-      "title": "Software Quality Assurance Engineer - Remote",
-      "company": "Eliassen Group",
-      "source": "Adzuna"
-    },
-    {
       "title": "Lead Quality Assurance Engineer (Remote)",
       "company": "Nammo Defense System",
       "source": "Adzuna"
@@ -368,8 +357,8 @@
       "source": "Adzuna"
     },
     {
-      "title": "Call Center Quality Assurance Lead - Remote CA",
-      "company": "Gainwell Technologies LLC",
+      "title": "Software Quality Assurance Engineer - Remote",
+      "company": "Eliassen Group",
       "source": "Adzuna"
     },
     {
@@ -468,6 +457,11 @@
       "source": "Adzuna"
     },
     {
+      "title": "Quality Assurance Associate (Public Trust) W2 Only",
+      "company": "Xoriant Corporation",
+      "source": "Adzuna"
+    },
+    {
       "title": "Nurse Practitioner, Clinical Lead ACCESS PROGRAM (Part Time)",
       "company": "Withings",
       "source": "Adzuna"
@@ -493,30 +487,34 @@
       "source": "Adzuna"
     },
     {
-      "title": "Finance Manager",
-      "company": "International Association of Islamic Psychology",
+      "title": "Investment Analyst",
+      "company": "Trolley",
+      "source": "Jooble"
+    },
+    {
+      "title": "Remote Payroll Tax Specialist",
+      "company": "Intuit",
       "source": "Jooble"
     }
   ],
-  "freshLast48h": 40,
-  "contract": 74,
+  "freshLast48h": 46,
+  "contract": 80,
   "modes": {
-    "writing": 48,
-    "reviewing": 83
+    "writing": 45,
+    "reviewing": 85
   },
-  "technical": 1,
+  "technical": 4,
   "industries": {
-    "Marketing & advertising": 20,
-    "Healthcare & life sciences": 9,
+    "Marketing & advertising": 19,
+    "Healthcare & life sciences": 8,
     "Education & training": 6,
+    "AI training & data annotation": 5,
     "Retail & e-commerce": 4,
     "Finance & insurance": 4,
-    "AI training & data annotation": 4,
-    "Software & technology": 3,
-    "Media & publishing": 3,
+    "Legal": 3,
+    "Software & technology": 2,
+    "Media & publishing": 2,
     "Nonprofit & government": 2,
-    "Legal": 1,
-    "Real estate & construction": 1,
     "Staffing & recruiting": 1
   },
   "sources": [
@@ -552,9 +550,10 @@
       "id": "adzuna",
       "label": "Adzuna",
       "status": "ok",
-      "fetched": 313,
+      "fetched": 311,
       "warnings": [
         "michigan-remote \"editorial operations\": 0 results (Adzuna reports 0 total matches)",
+        "michigan-remote \"product content\": 0 results (Adzuna reports 0 total matches)",
         "michigan-remote \"catalog quality\": 0 results (Adzuna reports 0 total matches)",
         "michigan-remote \"product information\": 0 results (Adzuna reports 0 total matches)",
         "michigan-remote \"content specialist\": 0 results (Adzuna reports 0 total matches)",
@@ -578,7 +577,7 @@
         "us-remote \"curriculum editor\": 0 results (Adzuna reports 0 total matches)",
         "us-remote \"freelance proofreader\": 0 results (Adzuna reports 0 total matches)"
       ],
-      "ms": 41065
+      "ms": 15370
     },
     {
       "id": "jooble",
@@ -586,7 +585,7 @@
       "status": "ok",
       "fetched": 200,
       "warnings": [],
-      "ms": 2409
+      "ms": 2878
     },
     {
       "id": "remotive",
@@ -594,7 +593,7 @@
       "status": "ok",
       "fetched": 816,
       "warnings": [],
-      "ms": 2271
+      "ms": 2619
     },
     {
       "id": "weworkremotely",
@@ -604,7 +603,7 @@
       "warnings": [
         "remote-marketing-jobs.rss: HTTP 301 Moved Permanently"
       ],
-      "ms": 1842
+      "ms": 2232
     },
     {
       "id": "himalayas",
@@ -612,15 +611,15 @@
       "status": "ok",
       "fetched": 240,
       "warnings": [],
-      "ms": 738
+      "ms": 749
     },
     {
       "id": "jobicy",
       "label": "Jobicy",
       "status": "ok",
-      "fetched": 334,
+      "fetched": 342,
       "warnings": [],
-      "ms": 17775
+      "ms": 14912
     },
     {
       "id": "remoteok",
@@ -628,15 +627,15 @@
       "status": "ok",
       "fetched": 99,
       "warnings": [],
-      "ms": 592
+      "ms": 691
     },
     {
       "id": "workingnomads",
       "label": "Working Nomads",
       "status": "ok",
-      "fetched": 58,
+      "fetched": 42,
       "warnings": [],
-      "ms": 847
+      "ms": 715
     },
     {
       "id": "arbeitnow",
@@ -644,7 +643,7 @@
       "status": "ok",
       "fetched": 325,
       "warnings": [],
-      "ms": 519
+      "ms": 669
     }
   ]
 }
