@@ -1,6 +1,6 @@
 {
-  "generatedAt": "2026-10-09T13:10:42.418Z",
-  "durationMs": 35210,
+  "generatedAt": "2026-10-09T20:51:12.006Z",
+  "durationMs": 37425,
   "candidate": {
     "name": "Emily Griffioen",
     "headline": "Content & editorial QA — 10 years reviewing customer-facing marketing content",
@@ -148,26 +148,25 @@
     "maxAgeDays": 60
   },
   "counts": {
-    "fetched": 2308,
-    "unique": 1216,
-    "published": 87,
+    "fetched": 2296,
+    "unique": 1204,
+    "published": 86,
     "dropped": {
-      "location": 503,
+      "location": 513,
       "stale": 2,
-      "noTermMatch": 624
+      "noTermMatch": 603
     }
   },
   "terms": {
-    "editor": 26,
-    "content editor": 8,
-    "proofreader": 7,
-    "copywriter": 7,
-    "copy editor": 5,
+    "editor": 27,
+    "proofreader": 8,
+    "content editor": 7,
+    "copywriter": 5,
     "content writer": 5,
-    "content specialist": 4,
-    "content developer": 2,
-    "technical writer": 2,
+    "copy editor": 4,
+    "content specialist": 2,
     "content reviewer": 2,
+    "qa analyst": 2,
     "editorial quality": 2,
     "editorial manager": 2,
     "assistant editor": 1,
@@ -175,21 +174,26 @@
     "editorial assistant": 1,
     "marketing copy editor": 1,
     "freelance writer": 1,
+    "email marketing specialist": 1,
     "editorial qa specialist": 1,
     "editorial specialist": 1,
     "editorial reviewer": 1,
     "quality analyst": 1,
     "proposal writer": 1,
     "editorial proofreader": 1,
+    "quality assurance specialist": 1,
+    "content producer": 1,
     "content designer": 1,
+    "technical writer": 1,
+    "content developer": 1,
+    "content qa": 1,
     "associate editor": 1,
-    "content quality": 1,
-    "qa analyst": 1
+    "content quality": 1
   },
   "matchedIn": {
-    "title": 80,
-    "tags": 2,
-    "description": 5
+    "title": 77,
+    "tags": 3,
+    "description": 6
   },
   "unmatched": [
     {
@@ -230,11 +234,6 @@
     {
       "title": "Senior Content Marketer, Campaigns/Enterprise",
       "company": "Animalz",
-      "source": "Adzuna"
-    },
-    {
-      "title": "Writer - Remote",
-      "company": "YO AI Labs",
       "source": "Adzuna"
     },
     {
@@ -293,13 +292,18 @@
       "source": "Jooble"
     },
     {
+      "title": "Director of Communications",
+      "company": "The Health and Reentry Project",
+      "source": "Jooble"
+    },
+    {
       "title": "Account Manager",
       "company": "Belle Communication",
       "source": "Jooble"
     },
     {
-      "title": "Content Marketing Manager",
-      "company": "Buildout",
+      "title": "Senior Account Manager",
+      "company": "Clearlink Technologies, LLC",
       "source": "Jooble"
     },
     {
@@ -308,18 +312,13 @@
       "source": "Jooble"
     },
     {
-      "title": "Print Production Manager",
-      "company": "Jobgether",
-      "source": "Jooble"
-    },
-    {
       "title": "Writers and Authors | $61/hr Remote",
       "company": "Crossing Hurdles",
       "source": "Jooble"
     },
     {
-      "title": "Creative Manager",
-      "company": "Virtual Vocations Inc",
+      "title": "Content Strategist III",
+      "company": "eTeam",
       "source": "Jooble"
     },
     {
@@ -371,6 +370,11 @@
       "title": "Remote Office Assistant",
       "company": "Coalition Technologies",
       "source": "Remotive"
+    },
+    {
+      "title": "Customer Success Manager",
+      "company": "RETR",
+      "source": "We Work Remotely"
     },
     {
       "title": "Applied Scientist Intern",
@@ -468,11 +472,6 @@
       "source": "We Work Remotely"
     },
     {
-      "title": "Account Executive, Enterprise",
-      "company": "Alloy",
-      "source": "We Work Remotely"
-    },
-    {
       "title": "Site Engineer",
       "company": "Vercel",
       "source": "We Work Remotely"
@@ -491,29 +490,33 @@
       "title": "Regional Director, Enterprise Sales",
       "company": "Forter",
       "source": "We Work Remotely"
+    },
+    {
+      "title": "Senior Business Recruiter",
+      "company": "Faire",
+      "source": "We Work Remotely"
     }
   ],
-  "freshLast48h": 19,
-  "contract": 39,
+  "freshLast48h": 22,
+  "contract": 38,
   "modes": {
-    "writing": 19,
-    "reviewing": 68
+    "writing": 17,
+    "reviewing": 69
   },
-  "technical": 1,
+  "technical": 2,
   "industries": {
-    "Marketing & advertising": 12,
-    "Healthcare & life sciences": 8,
+    "Marketing & advertising": 13,
+    "Healthcare & life sciences": 6,
+    "Legal": 5,
     "Media & publishing": 4,
-    "Finance & insurance": 4,
-    "Legal": 4,
+    "Finance & insurance": 3,
+    "Nonprofit & government": 3,
     "Education & training": 2,
-    "Software & technology": 2,
-    "AI training & data annotation": 2,
-    "Nonprofit & government": 2,
     "Travel & hospitality": 2,
+    "AI training & data annotation": 2,
     "Staffing & recruiting": 2,
-    "Crypto & gaming": 1,
-    "Retail & e-commerce": 1
+    "Retail & e-commerce": 2,
+    "Software & technology": 1
   },
   "sources": [
     {
@@ -542,13 +545,13 @@
         "reserve": 12,
         "reason": "188 spendable across ~1 runs left — full budget available"
       },
-      "ms": 0
+      "ms": 1
     },
     {
       "id": "adzuna",
       "label": "Adzuna",
       "status": "ok",
-      "fetched": 170,
+      "fetched": 172,
       "warnings": [
         "michigan-remote \"content audit\": 0 results (Adzuna reports 0 total matches)",
         "michigan-remote \"assessment editor\": 0 results (Adzuna reports 0 total matches)",
@@ -578,7 +581,7 @@
         "us-remote \"content auditor\": 0 results (Adzuna reports 0 total matches)",
         "us-remote \"editorial specialist\": 0 results (Adzuna reports 0 total matches)"
       ],
-      "ms": 8078
+      "ms": 9530
     },
     {
       "id": "jooble",
@@ -586,7 +589,7 @@
       "status": "ok",
       "fetched": 200,
       "warnings": [],
-      "ms": 2182
+      "ms": 2121
     },
     {
       "id": "remotive",
@@ -594,17 +597,17 @@
       "status": "ok",
       "fetched": 816,
       "warnings": [],
-      "ms": 2882
+      "ms": 1400
     },
     {
       "id": "weworkremotely",
       "label": "We Work Remotely",
       "status": "ok",
-      "fetched": 243,
+      "fetched": 242,
       "warnings": [
         "remote-marketing-jobs.rss: HTTP 301 Moved Permanently"
       ],
-      "ms": 1832
+      "ms": 1397
     },
     {
       "id": "himalayas",
@@ -612,15 +615,15 @@
       "status": "ok",
       "fetched": 240,
       "warnings": [],
-      "ms": 536
+      "ms": 797
     },
     {
       "id": "jobicy",
       "label": "Jobicy",
       "status": "ok",
-      "fetched": 171,
+      "fetched": 158,
       "warnings": [],
-      "ms": 17776
+      "ms": 19150
     },
     {
       "id": "remoteok",
@@ -628,7 +631,7 @@
       "status": "ok",
       "fetched": 99,
       "warnings": [],
-      "ms": 520
+      "ms": 829
     },
     {
       "id": "workingnomads",
@@ -636,7 +639,7 @@
       "status": "ok",
       "fetched": 54,
       "warnings": [],
-      "ms": 710
+      "ms": 1006
     },
     {
       "id": "arbeitnow",
@@ -644,7 +647,7 @@
       "status": "ok",
       "fetched": 325,
       "warnings": [],
-      "ms": 243
+      "ms": 506
     }
   ]
 }
