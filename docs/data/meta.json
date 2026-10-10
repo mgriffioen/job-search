@@ -1,6 +1,6 @@
 {
-  "generatedAt": "2026-10-10T12:25:21.910Z",
-  "durationMs": 30491,
+  "generatedAt": "2026-10-10T20:02:21.021Z",
+  "durationMs": 60465,
   "candidate": {
     "name": "Emily Griffioen",
     "headline": "Content & editorial QA — 10 years reviewing customer-facing marketing content",
@@ -148,46 +148,45 @@
     "maxAgeDays": 60
   },
   "counts": {
-    "fetched": 2375,
-    "unique": 1265,
-    "published": 70,
+    "fetched": 2371,
+    "unique": 1266,
+    "published": 69,
     "dropped": {
-      "location": 541,
+      "location": 563,
       "stale": 1,
-      "noTermMatch": 653
+      "noTermMatch": 633
     }
   },
   "terms": {
     "editor": 23,
-    "content editor": 6,
+    "content editor": 5,
     "email marketing specialist": 4,
+    "copywriter": 3,
     "proofreader": 3,
-    "qa analyst": 3,
-    "content writer": 3,
+    "content reviewer": 3,
     "content specialist": 2,
+    "qa analyst": 2,
     "production editor": 2,
     "quality analyst": 2,
-    "copywriter": 2,
+    "content developer": 2,
     "content operations": 2,
+    "content writer": 2,
+    "content producer": 2,
     "content designer": 2,
-    "content reviewer": 2,
-    "editorial manager": 2,
     "digital content specialist": 1,
-    "quality assurance specialist": 1,
     "freelance writer": 1,
     "quality assurance analyst": 1,
+    "documentation specialist": 1,
     "content operations specialist": 1,
-    "marketing qa": 1,
     "proposal writer": 1,
-    "qa specialist": 1,
     "technical writer": 1,
     "qa reviewer": 1,
-    "content developer": 1,
+    "editorial manager": 1,
     "content quality": 1
   },
   "matchedIn": {
     "title": 63,
-    "tags": 5,
+    "tags": 4,
     "description": 2
   },
   "unmatched": [
@@ -267,11 +266,6 @@
       "source": "Adzuna"
     },
     {
-      "title": "Senior Counsel, Media Distribution",
-      "company": "Major League Baseball",
-      "source": "Adzuna"
-    },
-    {
       "title": "Director, Enterprise Managed Services Sales",
       "company": "Broadcast Management Group",
       "source": "Adzuna"
@@ -282,8 +276,8 @@
       "source": "Jooble"
     },
     {
-      "title": "Operations Associate",
-      "company": "Poseidon Aerospace",
+      "title": "Remote Ad Operations Specialist - Campaign & Analytics",
+      "company": "TEKsystems",
       "source": "Jooble"
     },
     {
@@ -312,13 +306,33 @@
       "source": "Jooble"
     },
     {
+      "title": "Lead Information Security Analyst",
+      "company": "Great Gray",
+      "source": "Jooble"
+    },
+    {
+      "title": "Chief Information Security Officer",
+      "company": "BPM LLP",
+      "source": "Jooble"
+    },
+    {
+      "title": "Senior Information Security Analyst (REMOTE)",
+      "company": "The Hanover Insurance Group",
+      "source": "Jooble"
+    },
+    {
       "title": "Information Security Analyst Principal",
       "company": "General Dynamics Information Technology",
       "source": "Jooble"
     },
     {
       "title": "Product Analyst",
-      "company": "Assurant",
+      "company": "Liftoff",
+      "source": "Jooble"
+    },
+    {
+      "title": "Production Assistant",
+      "company": "Cambium Learning Group",
       "source": "Jooble"
     },
     {
@@ -337,11 +351,6 @@
       "source": "Jooble"
     },
     {
-      "title": "Digital Product Analyst",
-      "company": "Quest Diagnostics",
-      "source": "Jooble"
-    },
-    {
       "title": "Associate Product Designer",
       "company": "SRS Acquiom",
       "source": "Jooble"
@@ -352,13 +361,13 @@
       "source": "Jooble"
     },
     {
-      "title": "Product Analyst",
-      "company": "FinThrive",
+      "title": "VP, Product",
+      "company": "Level Access",
       "source": "Jooble"
     },
     {
       "title": "Product Manager",
-      "company": "eClinical Solutions",
+      "company": "Nava PBC",
       "source": "Jooble"
     },
     {
@@ -367,28 +376,13 @@
       "source": "Jooble"
     },
     {
-      "title": "Head of Product",
-      "company": "Lemontree",
-      "source": "Jooble"
-    },
-    {
       "title": "Product Manager",
-      "company": "Grace Hill",
-      "source": "Jooble"
-    },
-    {
-      "title": "VP of Product",
-      "company": "Jobgether",
+      "company": "eClinical Solutions",
       "source": "Jooble"
     },
     {
       "title": "Director of Product",
       "company": "Prefect",
-      "source": "Jooble"
-    },
-    {
-      "title": "Director - Information Technology",
-      "company": "Waylin Partners, LLC",
       "source": "Jooble"
     },
     {
@@ -433,6 +427,11 @@
     },
     {
       "title": "QA Tester",
+      "company": "Virtual Vocations Inc",
+      "source": "Jooble"
+    },
+    {
+      "title": "QA Lead",
       "company": "Virtual Vocations Inc",
       "source": "Jooble"
     },
@@ -492,27 +491,26 @@
       "source": "Remotive"
     }
   ],
-  "freshLast48h": 14,
-  "contract": 28,
+  "freshLast48h": 18,
+  "contract": 33,
   "modes": {
-    "writing": 16,
-    "reviewing": 54
+    "writing": 19,
+    "reviewing": 50
   },
-  "technical": 4,
+  "technical": 1,
   "industries": {
-    "Marketing & advertising": 17,
-    "Healthcare & life sciences": 5,
-    "Finance & insurance": 5,
-    "Legal": 4,
-    "Education & training": 2,
-    "AI training & data annotation": 2,
+    "Marketing & advertising": 19,
+    "Healthcare & life sciences": 6,
+    "Media & publishing": 3,
+    "Finance & insurance": 3,
+    "Legal": 2,
+    "Software & technology": 2,
     "Retail & e-commerce": 2,
     "Staffing & recruiting": 2,
-    "Software & technology": 1,
-    "Media & publishing": 1,
     "Travel & hospitality": 1,
-    "Manufacturing & logistics": 1,
-    "Nonprofit & government": 1
+    "AI training & data annotation": 1,
+    "Nonprofit & government": 1,
+    "Education & training": 1
   },
   "sources": [
     {
@@ -541,13 +539,13 @@
         "reserve": 12,
         "reason": "188 spendable across ~1 runs left — full budget available"
       },
-      "ms": 1
+      "ms": 0
     },
     {
       "id": "adzuna",
       "label": "Adzuna",
       "status": "ok",
-      "fetched": 154,
+      "fetched": 143,
       "warnings": [
         "michigan-remote \"freelance proofreader\": 0 results (Adzuna reports 0 total matches)",
         "michigan-remote \"contract editor\": 0 results (Adzuna reports 0 total matches)",
@@ -575,7 +573,7 @@
         "us-remote \"editorial specialist\": 0 results (Adzuna reports 0 total matches)",
         "us-remote \"digital editor\": 0 results (Adzuna reports 0 total matches)"
       ],
-      "ms": 10469
+      "ms": 37483
     },
     {
       "id": "jooble",
@@ -583,7 +581,7 @@
       "status": "ok",
       "fetched": 200,
       "warnings": [],
-      "ms": 2624
+      "ms": 2794
     },
     {
       "id": "remotive",
@@ -591,7 +589,7 @@
       "status": "ok",
       "fetched": 864,
       "warnings": [],
-      "ms": 1148
+      "ms": 1835
     },
     {
       "id": "weworkremotely",
@@ -601,7 +599,7 @@
       "warnings": [
         "remote-marketing-jobs.rss: HTTP 301 Moved Permanently"
       ],
-      "ms": 994
+      "ms": 1813
     },
     {
       "id": "himalayas",
@@ -609,15 +607,15 @@
       "status": "ok",
       "fetched": 240,
       "warnings": [],
-      "ms": 298
+      "ms": 671
     },
     {
       "id": "jobicy",
       "label": "Jobicy",
       "status": "ok",
-      "fetched": 211,
+      "fetched": 218,
       "warnings": [],
-      "ms": 13103
+      "ms": 13828
     },
     {
       "id": "remoteok",
@@ -625,7 +623,7 @@
       "status": "ok",
       "fetched": 99,
       "warnings": [],
-      "ms": 422
+      "ms": 643
     },
     {
       "id": "workingnomads",
@@ -633,7 +631,7 @@
       "status": "ok",
       "fetched": 54,
       "warnings": [],
-      "ms": 371
+      "ms": 621
     },
     {
       "id": "arbeitnow",
@@ -641,7 +639,7 @@
       "status": "ok",
       "fetched": 325,
       "warnings": [],
-      "ms": 350
+      "ms": 377
     }
   ]
 }
