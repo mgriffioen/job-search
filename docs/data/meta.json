@@ -1,6 +1,6 @@
 {
-  "generatedAt": "2026-10-11T12:43:09.488Z",
-  "durationMs": 35231,
+  "generatedAt": "2026-10-11T20:13:31.328Z",
+  "durationMs": 36784,
   "candidate": {
     "name": "Emily Griffioen",
     "headline": "Content & editorial QA — 10 years reviewing customer-facing marketing content",
@@ -148,52 +148,51 @@
     "maxAgeDays": 60
   },
   "counts": {
-    "fetched": 2459,
-    "unique": 1276,
-    "published": 87,
+    "fetched": 2455,
+    "unique": 1277,
+    "published": 90,
     "dropped": {
-      "location": 524,
+      "location": 496,
       "stale": 2,
-      "noTermMatch": 663
+      "noTermMatch": 689
     }
   },
   "terms": {
-    "content specialist": 11,
-    "content reviewer": 10,
-    "content editor": 8,
+    "content specialist": 12,
+    "content editor": 9,
+    "content reviewer": 9,
     "editor": 8,
     "proofreader": 7,
-    "copy editor": 4,
-    "content writer": 4,
-    "content quality": 3,
+    "copy editor": 5,
+    "content writer": 5,
+    "content quality": 4,
+    "content operations": 3,
     "e-commerce content specialist": 2,
     "content marketing specialist": 2,
-    "quality analyst": 2,
     "content developer": 2,
     "editorial specialist": 2,
     "copywriter": 2,
-    "qa specialist": 2,
     "editorial quality": 2,
-    "digital content specialist": 1,
-    "editorial coordinator": 1,
     "marketing copy editor": 1,
+    "editorial coordinator": 1,
+    "digital content specialist": 1,
     "freelance writer": 1,
     "production editor": 1,
     "copyediting specialist": 1,
-    "content moderator": 1,
     "editorial qa specialist": 1,
     "content operations specialist": 1,
     "editorial reviewer": 1,
-    "quality specialist": 1,
-    "content operations": 1,
     "proposal writer": 1,
     "editorial proofreader": 1,
+    "quality analyst": 1,
+    "technical writer": 1,
+    "freelance editor": 1,
     "content designer": 1,
     "qa analyst": 1
   },
   "matchedIn": {
-    "title": 79,
-    "tags": 4,
+    "title": 80,
+    "tags": 6,
     "description": 4
   },
   "unmatched": [
@@ -220,6 +219,11 @@
     {
       "title": "BigLaw lawyers – Remote",
       "company": "RemoteJobsOne",
+      "source": "Adzuna"
+    },
+    {
+      "title": "Senior Digital Strategist, Content Strategy",
+      "company": "Focus GTS",
       "source": "Adzuna"
     },
     {
@@ -330,11 +334,6 @@
     {
       "title": "Compliance Auditor",
       "company": "Insight Global",
-      "source": "Jooble"
-    },
-    {
-      "title": "Medical Auditor - Remote",
-      "company": "YO AI Labs",
       "source": "Jooble"
     },
     {
@@ -498,25 +497,26 @@
       "source": "We Work Remotely"
     }
   ],
-  "freshLast48h": 13,
-  "contract": 35,
+  "freshLast48h": 14,
+  "contract": 36,
   "modes": {
-    "writing": 14,
-    "reviewing": 73
+    "writing": 16,
+    "reviewing": 74
   },
   "technical": 2,
   "industries": {
-    "Marketing & advertising": 15,
-    "Healthcare & life sciences": 9,
-    "Legal": 5,
-    "Retail & e-commerce": 3,
+    "Marketing & advertising": 16,
+    "Healthcare & life sciences": 6,
+    "Retail & e-commerce": 5,
     "Media & publishing": 3,
     "Staffing & recruiting": 3,
-    "Software & technology": 2,
+    "Legal": 2,
     "AI training & data annotation": 2,
+    "Software & technology": 2,
+    "Travel & hospitality": 2,
     "Finance & insurance": 2,
-    "Travel & hospitality": 1,
     "Nonprofit & government": 1,
+    "Manufacturing & logistics": 1,
     "Real estate & construction": 1,
     "Education & training": 1
   },
@@ -583,7 +583,7 @@
         "us-remote \"editorial operations\": 0 results (Adzuna reports 0 total matches)",
         "us-remote \"catalog quality\": 0 results (Adzuna reports 0 total matches)"
       ],
-      "ms": 6766
+      "ms": 7791
     },
     {
       "id": "jooble",
@@ -591,7 +591,7 @@
       "status": "ok",
       "fetched": 198,
       "warnings": [],
-      "ms": 1791
+      "ms": 2046
     },
     {
       "id": "remotive",
@@ -599,17 +599,17 @@
       "status": "ok",
       "fetched": 864,
       "warnings": [],
-      "ms": 1254
+      "ms": 1414
     },
     {
       "id": "weworkremotely",
       "label": "We Work Remotely",
       "status": "ok",
-      "fetched": 249,
+      "fetched": 247,
       "warnings": [
         "remote-marketing-jobs.rss: HTTP 301 Moved Permanently"
       ],
-      "ms": 1617
+      "ms": 2035
     },
     {
       "id": "himalayas",
@@ -617,7 +617,7 @@
       "status": "ok",
       "fetched": 240,
       "warnings": [],
-      "ms": 398
+      "ms": 648
     },
     {
       "id": "jobicy",
@@ -625,7 +625,7 @@
       "status": "ok",
       "fetched": 327,
       "warnings": [],
-      "ms": 20545
+      "ms": 19872
     },
     {
       "id": "remoteok",
@@ -633,15 +633,15 @@
       "status": "ok",
       "fetched": 99,
       "warnings": [],
-      "ms": 980
+      "ms": 864
     },
     {
       "id": "workingnomads",
       "label": "Working Nomads",
       "status": "ok",
-      "fetched": 53,
+      "fetched": 51,
       "warnings": [],
-      "ms": 844
+      "ms": 922
     },
     {
       "id": "arbeitnow",
@@ -649,7 +649,7 @@
       "status": "ok",
       "fetched": 325,
       "warnings": [],
-      "ms": 278
+      "ms": 405
     }
   ]
 }
