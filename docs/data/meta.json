@@ -1,6 +1,6 @@
 {
-  "generatedAt": "2026-10-19T13:03:49.129Z",
-  "durationMs": 71873,
+  "generatedAt": "2026-10-19T21:01:34.455Z",
+  "durationMs": 56247,
   "candidate": {
     "name": "Emily Griffioen",
     "headline": "Content & editorial QA — 10 years reviewing customer-facing marketing content",
@@ -148,49 +148,52 @@
     "maxAgeDays": 60
   },
   "counts": {
-    "fetched": 2288,
-    "unique": 1393,
-    "published": 118,
+    "fetched": 2319,
+    "unique": 1397,
+    "published": 117,
     "dropped": {
-      "location": 530,
+      "location": 545,
       "stale": 2,
-      "noTermMatch": 743
+      "noTermMatch": 733
     }
   },
   "terms": {
-    "email marketing specialist": 36,
-    "editor": 12,
+    "email marketing specialist": 37,
+    "editor": 14,
     "content specialist": 12,
-    "copywriter": 7,
-    "quality assurance analyst": 7,
-    "content writer": 4,
+    "quality assurance analyst": 6,
+    "copywriter": 5,
+    "curriculum writer": 5,
     "content reviewer": 4,
-    "curriculum writer": 4,
-    "quality assurance specialist": 3,
-    "content operations": 3,
-    "e-commerce content specialist": 2,
+    "qa specialist": 3,
+    "content marketing specialist": 3,
     "freelance writer": 2,
     "qa analyst": 2,
-    "content marketing specialist": 2,
-    "quality analyst": 2,
-    "qa specialist": 2,
-    "copy editor": 2,
-    "documentation specialist": 2,
+    "content writer": 2,
+    "content operations": 2,
+    "quality assurance specialist": 2,
+    "content quality": 2,
     "ecommerce content specialist": 1,
     "managing editor": 1,
     "proposal writer": 1,
     "digital content specialist": 1,
+    "quality analyst": 1,
     "production editor": 1,
+    "technical editor": 1,
+    "e-commerce content specialist": 1,
     "content developer": 1,
     "content designer": 1,
     "content operations specialist": 1,
-    "quality assurance coordinator": 1,
-    "content quality": 1
+    "copy editor": 1,
+    "quality specialist": 1,
+    "educational content editor": 1,
+    "technical writer": 1,
+    "editorial quality": 1
   },
   "matchedIn": {
-    "title": 110,
+    "title": 108,
     "tags": 6,
-    "description": 2
+    "description": 3
   },
   "unmatched": [
     {
@@ -324,6 +327,11 @@
       "source": "Adzuna"
     },
     {
+      "title": "Manager, Data Quality Assurance (Remote)",
+      "company": "Step Up for Students",
+      "source": "Adzuna"
+    },
+    {
       "title": "Senior Director, Quality Assurance (Remote)",
       "company": "Elevar Therapeutics",
       "source": "Adzuna"
@@ -424,6 +432,11 @@
       "source": "Jooble"
     },
     {
+      "title": "Remote Ad Operations Manager: Lead & Optimize Campaigns",
+      "company": "StackAdapt",
+      "source": "Jooble"
+    },
+    {
       "title": "Marketing Campaign Manager",
       "company": "AceStack LLC",
       "source": "Jooble"
@@ -434,13 +447,18 @@
       "source": "Jooble"
     },
     {
+      "title": "Remote Director, Campaign Operations & Growth",
+      "company": "Cengage",
+      "source": "Jooble"
+    },
+    {
       "title": "Remote Director of Campaign Operations",
       "company": "Cengage",
       "source": "Jooble"
     },
     {
-      "title": "Remote Director, Campaign Operations & Growth",
-      "company": "Cengage",
+      "title": "Remote Inbound CSR for Donor Campaigns",
+      "company": "ACD Direct",
       "source": "Jooble"
     },
     {
@@ -469,50 +487,35 @@
       "source": "Jooble"
     },
     {
+      "title": "Revenue Integrity Analyst",
+      "company": "The Wilshire Group",
+      "source": "Jooble"
+    },
+    {
       "title": "Finance Intern",
       "company": "Arcesium LLC",
       "source": "Jooble"
-    },
-    {
-      "title": "Remote Payroll Tax Specialist",
-      "company": "Intuit",
-      "source": "Jooble"
-    },
-    {
-      "title": "Finance Internal Audit Associate",
-      "company": "The Nielsen Company",
-      "source": "Jooble"
-    },
-    {
-      "title": "Learning Experience Designer",
-      "company": "Development Dimensions International",
-      "source": "Jooble"
-    },
-    {
-      "title": "Writer (mindset curriculum)",
-      "company": "STNDRD",
-      "source": "Jooble"
     }
   ],
-  "freshLast48h": 23,
-  "contract": 70,
+  "freshLast48h": 26,
+  "contract": 72,
   "modes": {
     "writing": 59,
-    "reviewing": 59
+    "reviewing": 58
   },
   "technical": 5,
   "industries": {
-    "Marketing & advertising": 14,
-    "Healthcare & life sciences": 10,
+    "Marketing & advertising": 13,
     "Education & training": 8,
-    "Retail & e-commerce": 5,
-    "Finance & insurance": 4,
-    "Media & publishing": 3,
-    "Staffing & recruiting": 3,
-    "Nonprofit & government": 2,
-    "Legal": 2,
-    "AI training & data annotation": 2,
-    "Travel & hospitality": 2
+    "Healthcare & life sciences": 7,
+    "Retail & e-commerce": 6,
+    "Media & publishing": 5,
+    "AI training & data annotation": 3,
+    "Finance & insurance": 3,
+    "Staffing & recruiting": 2,
+    "Travel & hospitality": 2,
+    "Nonprofit & government": 1,
+    "Legal": 1
   },
   "sources": [
     {
@@ -547,7 +550,7 @@
       "id": "adzuna",
       "label": "Adzuna",
       "status": "ok",
-      "fetched": 214,
+      "fetched": 212,
       "warnings": [
         "michigan-remote \"copyediting\": 0 results (Adzuna reports 0 total matches)",
         "michigan-remote \"content reviewer\": 0 results (Adzuna reports 0 total matches)",
@@ -568,6 +571,7 @@
         "michigan-remote \"content integrity\": 0 results (Adzuna reports 0 total matches)",
         "us-remote \"copyediting\": 0 results (Adzuna reports 0 total matches)",
         "us-remote \"content auditor\": 0 results (Adzuna reports 0 total matches)",
+        "us-remote \"quality editor\": 0 results (Adzuna reports 0 total matches)",
         "us-remote \"editorial specialist\": 0 results (Adzuna reports 0 total matches)",
         "us-remote \"digital editor\": 0 results (Adzuna reports 0 total matches)",
         "us-remote \"editorial operations\": 0 results (Adzuna reports 0 total matches)",
@@ -576,7 +580,7 @@
         "us-remote \"marketing qa\": 0 results (Adzuna reports 0 total matches)",
         "us-remote \"content integrity\": 0 results (Adzuna reports 0 total matches)"
       ],
-      "ms": 42908
+      "ms": 24216
     },
     {
       "id": "jooble",
@@ -584,7 +588,7 @@
       "status": "ok",
       "fetched": 200,
       "warnings": [],
-      "ms": 2665
+      "ms": 4539
     },
     {
       "id": "remotive",
@@ -592,17 +596,17 @@
       "status": "ok",
       "fetched": 576,
       "warnings": [],
-      "ms": 1458
+      "ms": 1789
     },
     {
       "id": "weworkremotely",
       "label": "We Work Remotely",
       "status": "ok",
-      "fetched": 261,
+      "fetched": 268,
       "warnings": [
         "remote-marketing-jobs.rss: HTTP 301 Moved Permanently"
       ],
-      "ms": 1934
+      "ms": 1476
     },
     {
       "id": "himalayas",
@@ -610,15 +614,15 @@
       "status": "ok",
       "fetched": 240,
       "warnings": [],
-      "ms": 714
+      "ms": 611
     },
     {
       "id": "jobicy",
       "label": "Jobicy",
       "status": "ok",
-      "fetched": 363,
+      "fetched": 389,
       "warnings": [],
-      "ms": 20195
+      "ms": 21976
     },
     {
       "id": "remoteok",
@@ -626,7 +630,7 @@
       "status": "ok",
       "fetched": 99,
       "warnings": [],
-      "ms": 552
+      "ms": 496
     },
     {
       "id": "workingnomads",
@@ -634,7 +638,7 @@
       "status": "ok",
       "fetched": 41,
       "warnings": [],
-      "ms": 481
+      "ms": 372
     },
     {
       "id": "arbeitnow",
@@ -642,7 +646,7 @@
       "status": "ok",
       "fetched": 300,
       "warnings": [],
-      "ms": 326
+      "ms": 295
     }
   ]
 }
