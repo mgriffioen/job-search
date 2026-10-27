@@ -1,6 +1,6 @@
 {
-  "generatedAt": "2026-10-27T12:04:28.151Z",
-  "durationMs": 56643,
+  "generatedAt": "2026-10-27T20:40:06.154Z",
+  "durationMs": 35626,
   "candidate": {
     "name": "Emily Griffioen",
     "headline": "Content & editorial QA — 10 years reviewing customer-facing marketing content",
@@ -148,47 +148,47 @@
     "maxAgeDays": 60
   },
   "counts": {
-    "fetched": 2361,
-    "unique": 1434,
-    "published": 127,
+    "fetched": 2359,
+    "unique": 1450,
+    "published": 128,
     "dropped": {
-      "location": 436,
-      "stale": 1,
-      "noTermMatch": 870
+      "location": 473,
+      "stale": 0,
+      "noTermMatch": 849
     }
   },
   "terms": {
-    "email marketing specialist": 32,
-    "editor": 21,
-    "content specialist": 15,
-    "copywriter": 10,
-    "content reviewer": 7,
+    "email marketing specialist": 31,
+    "editor": 20,
+    "content specialist": 16,
+    "copywriter": 11,
+    "content reviewer": 8,
     "quality assurance analyst": 6,
     "quality assurance specialist": 4,
     "content writer": 4,
+    "editorial specialist": 3,
     "content operations": 3,
     "production editor": 2,
     "freelance writer": 2,
     "content editor": 2,
-    "content developer": 2,
-    "proposal writer": 2,
-    "editorial specialist": 2,
+    "technical writer": 2,
     "quality specialist": 1,
     "editorial manager": 1,
     "digital content specialist": 1,
+    "content developer": 1,
+    "content coordinator": 1,
     "quality assurance coordinator": 1,
-    "documentation specialist": 1,
+    "digital editor": 1,
     "content marketing specialist": 1,
+    "copyediting specialist": 1,
     "e-commerce content specialist": 1,
     "content producer": 1,
-    "copyediting specialist": 1,
     "content operations specialist": 1,
     "qa specialist": 1,
-    "content quality": 1,
-    "technical writer": 1
+    "content quality": 1
   },
   "matchedIn": {
-    "title": 121,
+    "title": 122,
     "tags": 1,
     "description": 5
   },
@@ -201,11 +201,6 @@
     {
       "title": "Software Engineer in Test II",
       "company": "Eliassen Group",
-      "source": "Adzuna"
-    },
-    {
-      "title": "Online Adjunct - Statistics Instructor",
-      "company": "Employment at Southwestern Michigan College",
       "source": "Adzuna"
     },
     {
@@ -354,6 +349,11 @@
       "source": "Adzuna"
     },
     {
+      "title": "Remote Business Lead Research & Outreach Specialist – Call Now (405) 801-9601 Baltimore, MD",
+      "company": "Transportation Hiring Hub",
+      "source": "Adzuna"
+    },
+    {
       "title": "Manager, Data Quality Assurance (Remote)",
       "company": "Step Up for Students",
       "source": "Adzuna"
@@ -429,11 +429,6 @@
       "source": "Adzuna"
     },
     {
-      "title": "Bodily Injury Quality Assurance Auditor",
-      "company": "Aspire General Insurance Company",
-      "source": "Adzuna"
-    },
-    {
       "title": "Senior Tax Manager",
       "company": "Brewer Morris",
       "source": "Adzuna"
@@ -446,6 +441,11 @@
     {
       "title": "Remote",
       "company": "24-MAG",
+      "source": "Adzuna"
+    },
+    {
+      "title": "Corporate Attorney - Remote",
+      "company": "YO AI Labs",
       "source": "Adzuna"
     },
     {
@@ -494,15 +494,15 @@
       "source": "Jooble"
     }
   ],
-  "freshLast48h": 15,
-  "contract": 60,
+  "freshLast48h": 11,
+  "contract": 63,
   "modes": {
-    "writing": 56,
-    "reviewing": 71
+    "writing": 54,
+    "reviewing": 74
   },
   "technical": 3,
   "industries": {
-    "Marketing & advertising": 12,
+    "Marketing & advertising": 14,
     "Healthcare & life sciences": 11,
     "Media & publishing": 5,
     "Finance & insurance": 5,
@@ -545,7 +545,7 @@
       "id": "adzuna",
       "label": "Adzuna",
       "status": "ok",
-      "fetched": 180,
+      "fetched": 177,
       "warnings": [
         "michigan-remote \"production editor\": 0 results (Adzuna reports 0 total matches)",
         "michigan-remote \"digital editor\": 0 results (Adzuna reports 0 total matches)",
@@ -560,6 +560,7 @@
         "michigan-remote \"content integrity\": 0 results (Adzuna reports 0 total matches)",
         "michigan-remote \"content audit\": 0 results (Adzuna reports 0 total matches)",
         "michigan-remote \"assessment editor\": 0 results (Adzuna reports 0 total matches)",
+        "michigan-remote \"learning content\": 0 results (Adzuna reports 0 total matches)",
         "michigan-remote \"curriculum editor\": 0 results (Adzuna reports 0 total matches)",
         "michigan-remote \"freelance editor\": 0 results (Adzuna reports 0 total matches)",
         "us-remote \"digital editor\": 0 results (Adzuna reports 0 total matches)",
@@ -571,7 +572,7 @@
         "us-remote \"assessment editor\": 0 results (Adzuna reports 0 total matches)",
         "us-remote \"curriculum editor\": 0 results (Adzuna reports 0 total matches)"
       ],
-      "ms": 34091
+      "ms": 10868
     },
     {
       "id": "jooble",
@@ -579,7 +580,7 @@
       "status": "ok",
       "fetched": 200,
       "warnings": [],
-      "ms": 2274
+      "ms": 1745
     },
     {
       "id": "remotive",
@@ -587,17 +588,17 @@
       "status": "ok",
       "fetched": 480,
       "warnings": [],
-      "ms": 2039
+      "ms": 1884
     },
     {
       "id": "weworkremotely",
       "label": "We Work Remotely",
       "status": "ok",
-      "fetched": 275,
+      "fetched": 274,
       "warnings": [
         "remote-marketing-jobs.rss: HTTP 301 Moved Permanently"
       ],
-      "ms": 1319
+      "ms": 1675
     },
     {
       "id": "himalayas",
@@ -605,15 +606,15 @@
       "status": "ok",
       "fetched": 240,
       "warnings": [],
-      "ms": 845
+      "ms": 883
     },
     {
       "id": "jobicy",
       "label": "Jobicy",
       "status": "ok",
-      "fetched": 551,
+      "fetched": 552,
       "warnings": [],
-      "ms": 14039
+      "ms": 16039
     },
     {
       "id": "remoteok",
@@ -621,15 +622,15 @@
       "status": "ok",
       "fetched": 99,
       "warnings": [],
-      "ms": 796
+      "ms": 999
     },
     {
       "id": "workingnomads",
       "label": "Working Nomads",
       "status": "ok",
-      "fetched": 39,
+      "fetched": 40,
       "warnings": [],
-      "ms": 376
+      "ms": 500
     },
     {
       "id": "arbeitnow",
@@ -637,7 +638,7 @@
       "status": "ok",
       "fetched": 300,
       "warnings": [],
-      "ms": 292
+      "ms": 323
     }
   ]
 }
