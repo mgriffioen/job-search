@@ -1,6 +1,6 @@
 {
-  "generatedAt": "2026-10-30T12:47:05.195Z",
-  "durationMs": 45995,
+  "generatedAt": "2026-10-30T20:43:53.435Z",
+  "durationMs": 28817,
   "candidate": {
     "name": "Emily Griffioen",
     "headline": "Content & editorial QA — 10 years reviewing customer-facing marketing content",
@@ -148,47 +148,42 @@
     "maxAgeDays": 60
   },
   "counts": {
-    "fetched": 1917,
-    "unique": 1156,
-    "published": 118,
+    "fetched": 1965,
+    "unique": 1158,
+    "published": 103,
     "dropped": {
-      "location": 453,
-      "stale": 0,
-      "noTermMatch": 585
+      "location": 479,
+      "stale": 1,
+      "noTermMatch": 575
     }
   },
   "terms": {
-    "editor": 38,
+    "editor": 39,
     "copy editor": 9,
-    "proofreader": 8,
-    "copywriter": 8,
     "content editor": 8,
-    "content reviewer": 8,
-    "content writer": 7,
-    "content quality": 5,
-    "editorial manager": 4,
+    "content reviewer": 7,
+    "content writer": 6,
+    "proofreader": 6,
+    "copywriter": 5,
+    "content quality": 4,
     "quality specialist": 3,
-    "editorial quality": 3,
-    "quality assurance specialist": 2,
+    "editorial manager": 3,
+    "editorial quality": 2,
     "content specialist": 2,
     "freelance content editor": 1,
-    "qa analyst": 1,
-    "content marketing specialist": 1,
+    "freelance proofreader": 1,
     "editorial coordinator": 1,
     "freelance writer": 1,
     "editorial specialist": 1,
-    "content developer": 1,
-    "proposal writer": 1,
+    "quality editor": 1,
     "digital content editor": 1,
     "technical writer": 1,
-    "curriculum writer": 1,
-    "managing editor": 1,
     "production editor": 1
   },
   "matchedIn": {
-    "title": 108,
-    "tags": 3,
-    "description": 7
+    "title": 99,
+    "tags": 0,
+    "description": 4
   },
   "unmatched": [
     {
@@ -207,13 +202,13 @@
       "source": "Adzuna"
     },
     {
-      "title": "2027 Spring Internship - Editorial Intern, Zonderkidz/Blink/DaySpring Kids (Remote US)",
-      "company": "HarperCollins Publishers",
+      "title": "Remote",
+      "company": "24-MAG",
       "source": "Adzuna"
     },
     {
-      "title": "Remote",
-      "company": "24-MAG",
+      "title": "2027 Spring Internship - Editorial Intern, Zonderkidz/Blink/DaySpring Kids (Remote US)",
+      "company": "HarperCollins Publishers",
       "source": "Adzuna"
     },
     {
@@ -232,13 +227,13 @@
       "source": "Adzuna"
     },
     {
-      "title": "Lawyer - Remote, Contract",
-      "company": "Xperteez Technology",
+      "title": "Content Review Analyst - (Remote)",
+      "company": "Outlier AI",
       "source": "Adzuna"
     },
     {
-      "title": "Content Review Analyst - (Remote)",
-      "company": "Outlier AI",
+      "title": "Lawyer - Remote, Contract",
+      "company": "Xperteez Technology",
       "source": "Adzuna"
     },
     {
@@ -268,17 +263,12 @@
     },
     {
       "title": "Freelance English (US) Live CART Captioner",
-      "company": "Keywords Studios",
-      "source": "Jooble"
-    },
-    {
-      "title": "Freelance Subtitlers (Hiring Dutch, Khmer, Latvian, Urdu, Latvian, Czech, Kazakh, Traditional Chinese, Chinese for Taiwan)",
-      "company": "Wordbank",
-      "source": "Jooble"
-    },
-    {
-      "title": "Remote English US Live Captioner (Freelance)",
       "company": "Keywords Studios Plc",
+      "source": "Jooble"
+    },
+    {
+      "title": "Freelance Translator - Tagalog (Philippines)- Medical Benefits",
+      "company": "TransPerfect",
       "source": "Jooble"
     },
     {
@@ -352,8 +342,18 @@
       "source": "Jooble"
     },
     {
-      "title": "Creative Manager",
-      "company": "Virtual Vocations Inc",
+      "title": "Graphic Designer (Freelance)",
+      "company": "Jobgether",
+      "source": "Jooble"
+    },
+    {
+      "title": "Motion Graphics Designer (Flex)",
+      "company": "Advanced Systems Group",
+      "source": "Jooble"
+    },
+    {
+      "title": "Learning Experience Designer",
+      "company": "Development Dimensions International",
       "source": "Jooble"
     },
     {
@@ -412,6 +412,31 @@
       "source": "Remotive"
     },
     {
+      "title": "Business Development Specialist",
+      "company": "Prospex CRM",
+      "source": "We Work Remotely"
+    },
+    {
+      "title": "Automation Specialist",
+      "company": "Welocalize",
+      "source": "We Work Remotely"
+    },
+    {
+      "title": "Educational Consultant (Full-Time)",
+      "company": "Empower Tutoring",
+      "source": "We Work Remotely"
+    },
+    {
+      "title": "Asian American Expo Marketing - Local Community & Influencer Outreach",
+      "company": "IMPULSE UNIVERSE INC",
+      "source": "We Work Remotely"
+    },
+    {
+      "title": "Bilingual Patient Services Representative",
+      "company": "Resolv.Global",
+      "source": "We Work Remotely"
+    },
+    {
       "title": "Principal Enterprise Architect",
       "company": "Jumio",
       "source": "We Work Remotely"
@@ -460,58 +485,28 @@
       "title": "DevOps Engineer, Edge and Developer Experience (Remote Eligible in Bulgaria)",
       "company": "Smartsheet",
       "source": "We Work Remotely"
-    },
-    {
-      "title": "Renewals Associate",
-      "company": "Airtable",
-      "source": "We Work Remotely"
-    },
-    {
-      "title": "Principal Competitive Intelligence Manager",
-      "company": "6sense",
-      "source": "We Work Remotely"
-    },
-    {
-      "title": "Brand Designer",
-      "company": "Thatch",
-      "source": "We Work Remotely"
-    },
-    {
-      "title": "Backend / Platform Developer Consultant (Temporal & Kubernetes)",
-      "company": "Bitovi",
-      "source": "We Work Remotely"
-    },
-    {
-      "title": "Customer Success Representative, Inside",
-      "company": "McGraw Hill LLC.",
-      "source": "We Work Remotely"
-    },
-    {
-      "title": "CRM Retention Junior",
-      "company": "Bullfinch Recruitment",
-      "source": "We Work Remotely"
     }
   ],
-  "freshLast48h": 37,
-  "contract": 66,
+  "freshLast48h": 45,
+  "contract": 64,
   "modes": {
-    "writing": 21,
-    "reviewing": 97
+    "writing": 13,
+    "reviewing": 90
   },
   "technical": 1,
   "industries": {
-    "AI training & data annotation": 23,
+    "AI training & data annotation": 27,
     "Finance & insurance": 21,
-    "Marketing & advertising": 10,
-    "Healthcare & life sciences": 9,
-    "Legal": 6,
-    "Education & training": 6,
-    "Media & publishing": 4,
-    "Staffing & recruiting": 2,
-    "Retail & e-commerce": 2,
-    "Software & technology": 2,
+    "Marketing & advertising": 9,
+    "Healthcare & life sciences": 6,
+    "Media & publishing": 5,
+    "Legal": 5,
+    "Education & training": 5,
     "Real estate & construction": 2,
-    "Travel & hospitality": 2
+    "Software & technology": 2,
+    "Retail & e-commerce": 2,
+    "Manufacturing & logistics": 1,
+    "Nonprofit & government": 1
   },
   "sources": [
     {
@@ -540,13 +535,13 @@
         "reserve": 12,
         "reason": "188 spendable across ~1 runs left — full budget available"
       },
-      "ms": 0
+      "ms": 1
     },
     {
       "id": "adzuna",
       "label": "Adzuna",
       "status": "ok",
-      "fetched": 145,
+      "fetched": 193,
       "warnings": [
         "michigan-remote \"content audit\": 0 results (Adzuna reports 0 total matches)",
         "michigan-remote \"assessment editor\": 0 results (Adzuna reports 0 total matches)",
@@ -555,7 +550,6 @@
         "michigan-remote \"freelance editor\": 0 results (Adzuna reports 0 total matches)",
         "michigan-remote \"freelance proofreader\": 0 results (Adzuna reports 0 total matches)",
         "michigan-remote \"contract editor\": 0 results (Adzuna reports 0 total matches)",
-        "michigan-remote \"editor\": 0 results (Adzuna reports 0 total matches)",
         "michigan-remote \"editorial\": 0 results (Adzuna reports 0 total matches)",
         "michigan-remote \"proofreading\": 0 results (Adzuna reports 0 total matches)",
         "michigan-remote \"content quality\": 0 results (Adzuna reports 0 total matches)",
@@ -571,11 +565,11 @@
         "us-remote \"content audit\": 0 results (Adzuna reports 0 total matches)",
         "us-remote \"assessment editor\": 0 results (Adzuna reports 0 total matches)",
         "us-remote \"curriculum editor\": 0 results (Adzuna reports 0 total matches)",
-        "us-remote \"freelance proofreader\": 0 results (Adzuna reports 0 total matches)",
         "us-remote \"copyediting\": 0 results (Adzuna reports 0 total matches)",
-        "us-remote \"content auditor\": 0 results (Adzuna reports 0 total matches)"
+        "us-remote \"content auditor\": 0 results (Adzuna reports 0 total matches)",
+        "us-remote \"quality editor\": 0 results (Adzuna reports 0 total matches)"
       ],
-      "ms": 22054
+      "ms": 7905
     },
     {
       "id": "jooble",
@@ -583,7 +577,7 @@
       "status": "ok",
       "fetched": 200,
       "warnings": [],
-      "ms": 2567
+      "ms": 2368
     },
     {
       "id": "remotive",
@@ -591,17 +585,17 @@
       "status": "ok",
       "fetched": 576,
       "warnings": [],
-      "ms": 1251
+      "ms": 1571
     },
     {
       "id": "weworkremotely",
       "label": "We Work Remotely",
       "status": "ok",
-      "fetched": 271,
+      "fetched": 270,
       "warnings": [
         "remote-marketing-jobs.rss: HTTP 301 Moved Permanently"
       ],
-      "ms": 1368
+      "ms": 2065
     },
     {
       "id": "himalayas",
@@ -609,7 +603,7 @@
       "status": "ok",
       "fetched": 240,
       "warnings": [],
-      "ms": 594
+      "ms": 593
     },
     {
       "id": "jobicy",
@@ -618,11 +612,10 @@
       "fetched": 50,
       "warnings": [
         "?count=50&geo=usa&tag=freelance%20proofreader: HTTP 400 Bad Request",
-        "?count=50&geo=usa&tag=content%20reviewer: HTTP 429 Too Many Requests",
-        "?count=50&geo=usa&tag=content%20auditor: HTTP 429 Too Many Requests",
-        "?count=50&geo=usa&tag=quality%20editor: HTTP 429 Too Many Requests"
+        "?count=50&geo=usa&tag=quality%20editor: HTTP 429 Too Many Requests",
+        "?count=50&geo=usa&tag=editorial%20specialist: HTTP 429 Too Many Requests"
       ],
-      "ms": 16682
+      "ms": 12270
     },
     {
       "id": "remoteok",
@@ -630,7 +623,7 @@
       "status": "ok",
       "fetched": 99,
       "warnings": [],
-      "ms": 436
+      "ms": 689
     },
     {
       "id": "workingnomads",
@@ -638,7 +631,7 @@
       "status": "ok",
       "fetched": 38,
       "warnings": [],
-      "ms": 117
+      "ms": 507
     },
     {
       "id": "arbeitnow",
@@ -646,7 +639,7 @@
       "status": "ok",
       "fetched": 300,
       "warnings": [],
-      "ms": 238
+      "ms": 337
     }
   ]
 }
