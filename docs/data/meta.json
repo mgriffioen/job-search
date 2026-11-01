@@ -1,6 +1,6 @@
 {
-  "generatedAt": "2026-11-01T13:14:25.355Z",
-  "durationMs": 35894,
+  "generatedAt": "2026-11-01T20:28:09.608Z",
+  "durationMs": 44229,
   "candidate": {
     "name": "Emily Griffioen",
     "headline": "Content & editorial QA — 10 years reviewing customer-facing marketing content",
@@ -148,45 +148,45 @@
     "maxAgeDays": 60
   },
   "counts": {
-    "fetched": 1784,
-    "unique": 1042,
-    "published": 57,
+    "fetched": 1783,
+    "unique": 993,
+    "published": 56,
     "dropped": {
-      "location": 469,
+      "location": 354,
       "stale": 0,
-      "noTermMatch": 516
+      "noTermMatch": 583
     }
   },
   "terms": {
     "content specialist": 12,
-    "proofreader": 6,
+    "proofreader": 5,
     "content writer": 4,
     "content editor": 3,
     "copy editor": 3,
-    "editor": 3,
+    "editorial specialist": 3,
     "content quality": 3,
+    "content marketing specialist": 3,
     "content reviewer": 3,
-    "copywriter": 2,
     "quality specialist": 2,
-    "editorial specialist": 2,
-    "content operations": 2,
+    "editor": 2,
+    "staff writer": 1,
+    "proposal writer": 1,
     "editorial manager": 1,
     "freelance writer": 1,
     "production editor": 1,
     "content developer": 1,
-    "technical writer": 1,
     "digital content specialist": 1,
-    "content marketing specialist": 1,
     "copyediting specialist": 1,
     "e-commerce content specialist": 1,
     "content operations specialist": 1,
-    "qa analyst": 1,
-    "quality assurance specialist": 1
+    "quality analyst": 1,
+    "copywriter": 1,
+    "content operations": 1
   },
   "matchedIn": {
-    "title": 52,
-    "tags": 2,
-    "description": 3
+    "title": 51,
+    "tags": 3,
+    "description": 2
   },
   "unmatched": [
     {
@@ -265,16 +265,6 @@
       "source": "Adzuna"
     },
     {
-      "title": "Bilingual Remote Phone Banker",
-      "company": "MFPS",
-      "source": "Adzuna"
-    },
-    {
-      "title": "Remote Non-Credentialed Veterinary Support Staff",
-      "company": "Safetycall International",
-      "source": "Adzuna"
-    },
-    {
       "title": "Remote Credentialed Veterinary Technician",
       "company": "Safetycall International",
       "source": "Adzuna"
@@ -282,6 +272,11 @@
     {
       "title": "Pharmaceutical Sales - Neuroscience Hospital Specialist - Bakersfield, CA",
       "company": "Otsuka",
+      "source": "Adzuna"
+    },
+    {
+      "title": "Remote Non-Credentialed Veterinary Support Staff",
+      "company": "Safetycall International",
       "source": "Adzuna"
     },
     {
@@ -385,6 +380,41 @@
       "source": "Remotive"
     },
     {
+      "title": "Healthcare Fraud SME",
+      "company": "General Dynamics Information Technology",
+      "source": "We Work Remotely"
+    },
+    {
+      "title": "Mechanical Commissioning Agent II",
+      "company": "CPG Beyond",
+      "source": "We Work Remotely"
+    },
+    {
+      "title": "Entry Level Sales Rep (remote work)",
+      "company": "Agent Alliance Inc.",
+      "source": "We Work Remotely"
+    },
+    {
+      "title": "Sales Account Manager",
+      "company": "Chemtrade",
+      "source": "We Work Remotely"
+    },
+    {
+      "title": "Licensed Partnerships Account Manager",
+      "company": "Figure Lending",
+      "source": "We Work Remotely"
+    },
+    {
+      "title": "Customer Service Representative - Work From Home",
+      "company": "CONNEXUS RESOURCE GROUP INC",
+      "source": "We Work Remotely"
+    },
+    {
+      "title": "Healthcare Customer Service Representative - Remote - TX, TN, PA, MI, FL Only",
+      "company": "Teleperformance",
+      "source": "We Work Remotely"
+    },
+    {
       "title": "Senior Software Engineer, Data",
       "company": "Doximity",
       "source": "We Work Remotely"
@@ -458,56 +488,25 @@
       "title": "Application Database Administrator w/Secret Clearance",
       "company": "TekSynap",
       "source": "We Work Remotely"
-    },
-    {
-      "title": "Backend Product Software Engineer",
-      "company": "Dropbox",
-      "source": "We Work Remotely"
-    },
-    {
-      "title": "Client Service Analyst - P2P",
-      "company": "Bybit",
-      "source": "We Work Remotely"
-    },
-    {
-      "title": "Account Executive, NAS Product Specialist",
-      "company": "Rubrik Job Board",
-      "source": "We Work Remotely"
-    },
-    {
-      "title": "Capacity Planning Lead",
-      "company": "Coinbase",
-      "source": "We Work Remotely"
-    },
-    {
-      "title": "Distributed Systems Engineer",
-      "company": "Ritual",
-      "source": "We Work Remotely"
-    },
-    {
-      "title": "Client Service Analyst - Livechat (Turkish required)",
-      "company": "Bybit",
-      "source": "We Work Remotely"
     }
   ],
-  "freshLast48h": 12,
+  "freshLast48h": 10,
   "contract": 25,
   "modes": {
-    "writing": 11,
-    "reviewing": 46
+    "writing": 13,
+    "reviewing": 43
   },
-  "technical": 3,
+  "technical": 2,
   "industries": {
-    "Marketing & advertising": 15,
-    "Healthcare & life sciences": 8,
+    "Marketing & advertising": 14,
+    "Education & training": 6,
     "AI training & data annotation": 6,
     "Media & publishing": 5,
-    "Education & training": 5,
+    "Healthcare & life sciences": 4,
     "Legal": 3,
-    "Finance & insurance": 3,
     "Retail & e-commerce": 3,
-    "Travel & hospitality": 1,
-    "Software & technology": 1
+    "Nonprofit & government": 1,
+    "Finance & insurance": 1
   },
   "sources": [
     {
@@ -542,7 +541,7 @@
       "id": "adzuna",
       "label": "Adzuna",
       "status": "ok",
-      "fetched": 155,
+      "fetched": 152,
       "warnings": [
         "michigan-remote \"editorial quality\": 0 results (Adzuna reports 0 total matches)",
         "michigan-remote \"content editor\": 0 results (Adzuna reports 0 total matches)",
@@ -568,7 +567,7 @@
         "us-remote \"editorial operations\": 0 results (Adzuna reports 0 total matches)",
         "us-remote \"catalog quality\": 0 results (Adzuna reports 0 total matches)"
       ],
-      "ms": 8854
+      "ms": 8663
     },
     {
       "id": "jooble",
@@ -584,7 +583,7 @@
         "\"content auditor\": HTTP 500 Internal Server Error",
         "\"quality editor\": HTTP 500 Internal Server Error"
       ],
-      "ms": 10707
+      "ms": 10640
     },
     {
       "id": "remotive",
@@ -592,17 +591,17 @@
       "status": "ok",
       "fetched": 576,
       "warnings": [],
-      "ms": 1565
+      "ms": 2468
     },
     {
       "id": "weworkremotely",
       "label": "We Work Remotely",
       "status": "ok",
-      "fetched": 277,
+      "fetched": 279,
       "warnings": [
         "remote-marketing-jobs.rss: HTTP 301 Moved Permanently"
       ],
-      "ms": 1481
+      "ms": 1379
     },
     {
       "id": "himalayas",
@@ -610,7 +609,7 @@
       "status": "ok",
       "fetched": 240,
       "warnings": [],
-      "ms": 546
+      "ms": 1846
     },
     {
       "id": "jobicy",
@@ -618,10 +617,11 @@
       "status": "ok",
       "fetched": 50,
       "warnings": [
-        "?count=50&geo=usa&tag=product%20information: HTTP 429 Too Many Requests",
-        "?count=50&geo=usa&tag=content%20specialist: HTTP 429 Too Many Requests"
+        "?count=50&geo=usa&tag=product%20content: HTTP 429 Too Many Requests",
+        "?count=50&geo=usa&tag=catalog%20quality: HTTP 429 Too Many Requests",
+        "?count=50&geo=usa&tag=product%20information: HTTP 429 Too Many Requests"
       ],
-      "ms": 11173
+      "ms": 17297
     },
     {
       "id": "remoteok",
@@ -629,7 +629,7 @@
       "status": "ok",
       "fetched": 99,
       "warnings": [],
-      "ms": 544
+      "ms": 559
     },
     {
       "id": "workingnomads",
@@ -645,7 +645,7 @@
       "status": "ok",
       "fetched": 300,
       "warnings": [],
-      "ms": 350
+      "ms": 405
     }
   ]
 }
