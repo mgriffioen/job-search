@@ -1,6 +1,6 @@
 {
-  "generatedAt": "2026-10-31T19:56:52.197Z",
-  "durationMs": 35672,
+  "generatedAt": "2026-11-01T13:14:25.355Z",
+  "durationMs": 35894,
   "candidate": {
     "name": "Emily Griffioen",
     "headline": "Content & editorial QA — 10 years reviewing customer-facing marketing content",
@@ -148,72 +148,50 @@
     "maxAgeDays": 60
   },
   "counts": {
-    "fetched": 1846,
-    "unique": 1040,
-    "published": 48,
+    "fetched": 1784,
+    "unique": 1042,
+    "published": 57,
     "dropped": {
-      "location": 387,
+      "location": 469,
       "stale": 0,
-      "noTermMatch": 605
+      "noTermMatch": 516
     }
   },
   "terms": {
-    "editor": 15,
-    "content quality": 4,
-    "quality specialist": 3,
+    "content specialist": 12,
+    "proofreader": 6,
+    "content writer": 4,
+    "content editor": 3,
+    "copy editor": 3,
+    "editor": 3,
+    "content quality": 3,
     "content reviewer": 3,
-    "content writer": 3,
-    "freelance writer": 2,
-    "production editor": 2,
-    "proofreader": 2,
-    "copy editor": 2,
-    "quality assurance analyst": 1,
+    "copywriter": 2,
+    "quality specialist": 2,
+    "editorial specialist": 2,
+    "content operations": 2,
+    "editorial manager": 1,
+    "freelance writer": 1,
+    "production editor": 1,
     "content developer": 1,
-    "content specialist": 1,
-    "editorial specialist": 1,
-    "associate editor": 1,
-    "content operations specialist": 1,
-    "content editor": 1,
-    "quality assurance specialist": 1,
-    "qa specialist": 1,
-    "copywriter": 1,
     "technical writer": 1,
-    "content operations": 1
+    "digital content specialist": 1,
+    "content marketing specialist": 1,
+    "copyediting specialist": 1,
+    "e-commerce content specialist": 1,
+    "content operations specialist": 1,
+    "qa analyst": 1,
+    "quality assurance specialist": 1
   },
   "matchedIn": {
-    "title": 41,
-    "tags": 4,
+    "title": 52,
+    "tags": 2,
     "description": 3
   },
   "unmatched": [
     {
-      "title": "Sr. Editorial Designer – Print Magazine (Remote, LATAM)",
-      "company": "Rankings.io",
-      "source": "Adzuna"
-    },
-    {
       "title": "Remote",
       "company": "24-MAG",
-      "source": "Adzuna"
-    },
-    {
-      "title": "2027 Spring Internship - Editorial Intern, Zonderkidz/Blink/DaySpring Kids (Remote US)",
-      "company": "HarperCollins Publishers",
-      "source": "Adzuna"
-    },
-    {
-      "title": "Reporters & Correspondents | Remote - Contract",
-      "company": "Xperteez Technology",
-      "source": "Adzuna"
-    },
-    {
-      "title": "Production Workflow Engineer, Production Technology Engineering",
-      "company": "Amazon",
-      "source": "Adzuna"
-    },
-    {
-      "title": "Video Game Capture Artist - Remote (CONTRACT)",
-      "company": "PlayStation",
       "source": "Adzuna"
     },
     {
@@ -227,12 +205,12 @@
       "source": "Adzuna"
     },
     {
-      "title": "Journalist - Remote",
+      "title": "Journalist/Writer - Remote",
       "company": "YO AI Labs",
       "source": "Adzuna"
     },
     {
-      "title": "Journalist/Writer - Remote",
+      "title": "Journalist - Remote",
       "company": "YO AI Labs",
       "source": "Adzuna"
     },
@@ -277,108 +255,83 @@
       "source": "Adzuna"
     },
     {
-      "title": "Creative Operations Specialist",
-      "company": "Outside",
+      "title": "Remote Product Manager - User Content Engagement",
+      "company": "Kforce Technology Staffing",
+      "source": "Adzuna"
+    },
+    {
+      "title": "2027 Summer Information Technology DEX Product Intern (Remote)",
+      "company": "Constellation",
+      "source": "Adzuna"
+    },
+    {
+      "title": "Bilingual Remote Phone Banker",
+      "company": "MFPS",
+      "source": "Adzuna"
+    },
+    {
+      "title": "Remote Non-Credentialed Veterinary Support Staff",
+      "company": "Safetycall International",
+      "source": "Adzuna"
+    },
+    {
+      "title": "Remote Credentialed Veterinary Technician",
+      "company": "Safetycall International",
+      "source": "Adzuna"
+    },
+    {
+      "title": "Pharmaceutical Sales - Neuroscience Hospital Specialist - Bakersfield, CA",
+      "company": "Otsuka",
+      "source": "Adzuna"
+    },
+    {
+      "title": "Executive Sales Director, Precision Oncology (Great Midwest)",
+      "company": "Quest Diagnostics",
+      "source": "Adzuna"
+    },
+    {
+      "title": "Product Owner II (Remote)",
+      "company": "American Specialty Healthorporated",
+      "source": "Adzuna"
+    },
+    {
+      "title": "Document Specialist",
+      "company": "360 Legal (A Family of Brands)",
       "source": "Jooble"
     },
     {
-      "title": "Chief Information Officer",
-      "company": "Jobgether",
+      "title": "English Generalist",
+      "company": "AuraOne Human Data",
       "source": "Jooble"
     },
     {
-      "title": "Chief Information Security Officer",
-      "company": "Qualified Health PBC",
+      "title": "Senior Lifecycle Marketing Manager",
+      "company": "Gusto",
       "source": "Jooble"
     },
     {
-      "title": "Information Systems Auditor",
-      "company": "Valiant Solutions, LLC",
+      "title": "Field Marketing Specialist",
+      "company": "Spotfire",
       "source": "Jooble"
     },
     {
-      "title": "Software Developer IV for Information Services",
-      "company": "Liberty University",
+      "title": "Feature Writer--On Call",
+      "company": "RUE GILT GROUPE",
       "source": "Jooble"
     },
     {
-      "title": "Division Head, Information Security",
-      "company": "Associated Universities Inc.",
+      "title": "Senior Content Marketing Manager",
+      "company": "Snowflake",
       "source": "Jooble"
     },
     {
-      "title": "Information Technology Architect",
-      "company": "Associated Universities Inc.",
+      "title": "Labor Migration Consultant - Aged Care Portfolio",
+      "company": "Labor Mobility Partnerships",
       "source": "Jooble"
     },
     {
-      "title": "Lead Information Security Engineer",
-      "company": "Jobgether",
-      "source": "Jooble"
-    },
-    {
-      "title": "Information Security Architect",
-      "company": "Excellus BCBS",
-      "source": "Jooble"
-    },
-    {
-      "title": "Business Information Security Officer",
-      "company": "Jobgether",
-      "source": "Jooble"
-    },
-    {
-      "title": "Information Systems Security Officer",
-      "company": "Govcio LLC",
-      "source": "Jooble"
-    },
-    {
-      "title": "Information Security Due Diligence Analyst (Remote)",
-      "company": "First American",
-      "source": "Jooble"
-    },
-    {
-      "title": "Associate Information Data Architect (REMOTE)",
-      "company": "The Hanover Insurance Group",
-      "source": "Jooble"
-    },
-    {
-      "title": "Database Analyst (Information Systems Specialist 7)",
-      "company": "State of Oregon",
-      "source": "Jooble"
-    },
-    {
-      "title": "Director of Information Security - IntelliScript (Remote)",
-      "company": "Milliman",
-      "source": "Jooble"
-    },
-    {
-      "title": "Sr Information Security Administrator",
-      "company": "Kirtland Federal Credit Union",
-      "source": "Jooble"
-    },
-    {
-      "title": "Clinical Information Systems Willow Analyst-Pharmacist",
-      "company": "UT Health San Antonio",
-      "source": "Jooble"
-    },
-    {
-      "title": "Information Security GRC Analyst IV - ESH",
-      "company": "CareSource",
-      "source": "Jooble"
-    },
-    {
-      "title": "Information Systems Technical Analyst - Level 3/4",
-      "company": "Jobgether",
-      "source": "Jooble"
-    },
-    {
-      "title": "Information Systems Technical Analyst - Level 3/4",
-      "company": "Northrop Grumman",
-      "source": "Jooble"
-    },
-    {
-      "title": "Product Analyst",
-      "company": "Zip Co Limited",
+      "title": "Remote Link Building Specialist - Editorial Outreach",
+      "company": "Rankite LLC",
       "source": "Jooble"
     },
     {
@@ -432,9 +385,69 @@
       "source": "Remotive"
     },
     {
-      "title": "Senior back-end Engineer",
-      "company": "Lemon.io",
-      "source": "Remotive"
+      "title": "Senior Software Engineer, Data",
+      "company": "Doximity",
+      "source": "We Work Remotely"
+    },
+    {
+      "title": "Account Development Representative II - Phoenix",
+      "company": "Samsara",
+      "source": "We Work Remotely"
+    },
+    {
+      "title": "Account Development Representative II - Atlanta",
+      "company": "Samsara",
+      "source": "We Work Remotely"
+    },
+    {
+      "title": "Principal Product Manager - Identity",
+      "company": "ZoomInfo Technologies LLC",
+      "source": "We Work Remotely"
+    },
+    {
+      "title": "Lending Manager (Front End) - Remote",
+      "company": "Knock",
+      "source": "We Work Remotely"
+    },
+    {
+      "title": "Senior Stock Administrator",
+      "company": "Discord",
+      "source": "We Work Remotely"
+    },
+    {
+      "title": "Principal Product Management, Growth",
+      "company": "ZoomInfo Technologies LLC",
+      "source": "We Work Remotely"
+    },
+    {
+      "title": "Senior Data Engineer, Ads",
+      "company": "Discord",
+      "source": "We Work Remotely"
+    },
+    {
+      "title": "Commercial Legal Counsel",
+      "company": "Tailscale",
+      "source": "We Work Remotely"
+    },
+    {
+      "title": "Commercial Account Executive",
+      "company": "Gong.io",
+      "source": "We Work Remotely"
+    },
+    {
+      "title": "AI Enterprise Architect",
+      "company": "Gong.io",
+      "source": "We Work Remotely"
+    },
+    {
+      "title": "Sr DataOps Engineer (R14334)",
+      "company": "Oportun",
+      "source": "We Work Remotely"
+    },
+    {
+      "title": "Senior ML Engineer (R14284)",
+      "company": "Oportun",
+      "source": "We Work Remotely"
     },
     {
       "title": "Senior TA Operations Specialist",
@@ -475,38 +488,26 @@
       "title": "Client Service Analyst - Livechat (Turkish required)",
       "company": "Bybit",
       "source": "We Work Remotely"
-    },
-    {
-      "title": "Broker Dealer Operations, Senior Associate",
-      "company": "Coinbase",
-      "source": "We Work Remotely"
-    },
-    {
-      "title": "Backend Engineer, Knowledge Graph",
-      "company": "GitLab",
-      "source": "We Work Remotely"
     }
   ],
-  "freshLast48h": 17,
-  "contract": 30,
+  "freshLast48h": 12,
+  "contract": 25,
   "modes": {
-    "writing": 8,
-    "reviewing": 40
+    "writing": 11,
+    "reviewing": 46
   },
-  "technical": 2,
+  "technical": 3,
   "industries": {
-    "Marketing & advertising": 10,
-    "AI training & data annotation": 9,
-    "Healthcare & life sciences": 7,
+    "Marketing & advertising": 15,
+    "Healthcare & life sciences": 8,
+    "AI training & data annotation": 6,
+    "Media & publishing": 5,
     "Education & training": 5,
     "Legal": 3,
-    "Media & publishing": 3,
     "Finance & insurance": 3,
-    "Manufacturing & logistics": 2,
-    "Retail & e-commerce": 2,
-    "Nonprofit & government": 1,
-    "Real estate & construction": 1,
-    "Travel & hospitality": 1
+    "Retail & e-commerce": 3,
+    "Travel & hospitality": 1,
+    "Software & technology": 1
   },
   "sources": [
     {
@@ -541,12 +542,8 @@
       "id": "adzuna",
       "label": "Adzuna",
       "status": "ok",
-      "fetched": 187,
+      "fetched": 155,
       "warnings": [
-        "michigan-remote \"freelance proofreader\": 0 results (Adzuna reports 0 total matches)",
-        "michigan-remote \"contract editor\": 0 results (Adzuna reports 0 total matches)",
-        "michigan-remote \"editorial\": 0 results (Adzuna reports 0 total matches)",
-        "michigan-remote \"proofreading\": 0 results (Adzuna reports 0 total matches)",
         "michigan-remote \"editorial quality\": 0 results (Adzuna reports 0 total matches)",
         "michigan-remote \"content editor\": 0 results (Adzuna reports 0 total matches)",
         "michigan-remote \"copy editor\": 0 results (Adzuna reports 0 total matches)",
@@ -560,48 +557,52 @@
         "michigan-remote \"digital editor\": 0 results (Adzuna reports 0 total matches)",
         "michigan-remote \"web content\": 0 results (Adzuna reports 0 total matches)",
         "michigan-remote \"content operations\": 0 results (Adzuna reports 0 total matches)",
-        "us-remote \"freelance proofreader\": 0 results (Adzuna reports 0 total matches)",
+        "michigan-remote \"editorial operations\": 0 results (Adzuna reports 0 total matches)",
+        "michigan-remote \"catalog quality\": 0 results (Adzuna reports 0 total matches)",
+        "michigan-remote \"product information\": 0 results (Adzuna reports 0 total matches)",
+        "michigan-remote \"content specialist\": 0 results (Adzuna reports 0 total matches)",
         "us-remote \"copyediting\": 0 results (Adzuna reports 0 total matches)",
         "us-remote \"content auditor\": 0 results (Adzuna reports 0 total matches)",
         "us-remote \"quality editor\": 0 results (Adzuna reports 0 total matches)",
-        "us-remote \"digital editor\": 0 results (Adzuna reports 0 total matches)"
+        "us-remote \"digital editor\": 0 results (Adzuna reports 0 total matches)",
+        "us-remote \"editorial operations\": 0 results (Adzuna reports 0 total matches)",
+        "us-remote \"catalog quality\": 0 results (Adzuna reports 0 total matches)"
       ],
-      "ms": 8676
+      "ms": 8854
     },
     {
       "id": "jooble",
       "label": "Jooble",
       "status": "ok",
-      "fetched": 40,
+      "fetched": 55,
       "warnings": [
-        "\"product content\": HTTP 500 Internal Server Error",
-        "\"catalog quality\": HTTP 500 Internal Server Error",
-        "\"content specialist\": HTTP 500 Internal Server Error",
-        "\"email marketing\": HTTP 500 Internal Server Error",
-        "\"campaign quality\": HTTP 500 Internal Server Error",
-        "\"marketing qa\": HTTP 500 Internal Server Error",
-        "\"quality assurance\": HTTP 500 Internal Server Error",
-        "\"content integrity\": HTTP 500 Internal Server Error"
+        "\"content quality\": HTTP 500 Internal Server Error",
+        "\"editorial quality\": HTTP 500 Internal Server Error",
+        "\"content editor\": HTTP 500 Internal Server Error",
+        "\"copy editor\": HTTP 500 Internal Server Error",
+        "\"content reviewer\": HTTP 500 Internal Server Error",
+        "\"content auditor\": HTTP 500 Internal Server Error",
+        "\"quality editor\": HTTP 500 Internal Server Error"
       ],
-      "ms": 11561
+      "ms": 10707
     },
     {
       "id": "remotive",
       "label": "Remotive",
       "status": "ok",
-      "fetched": 624,
+      "fetched": 576,
       "warnings": [],
-      "ms": 1443
+      "ms": 1565
     },
     {
       "id": "weworkremotely",
       "label": "We Work Remotely",
       "status": "ok",
-      "fetched": 273,
+      "fetched": 277,
       "warnings": [
         "remote-marketing-jobs.rss: HTTP 301 Moved Permanently"
       ],
-      "ms": 1879
+      "ms": 1481
     },
     {
       "id": "himalayas",
@@ -609,7 +610,7 @@
       "status": "ok",
       "fetched": 240,
       "warnings": [],
-      "ms": 703
+      "ms": 546
     },
     {
       "id": "jobicy",
@@ -617,10 +618,10 @@
       "status": "ok",
       "fetched": 50,
       "warnings": [
-        "?count=50&geo=usa&tag=freelance%20proofreader: HTTP 400 Bad Request",
-        "?count=50&geo=usa&tag=content%20operations: HTTP 429 Too Many Requests"
+        "?count=50&geo=usa&tag=product%20information: HTTP 429 Too Many Requests",
+        "?count=50&geo=usa&tag=content%20specialist: HTTP 429 Too Many Requests"
       ],
-      "ms": 9066
+      "ms": 11173
     },
     {
       "id": "remoteok",
@@ -628,7 +629,7 @@
       "status": "ok",
       "fetched": 99,
       "warnings": [],
-      "ms": 928
+      "ms": 544
     },
     {
       "id": "workingnomads",
@@ -636,7 +637,7 @@
       "status": "ok",
       "fetched": 35,
       "warnings": [],
-      "ms": 547
+      "ms": 322
     },
     {
       "id": "arbeitnow",
@@ -644,7 +645,7 @@
       "status": "ok",
       "fetched": 300,
       "warnings": [],
-      "ms": 324
+      "ms": 350
     }
   ]
 }
