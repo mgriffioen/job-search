@@ -1,6 +1,6 @@
 {
-  "generatedAt": "2026-11-02T15:40:44.949Z",
-  "durationMs": 34707,
+  "generatedAt": "2026-11-02T23:28:20.456Z",
+  "durationMs": 40859,
   "candidate": {
     "name": "Emily Griffioen",
     "headline": "Content & editorial QA — 10 years reviewing customer-facing marketing content",
@@ -149,46 +149,47 @@
   },
   "counts": {
     "fetched": 1978,
-    "unique": 1278,
-    "published": 91,
+    "unique": 1295,
+    "published": 96,
     "dropped": {
-      "location": 519,
+      "location": 557,
       "stale": 0,
-      "noTermMatch": 668
+      "noTermMatch": 642
     }
   },
   "terms": {
-    "email marketing specialist": 27,
+    "email marketing specialist": 28,
     "content specialist": 13,
-    "editor": 8,
-    "quality assurance specialist": 4,
-    "quality assurance analyst": 4,
+    "editor": 9,
+    "quality assurance specialist": 5,
+    "content reviewer": 4,
     "content writer": 3,
     "qa analyst": 3,
-    "quality specialist": 3,
-    "content reviewer": 3,
-    "managing editor": 2,
-    "quality analyst": 2,
-    "production editor": 2,
-    "content developer": 2,
-    "content marketing specialist": 2,
-    "quality coordinator": 1,
-    "freelance writer": 1,
+    "quality assurance analyst": 3,
+    "content marketing specialist": 3,
+    "freelance writer": 2,
+    "quality specialist": 2,
+    "curriculum writer": 2,
+    "documentation specialist": 2,
+    "copywriter": 2,
+    "content operations": 2,
+    "managing editor": 1,
+    "technical editor": 1,
+    "quality analyst": 1,
+    "production editor": 1,
+    "content developer": 1,
     "content qa": 1,
-    "campaign operations specialist": 1,
-    "curriculum writer": 1,
     "quality assurance coordinator": 1,
     "e-commerce content specialist": 1,
     "content operations specialist": 1,
-    "copy editor": 1,
+    "content operations manager": 1,
+    "content production specialist": 1,
     "technical writer": 1,
-    "copywriter": 1,
-    "qa specialist": 1,
-    "content operations": 1
+    "qa specialist": 1
   },
   "matchedIn": {
     "title": 86,
-    "tags": 3,
+    "tags": 8,
     "description": 2
   },
   "unmatched": [
@@ -403,11 +404,6 @@
       "source": "Adzuna"
     },
     {
-      "title": "Work From Home B2B Email Outreach Specialist – Call Now (405) 801-9601 Fort Worth, TX",
-      "company": "Transportation Hiring Hub",
-      "source": "Adzuna"
-    },
-    {
       "title": "Junior Product Analyst and Quality Assurance - Remote",
       "company": "UnitedHealth Group",
       "source": "Adzuna"
@@ -473,44 +469,51 @@
       "source": "Adzuna"
     },
     {
+      "title": "Corporate Attorney - Remote",
+      "company": "YO AI Labs",
+      "source": "Adzuna"
+    },
+    {
       "title": "Email Marketing Assistant",
       "company": "Virtual Vocations Inc",
       "source": "Jooble"
     },
     {
-      "title": "Digital Marketing Manager (Email/Affiliate) (Fully Remote)",
-      "company": "High Tide",
-      "source": "Jooble"
-    },
-    {
-      "title": "Email Marketing Manager - Remote",
-      "company": "Sorenson Communications",
+      "title": "Manager, Email Marketing Analytics",
+      "company": "Amsive",
       "source": "Jooble"
     },
     {
       "title": "Remote CRM Campaign Specialist - Lifecycle Email & Push",
       "company": "IDR, Inc.",
       "source": "Jooble"
+    },
+    {
+      "title": "Remote Inbound CSR for Donor Campaigns",
+      "company": "ACD Direct",
+      "source": "Jooble"
     }
   ],
-  "freshLast48h": 10,
-  "contract": 48,
+  "freshLast48h": 15,
+  "contract": 51,
   "modes": {
-    "writing": 38,
-    "reviewing": 53
+    "writing": 42,
+    "reviewing": 54
   },
-  "technical": 3,
+  "technical": 2,
   "industries": {
-    "Marketing & advertising": 12,
+    "Marketing & advertising": 14,
     "Healthcare & life sciences": 10,
     "Retail & e-commerce": 5,
     "Education & training": 5,
-    "Media & publishing": 3,
-    "AI training & data annotation": 3,
-    "Staffing & recruiting": 2,
-    "Finance & insurance": 2,
-    "Legal": 2,
-    "Travel & hospitality": 2
+    "Media & publishing": 4,
+    "AI training & data annotation": 4,
+    "Finance & insurance": 3,
+    "Legal": 3,
+    "Manufacturing & logistics": 1,
+    "Nonprofit & government": 1,
+    "Travel & hospitality": 1,
+    "Staffing & recruiting": 1
   },
   "sources": [
     {
@@ -539,13 +542,13 @@
         "reserve": 12,
         "reason": "188 spendable across ~1 runs left — full budget available"
       },
-      "ms": 0
+      "ms": 1
     },
     {
       "id": "adzuna",
       "label": "Adzuna",
       "status": "ok",
-      "fetched": 197,
+      "fetched": 196,
       "warnings": [
         "michigan-remote \"copyediting\": 0 results (Adzuna reports 0 total matches)",
         "michigan-remote \"content reviewer\": 0 results (Adzuna reports 0 total matches)",
@@ -571,7 +574,7 @@
         "us-remote \"campaign quality\": 0 results (Adzuna reports 0 total matches)",
         "us-remote \"marketing qa\": 0 results (Adzuna reports 0 total matches)"
       ],
-      "ms": 11995
+      "ms": 18006
     },
     {
       "id": "jooble",
@@ -579,7 +582,7 @@
       "status": "ok",
       "fetched": 200,
       "warnings": [],
-      "ms": 2589
+      "ms": 5720
     },
     {
       "id": "remotive",
@@ -587,17 +590,17 @@
       "status": "ok",
       "fetched": 576,
       "warnings": [],
-      "ms": 1855
+      "ms": 1278
     },
     {
       "id": "weworkremotely",
       "label": "We Work Remotely",
       "status": "ok",
-      "fetched": 283,
+      "fetched": 284,
       "warnings": [
         "remote-marketing-jobs.rss: HTTP 301 Moved Permanently"
       ],
-      "ms": 1188
+      "ms": 1606
     },
     {
       "id": "himalayas",
@@ -605,7 +608,7 @@
       "status": "ok",
       "fetched": 240,
       "warnings": [],
-      "ms": 703
+      "ms": 743
     },
     {
       "id": "jobicy",
@@ -613,11 +616,10 @@
       "status": "ok",
       "fetched": 50,
       "warnings": [
-        "?count=50&geo=usa&tag=campaign%20quality: HTTP 429 Too Many Requests",
-        "?count=50&geo=usa&tag=marketing%20qa: HTTP 429 Too Many Requests",
-        "?count=50&geo=usa&tag=quality%20assurance: HTTP 429 Too Many Requests"
+        "?count=50&geo=usa&tag=quality%20assurance: HTTP 429 Too Many Requests",
+        "?count=50&geo=usa&tag=content%20integrity: HTTP 429 Too Many Requests"
       ],
-      "ms": 14532
+      "ms": 11341
     },
     {
       "id": "remoteok",
@@ -625,7 +627,7 @@
       "status": "ok",
       "fetched": 99,
       "warnings": [],
-      "ms": 664
+      "ms": 745
     },
     {
       "id": "workingnomads",
@@ -633,7 +635,7 @@
       "status": "ok",
       "fetched": 35,
       "warnings": [],
-      "ms": 139
+      "ms": 298
     },
     {
       "id": "arbeitnow",
@@ -641,7 +643,7 @@
       "status": "ok",
       "fetched": 300,
       "warnings": [],
-      "ms": 283
+      "ms": 382
     }
   ]
 }
