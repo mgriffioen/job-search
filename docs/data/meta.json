@@ -1,6 +1,6 @@
 {
-  "generatedAt": "2026-11-03T14:04:04.424Z",
-  "durationMs": 32111,
+  "generatedAt": "2026-11-03T21:44:04.162Z",
+  "durationMs": 37978,
   "candidate": {
     "name": "Emily Griffioen",
     "headline": "Content & editorial QA — 10 years reviewing customer-facing marketing content",
@@ -148,50 +148,48 @@
     "maxAgeDays": 60
   },
   "counts": {
-    "fetched": 1853,
-    "unique": 1246,
-    "published": 97,
+    "fetched": 2319,
+    "unique": 1453,
+    "published": 91,
     "dropped": {
-      "location": 543,
+      "location": 490,
       "stale": 0,
-      "noTermMatch": 606
+      "noTermMatch": 872
     }
   },
   "terms": {
     "email marketing specialist": 31,
-    "content specialist": 13,
-    "editor": 10,
-    "content reviewer": 5,
+    "editor": 12,
+    "content specialist": 11,
+    "content reviewer": 4,
     "quality assurance specialist": 4,
-    "content writer": 4,
+    "content writer": 3,
     "quality assurance analyst": 3,
+    "editorial manager": 2,
     "qa analyst": 2,
-    "freelance writer": 2,
     "editorial specialist": 2,
-    "quality specialist": 2,
-    "quality analyst": 2,
-    "editorial manager": 1,
+    "editorial assistant": 1,
+    "freelance writer": 1,
     "production editor": 1,
     "content developer": 1,
     "copywriter": 1,
-    "marketing copywriter": 1,
-    "content auditor": 1,
-    "content editor": 1,
+    "staff writer": 1,
     "content marketing specialist": 1,
+    "content editor": 1,
     "digital content specialist": 1,
-    "managing editor": 1,
     "quality assurance coordinator": 1,
+    "managing editor": 1,
+    "quality specialist": 1,
     "copyediting specialist": 1,
     "e-commerce content specialist": 1,
-    "content operations specialist": 1,
-    "content producer": 1,
     "qa specialist": 1,
+    "content quality": 1,
     "content operations": 1
   },
   "matchedIn": {
-    "title": 91,
-    "tags": 5,
-    "description": 1
+    "title": 89,
+    "tags": 0,
+    "description": 2
   },
   "unmatched": [
     {
@@ -350,17 +348,17 @@
       "source": "Adzuna"
     },
     {
-      "title": "Salesforce Marketing Cloud Email Producer",
-      "company": "Talent Software Services, Inc",
-      "source": "Adzuna"
-    },
-    {
       "title": "Remote Email Outreach & Data Entry Specialist – Call Now (405) 801-9601 San Jose, CA",
       "company": "Transportation Hiring Hub",
       "source": "Adzuna"
     },
     {
       "title": "Remote Data Entry & Business Outreach Specialist – Call Now (405) 801-9601 Jacksonville, FL",
+      "company": "Transportation Hiring Hub",
+      "source": "Adzuna"
+    },
+    {
+      "title": "Remote Business Lead Research & Outreach Specialist – Call Now (405) 801-9601 Baltimore, MD",
       "company": "Transportation Hiring Hub",
       "source": "Adzuna"
     },
@@ -395,28 +393,18 @@
       "source": "Adzuna"
     },
     {
-      "title": "Remote Quality Assurance & Regulatory Consultant",
-      "company": "Evest, LLC",
-      "source": "Adzuna"
-    },
-    {
       "title": "Senior Software Quality Assurance Engineer (Remote - Louisiana Only)",
       "company": "Blue Cross and Blue Shield of Louisiana",
       "source": "Adzuna"
     },
     {
+      "title": "Remote Quality Assurance & Regulatory Consultant",
+      "company": "Evest, LLC",
+      "source": "Adzuna"
+    },
+    {
       "title": "Call Center Quality Assurance Lead - Remote CA",
       "company": "Gainwell Technologies LLC",
-      "source": "Adzuna"
-    },
-    {
-      "title": "Quality Assurance Lead, US Remote Based",
-      "company": "Fortrea",
-      "source": "Adzuna"
-    },
-    {
-      "title": "Senior Tax Manager",
-      "company": "Brewer Morris",
       "source": "Adzuna"
     },
     {
@@ -460,11 +448,6 @@
       "source": "Jooble"
     },
     {
-      "title": "Senior Content Marketing Manager",
-      "company": "Snowflake",
-      "source": "Jooble"
-    },
-    {
       "title": "Labor Migration Consultant - Aged Care Portfolio",
       "company": "Labor Mobility Partnerships",
       "source": "Jooble"
@@ -493,25 +476,39 @@
       "title": "Coding & Compliance Eye Auditor",
       "company": "VMG HOLDINGS LLC",
       "source": "Jooble"
+    },
+    {
+      "title": "Remote Renewable Energy Compliance Auditor",
+      "company": "Westinghouse Electric Company",
+      "source": "Jooble"
+    },
+    {
+      "title": "Compliance Auditor",
+      "company": "Jobrapido",
+      "source": "Jooble"
+    },
+    {
+      "title": "Compliance Auditor",
+      "company": "Axtella",
+      "source": "Jooble"
     }
   ],
-  "freshLast48h": 14,
-  "contract": 54,
+  "freshLast48h": 10,
+  "contract": 53,
   "modes": {
-    "writing": 43,
-    "reviewing": 54
+    "writing": 40,
+    "reviewing": 51
   },
-  "technical": 4,
+  "technical": 3,
   "industries": {
-    "Marketing & advertising": 11,
-    "Healthcare & life sciences": 7,
+    "Marketing & advertising": 9,
     "Media & publishing": 5,
+    "Healthcare & life sciences": 5,
+    "Legal": 3,
     "Retail & e-commerce": 3,
-    "Legal": 2,
     "Finance & insurance": 2,
     "AI training & data annotation": 1,
     "Education & training": 1,
-    "Software & technology": 1,
     "Travel & hospitality": 1
   },
   "sources": [
@@ -547,7 +544,7 @@
       "id": "adzuna",
       "label": "Adzuna",
       "status": "ok",
-      "fetched": 177,
+      "fetched": 174,
       "warnings": [
         "michigan-remote \"production editor\": 0 results (Adzuna reports 0 total matches)",
         "michigan-remote \"digital editor\": 0 results (Adzuna reports 0 total matches)",
@@ -574,15 +571,15 @@
         "us-remote \"assessment editor\": 0 results (Adzuna reports 0 total matches)",
         "us-remote \"curriculum editor\": 0 results (Adzuna reports 0 total matches)"
       ],
-      "ms": 8367
+      "ms": 9760
     },
     {
       "id": "jooble",
       "label": "Jooble",
       "status": "ok",
-      "fetched": 194,
+      "fetched": 195,
       "warnings": [],
-      "ms": 2118
+      "ms": 2168
     },
     {
       "id": "remotive",
@@ -590,17 +587,17 @@
       "status": "ok",
       "fetched": 480,
       "warnings": [],
-      "ms": 1621
+      "ms": 1916
     },
     {
       "id": "weworkremotely",
       "label": "We Work Remotely",
       "status": "ok",
-      "fetched": 281,
+      "fetched": 285,
       "warnings": [
         "remote-marketing-jobs.rss: HTTP 301 Moved Permanently"
       ],
-      "ms": 1699
+      "ms": 1902
     },
     {
       "id": "himalayas",
@@ -608,19 +605,15 @@
       "status": "ok",
       "fetched": 240,
       "warnings": [],
-      "ms": 991
+      "ms": 1514
     },
     {
       "id": "jobicy",
       "label": "Jobicy",
       "status": "ok",
-      "fetched": 50,
-      "warnings": [
-        "?count=50&geo=usa&tag=learning%20content: HTTP 429 Too Many Requests",
-        "?count=50&geo=usa&tag=curriculum%20editor: HTTP 429 Too Many Requests",
-        "?count=50&geo=usa&tag=freelance%20editor: HTTP 429 Too Many Requests"
-      ],
-      "ms": 15177
+      "fetched": 514,
+      "warnings": [],
+      "ms": 18472
     },
     {
       "id": "remoteok",
@@ -628,7 +621,7 @@
       "status": "ok",
       "fetched": 99,
       "warnings": [],
-      "ms": 558
+      "ms": 727
     },
     {
       "id": "workingnomads",
@@ -636,7 +629,7 @@
       "status": "ok",
       "fetched": 35,
       "warnings": [],
-      "ms": 568
+      "ms": 512
     },
     {
       "id": "arbeitnow",
@@ -644,7 +637,7 @@
       "status": "ok",
       "fetched": 300,
       "warnings": [],
-      "ms": 322
+      "ms": 291
     }
   ]
 }
