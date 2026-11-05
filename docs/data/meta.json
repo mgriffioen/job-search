@@ -1,6 +1,6 @@
 {
-  "generatedAt": "2026-11-05T14:33:35.694Z",
-  "durationMs": 37488,
+  "generatedAt": "2026-11-05T21:57:53.403Z",
+  "durationMs": 35035,
   "candidate": {
     "name": "Emily Griffioen",
     "headline": "Content & editorial QA — 10 years reviewing customer-facing marketing content",
@@ -148,48 +148,45 @@
     "maxAgeDays": 60
   },
   "counts": {
-    "fetched": 2255,
-    "unique": 1434,
-    "published": 98,
+    "fetched": 2254,
+    "unique": 1418,
+    "published": 94,
     "dropped": {
-      "location": 499,
+      "location": 524,
       "stale": 1,
-      "noTermMatch": 836
+      "noTermMatch": 799
     }
   },
   "terms": {
     "email marketing specialist": 31,
-    "editor": 18,
-    "copywriter": 6,
+    "editor": 14,
+    "content writer": 6,
     "quality assurance analyst": 5,
-    "content writer": 5,
-    "production editor": 4,
+    "production editor": 5,
+    "copywriter": 5,
     "quality assurance specialist": 3,
+    "content operations": 3,
     "content reviewer": 2,
-    "quality specialist": 2,
     "copy editor": 2,
     "qa specialist": 2,
+    "quality specialist": 2,
     "content quality": 2,
-    "digital content specialist": 1,
-    "editorial manager": 1,
     "catalog specialist": 1,
     "editorial operations": 1,
     "qa analyst": 1,
     "staff writer": 1,
-    "quality analyst": 1,
-    "content operations": 1,
     "content specialist": 1,
+    "quality analyst": 1,
     "proofreader": 1,
+    "documentation specialist": 1,
     "content editor": 1,
     "proposal writer": 1,
     "technical writer": 1,
-    "campaign qa": 1,
-    "qa reviewer": 1,
-    "quality coordinator": 1
+    "qa reviewer": 1
   },
   "matchedIn": {
-    "title": 94,
-    "tags": 0,
+    "title": 88,
+    "tags": 2,
     "description": 4
   },
   "unmatched": [
@@ -299,11 +296,6 @@
       "source": "Adzuna"
     },
     {
-      "title": "Manager, Data Quality Assurance (Remote)",
-      "company": "Step Up for Students",
-      "source": "Adzuna"
-    },
-    {
       "title": "Senior Director, Quality Assurance (Remote)",
       "company": "Elevar Therapeutics",
       "source": "Adzuna"
@@ -334,48 +326,23 @@
       "source": "Adzuna"
     },
     {
-      "title": "Survey Project Manager - Right of Way Mapping",
-      "company": "Dewberry",
-      "source": "Adzuna"
-    },
-    {
-      "title": "Remote",
-      "company": "24-MAG",
-      "source": "Adzuna"
-    },
-    {
       "title": "Corporate Attorney - Remote",
       "company": "YO AI Labs",
       "source": "Adzuna"
     },
     {
-      "title": "Enterprise Sales / Business Development - Consulting or System Integrator Consulting or System Integrator exp - Remote",
-      "company": "Prolifics",
+      "title": "Survey Project Manager - Right of Way Mapping",
+      "company": "Dewberry",
       "source": "Adzuna"
     },
     {
-      "title": "Senior Specialist, Distribution QA",
-      "company": "Bavarian Nordic",
+      "title": "Senior Tax Manager",
+      "company": "Brewer Morris",
       "source": "Adzuna"
     },
     {
-      "title": "QUALITY ASSURANCE MANAGER",
-      "company": "Compass Group, North America",
-      "source": "Adzuna"
-    },
-    {
-      "title": "Senior SAS Quality Assurance Tester / ETL",
-      "company": "People Force Consulting Inc",
-      "source": "Adzuna"
-    },
-    {
-      "title": "Lawyer - Remote, Contract",
-      "company": "Xperteez Technology",
-      "source": "Adzuna"
-    },
-    {
-      "title": "GIS Software Quality Assurance Engineer",
-      "company": "Na Oiwi Kane",
+      "title": "Remote",
+      "company": "24-MAG",
       "source": "Adzuna"
     },
     {
@@ -391,16 +358,6 @@
     {
       "title": "Sr. Editorial Designer – Print Magazine (Remote, LATAM)",
       "company": "Rankings.io",
-      "source": "Adzuna"
-    },
-    {
-      "title": "2027 Spring Internship - Editorial Intern, Zonderkidz/Blink/DaySpring Kids (Remote US)",
-      "company": "HarperCollins Publishers",
-      "source": "Adzuna"
-    },
-    {
-      "title": "Reporters & Correspondents | Remote - Contract",
-      "company": "Xperteez Technology",
       "source": "Adzuna"
     },
     {
@@ -439,13 +396,13 @@
       "source": "Jooble"
     },
     {
-      "title": "Remote AI-Driven ABM Campaign Lead for Enterprise Growth",
-      "company": "ShipBob Inc",
+      "title": "Remote Product Manager - adult education",
+      "company": "KForce",
       "source": "Jooble"
     },
     {
-      "title": "Remote Product Manager - adult education",
-      "company": "KForce",
+      "title": "Remote AI-Driven ABM Campaign Lead for Enterprise Growth",
+      "company": "ShipBob Inc",
       "source": "Jooble"
     },
     {
@@ -464,12 +421,12 @@
       "source": "Jooble"
     },
     {
-      "title": "Remote ABM Campaign Manager AI-Powered Pipeline",
+      "title": "Remote ABM Campaign Manager - AI-Powered Enterprise Growth",
       "company": "ShipBob Inc",
       "source": "Jooble"
     },
     {
-      "title": "Remote ABM Campaign Manager - AI-Powered Enterprise Growth",
+      "title": "Remote ABM Campaign Manager AI-Powered Pipeline",
       "company": "ShipBob Inc",
       "source": "Jooble"
     },
@@ -479,40 +436,79 @@
       "source": "Jooble"
     },
     {
-      "title": "Integrated Campaign Manager",
-      "company": "KLDiscovery",
+      "title": "Remote Content Strategist for Government UX",
+      "company": "ArcheSys Inc",
       "source": "Jooble"
     },
     {
       "title": "Remote Product Data & Digital Ops Specialist (EST)",
-      "company": "Yoh",
+      "company": "Data Business GmbH",
+      "source": "Jooble"
+    },
+    {
+      "title": "Motion Graphics Designer (Flex) (Fully Remote)",
+      "company": "Advanced Systems Group",
       "source": "Jooble"
     },
     {
       "title": "Remote Intelligence Operations Specialist",
       "company": "OpenKrill",
       "source": "Jooble"
+    },
+    {
+      "title": "Remote Director of Editorial Portfolio",
+      "company": "OpenKrill",
+      "source": "Jooble"
+    },
+    {
+      "title": "Remote Marketing & Content Lead for Digital Products",
+      "company": "Bertelsmann",
+      "source": "Jooble"
+    },
+    {
+      "title": "Remote Product Manager, Adult Education",
+      "company": "Virtual Vocations Inc",
+      "source": "Jooble"
+    },
+    {
+      "title": "Remote Product Catalog Lead for Multi-Brand eCommerce",
+      "company": "BATHING BRANDS INC",
+      "source": "Jooble"
+    },
+    {
+      "title": "Senior PM: AI-Ready Data Catalog & Platform (Remote)",
+      "company": "BambooHR",
+      "source": "Jooble"
+    },
+    {
+      "title": "Remote Product Catalog Lead Multi-Brand eCommerce",
+      "company": "BATHING BRANDS INC",
+      "source": "Jooble"
+    },
+    {
+      "title": "Information Security Analyst",
+      "company": "Republic Services",
+      "source": "Jooble"
     }
   ],
-  "freshLast48h": 18,
+  "freshLast48h": 13,
   "contract": 58,
   "modes": {
-    "writing": 46,
-    "reviewing": 52
+    "writing": 45,
+    "reviewing": 49
   },
-  "technical": 4,
+  "technical": 3,
   "industries": {
+    "AI training & data annotation": 9,
     "Marketing & advertising": 8,
-    "AI training & data annotation": 7,
+    "Healthcare & life sciences": 6,
     "Education & training": 6,
-    "Healthcare & life sciences": 4,
-    "Media & publishing": 4,
+    "Media & publishing": 5,
     "Retail & e-commerce": 3,
-    "Travel & hospitality": 3,
     "Staffing & recruiting": 2,
+    "Travel & hospitality": 2,
     "Finance & insurance": 1,
-    "Software & technology": 1,
-    "Manufacturing & logistics": 1
+    "Software & technology": 1
   },
   "sources": [
     {
@@ -541,7 +537,7 @@
         "reserve": 12,
         "reason": "188 spendable across ~1 runs left — full budget available"
       },
-      "ms": 0
+      "ms": 1
     },
     {
       "id": "adzuna",
@@ -567,12 +563,12 @@
         "michigan-remote \"proofreader\": 0 results (Adzuna reports 0 total matches)",
         "us-remote \"campaign quality\": 0 results (Adzuna reports 0 total matches)",
         "us-remote \"marketing qa\": 0 results (Adzuna reports 0 total matches)",
-        "us-remote \"content audit\": 0 results (Adzuna reports 0 total matches)",
         "us-remote \"assessment editor\": 0 results (Adzuna reports 0 total matches)",
         "us-remote \"curriculum editor\": 0 results (Adzuna reports 0 total matches)",
-        "us-remote \"freelance proofreader\": 0 results (Adzuna reports 0 total matches)"
+        "us-remote \"freelance proofreader\": 0 results (Adzuna reports 0 total matches)",
+        "us-remote \"contract editor\": 0 results (Adzuna reports 0 total matches)"
       ],
-      "ms": 12372
+      "ms": 8816
     },
     {
       "id": "jooble",
@@ -580,7 +576,7 @@
       "status": "ok",
       "fetched": 200,
       "warnings": [],
-      "ms": 2123
+      "ms": 1986
     },
     {
       "id": "remotive",
@@ -588,17 +584,17 @@
       "status": "ok",
       "fetched": 480,
       "warnings": [],
-      "ms": 2152
+      "ms": 1630
     },
     {
       "id": "weworkremotely",
       "label": "We Work Remotely",
       "status": "ok",
-      "fetched": 285,
+      "fetched": 287,
       "warnings": [
         "remote-marketing-jobs.rss: HTTP 301 Moved Permanently"
       ],
-      "ms": 2191
+      "ms": 3331
     },
     {
       "id": "himalayas",
@@ -606,7 +602,7 @@
       "status": "ok",
       "fetched": 240,
       "warnings": [],
-      "ms": 1413
+      "ms": 780
     },
     {
       "id": "jobicy",
@@ -616,7 +612,7 @@
       "warnings": [
         "?count=50&geo=usa&tag=freelance%20proofreader: HTTP 400 Bad Request"
       ],
-      "ms": 15454
+      "ms": 15767
     },
     {
       "id": "remoteok",
@@ -624,15 +620,15 @@
       "status": "ok",
       "fetched": 99,
       "warnings": [],
-      "ms": 516
+      "ms": 1042
     },
     {
       "id": "workingnomads",
       "label": "Working Nomads",
       "status": "ok",
-      "fetched": 34,
+      "fetched": 33,
       "warnings": [],
-      "ms": 383
+      "ms": 503
     },
     {
       "id": "arbeitnow",
@@ -640,7 +636,7 @@
       "status": "ok",
       "fetched": 300,
       "warnings": [],
-      "ms": 342
+      "ms": 299
     }
   ]
 }
