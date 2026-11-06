@@ -1,6 +1,6 @@
 {
-  "generatedAt": "2026-11-06T14:10:43.190Z",
-  "durationMs": 31629,
+  "generatedAt": "2026-11-06T21:28:00.229Z",
+  "durationMs": 32185,
   "candidate": {
     "name": "Emily Griffioen",
     "headline": "Content & editorial QA — 10 years reviewing customer-facing marketing content",
@@ -148,47 +148,55 @@
     "maxAgeDays": 60
   },
   "counts": {
-    "fetched": 2147,
-    "unique": 1240,
-    "published": 69,
+    "fetched": 2118,
+    "unique": 1237,
+    "published": 93,
     "dropped": {
-      "location": 502,
+      "location": 488,
       "stale": 1,
-      "noTermMatch": 668
+      "noTermMatch": 655
     }
   },
   "terms": {
-    "editor": 21,
+    "editor": 35,
+    "proofreader": 7,
     "copy editor": 7,
-    "proofreader": 6,
+    "copywriter": 7,
     "content reviewer": 6,
     "content editor": 4,
-    "copywriter": 3,
-    "content operations": 3,
+    "quality specialist": 3,
+    "proposal writer": 2,
+    "freelance content editor": 2,
     "editorial operations": 2,
-    "content quality": 2,
+    "documentation specialist": 2,
     "freelance writer": 1,
-    "freelance content editor": 1,
-    "qa analyst": 1,
+    "managing editor": 1,
     "content marketing specialist": 1,
+    "qa analyst": 1,
     "editorial manager": 1,
-    "editorial specialist": 1,
     "production editor": 1,
+    "editorial specialist": 1,
     "staff writer": 1,
     "digital content specialist": 1,
     "content qa": 1,
+    "content quality": 1,
+    "content operations": 1,
     "quality analyst": 1,
-    "quality specialist": 1,
-    "proposal writer": 1,
+    "curriculum writer": 1,
     "content writer": 1,
     "editorial quality": 1
   },
   "matchedIn": {
-    "title": 65,
-    "tags": 0,
-    "description": 4
+    "title": 86,
+    "tags": 5,
+    "description": 2
   },
   "unmatched": [
+    {
+      "title": "Photo and Visual Editors",
+      "company": "Pro Integrate",
+      "source": "Adzuna"
+    },
     {
       "title": "Marketing Manager III",
       "company": "Buckeye Global",
@@ -200,13 +208,13 @@
       "source": "Adzuna"
     },
     {
-      "title": "Editorial and Administrative Associate",
-      "company": "Bond & Grace",
+      "title": "Production Workflow Engineer, Production Technology Engineering",
+      "company": "Amazon",
       "source": "Adzuna"
     },
     {
-      "title": "Production Workflow Engineer, Production Technology Engineering",
-      "company": "Amazon",
+      "title": "Editorial and Administrative Associate",
+      "company": "Bond & Grace",
       "source": "Adzuna"
     },
     {
@@ -255,6 +263,11 @@
       "source": "Jooble"
     },
     {
+      "title": "Editorial or Communications Spring 2027 Internship Program (Paid/Remote)",
+      "company": "Ballotpedia",
+      "source": "Jooble"
+    },
+    {
       "title": "Compliance Officer",
       "company": "Jobgether",
       "source": "Jooble"
@@ -285,6 +298,11 @@
       "source": "Jooble"
     },
     {
+      "title": "Senior Product Manager",
+      "company": "Rithum",
+      "source": "Jooble"
+    },
+    {
       "title": "Senior Account Manager",
       "company": "Clearlink Technologies, LLC",
       "source": "Jooble"
@@ -295,23 +313,8 @@
       "source": "Jooble"
     },
     {
-      "title": "Senior Product Manager",
-      "company": "Rithum",
-      "source": "Jooble"
-    },
-    {
       "title": "Director of Content",
       "company": "Fairmarkit",
-      "source": "Jooble"
-    },
-    {
-      "title": "ASO Manager",
-      "company": "Inkitt",
-      "source": "Jooble"
-    },
-    {
-      "title": "Remote Copy Strategist",
-      "company": "Virtual Vocations Inc",
       "source": "Jooble"
     },
     {
@@ -370,6 +373,36 @@
       "source": "Remotive"
     },
     {
+      "title": "Full-Stack Engineer",
+      "company": "OpenTrain AI",
+      "source": "We Work Remotely"
+    },
+    {
+      "title": "Software Engineer Interviewer",
+      "company": "Karat",
+      "source": "We Work Remotely"
+    },
+    {
+      "title": "Implementation Manager",
+      "company": "Standard Metrics",
+      "source": "We Work Remotely"
+    },
+    {
+      "title": "Mortgage Loan Officer Live Transfers and Online Leads",
+      "company": "Satori Mortgage",
+      "source": "We Work Remotely"
+    },
+    {
+      "title": "Product Marketing Manager",
+      "company": "Siemens",
+      "source": "We Work Remotely"
+    },
+    {
+      "title": "Associate Product Marketing Manager – GRC",
+      "company": "Mitratech",
+      "source": "We Work Remotely"
+    },
+    {
       "title": "Client Success Manager",
       "company": "Bask Health",
       "source": "We Work Remotely"
@@ -405,16 +438,6 @@
       "source": "We Work Remotely"
     },
     {
-      "title": "Managed Review Recruiting Coordinator",
-      "company": "Lighthouse",
-      "source": "We Work Remotely"
-    },
-    {
-      "title": "Review Program Manager",
-      "company": "Lighthouse",
-      "source": "We Work Remotely"
-    },
-    {
       "title": "SOCIAL MEDIA & SEO MANAGER",
       "company": "Ace Stainless Supply",
       "source": "We Work Remotely"
@@ -445,23 +468,8 @@
       "source": "We Work Remotely"
     },
     {
-      "title": "Google & YouTube Ads Specialist - Ecommerce (Remote, Full-time) - Asia",
-      "company": "Convertibles",
-      "source": "We Work Remotely"
-    },
-    {
-      "title": "Google Ads Media Buyer",
-      "company": "Jobgether",
-      "source": "We Work Remotely"
-    },
-    {
       "title": "Senior Web Application Security Engineer",
       "company": "EPAM Systems",
-      "source": "We Work Remotely"
-    },
-    {
-      "title": "Paid Media Coordinator",
-      "company": "Zanda Health",
       "source": "We Work Remotely"
     },
     {
@@ -480,33 +488,30 @@
       "source": "We Work Remotely"
     },
     {
-      "title": "Senior Applied Scientist, Property Analytics",
-      "company": "Kiavi",
-      "source": "We Work Remotely"
-    },
-    {
-      "title": "Founding Account Executive",
-      "company": "Mozaiq",
+      "title": "Customer Service Claims Representative",
+      "company": "National Claims Assistance Inc",
       "source": "We Work Remotely"
     }
   ],
-  "freshLast48h": 19,
-  "contract": 32,
+  "freshLast48h": 26,
+  "contract": 33,
   "modes": {
-    "writing": 9,
-    "reviewing": 60
+    "writing": 15,
+    "reviewing": 78
   },
-  "technical": 3,
+  "technical": 2,
   "industries": {
-    "AI training & data annotation": 8,
-    "Healthcare & life sciences": 7,
-    "Marketing & advertising": 7,
-    "Media & publishing": 4,
-    "Legal": 3,
-    "Software & technology": 3,
-    "Retail & e-commerce": 2,
-    "Staffing & recruiting": 2,
+    "Marketing & advertising": 14,
+    "Healthcare & life sciences": 10,
+    "Media & publishing": 7,
+    "Legal": 5,
+    "AI training & data annotation": 5,
+    "Finance & insurance": 3,
+    "Retail & e-commerce": 3,
+    "Staffing & recruiting": 3,
+    "Software & technology": 2,
     "Education & training": 2,
+    "Nonprofit & government": 1,
     "Travel & hospitality": 1
   },
   "sources": [
@@ -536,13 +541,13 @@
         "reserve": 12,
         "reason": "188 spendable across ~1 runs left — full budget available"
       },
-      "ms": 0
+      "ms": 1
     },
     {
       "id": "adzuna",
       "label": "Adzuna",
       "status": "ok",
-      "fetched": 146,
+      "fetched": 101,
       "warnings": [
         "michigan-remote \"content audit\": 0 results (Adzuna reports 0 total matches)",
         "michigan-remote \"assessment editor\": 0 results (Adzuna reports 0 total matches)",
@@ -551,6 +556,7 @@
         "michigan-remote \"freelance editor\": 0 results (Adzuna reports 0 total matches)",
         "michigan-remote \"freelance proofreader\": 0 results (Adzuna reports 0 total matches)",
         "michigan-remote \"contract editor\": 0 results (Adzuna reports 0 total matches)",
+        "michigan-remote \"editor\": 0 results (Adzuna reports 0 total matches)",
         "michigan-remote \"editorial\": 0 results (Adzuna reports 0 total matches)",
         "michigan-remote \"proofreading\": 0 results (Adzuna reports 0 total matches)",
         "michigan-remote \"content quality\": 0 results (Adzuna reports 0 total matches)",
@@ -569,10 +575,9 @@
         "us-remote \"contract editor\": 0 results (Adzuna reports 0 total matches)",
         "us-remote \"copyediting\": 0 results (Adzuna reports 0 total matches)",
         "us-remote \"content auditor\": 0 results (Adzuna reports 0 total matches)",
-        "us-remote \"quality editor\": 0 results (Adzuna reports 0 total matches)",
         "us-remote \"editorial specialist\": 0 results (Adzuna reports 0 total matches)"
       ],
-      "ms": 6863
+      "ms": 7752
     },
     {
       "id": "jooble",
@@ -580,7 +585,7 @@
       "status": "ok",
       "fetched": 200,
       "warnings": [],
-      "ms": 1883
+      "ms": 2642
     },
     {
       "id": "remotive",
@@ -588,7 +593,7 @@
       "status": "ok",
       "fetched": 576,
       "warnings": [],
-      "ms": 1258
+      "ms": 2130
     },
     {
       "id": "weworkremotely",
@@ -598,7 +603,7 @@
       "warnings": [
         "remote-marketing-jobs.rss: HTTP 301 Moved Permanently"
       ],
-      "ms": 2227
+      "ms": 3915
     },
     {
       "id": "himalayas",
@@ -606,17 +611,17 @@
       "status": "ok",
       "fetched": 240,
       "warnings": [],
-      "ms": 676
+      "ms": 1021
     },
     {
       "id": "jobicy",
       "label": "Jobicy",
       "status": "ok",
-      "fetched": 274,
+      "fetched": 292,
       "warnings": [
         "?count=50&geo=usa&tag=freelance%20proofreader: HTTP 400 Bad Request"
       ],
-      "ms": 16360
+      "ms": 12669
     },
     {
       "id": "remoteok",
@@ -624,7 +629,7 @@
       "status": "ok",
       "fetched": 99,
       "warnings": [],
-      "ms": 989
+      "ms": 549
     },
     {
       "id": "workingnomads",
@@ -632,7 +637,7 @@
       "status": "ok",
       "fetched": 32,
       "warnings": [],
-      "ms": 599
+      "ms": 356
     },
     {
       "id": "arbeitnow",
@@ -640,7 +645,7 @@
       "status": "ok",
       "fetched": 300,
       "warnings": [],
-      "ms": 249
+      "ms": 388
     }
   ]
 }
