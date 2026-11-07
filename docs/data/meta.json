@@ -1,6 +1,6 @@
 {
-  "generatedAt": "2026-11-07T12:53:44.580Z",
-  "durationMs": 28625,
+  "generatedAt": "2026-11-07T20:12:09.841Z",
+  "durationMs": 28744,
   "candidate": {
     "name": "Emily Griffioen",
     "headline": "Content & editorial QA — 10 years reviewing customer-facing marketing content",
@@ -148,61 +148,54 @@
     "maxAgeDays": 60
   },
   "counts": {
-    "fetched": 2204,
-    "unique": 1333,
-    "published": 82,
+    "fetched": 2234,
+    "unique": 1294,
+    "published": 84,
     "dropped": {
-      "location": 503,
+      "location": 483,
       "stale": 1,
-      "noTermMatch": 747
+      "noTermMatch": 726
     }
   },
   "terms": {
-    "editor": 27,
+    "editor": 29,
     "content reviewer": 6,
     "qa analyst": 4,
-    "copywriter": 4,
     "content operations": 4,
+    "email marketing specialist": 3,
     "quality analyst": 3,
     "editorial operations": 3,
-    "copy editor": 3,
+    "copywriter": 3,
     "content writer": 3,
     "proofreader": 2,
     "proposal writer": 2,
-    "email marketing specialist": 2,
+    "quality assurance analyst": 2,
+    "content specialist": 2,
     "qa specialist": 2,
+    "copy editor": 2,
+    "technical editor": 2,
     "freelance writer": 1,
-    "quality assurance analyst": 1,
     "managing editor": 1,
     "catalog specialist": 1,
-    "content specialist": 1,
+    "campaign operations specialist": 1,
     "production editor": 1,
     "content qa specialist": 1,
-    "technical editor": 1,
+    "quality coordinator": 1,
     "content qa": 1,
-    "content marketing specialist": 1,
-    "content developer": 1,
-    "technical writer": 1,
-    "quality assurance specialist": 1,
+    "curriculum specialist": 1,
     "quality specialist": 1,
     "marketing qa": 1,
-    "curriculum writer": 1,
-    "content quality": 1
+    "curriculum writer": 1
   },
   "matchedIn": {
-    "title": 73,
+    "title": 76,
     "tags": 5,
-    "description": 4
+    "description": 3
   },
   "unmatched": [
     {
       "title": "Photo and Visual Editors",
       "company": "Pro Integrate",
-      "source": "Adzuna"
-    },
-    {
-      "title": "Marketing Manager III",
-      "company": "Buckeye Global",
       "source": "Adzuna"
     },
     {
@@ -266,6 +259,11 @@
       "source": "Jooble"
     },
     {
+      "title": "Join our Editorial Talent Community",
+      "company": "Forbes",
+      "source": "Jooble"
+    },
+    {
       "title": "Remote Marketing & Content Lead for Digital Products",
       "company": "Bertelsmann",
       "source": "Jooble"
@@ -281,6 +279,11 @@
       "source": "Jooble"
     },
     {
+      "title": "Product Manager - Content",
+      "company": "Ceresti Health",
+      "source": "Jooble"
+    },
+    {
       "title": "Product Developer",
       "company": "McGraw Hill LLC.",
       "source": "Jooble"
@@ -288,11 +291,6 @@
     {
       "title": "Remote Project Manager, Digital Content Production",
       "company": "Mcgraw Hill",
-      "source": "Jooble"
-    },
-    {
-      "title": "Product Manager - Content",
-      "company": "Ceresti Health",
       "source": "Jooble"
     },
     {
@@ -327,7 +325,17 @@
     },
     {
       "title": "Information Security Analyst",
+      "company": "Harvard University",
+      "source": "Jooble"
+    },
+    {
+      "title": "Information Security Analyst",
       "company": "Chimes",
+      "source": "Jooble"
+    },
+    {
+      "title": "Software Developer IV for Information Services",
+      "company": "Liberty University",
       "source": "Jooble"
     },
     {
@@ -336,13 +344,13 @@
       "source": "Jooble"
     },
     {
-      "title": "Staff Information Security Engineer",
-      "company": "Rithum LinkedIn Board",
+      "title": "Chief Information Security Officer",
+      "company": "Qualified Health PBC",
       "source": "Jooble"
     },
     {
-      "title": "Chief Information Security Officer",
-      "company": "Qualified Health PBC",
+      "title": "Staff Information Security Engineer",
+      "company": "Rithum LinkedIn Board",
       "source": "Jooble"
     },
     {
@@ -356,11 +364,6 @@
       "source": "Jooble"
     },
     {
-      "title": "Information Systems Security Officer",
-      "company": "Govcio LLC",
-      "source": "Jooble"
-    },
-    {
       "title": "Information Technology (IT) Financial Analyst",
       "company": "Original Composites and Fibers",
       "source": "Jooble"
@@ -371,18 +374,13 @@
       "source": "Jooble"
     },
     {
+      "title": "Information Systems Security Officer",
+      "company": "Govcio LLC",
+      "source": "Jooble"
+    },
+    {
       "title": "Product Analyst",
       "company": "Zip Co Limited",
-      "source": "Jooble"
-    },
-    {
-      "title": "Product Analyst",
-      "company": "PEMCO",
-      "source": "Jooble"
-    },
-    {
-      "title": "Product Analyst",
-      "company": "Infobase",
       "source": "Jooble"
     },
     {
@@ -391,28 +389,28 @@
       "source": "Jooble"
     },
     {
+      "title": "Product Analyst",
+      "company": "Infobase",
+      "source": "Jooble"
+    },
+    {
+      "title": "Product Analyst",
+      "company": "PEMCO",
+      "source": "Jooble"
+    },
+    {
       "title": "Information Security Architect",
       "company": "Excellus BCBS",
       "source": "Jooble"
     },
     {
-      "title": "Chief Information Officer",
-      "company": "Jobgether",
-      "source": "Jooble"
-    },
-    {
-      "title": "Production QC Associate",
-      "company": "Drips",
+      "title": "Product Data Associate",
+      "company": "TricorBraun",
       "source": "Jooble"
     },
     {
       "title": "Marketing and Production Coordinator",
       "company": "MINA Group",
-      "source": "Jooble"
-    },
-    {
-      "title": "Staff Product Analyst",
-      "company": "Boulevard",
       "source": "Jooble"
     },
     {
@@ -438,11 +436,6 @@
     {
       "title": "Email Marketing Operations Assistant",
       "company": "Decentralized Masters",
-      "source": "Jooble"
-    },
-    {
-      "title": "Digital Marketing Manager (Email/Affiliate) (Fully Remote)",
-      "company": "High Tide",
       "source": "Jooble"
     },
     {
@@ -476,11 +469,6 @@
       "source": "Jooble"
     },
     {
-      "title": "Part-Time Campaign Manager: Lead, Coach & Deliver Impact",
-      "company": "Energy Innovation: Policy and Technology LLC",
-      "source": "Jooble"
-    },
-    {
       "title": "Remote QA Mystery Shopper: Flexible Schedule & Feedback",
       "company": "Staffing Remedy",
       "source": "Jooble"
@@ -494,27 +482,38 @@
       "title": "Staff Product Manager (Measurement)",
       "company": "StackAdapt",
       "source": "Jooble"
+    },
+    {
+      "title": "Remote Website Experience Manager",
+      "company": "Rethink First",
+      "source": "Jooble"
+    },
+    {
+      "title": "Senior Email & Lifecycle Marketing Lead (Remote)",
+      "company": "NinjaHoldings",
+      "source": "Jooble"
     }
   ],
-  "freshLast48h": 15,
+  "freshLast48h": 18,
   "contract": 34,
   "modes": {
-    "writing": 16,
-    "reviewing": 66
+    "writing": 13,
+    "reviewing": 71
   },
-  "technical": 2,
+  "technical": 3,
   "industries": {
-    "Marketing & advertising": 16,
-    "Media & publishing": 7,
-    "Legal": 5,
-    "Education & training": 5,
-    "AI training & data annotation": 5,
-    "Healthcare & life sciences": 4,
+    "Marketing & advertising": 12,
+    "Media & publishing": 8,
+    "Legal": 6,
+    "Healthcare & life sciences": 5,
+    "AI training & data annotation": 4,
     "Retail & e-commerce": 4,
+    "Finance & insurance": 3,
+    "Education & training": 3,
     "Travel & hospitality": 2,
-    "Staffing & recruiting": 2,
-    "Finance & insurance": 2,
-    "Software & technology": 1
+    "Software & technology": 2,
+    "Staffing & recruiting": 1,
+    "Nonprofit & government": 1
   },
   "sources": [
     {
@@ -543,13 +542,13 @@
         "reserve": 12,
         "reason": "188 spendable across ~1 runs left — full budget available"
       },
-      "ms": 1
+      "ms": 0
     },
     {
       "id": "adzuna",
       "label": "Adzuna",
       "status": "ok",
-      "fetched": 115,
+      "fetched": 114,
       "warnings": [
         "michigan-remote \"freelance proofreader\": 0 results (Adzuna reports 0 total matches)",
         "michigan-remote \"contract editor\": 0 results (Adzuna reports 0 total matches)",
@@ -574,10 +573,10 @@
         "us-remote \"contract editor\": 0 results (Adzuna reports 0 total matches)",
         "us-remote \"copyediting\": 0 results (Adzuna reports 0 total matches)",
         "us-remote \"content auditor\": 0 results (Adzuna reports 0 total matches)",
-        "us-remote \"editorial specialist\": 0 results (Adzuna reports 0 total matches)",
+        "us-remote \"quality editor\": 0 results (Adzuna reports 0 total matches)",
         "us-remote \"digital editor\": 0 results (Adzuna reports 0 total matches)"
       ],
-      "ms": 8426
+      "ms": 6338
     },
     {
       "id": "jooble",
@@ -585,7 +584,7 @@
       "status": "ok",
       "fetched": 200,
       "warnings": [],
-      "ms": 2146
+      "ms": 2451
     },
     {
       "id": "remotive",
@@ -593,17 +592,17 @@
       "status": "ok",
       "fetched": 576,
       "warnings": [],
-      "ms": 1145
+      "ms": 1246
     },
     {
       "id": "weworkremotely",
       "label": "We Work Remotely",
       "status": "ok",
-      "fetched": 279,
+      "fetched": 281,
       "warnings": [
         "remote-marketing-jobs.rss: HTTP 301 Moved Permanently"
       ],
-      "ms": 1672
+      "ms": 2426
     },
     {
       "id": "himalayas",
@@ -611,17 +610,17 @@
       "status": "ok",
       "fetched": 240,
       "warnings": [],
-      "ms": 551
+      "ms": 565
     },
     {
       "id": "jobicy",
       "label": "Jobicy",
       "status": "ok",
-      "fetched": 369,
+      "fetched": 414,
       "warnings": [
         "?count=50&geo=usa&tag=freelance%20proofreader: HTTP 400 Bad Request"
       ],
-      "ms": 12594
+      "ms": 13517
     },
     {
       "id": "remoteok",
@@ -629,15 +628,15 @@
       "status": "ok",
       "fetched": 99,
       "warnings": [],
-      "ms": 854
+      "ms": 566
     },
     {
       "id": "workingnomads",
       "label": "Working Nomads",
       "status": "ok",
-      "fetched": 32,
+      "fetched": 17,
       "warnings": [],
-      "ms": 366
+      "ms": 535
     },
     {
       "id": "arbeitnow",
@@ -645,7 +644,7 @@
       "status": "ok",
       "fetched": 300,
       "warnings": [],
-      "ms": 231
+      "ms": 294
     }
   ]
 }
