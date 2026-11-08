@@ -1,6 +1,6 @@
 {
-  "generatedAt": "2026-11-08T13:16:05.479Z",
-  "durationMs": 32151,
+  "generatedAt": "2026-11-08T20:26:27.115Z",
+  "durationMs": 29362,
   "candidate": {
     "name": "Emily Griffioen",
     "headline": "Content & editorial QA — 10 years reviewing customer-facing marketing content",
@@ -148,48 +148,52 @@
     "maxAgeDays": 60
   },
   "counts": {
-    "fetched": 2328,
-    "unique": 1325,
-    "published": 112,
+    "fetched": 2343,
+    "unique": 1324,
+    "published": 119,
     "dropped": {
-      "location": 470,
+      "location": 492,
       "stale": 1,
-      "noTermMatch": 742
+      "noTermMatch": 712
     }
   },
   "terms": {
     "content reviewer": 15,
-    "editor": 12,
-    "proofreader": 11,
-    "content writer": 10,
+    "editor": 14,
+    "proofreader": 12,
+    "content writer": 12,
     "copy editor": 9,
     "content specialist": 9,
-    "copywriter": 7,
-    "content editor": 5,
+    "copywriter": 6,
+    "content editor": 4,
     "editorial manager": 4,
     "content operations": 3,
     "proposal writer": 2,
     "freelance content editor": 2,
     "qa analyst": 2,
-    "quality specialist": 2,
     "editorial specialist": 2,
     "editorial operations": 2,
     "content auditor": 2,
+    "marketing copywriter": 2,
     "qa specialist": 2,
+    "campaign operations specialist": 1,
     "freelance writer": 1,
     "managing editor": 1,
     "freelance editor": 1,
     "production editor": 1,
+    "digital content specialist": 1,
+    "quality analyst": 1,
     "content quality": 1,
     "content marketing specialist": 1,
     "copyediting specialist": 1,
+    "documentation specialist": 1,
     "copyeditor": 1,
-    "curriculum developer": 1,
     "e-commerce content specialist": 1,
+    "quality specialist": 1,
     "editorial quality": 1
   },
   "matchedIn": {
-    "title": 108,
+    "title": 115,
     "tags": 1,
     "description": 3
   },
@@ -222,6 +226,11 @@
     {
       "title": "Web Support Specialist",
       "company": "Lemonade Stand",
+      "source": "Adzuna"
+    },
+    {
+      "title": "Director, Creator Partnerships & Business Development",
+      "company": "AC Lion Digital Executive Search",
       "source": "Adzuna"
     },
     {
@@ -265,18 +274,13 @@
       "source": "Adzuna"
     },
     {
-      "title": "English (US) Podcast Localization Specialist",
-      "company": "Jobgether",
-      "source": "Jooble"
-    },
-    {
       "title": "Remote Copy Strategist",
       "company": "Virtual Vocations Inc",
       "source": "Jooble"
     },
     {
-      "title": "Motion Graphics Designer (Flex) (Fully Remote)",
-      "company": "Advanced Systems Group",
+      "title": "English (US) Podcast Localization Specialist",
+      "company": "Jobgether",
       "source": "Jooble"
     },
     {
@@ -287,6 +291,11 @@
     {
       "title": "Remote Journals Editorial Associate",
       "company": "Society for Scholarly Publishing",
+      "source": "Jooble"
+    },
+    {
+      "title": "Social Media Content Creator",
+      "company": "Canyon Ranch",
       "source": "Jooble"
     },
     {
@@ -305,13 +314,13 @@
       "source": "Jooble"
     },
     {
-      "title": "Proposal Support Specialist",
-      "company": "ManTech",
+      "title": "English Generalist",
+      "company": "AuraOne Human Data",
       "source": "Jooble"
     },
     {
-      "title": "English Generalist",
-      "company": "AuraOne Human Data",
+      "title": "Digital Marketing Specialist",
+      "company": "J.S. Held LLC",
       "source": "Jooble"
     },
     {
@@ -350,13 +359,18 @@
       "source": "Jooble"
     },
     {
-      "title": "Sr. Financial Systems Analyst",
-      "company": "Attain Finance",
+      "title": "Temporary External Auditor, Top Hospitals 2027 List",
+      "company": "Forbes",
       "source": "Jooble"
     },
     {
       "title": "Future Opening: Site Security Auditor: Los Angeles Metro REMOTE",
       "company": "Independent Security Evaluators",
+      "source": "Jooble"
+    },
+    {
+      "title": "Sr. Financial Systems Analyst",
+      "company": "Attain Finance",
       "source": "Jooble"
     },
     {
@@ -372,11 +386,6 @@
     {
       "title": "Compliance Auditor",
       "company": "Jobrapido",
-      "source": "Jooble"
-    },
-    {
-      "title": "Lead Specialist, Learning Scientist (Clinical)",
-      "company": "Pearson",
       "source": "Jooble"
     },
     {
@@ -430,6 +439,56 @@
       "source": "Remotive"
     },
     {
+      "title": "Project Manager - Creative - US Remote",
+      "company": "DEPT®",
+      "source": "We Work Remotely"
+    },
+    {
+      "title": "HR and Payroll Administrator",
+      "company": "Autism Believe Accept Therapy Servi",
+      "source": "We Work Remotely"
+    },
+    {
+      "title": "Senior Solutions Engineer, Digital Native and Mid-Market",
+      "company": "True Talent Solutions Partners",
+      "source": "We Work Remotely"
+    },
+    {
+      "title": "Support Engineer, PAYGO",
+      "company": "Exa",
+      "source": "We Work Remotely"
+    },
+    {
+      "title": "Director of Engineering",
+      "company": "True Talent Solutions Partners",
+      "source": "We Work Remotely"
+    },
+    {
+      "title": "Mechanical Engineering Expert (MSc. or PhD)",
+      "company": "True Talent Solutions Partners",
+      "source": "We Work Remotely"
+    },
+    {
+      "title": "Life Insurance Agent - Remote (Nashville)",
+      "company": "Kimbrell Agency",
+      "source": "We Work Remotely"
+    },
+    {
+      "title": "Work-From-Home Life Insurance Agent | Detroit",
+      "company": "Kimbrell Agency",
+      "source": "We Work Remotely"
+    },
+    {
+      "title": "Dispatcher & Scheduling Coordinator",
+      "company": "Diamond Care Transportation",
+      "source": "We Work Remotely"
+    },
+    {
+      "title": "Patient Support Specialist (Remote)",
+      "company": "CareTalk Health",
+      "source": "We Work Remotely"
+    },
+    {
       "title": "Recruiter",
       "company": "DiLucci CPA",
       "source": "We Work Remotely"
@@ -438,84 +497,30 @@
       "title": "Executive Assistant, Office of the CFO",
       "company": "GitLab",
       "source": "We Work Remotely"
-    },
-    {
-      "title": "Senior Strategic Finance Manager (Corporate Finance)",
-      "company": "Netlify",
-      "source": "We Work Remotely"
-    },
-    {
-      "title": "Instructional Designer",
-      "company": "MedAmerica",
-      "source": "We Work Remotely"
-    },
-    {
-      "title": "Cloud Systems Administrator",
-      "company": "OneImaging",
-      "source": "We Work Remotely"
-    },
-    {
-      "title": "Licensed Physician (MD/DO) - Freelance AI Trainer",
-      "company": "Mindrift",
-      "source": "We Work Remotely"
-    },
-    {
-      "title": "Intake Patient Care Representative (REMOTE)",
-      "company": "Aveanna Healthcare",
-      "source": "We Work Remotely"
-    },
-    {
-      "title": "Behavioral Intake Counselor",
-      "company": "UnitedHealth Group",
-      "source": "We Work Remotely"
-    },
-    {
-      "title": "Customer Success Manager (K-12)",
-      "company": "Knowt Inc.",
-      "source": "We Work Remotely"
-    },
-    {
-      "title": "Patient Care Coordinator- Remote",
-      "company": "VITAS Healthcare",
-      "source": "We Work Remotely"
-    },
-    {
-      "title": "Triage Consultant",
-      "company": "American Hospital Services Group",
-      "source": "We Work Remotely"
-    },
-    {
-      "title": "Full-Stack Engineer",
-      "company": "OpenTrain AI",
-      "source": "We Work Remotely"
-    },
-    {
-      "title": "Software Engineer Interviewer",
-      "company": "Karat",
-      "source": "We Work Remotely"
     }
   ],
-  "freshLast48h": 20,
-  "contract": 38,
+  "freshLast48h": 25,
+  "contract": 43,
   "modes": {
-    "writing": 22,
-    "reviewing": 90
+    "writing": 25,
+    "reviewing": 94
   },
-  "technical": 1,
+  "technical": 2,
   "industries": {
-    "Healthcare & life sciences": 13,
-    "Media & publishing": 11,
-    "Marketing & advertising": 10,
+    "Marketing & advertising": 13,
+    "Healthcare & life sciences": 12,
+    "Media & publishing": 10,
     "Legal": 6,
     "AI training & data annotation": 4,
-    "Retail & e-commerce": 4,
+    "Retail & e-commerce": 3,
+    "Finance & insurance": 3,
     "Software & technology": 2,
+    "Manufacturing & logistics": 2,
     "Education & training": 2,
-    "Finance & insurance": 2,
     "Crypto & gaming": 1,
     "Nonprofit & government": 1,
-    "Manufacturing & logistics": 1,
-    "Travel & hospitality": 1
+    "Travel & hospitality": 1,
+    "Staffing & recruiting": 1
   },
   "sources": [
     {
@@ -550,7 +555,7 @@
       "id": "adzuna",
       "label": "Adzuna",
       "status": "ok",
-      "fetched": 88,
+      "fetched": 90,
       "warnings": [
         "michigan-remote \"content quality\": 0 results (Adzuna reports 0 total matches)",
         "michigan-remote \"editorial quality\": 0 results (Adzuna reports 0 total matches)",
@@ -572,11 +577,10 @@
         "michigan-remote \"content specialist\": 0 results (Adzuna reports 0 total matches)",
         "us-remote \"copyediting\": 0 results (Adzuna reports 0 total matches)",
         "us-remote \"content auditor\": 0 results (Adzuna reports 0 total matches)",
-        "us-remote \"quality editor\": 0 results (Adzuna reports 0 total matches)",
         "us-remote \"digital editor\": 0 results (Adzuna reports 0 total matches)",
         "us-remote \"catalog quality\": 0 results (Adzuna reports 0 total matches)"
       ],
-      "ms": 8482
+      "ms": 6784
     },
     {
       "id": "jooble",
@@ -584,7 +588,7 @@
       "status": "ok",
       "fetched": 200,
       "warnings": [],
-      "ms": 3446
+      "ms": 1764
     },
     {
       "id": "remotive",
@@ -592,17 +596,17 @@
       "status": "ok",
       "fetched": 624,
       "warnings": [],
-      "ms": 1497
+      "ms": 1113
     },
     {
       "id": "weworkremotely",
       "label": "We Work Remotely",
       "status": "ok",
-      "fetched": 278,
+      "fetched": 281,
       "warnings": [
         "remote-marketing-jobs.rss: HTTP 301 Moved Permanently"
       ],
-      "ms": 2179
+      "ms": 2348
     },
     {
       "id": "himalayas",
@@ -610,15 +614,15 @@
       "status": "ok",
       "fetched": 240,
       "warnings": [],
-      "ms": 579
+      "ms": 481
     },
     {
       "id": "jobicy",
       "label": "Jobicy",
       "status": "ok",
-      "fetched": 488,
+      "fetched": 498,
       "warnings": [],
-      "ms": 13929
+      "ms": 14777
     },
     {
       "id": "remoteok",
@@ -626,7 +630,7 @@
       "status": "ok",
       "fetched": 99,
       "warnings": [],
-      "ms": 624
+      "ms": 533
     },
     {
       "id": "workingnomads",
@@ -634,7 +638,7 @@
       "status": "ok",
       "fetched": 17,
       "warnings": [],
-      "ms": 313
+      "ms": 482
     },
     {
       "id": "arbeitnow",
@@ -642,7 +646,7 @@
       "status": "ok",
       "fetched": 300,
       "warnings": [],
-      "ms": 288
+      "ms": 276
     }
   ]
 }
