@@ -1,6 +1,6 @@
 {
-  "generatedAt": "2026-11-12T15:05:11.272Z",
-  "durationMs": 42297,
+  "generatedAt": "2026-11-12T22:13:17.534Z",
+  "durationMs": 34816,
   "candidate": {
     "name": "Emily Griffioen",
     "headline": "Content & editorial QA — 10 years reviewing customer-facing marketing content",
@@ -148,48 +148,46 @@
     "maxAgeDays": 60
   },
   "counts": {
-    "fetched": 2499,
-    "unique": 1462,
-    "published": 112,
+    "fetched": 2485,
+    "unique": 1494,
+    "published": 109,
     "dropped": {
-      "location": 555,
+      "location": 579,
       "stale": 1,
-      "noTermMatch": 794
+      "noTermMatch": 805
     }
   },
   "terms": {
-    "email marketing specialist": 33,
+    "email marketing specialist": 31,
     "editor": 28,
     "quality assurance analyst": 9,
+    "quality assurance specialist": 5,
+    "copywriter": 5,
     "content specialist": 4,
-    "quality assurance specialist": 4,
-    "copywriter": 4,
-    "proposal writer": 3,
     "content reviewer": 3,
+    "content writer": 3,
     "proofreader": 2,
     "managing editor": 2,
     "production editor": 2,
-    "content writer": 2,
     "copy editor": 2,
     "assistant editor": 1,
     "marketing copywriter": 1,
     "freelance writer": 1,
     "content developer": 1,
-    "quality analyst": 1,
-    "editorial specialist": 1,
-    "content coordinator": 1,
-    "editorial coordinator": 1,
-    "editorial operations": 1,
+    "documentation specialist": 1,
     "qa reviewer": 1,
+    "quality analyst": 1,
     "technical editor": 1,
-    "content moderator": 1,
+    "proposal writer": 1,
     "quality specialist": 1,
-    "curriculum writer": 1
+    "content operations": 1,
+    "curriculum writer": 1,
+    "content coordinator": 1
   },
   "matchedIn": {
-    "title": 109,
+    "title": 104,
     "tags": 3,
-    "description": 0
+    "description": 2
   },
   "unmatched": [
     {
@@ -220,6 +218,11 @@
     {
       "title": "Remote Business Email Marketing Agent – Nationwide – Call Now (405) 801-9601 San Diego, CA",
       "company": "Transportation Hiring Hub",
+      "source": "Adzuna"
+    },
+    {
+      "title": "Remote Business Email Marketing Agent – Nationwide – Call Now (405) 801-9601 El Paso, TX",
+      "company": "T",
       "source": "Adzuna"
     },
     {
@@ -328,11 +331,6 @@
       "source": "Adzuna"
     },
     {
-      "title": "Senior Tax Manager",
-      "company": "Brewer Morris",
-      "source": "Adzuna"
-    },
-    {
       "title": "Survey Project Manager - Right of Way Mapping",
       "company": "Dewberry",
       "source": "Adzuna"
@@ -360,6 +358,11 @@
     {
       "title": "QUALITY ASSURANCE MANAGER",
       "company": "Compass Group, North America",
+      "source": "Adzuna"
+    },
+    {
+      "title": "Web Content and Tier 2 Integration Specialist (REMOTE) with Security Clearance",
+      "company": "Koniag Government Services",
       "source": "Adzuna"
     },
     {
@@ -443,13 +446,18 @@
       "source": "Jooble"
     },
     {
-      "title": "Information Security Analyst",
-      "company": "Harvard University",
+      "title": "Senior Tax Manager",
+      "company": "Brewer Morris",
       "source": "Jooble"
     },
     {
       "title": "Information Security Analyst",
       "company": "Chimes",
+      "source": "Jooble"
+    },
+    {
+      "title": "Information Security Analyst",
+      "company": "Harvard University",
       "source": "Jooble"
     },
     {
@@ -463,57 +471,48 @@
       "source": "Jooble"
     },
     {
-      "title": "Health Information Management Coordinator",
-      "company": "Predoc",
-      "source": "Jooble"
-    },
-    {
       "title": "Chief Information Security Officer",
       "company": "Qualified Health PBC",
       "source": "Jooble"
     },
     {
-      "title": "Information Systems Security Officer (ISSO)",
-      "company": "Second Front Systems",
-      "source": "Jooble"
-    },
-    {
-      "title": "Information Systems Security Manager",
-      "company": "Jobgether",
-      "source": "Jooble"
-    },
-    {
-      "title": "Information Systems Security Officer (ISSO)",
-      "company": "Jobgether",
+      "title": "Health Information Management Coordinator",
+      "company": "Predoc",
       "source": "Jooble"
     },
     {
       "title": "Product Analyst",
       "company": "Infobase",
       "source": "Jooble"
+    },
+    {
+      "title": "Product Analyst",
+      "company": "Zip Co Limited",
+      "source": "Jooble"
     }
   ],
-  "freshLast48h": 14,
-  "contract": 63,
+  "freshLast48h": 16,
+  "contract": 57,
   "modes": {
-    "writing": 46,
-    "reviewing": 66
+    "writing": 44,
+    "reviewing": 65
   },
   "technical": 3,
   "industries": {
-    "Marketing & advertising": 11,
-    "Media & publishing": 9,
-    "Healthcare & life sciences": 7,
-    "Travel & hospitality": 5,
-    "Legal": 4,
+    "Marketing & advertising": 12,
+    "Media & publishing": 7,
+    "Healthcare & life sciences": 6,
     "Education & training": 4,
-    "Nonprofit & government": 3,
+    "Travel & hospitality": 4,
+    "Legal": 3,
     "AI training & data annotation": 3,
-    "Software & technology": 2,
+    "Retail & e-commerce": 3,
     "Finance & insurance": 2,
     "Staffing & recruiting": 2,
-    "Retail & e-commerce": 2,
-    "Real estate & construction": 1
+    "Software & technology": 1,
+    "Real estate & construction": 1,
+    "Manufacturing & logistics": 1,
+    "Nonprofit & government": 1
   },
   "sources": [
     {
@@ -542,13 +541,13 @@
         "reserve": 12,
         "reason": "188 spendable across ~1 runs left — full budget available"
       },
-      "ms": 1
+      "ms": 0
     },
     {
       "id": "adzuna",
       "label": "Adzuna",
       "status": "ok",
-      "fetched": 199,
+      "fetched": 200,
       "warnings": [
         "michigan-remote \"campaign quality\": 0 results (Adzuna reports 0 total matches)",
         "michigan-remote \"marketing qa\": 0 results (Adzuna reports 0 total matches)",
@@ -576,7 +575,7 @@
         "us-remote \"freelance proofreader\": 0 results (Adzuna reports 0 total matches)",
         "us-remote \"contract editor\": 0 results (Adzuna reports 0 total matches)"
       ],
-      "ms": 14040
+      "ms": 9516
     },
     {
       "id": "jooble",
@@ -584,7 +583,7 @@
       "status": "ok",
       "fetched": 200,
       "warnings": [],
-      "ms": 2601
+      "ms": 1920
     },
     {
       "id": "remotive",
@@ -592,17 +591,17 @@
       "status": "ok",
       "fetched": 672,
       "warnings": [],
-      "ms": 4066
+      "ms": 2132
     },
     {
       "id": "weworkremotely",
       "label": "We Work Remotely",
       "status": "ok",
-      "fetched": 301,
+      "fetched": 303,
       "warnings": [
         "remote-marketing-jobs.rss: HTTP 301 Moved Permanently"
       ],
-      "ms": 1447
+      "ms": 2102
     },
     {
       "id": "himalayas",
@@ -610,17 +609,17 @@
       "status": "ok",
       "fetched": 240,
       "warnings": [],
-      "ms": 712
+      "ms": 829
     },
     {
       "id": "jobicy",
       "label": "Jobicy",
       "status": "ok",
-      "fetched": 457,
+      "fetched": 440,
       "warnings": [
         "?count=50&geo=usa&tag=freelance%20proofreader: HTTP 400 Bad Request"
       ],
-      "ms": 17724
+      "ms": 16451
     },
     {
       "id": "remoteok",
@@ -628,7 +627,7 @@
       "status": "ok",
       "fetched": 98,
       "warnings": [],
-      "ms": 433
+      "ms": 605
     },
     {
       "id": "workingnomads",
@@ -636,7 +635,7 @@
       "status": "ok",
       "fetched": 37,
       "warnings": [],
-      "ms": 85
+      "ms": 432
     },
     {
       "id": "arbeitnow",
@@ -644,7 +643,7 @@
       "status": "ok",
       "fetched": 300,
       "warnings": [],
-      "ms": 292
+      "ms": 326
     }
   ]
 }
