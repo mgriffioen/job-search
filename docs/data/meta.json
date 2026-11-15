@@ -1,6 +1,6 @@
 {
-  "generatedAt": "2026-11-15T13:51:59.402Z",
-  "durationMs": 36866,
+  "generatedAt": "2026-11-15T21:00:16.615Z",
+  "durationMs": 140778,
   "candidate": {
     "name": "Emily Griffioen",
     "headline": "Content & editorial QA — 10 years reviewing customer-facing marketing content",
@@ -148,52 +148,56 @@
     "maxAgeDays": 60
   },
   "counts": {
-    "fetched": 2447,
-    "unique": 1369,
-    "published": 107,
+    "fetched": 2442,
+    "unique": 1360,
+    "published": 111,
     "dropped": {
-      "location": 506,
+      "location": 513,
       "stale": 0,
-      "noTermMatch": 756
+      "noTermMatch": 736
     }
   },
   "terms": {
-    "editor": 15,
-    "copy editor": 14,
-    "content reviewer": 14,
+    "copy editor": 15,
+    "content reviewer": 15,
+    "editor": 14,
     "proofreader": 11,
-    "content specialist": 9,
-    "content writer": 5,
+    "content specialist": 7,
+    "copywriter": 5,
     "content editor": 4,
-    "copywriter": 4,
+    "content writer": 4,
     "editorial specialist": 3,
     "content developer": 3,
-    "editorial manager": 3,
+    "qa specialist": 3,
     "freelance writer": 2,
     "managing editor": 2,
+    "editorial manager": 2,
     "editorial assistant": 1,
+    "marketing copywriter": 1,
+    "content coordinator": 1,
     "digital copy editor": 1,
-    "digital content specialist": 1,
     "content producer": 1,
-    "curriculum specialist": 1,
-    "e-commerce content specialist": 1,
     "production editor": 1,
+    "e-commerce content specialist": 1,
     "editorial coordinator": 1,
     "editorial qa specialist": 1,
-    "freelance editor": 1,
     "content qa": 1,
+    "freelance editor": 1,
+    "quality analyst": 1,
+    "technical writer": 1,
+    "content marketing specialist": 1,
     "copyediting specialist": 1,
     "proposal writer": 1,
     "quality specialist": 1,
     "copyeditor": 1,
-    "qa specialist": 1,
+    "associate editor": 1,
     "content quality": 1,
     "content operations": 1
   },
   "matchedIn": {
     "title": 102,
-    "tags": 2,
-    "description": 3
+    "tags": 5,
+    "description": 4
   },
   "unmatched": [
     {
@@ -209,11 +213,6 @@
     {
       "title": "Remote",
       "company": "24-MAG",
-      "source": "Adzuna"
-    },
-    {
-      "title": "Web Designer (UX/UI, Government Websites) (Ref : 1122918)",
-      "company": "Estrada Consultingorporated",
       "source": "Adzuna"
     },
     {
@@ -262,11 +261,6 @@
       "source": "Adzuna"
     },
     {
-      "title": "Staff Product Manager — AI-Driven Content-to-Discovery (Remote)",
-      "company": "Pinterest, Inc.",
-      "source": "Adzuna"
-    },
-    {
       "title": "Senior AEM Product Owner – Content Supply Chain",
       "company": "Siro Clinpharm Pvt Ltd",
       "source": "Adzuna"
@@ -274,11 +268,6 @@
     {
       "title": "Pharmaceutical Sales - Neuroscience Hospital Specialist - Bakersfield, CA",
       "company": "Otsuka",
-      "source": "Adzuna"
-    },
-    {
-      "title": "Remote Non-Credentialed Veterinary Support Staff",
-      "company": "Safetycall International",
       "source": "Adzuna"
     },
     {
@@ -377,14 +366,14 @@
       "source": "Jooble"
     },
     {
-      "title": "Events Auditor Associate",
-      "company": "Access Destination Services",
-      "source": "Arbeitnow"
-    },
-    {
       "title": "Workers Compensation Auditor - California",
       "company": "Crawford & Company",
       "source": "Jooble"
+    },
+    {
+      "title": "Events Auditor Associate",
+      "company": "Access Destination Services",
+      "source": "Arbeitnow"
     },
     {
       "title": "Remote Soil & Water Conservation AI Auditor",
@@ -415,6 +404,11 @@
       "title": "Lead Specialist, Learning Scientist (Clinical)",
       "company": "Pearson",
       "source": "Jooble"
+    },
+    {
+      "title": "Content Creator - YouTube",
+      "company": "Metics Media",
+      "source": "Remotive"
     },
     {
       "title": "Remote Office Assistant",
@@ -477,44 +471,55 @@
       "source": "Remotive"
     },
     {
-      "title": "Tech Lead Full-Stack Rails Engineer",
-      "company": "Mitre Media",
-      "source": "Remotive"
-    },
-    {
-      "title": "Senior English Tutor (UK Curriculum)",
-      "company": "Sehyog",
+      "title": "Service Delivery and Operations Manager - Dayshift Remote",
+      "company": "D2B",
       "source": "We Work Remotely"
     },
     {
-      "title": "Recruiter",
-      "company": "Blackstone Consulting, Inc.",
+      "title": "Australian Healthcare Recruiter (AU Experience required)",
+      "company": "D2B",
       "source": "We Work Remotely"
     },
     {
-      "title": "Regulatory Affairs Manager",
-      "company": "Swimply",
+      "title": "Senior Roofing Estimator & Takeoff Specialist (AU Experience preferred)",
+      "company": "D2B",
+      "source": "We Work Remotely"
+    },
+    {
+      "title": "Physician - Teleurgent Care",
+      "company": "MedAmerica",
+      "source": "We Work Remotely"
+    },
+    {
+      "title": "Sr. Recruiting Operations Specialist",
+      "company": "Riverside Insights",
+      "source": "We Work Remotely"
+    },
+    {
+      "title": "Senior Data Engineers",
+      "company": "Movement Labs",
       "source": "We Work Remotely"
     }
   ],
-  "freshLast48h": 11,
-  "contract": 42,
+  "freshLast48h": 19,
+  "contract": 41,
   "modes": {
-    "writing": 17,
-    "reviewing": 90
+    "writing": 19,
+    "reviewing": 92
   },
-  "technical": 1,
+  "technical": 2,
   "industries": {
+    "Media & publishing": 11,
     "Healthcare & life sciences": 11,
     "Marketing & advertising": 10,
-    "Media & publishing": 10,
-    "Nonprofit & government": 5,
+    "Nonprofit & government": 6,
     "Legal": 5,
     "Education & training": 4,
-    "Software & technology": 2,
-    "Retail & e-commerce": 2,
+    "Software & technology": 3,
+    "Retail & e-commerce": 3,
+    "Staffing & recruiting": 2,
     "AI training & data annotation": 2,
-    "Staffing & recruiting": 1,
+    "Finance & insurance": 1,
     "Travel & hospitality": 1,
     "Manufacturing & logistics": 1
   },
@@ -551,7 +556,7 @@
       "id": "adzuna",
       "label": "Adzuna",
       "status": "ok",
-      "fetched": 108,
+      "fetched": 102,
       "warnings": [
         "michigan-remote \"content quality\": 0 results (Adzuna reports 0 total matches)",
         "michigan-remote \"editorial quality\": 0 results (Adzuna reports 0 total matches)",
@@ -573,11 +578,10 @@
         "michigan-remote \"content specialist\": 0 results (Adzuna reports 0 total matches)",
         "us-remote \"copyediting\": 0 results (Adzuna reports 0 total matches)",
         "us-remote \"content auditor\": 0 results (Adzuna reports 0 total matches)",
-        "us-remote \"quality editor\": 0 results (Adzuna reports 0 total matches)",
         "us-remote \"digital editor\": 0 results (Adzuna reports 0 total matches)",
         "us-remote \"catalog quality\": 0 results (Adzuna reports 0 total matches)"
       ],
-      "ms": 10700
+      "ms": 67370
     },
     {
       "id": "jooble",
@@ -585,7 +589,7 @@
       "status": "ok",
       "fetched": 200,
       "warnings": [],
-      "ms": 1645
+      "ms": 2229
     },
     {
       "id": "remotive",
@@ -593,17 +597,17 @@
       "status": "ok",
       "fetched": 768,
       "warnings": [],
-      "ms": 1049
+      "ms": 2069
     },
     {
       "id": "weworkremotely",
       "label": "We Work Remotely",
       "status": "ok",
-      "fetched": 294,
+      "fetched": 300,
       "warnings": [
         "remote-marketing-jobs.rss: HTTP 301 Moved Permanently"
       ],
-      "ms": 2157
+      "ms": 49213
     },
     {
       "id": "himalayas",
@@ -611,15 +615,15 @@
       "status": "ok",
       "fetched": 240,
       "warnings": [],
-      "ms": 403
+      "ms": 581
     },
     {
       "id": "jobicy",
       "label": "Jobicy",
       "status": "ok",
-      "fetched": 411,
+      "fetched": 406,
       "warnings": [],
-      "ms": 18569
+      "ms": 17363
     },
     {
       "id": "remoteok",
@@ -627,7 +631,7 @@
       "status": "ok",
       "fetched": 97,
       "warnings": [],
-      "ms": 709
+      "ms": 754
     },
     {
       "id": "workingnomads",
@@ -635,7 +639,7 @@
       "status": "ok",
       "fetched": 34,
       "warnings": [],
-      "ms": 486
+      "ms": 128
     },
     {
       "id": "arbeitnow",
@@ -643,7 +647,7 @@
       "status": "ok",
       "fetched": 300,
       "warnings": [],
-      "ms": 294
+      "ms": 239
     }
   ]
 }
