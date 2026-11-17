@@ -1,6 +1,6 @@
 {
-  "generatedAt": "2026-11-17T15:54:53.078Z",
-  "durationMs": 32283,
+  "generatedAt": "2026-11-17T23:29:09.862Z",
+  "durationMs": 35840,
   "candidate": {
     "name": "Emily Griffioen",
     "headline": "Content & editorial QA — 10 years reviewing customer-facing marketing content",
@@ -148,45 +148,45 @@
     "maxAgeDays": 60
   },
   "counts": {
-    "fetched": 2626,
-    "unique": 1456,
-    "published": 132,
+    "fetched": 2648,
+    "unique": 1497,
+    "published": 116,
     "dropped": {
-      "location": 513,
+      "location": 525,
       "stale": 2,
-      "noTermMatch": 809
+      "noTermMatch": 854
     }
   },
   "terms": {
-    "email marketing specialist": 32,
-    "editor": 21,
-    "content reviewer": 13,
-    "content writer": 12,
-    "copywriter": 9,
-    "content specialist": 8,
-    "quality assurance analyst": 7,
-    "content operations": 4,
-    "marketing copywriter": 3,
-    "content developer": 3,
-    "digital content specialist": 2,
-    "managing editor": 2,
+    "email marketing specialist": 26,
+    "editor": 19,
+    "content reviewer": 11,
+    "content specialist": 10,
+    "content writer": 10,
+    "copywriter": 7,
+    "quality assurance analyst": 5,
+    "content developer": 4,
+    "content operations": 3,
+    "marketing copywriter": 2,
+    "quality analyst": 2,
     "production editor": 2,
-    "editorial specialist": 2,
+    "quality specialist": 2,
     "quality assurance specialist": 2,
     "freelance writer": 1,
     "content designer": 1,
-    "editorial coordinator": 1,
+    "managing editor": 1,
     "content producer": 1,
+    "editorial specialist": 1,
+    "digital content specialist": 1,
     "e-commerce content specialist": 1,
     "editorial manager": 1,
     "freelance editor": 1,
-    "documentation specialist": 1,
     "copyediting specialist": 1,
-    "quality specialist": 1
+    "editorial operations": 1
   },
   "matchedIn": {
-    "title": 127,
-    "tags": 1,
+    "title": 109,
+    "tags": 3,
     "description": 4
   },
   "unmatched": [
@@ -228,11 +228,6 @@
     {
       "title": "Web Content Manager",
       "company": "The Steve Fund",
-      "source": "Adzuna"
-    },
-    {
-      "title": "Senior Account Manager, Creator Acquisition",
-      "company": "AC Lion Digital Executive Search",
       "source": "Adzuna"
     },
     {
@@ -291,11 +286,6 @@
       "source": "Adzuna"
     },
     {
-      "title": "Remote Business Email Marketing Agent – Nationwide – Call Now (405) 801-9601 San Diego, CA",
-      "company": "Transportation Hiring Hub",
-      "source": "Adzuna"
-    },
-    {
       "title": "Remote Business Email Marketing Agent – Nationwide – Call Now (405) 801-9601 El Paso, TX",
       "company": "T",
       "source": "Adzuna"
@@ -303,11 +293,6 @@
     {
       "title": "Marketing Email Preference Clerk",
       "company": "HRS Talent Solutions",
-      "source": "Adzuna"
-    },
-    {
-      "title": "Remote Data Entry & Email Marketing Contractor – Call Now (405) 801-9601 Phoenix, AZ",
-      "company": "Transportation Hiring Hub",
       "source": "Adzuna"
     },
     {
@@ -351,12 +336,47 @@
       "source": "Adzuna"
     },
     {
-      "title": "Remote Email Outreach & Data Entry Specialist – Call Now (405) 801-9601 San Jose, CA",
+      "title": "Online Marketing Research & Data Entry Specialist – Call Now (405) 801-9601 Arlington, VA",
       "company": "Transportation Hiring Hub",
       "source": "Adzuna"
     },
     {
-      "title": "Remote Data Entry & Business Outreach Specialist – Call Now (405) 801-9601 Jacksonville, FL",
+      "title": "Work From Home Lead Generation & Email Outreach Specialist – Call Now (405) 801-9601 San Francisco, CA",
+      "company": "Transportation Hiring Hub",
+      "source": "Adzuna"
+    },
+    {
+      "title": "Online Marketing Research & Data Entry Specialist – Call Now (405) 801-9601 Atlanta, GA",
+      "company": "Transportation Hiring Hub",
+      "source": "Adzuna"
+    },
+    {
+      "title": "Remote Ad Posting & Business Outreach Specialist – Call Now (405) 801-9601 Minneapolis, MN",
+      "company": "Transportation Hiring Hub",
+      "source": "Adzuna"
+    },
+    {
+      "title": "Work From Home Ad Posting Specialist – Call Now (405) 801-9601 Raleigh, NC",
+      "company": "Transportation Hiring Hub",
+      "source": "Adzuna"
+    },
+    {
+      "title": "Remote Email Campaign Assistant – Flexible Schedule – Call Now (405) 801-9601 Fresno, CA",
+      "company": "Transportation Hiring Hub",
+      "source": "Adzuna"
+    },
+    {
+      "title": "Work From Home Online Advertising Assistant – Call Now (405) 801-9601 Tulsa, OK",
+      "company": "Transportation Hiring Hub",
+      "source": "Adzuna"
+    },
+    {
+      "title": "Remote Digital Marketing & Data Entry Specialist – Call Now (405) 801-9601 Virginia Beach, VA",
+      "company": "Transportation Hiring Hub",
+      "source": "Adzuna"
+    },
+    {
+      "title": "Remote Website Contact Form & Email Outreach Specialist – Call Now (405) 801-9601 Las Vegas, NV",
       "company": "Transportation Hiring Hub",
       "source": "Adzuna"
     },
@@ -401,11 +421,6 @@
       "source": "Adzuna"
     },
     {
-      "title": "QA Tester | Quality Assurance | VR Gaming / Simulation | Remote options (Dallas is Ideal) | $60,000",
-      "company": "White Bay",
-      "source": "Adzuna"
-    },
-    {
       "title": "Manager, Quality Assurance & Regulatory Affairs | AirStrip | Remote",
       "company": "NantHealth",
       "source": "Adzuna"
@@ -431,18 +446,33 @@
       "source": "Adzuna"
     },
     {
+      "title": "Enterprise Sales / Business Development - IT Consulting or System Integrator exp - Remote",
+      "company": "Prolifics",
+      "source": "Adzuna"
+    },
+    {
+      "title": "Senior SAS Quality Assurance Tester / ETL",
+      "company": "People Force Consulting Inc",
+      "source": "Adzuna"
+    },
+    {
+      "title": "QUALITY ASSURANCE MANAGER",
+      "company": "Compass Group, North America",
+      "source": "Adzuna"
+    },
+    {
       "title": "Nurse Practitioner, ACCESS Program (Part Time) - California",
       "company": "Withings",
       "source": "Adzuna"
     },
     {
-      "title": "Editorial Intern",
-      "company": "The New Republic",
+      "title": "Communications Intern",
+      "company": "Appalachian Voices",
       "source": "Jooble"
     },
     {
-      "title": "Communications Intern",
-      "company": "Appalachian Voices",
+      "title": "Editorial Intern",
+      "company": "The New Republic",
       "source": "Jooble"
     },
     {
@@ -459,57 +489,26 @@
       "title": "English Generalist",
       "company": "AuraOne Human Data",
       "source": "Jooble"
-    },
-    {
-      "title": "Graphic Design Manager",
-      "company": "Vertex Inc.",
-      "source": "Jooble"
-    },
-    {
-      "title": "Feature Writer--On Call",
-      "company": "RUE GILT GROUPE",
-      "source": "Jooble"
-    },
-    {
-      "title": "Coding Services Technology Auditor",
-      "company": "Cedars-Sinai",
-      "source": "Jooble"
-    },
-    {
-      "title": "Data Mining Auditor",
-      "company": "Machinify",
-      "source": "Jooble"
-    },
-    {
-      "title": "Remote Website Date Auditor",
-      "company": "Hrstalentsolutions",
-      "source": "Jooble"
-    },
-    {
-      "title": "Events Auditor Associate",
-      "company": "Access Destination Services",
-      "source": "Jooble"
     }
   ],
-  "freshLast48h": 16,
-  "contract": 74,
+  "freshLast48h": 13,
+  "contract": 65,
   "modes": {
-    "writing": 64,
-    "reviewing": 68
+    "writing": 53,
+    "reviewing": 63
   },
   "technical": 2,
   "industries": {
     "Media & publishing": 13,
-    "Marketing & advertising": 12,
-    "Healthcare & life sciences": 11,
-    "Retail & e-commerce": 6,
-    "Finance & insurance": 3,
+    "Marketing & advertising": 11,
+    "Healthcare & life sciences": 10,
+    "Retail & e-commerce": 5,
     "Education & training": 3,
+    "Nonprofit & government": 2,
+    "Finance & insurance": 2,
     "AI training & data annotation": 2,
     "Travel & hospitality": 2,
-    "Crypto & gaming": 1,
     "Legal": 1,
-    "Nonprofit & government": 1,
     "Manufacturing & logistics": 1
   },
   "sources": [
@@ -539,7 +538,7 @@
         "reserve": 12,
         "reason": "188 spendable across ~1 runs left — full budget available"
       },
-      "ms": 1
+      "ms": 0
     },
     {
       "id": "adzuna",
@@ -572,7 +571,7 @@
         "us-remote \"assessment editor\": 0 results (Adzuna reports 0 total matches)",
         "us-remote \"curriculum editor\": 0 results (Adzuna reports 0 total matches)"
       ],
-      "ms": 7869
+      "ms": 10743
     },
     {
       "id": "jooble",
@@ -580,7 +579,7 @@
       "status": "ok",
       "fetched": 200,
       "warnings": [],
-      "ms": 2109
+      "ms": 4709
     },
     {
       "id": "remotive",
@@ -588,17 +587,17 @@
       "status": "ok",
       "fetched": 768,
       "warnings": [],
-      "ms": 1734
+      "ms": 2080
     },
     {
       "id": "weworkremotely",
       "label": "We Work Remotely",
       "status": "ok",
-      "fetched": 300,
+      "fetched": 311,
       "warnings": [
         "remote-marketing-jobs.rss: HTTP 301 Moved Permanently"
       ],
-      "ms": 2890
+      "ms": 2392
     },
     {
       "id": "himalayas",
@@ -606,15 +605,15 @@
       "status": "ok",
       "fetched": 240,
       "warnings": [],
-      "ms": 691
+      "ms": 748
     },
     {
       "id": "jobicy",
       "label": "Jobicy",
       "status": "ok",
-      "fetched": 507,
+      "fetched": 518,
       "warnings": [],
-      "ms": 14710
+      "ms": 12970
     },
     {
       "id": "remoteok",
@@ -622,7 +621,7 @@
       "status": "ok",
       "fetched": 97,
       "warnings": [],
-      "ms": 563
+      "ms": 620
     },
     {
       "id": "workingnomads",
@@ -630,7 +629,7 @@
       "status": "ok",
       "fetched": 35,
       "warnings": [],
-      "ms": 537
+      "ms": 295
     },
     {
       "id": "arbeitnow",
@@ -638,7 +637,7 @@
       "status": "ok",
       "fetched": 300,
       "warnings": [],
-      "ms": 271
+      "ms": 355
     }
   ]
 }
