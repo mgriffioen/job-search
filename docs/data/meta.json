@@ -1,6 +1,6 @@
 {
-  "generatedAt": "2026-11-17T23:29:09.862Z",
-  "durationMs": 35840,
+  "generatedAt": "2026-11-18T15:33:20.196Z",
+  "durationMs": 44950,
   "candidate": {
     "name": "Emily Griffioen",
     "headline": "Content & editorial QA — 10 years reviewing customer-facing marketing content",
@@ -148,46 +148,51 @@
     "maxAgeDays": 60
   },
   "counts": {
-    "fetched": 2648,
-    "unique": 1497,
-    "published": 116,
+    "fetched": 2613,
+    "unique": 1483,
+    "published": 139,
     "dropped": {
-      "location": 525,
-      "stale": 2,
-      "noTermMatch": 854
+      "location": 509,
+      "stale": 0,
+      "noTermMatch": 835
     }
   },
   "terms": {
-    "email marketing specialist": 26,
-    "editor": 19,
-    "content reviewer": 11,
+    "editor": 45,
+    "email marketing specialist": 25,
+    "proofreader": 11,
     "content specialist": 10,
-    "content writer": 10,
-    "copywriter": 7,
+    "content writer": 6,
+    "copywriter": 6,
     "quality assurance analyst": 5,
-    "content developer": 4,
-    "content operations": 3,
-    "marketing copywriter": 2,
-    "quality analyst": 2,
-    "production editor": 2,
+    "content reviewer": 3,
+    "managing editor": 2,
+    "editorial manager": 2,
+    "copy editor": 2,
     "quality specialist": 2,
     "quality assurance specialist": 2,
+    "content operations": 2,
     "freelance writer": 1,
     "content designer": 1,
-    "managing editor": 1,
-    "content producer": 1,
-    "editorial specialist": 1,
-    "digital content specialist": 1,
+    "marketing copywriter": 1,
+    "content developer": 1,
     "e-commerce content specialist": 1,
-    "editorial manager": 1,
-    "freelance editor": 1,
-    "copyediting specialist": 1,
-    "editorial operations": 1
+    "editorial qa specialist": 1,
+    "curriculum specialist": 1,
+    "editorial assistant": 1,
+    "editorial specialist": 1,
+    "qa specialist": 1,
+    "digital content specialist": 1,
+    "documentation specialist": 1,
+    "qa analyst": 1,
+    "technical editor": 1,
+    "content quality": 1,
+    "editorial quality": 1
   },
   "matchedIn": {
-    "title": 109,
-    "tags": 3,
-    "description": 4
+    "title": 130,
+    "tags": 4,
+    "description": 5
   },
   "unmatched": [
     {
@@ -206,38 +211,8 @@
       "source": "Adzuna"
     },
     {
-      "title": "Web Content and Tier 2 Integration Specialist (REMOTE) with Security Clearance",
-      "company": "Koniag Government Services",
-      "source": "Adzuna"
-    },
-    {
-      "title": "Web Content and Tier 2 Integration Specialist (REMOTE)",
-      "company": "Koniag Government Services",
-      "source": "Adzuna"
-    },
-    {
-      "title": "Webmaster / Web Content Administrator",
-      "company": "ITResource Hunter",
-      "source": "Adzuna"
-    },
-    {
-      "title": "Web Support Specialist",
-      "company": "Lemonade Stand",
-      "source": "Adzuna"
-    },
-    {
-      "title": "Web Content Manager",
-      "company": "The Steve Fund",
-      "source": "Adzuna"
-    },
-    {
-      "title": "Director, Enterprise Managed Services Sales",
-      "company": "Broadcast Management Group",
-      "source": "Adzuna"
-    },
-    {
-      "title": "Senior Project Coordinator - Digital Content",
-      "company": "National Environmental Health",
+      "title": "Editorial & Learning Associate (Remote)",
+      "company": "Cengage Group",
       "source": "Adzuna"
     },
     {
@@ -271,6 +246,16 @@
       "source": "Adzuna"
     },
     {
+      "title": "Web Content and Tier 2 Integration Specialist (REMOTE) with Security Clearance",
+      "company": "Koniag Government Services",
+      "source": "Adzuna"
+    },
+    {
+      "title": "Web Content and Tier 2 Integration Specialist (REMOTE)",
+      "company": "Koniag Government Services",
+      "source": "Adzuna"
+    },
+    {
       "title": "Director, Newsletter & Email Marketing (REMOTE)",
       "company": "BenefitHub",
       "source": "Adzuna"
@@ -291,13 +276,13 @@
       "source": "Adzuna"
     },
     {
-      "title": "Marketing Email Preference Clerk",
-      "company": "HRS Talent Solutions",
+      "title": "Remote Data Entry & Email Marketing Contractor – Call Now (405) 801-9601 Minneapolis, MN",
+      "company": "Transportation Hiring Hub",
       "source": "Adzuna"
     },
     {
-      "title": "Remote Data Entry & Email Marketing Contractor – Call Now (405) 801-9601 Minneapolis, MN",
-      "company": "Transportation Hiring Hub",
+      "title": "Marketing Email Preference Clerk",
+      "company": "HRS Talent Solutions",
       "source": "Adzuna"
     },
     {
@@ -336,17 +321,22 @@
       "source": "Adzuna"
     },
     {
+      "title": "Remote Company Research & Email Outreach Specialist – Call Now (405) 801-9601 Denver, CO",
+      "company": "Transportation Hiring Hub",
+      "source": "Adzuna"
+    },
+    {
+      "title": "Data Entry & Email Outreach Specialist – Work From Home – Call Now (405) 801-9601 Dallas, TX",
+      "company": "Transportation Hiring Hub",
+      "source": "Adzuna"
+    },
+    {
       "title": "Online Marketing Research & Data Entry Specialist – Call Now (405) 801-9601 Arlington, VA",
       "company": "Transportation Hiring Hub",
       "source": "Adzuna"
     },
     {
       "title": "Work From Home Lead Generation & Email Outreach Specialist – Call Now (405) 801-9601 San Francisco, CA",
-      "company": "Transportation Hiring Hub",
-      "source": "Adzuna"
-    },
-    {
-      "title": "Online Marketing Research & Data Entry Specialist – Call Now (405) 801-9601 Atlanta, GA",
       "company": "Transportation Hiring Hub",
       "source": "Adzuna"
     },
@@ -461,54 +451,70 @@
       "source": "Adzuna"
     },
     {
+      "title": "GIS Software Quality Assurance Engineer",
+      "company": "Na Oiwi Kane",
+      "source": "Adzuna"
+    },
+    {
+      "title": "Lawyer - Remote, Contract",
+      "company": "Xperteez Technology",
+      "source": "Adzuna"
+    },
+    {
       "title": "Nurse Practitioner, ACCESS Program (Part Time) - California",
       "company": "Withings",
       "source": "Adzuna"
     },
     {
-      "title": "Communications Intern",
-      "company": "Appalachian Voices",
+      "title": "Photo and Visual Editors - Remote",
+      "company": "YO AI Labs",
+      "source": "Adzuna"
+    },
+    {
+      "title": "AI Video Creative Specialist",
+      "company": "Lysander Commerce Inc.",
+      "source": "Adzuna"
+    },
+    {
+      "title": "Editorial Director - Remote",
+      "company": "AHIMA",
+      "source": "Adzuna"
+    },
+    {
+      "title": "Editorial Design Expert - Remote",
+      "company": "YO AI Labs",
+      "source": "Adzuna"
+    },
+    {
+      "title": "Senior Director of Finance",
+      "company": "Drug Hunter",
       "source": "Jooble"
     },
     {
-      "title": "Editorial Intern",
-      "company": "The New Republic",
-      "source": "Jooble"
-    },
-    {
-      "title": "Medical Writer II",
-      "company": "EVERSANA",
-      "source": "Jooble"
-    },
-    {
-      "title": "Organizational Effectiveness Student",
-      "company": "Dexterra",
-      "source": "Jooble"
-    },
-    {
-      "title": "English Generalist",
-      "company": "AuraOne Human Data",
+      "title": "Sr. Financial Systems Analyst",
+      "company": "Attain Finance",
       "source": "Jooble"
     }
   ],
-  "freshLast48h": 13,
-  "contract": 65,
+  "freshLast48h": 20,
+  "contract": 80,
   "modes": {
-    "writing": 53,
-    "reviewing": 63
+    "writing": 42,
+    "reviewing": 97
   },
-  "technical": 2,
+  "technical": 3,
   "industries": {
-    "Media & publishing": 13,
-    "Marketing & advertising": 11,
-    "Healthcare & life sciences": 10,
-    "Retail & e-commerce": 5,
-    "Education & training": 3,
-    "Nonprofit & government": 2,
-    "Finance & insurance": 2,
-    "AI training & data annotation": 2,
-    "Travel & hospitality": 2,
-    "Legal": 1,
+    "Marketing & advertising": 20,
+    "Media & publishing": 12,
+    "Healthcare & life sciences": 11,
+    "Education & training": 6,
+    "Retail & e-commerce": 6,
+    "Travel & hospitality": 4,
+    "AI training & data annotation": 4,
+    "Legal": 3,
+    "Real estate & construction": 3,
+    "Software & technology": 1,
+    "Finance & insurance": 1,
     "Manufacturing & logistics": 1
   },
   "sources": [
@@ -544,12 +550,8 @@
       "id": "adzuna",
       "label": "Adzuna",
       "status": "ok",
-      "fetched": 182,
+      "fetched": 260,
       "warnings": [
-        "michigan-remote \"production editor\": 0 results (Adzuna reports 0 total matches)",
-        "michigan-remote \"digital editor\": 0 results (Adzuna reports 0 total matches)",
-        "michigan-remote \"web content\": 0 results (Adzuna reports 0 total matches)",
-        "michigan-remote \"content operations\": 0 results (Adzuna reports 0 total matches)",
         "michigan-remote \"editorial operations\": 0 results (Adzuna reports 0 total matches)",
         "michigan-remote \"catalog quality\": 0 results (Adzuna reports 0 total matches)",
         "michigan-remote \"product information\": 0 results (Adzuna reports 0 total matches)",
@@ -562,16 +564,20 @@
         "michigan-remote \"learning content\": 0 results (Adzuna reports 0 total matches)",
         "michigan-remote \"curriculum editor\": 0 results (Adzuna reports 0 total matches)",
         "michigan-remote \"freelance editor\": 0 results (Adzuna reports 0 total matches)",
-        "us-remote \"digital editor\": 0 results (Adzuna reports 0 total matches)",
+        "michigan-remote \"freelance proofreader\": 0 results (Adzuna reports 0 total matches)",
+        "michigan-remote \"contract editor\": 0 results (Adzuna reports 0 total matches)",
+        "michigan-remote \"editor\": 0 results (Adzuna reports 0 total matches)",
+        "michigan-remote \"proofreading\": 0 results (Adzuna reports 0 total matches)",
         "us-remote \"editorial operations\": 0 results (Adzuna reports 0 total matches)",
         "us-remote \"catalog quality\": 0 results (Adzuna reports 0 total matches)",
         "us-remote \"campaign quality\": 0 results (Adzuna reports 0 total matches)",
         "us-remote \"marketing qa\": 0 results (Adzuna reports 0 total matches)",
         "us-remote \"content audit\": 0 results (Adzuna reports 0 total matches)",
-        "us-remote \"assessment editor\": 0 results (Adzuna reports 0 total matches)",
-        "us-remote \"curriculum editor\": 0 results (Adzuna reports 0 total matches)"
+        "us-remote \"assessment editor\": HTTP 502 Bad Gateway",
+        "us-remote \"curriculum editor\": HTTP 502 Bad Gateway",
+        "us-remote \"freelance proofreader\": 0 results (Adzuna reports 0 total matches)"
       ],
-      "ms": 10743
+      "ms": 22586
     },
     {
       "id": "jooble",
@@ -579,7 +585,7 @@
       "status": "ok",
       "fetched": 200,
       "warnings": [],
-      "ms": 4709
+      "ms": 2123
     },
     {
       "id": "remotive",
@@ -587,17 +593,17 @@
       "status": "ok",
       "fetched": 768,
       "warnings": [],
-      "ms": 2080
+      "ms": 1522
     },
     {
       "id": "weworkremotely",
       "label": "We Work Remotely",
       "status": "ok",
-      "fetched": 311,
+      "fetched": 307,
       "warnings": [
         "remote-marketing-jobs.rss: HTTP 301 Moved Permanently"
       ],
-      "ms": 2392
+      "ms": 2064
     },
     {
       "id": "himalayas",
@@ -605,15 +611,15 @@
       "status": "ok",
       "fetched": 240,
       "warnings": [],
-      "ms": 748
+      "ms": 629
     },
     {
       "id": "jobicy",
       "label": "Jobicy",
       "status": "ok",
-      "fetched": 518,
+      "fetched": 407,
       "warnings": [],
-      "ms": 12970
+      "ms": 14208
     },
     {
       "id": "remoteok",
@@ -621,7 +627,7 @@
       "status": "ok",
       "fetched": 97,
       "warnings": [],
-      "ms": 620
+      "ms": 653
     },
     {
       "id": "workingnomads",
@@ -629,7 +635,7 @@
       "status": "ok",
       "fetched": 35,
       "warnings": [],
-      "ms": 295
+      "ms": 376
     },
     {
       "id": "arbeitnow",
@@ -637,7 +643,7 @@
       "status": "ok",
       "fetched": 300,
       "warnings": [],
-      "ms": 355
+      "ms": 258
     }
   ]
 }
