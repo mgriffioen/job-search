@@ -1,6 +1,6 @@
 {
-  "generatedAt": "2026-11-19T15:39:48.209Z",
-  "durationMs": 54918,
+  "generatedAt": "2026-11-19T23:01:18.229Z",
+  "durationMs": 100792,
   "candidate": {
     "name": "Emily Griffioen",
     "headline": "Content & editorial QA — 10 years reviewing customer-facing marketing content",
@@ -148,49 +148,49 @@
     "maxAgeDays": 60
   },
   "counts": {
-    "fetched": 2456,
-    "unique": 1382,
-    "published": 97,
+    "fetched": 2432,
+    "unique": 1385,
+    "published": 92,
     "dropped": {
-      "location": 540,
-      "stale": 1,
-      "noTermMatch": 744
+      "location": 525,
+      "stale": 0,
+      "noTermMatch": 768
     }
   },
   "terms": {
     "email marketing specialist": 27,
     "editor": 24,
     "content specialist": 5,
-    "quality assurance specialist": 3,
-    "digital content specialist": 3,
-    "copywriter": 3,
-    "content coordinator": 3,
+    "quality assurance analyst": 3,
     "content reviewer": 3,
+    "quality assurance specialist": 2,
     "proofreader": 2,
     "editorial specialist": 2,
-    "quality assurance analyst": 2,
+    "digital content specialist": 2,
+    "copywriter": 2,
     "copy editor": 2,
     "quality specialist": 2,
-    "content operations": 2,
     "freelance writer": 1,
     "editorial operations": 1,
     "content designer": 1,
     "content developer": 1,
-    "editorial coordinator": 1,
-    "associate editor": 1,
     "content writer": 1,
+    "associate editor": 1,
+    "content moderator": 1,
     "managing editor": 1,
-    "documentation specialist": 1,
-    "quality analyst": 1,
+    "web content editor": 1,
+    "curriculum specialist": 1,
     "qa reviewer": 1,
     "technical editor": 1,
+    "content operations": 1,
     "editorial quality": 1,
-    "content quality": 1
+    "content quality": 1,
+    "content coordinator": 1
   },
   "matchedIn": {
-    "title": 87,
-    "tags": 3,
-    "description": 7
+    "title": 84,
+    "tags": 2,
+    "description": 6
   },
   "unmatched": [
     {
@@ -439,6 +439,11 @@
       "source": "Adzuna"
     },
     {
+      "title": "Scientist I - CMC",
+      "company": "Cardinal Health",
+      "source": "Adzuna"
+    },
+    {
       "title": "Remote Copy Strategist",
       "company": "Virtual Vocations Inc",
       "source": "Jooble"
@@ -459,18 +464,23 @@
       "source": "Jooble"
     },
     {
+      "title": "Remote Travel Marketing Assistant",
+      "company": "Prestigetravelpartner",
+      "source": "Jooble"
+    },
+    {
       "title": "Remote Product Manager - User Content Engagement",
       "company": "KForce",
       "source": "Jooble"
     },
     {
-      "title": "Director, Head of Editorial & Content",
-      "company": "Agility Robotics",
+      "title": "Operations Associate",
+      "company": "Virtual Vocations Inc",
       "source": "Jooble"
     },
     {
-      "title": "Remote Product Manager - User Content Engagement",
-      "company": "Kforce Technology Staffing",
+      "title": "Senior Editorial Writer & Executive Ghostwriter - Remote",
+      "company": "ModSquad",
       "source": "Jooble"
     },
     {
@@ -482,37 +492,27 @@
       "title": "Lead Product Marketing Manager",
       "company": "Jobgether",
       "source": "Jooble"
-    },
-    {
-      "title": "UX Writer, Product Experience",
-      "company": "Bask Health",
-      "source": "Jooble"
-    },
-    {
-      "title": "Databricks QA Engineer (Remote, US)",
-      "company": "V4C.ai",
-      "source": "Jooble"
     }
   ],
   "freshLast48h": 11,
-  "contract": 54,
+  "contract": 55,
   "modes": {
-    "writing": 37,
-    "reviewing": 60
+    "writing": 35,
+    "reviewing": 57
   },
-  "technical": 1,
+  "technical": 2,
   "industries": {
-    "Marketing & advertising": 12,
+    "Marketing & advertising": 11,
     "Media & publishing": 7,
-    "Healthcare & life sciences": 6,
-    "Education & training": 4,
+    "Healthcare & life sciences": 5,
     "AI training & data annotation": 4,
-    "Travel & hospitality": 4,
-    "Retail & e-commerce": 2,
-    "Legal": 1,
+    "Education & training": 3,
+    "Travel & hospitality": 3,
+    "Legal": 2,
     "Software & technology": 1,
     "Real estate & construction": 1,
-    "Manufacturing & logistics": 1
+    "Manufacturing & logistics": 1,
+    "Retail & e-commerce": 1
   },
   "sources": [
     {
@@ -541,13 +541,13 @@
         "reserve": 12,
         "reason": "188 spendable across ~1 runs left — full budget available"
       },
-      "ms": 0
+      "ms": 2
     },
     {
       "id": "adzuna",
       "label": "Adzuna",
       "status": "ok",
-      "fetched": 246,
+      "fetched": 247,
       "warnings": [
         "michigan-remote \"campaign quality\": 0 results (Adzuna reports 0 total matches)",
         "michigan-remote \"marketing qa\": 0 results (Adzuna reports 0 total matches)",
@@ -573,7 +573,7 @@
         "us-remote \"curriculum editor\": 0 results (Adzuna reports 0 total matches)",
         "us-remote \"freelance proofreader\": 0 results (Adzuna reports 0 total matches)"
       ],
-      "ms": 9724
+      "ms": 54393
     },
     {
       "id": "jooble",
@@ -581,25 +581,25 @@
       "status": "ok",
       "fetched": 200,
       "warnings": [],
-      "ms": 2167
+      "ms": 2063
     },
     {
       "id": "remotive",
       "label": "Remotive",
       "status": "ok",
-      "fetched": 768,
+      "fetched": 720,
       "warnings": [],
-      "ms": 2694
+      "ms": 1920
     },
     {
       "id": "weworkremotely",
       "label": "We Work Remotely",
       "status": "ok",
-      "fetched": 222,
+      "fetched": 240,
       "warnings": [
         "remote-marketing-jobs.rss: HTTP 301 Moved Permanently"
       ],
-      "ms": 1824
+      "ms": 2147
     },
     {
       "id": "himalayas",
@@ -607,15 +607,15 @@
       "status": "ok",
       "fetched": 240,
       "warnings": [],
-      "ms": 1157
+      "ms": 697
     },
     {
       "id": "jobicy",
       "label": "Jobicy",
       "status": "ok",
-      "fetched": 349,
+      "fetched": 355,
       "warnings": [],
-      "ms": 35373
+      "ms": 37270
     },
     {
       "id": "remoteok",
@@ -623,15 +623,15 @@
       "status": "ok",
       "fetched": 97,
       "warnings": [],
-      "ms": 554
+      "ms": 666
     },
     {
       "id": "workingnomads",
       "label": "Working Nomads",
       "status": "ok",
-      "fetched": 37,
+      "fetched": 36,
       "warnings": [],
-      "ms": 290
+      "ms": 452
     },
     {
       "id": "arbeitnow",
@@ -639,7 +639,7 @@
       "status": "ok",
       "fetched": 300,
       "warnings": [],
-      "ms": 613
+      "ms": 318
     }
   ]
 }
