@@ -1,6 +1,6 @@
 {
-  "generatedAt": "2026-11-20T15:21:17.230Z",
-  "durationMs": 55229,
+  "generatedAt": "2026-11-20T22:38:54.916Z",
+  "durationMs": 57345,
   "candidate": {
     "name": "Emily Griffioen",
     "headline": "Content & editorial QA — 10 years reviewing customer-facing marketing content",
@@ -148,50 +148,48 @@
     "maxAgeDays": 60
   },
   "counts": {
-    "fetched": 2261,
-    "unique": 1234,
-    "published": 112,
+    "fetched": 2334,
+    "unique": 1237,
+    "published": 119,
     "dropped": {
-      "location": 477,
+      "location": 463,
       "stale": 0,
-      "noTermMatch": 645
+      "noTermMatch": 655
     }
   },
   "terms": {
-    "editor": 35,
-    "copy editor": 11,
-    "proofreader": 9,
+    "editor": 41,
+    "copy editor": 13,
     "copywriter": 8,
+    "content editor": 8,
+    "proofreader": 8,
     "content reviewer": 6,
-    "content editor": 5,
-    "editorial specialist": 5,
+    "editorial specialist": 4,
     "content writer": 3,
     "content specialist": 3,
-    "quality assurance specialist": 2,
+    "managing editor": 2,
     "editorial qa": 2,
     "editorial manager": 2,
     "associate editor": 2,
     "qa specialist": 2,
     "editorial quality": 2,
     "editorial assistant": 1,
-    "managing editor": 1,
-    "freelance content editor": 1,
     "freelance writer": 1,
     "content designer": 1,
     "marketing copywriter": 1,
     "content developer": 1,
     "editorial qa specialist": 1,
-    "qa analyst": 1,
-    "digital content specialist": 1,
-    "quality analyst": 1,
+    "content marketing specialist": 1,
+    "documentation specialist": 1,
+    "quality assurance specialist": 1,
     "technical editor": 1,
     "quality specialist": 1,
     "content operations": 1,
     "content quality": 1
   },
   "matchedIn": {
-    "title": 100,
-    "tags": 6,
+    "title": 108,
+    "tags": 5,
     "description": 6
   },
   "unmatched": [
@@ -261,13 +259,13 @@
       "source": "Jooble"
     },
     {
-      "title": "Director, Brand & Editorial",
-      "company": "Jobgether",
+      "title": "Brand & Editorial Marketer",
+      "company": "tldr.tech",
       "source": "Jooble"
     },
     {
-      "title": "Brand & Editorial Marketer",
-      "company": "tldr.tech",
+      "title": "Director, Brand & Editorial",
+      "company": "Jobgether",
       "source": "Jooble"
     },
     {
@@ -321,6 +319,11 @@
       "source": "Jooble"
     },
     {
+      "title": "Corporate Legal Assistant",
+      "company": "Jobot",
+      "source": "Jooble"
+    },
+    {
       "title": "Remote Copy Strategist",
       "company": "Virtual Vocations Inc",
       "source": "Jooble"
@@ -338,11 +341,6 @@
     {
       "title": "Remote Link Building Specialist - Editorial Outreach",
       "company": "Rankite LLC",
-      "source": "Jooble"
-    },
-    {
-      "title": "Social Media Content Creator",
-      "company": "Radiant Systems",
       "source": "Jooble"
     },
     {
@@ -406,113 +404,113 @@
       "source": "Remotive"
     },
     {
-      "title": "Senior Manager, Solutions Engineering",
-      "company": "Fin",
+      "title": "Account Executive - Public Sector Germany - Defense (Bundeswehr)",
+      "company": "Celonis",
       "source": "We Work Remotely"
     },
     {
-      "title": "Enterprise Account Executive - TOLA",
-      "company": "Tines",
+      "title": "Escalation Engineer",
+      "company": "Cockroach Labs",
       "source": "We Work Remotely"
     },
     {
-      "title": "Mid-Market Account Executive",
-      "company": "LaunchDarkly",
+      "title": "Account Executive - Cross Industries",
+      "company": "Celonis",
       "source": "We Work Remotely"
     },
     {
-      "title": "APJ Communications Lead",
-      "company": "Dropbox",
+      "title": "Senior Software Engineer, Full Stack (80% backend)",
+      "company": "Postscript",
       "source": "We Work Remotely"
     },
     {
-      "title": "Senior Forward Deployed Data Scientist",
-      "company": "Fin",
+      "title": "Account Executive, DACH",
+      "company": "Cockroach Labs",
       "source": "We Work Remotely"
     },
     {
-      "title": "Senior Sales Training and Enablement Manager",
-      "company": "Tebra",
+      "title": "Senior Product Marketing Manager",
+      "company": "Postscript",
       "source": "We Work Remotely"
     },
     {
-      "title": "Customer Success Manager II - EMEA",
-      "company": "Tines",
+      "title": "Country Manager",
+      "company": "Bybit",
       "source": "We Work Remotely"
     },
     {
-      "title": "Enterprise Acquisition Account Executive",
-      "company": "LaunchDarkly",
-      "source": "We Work Remotely"
-    },
-    {
-      "title": "Facility Security Officer",
-      "company": "Cribl",
-      "source": "We Work Remotely"
-    },
-    {
-      "title": "PreSales Solutions Engineer",
-      "company": "Sumo Logic",
-      "source": "We Work Remotely"
-    },
-    {
-      "title": "Senior Product Manager",
-      "company": "Tebra",
-      "source": "We Work Remotely"
-    },
-    {
-      "title": "Inside Solutions Engineer",
+      "title": "Lead-to-Cash Business Partner",
       "company": "BeyondTrust",
       "source": "We Work Remotely"
     },
     {
-      "title": "Director of Security Research, Cribl Detect",
-      "company": "Cribl",
+      "title": "Senior Product Designer (Remote)",
+      "company": "SeekOut",
       "source": "We Work Remotely"
     },
     {
-      "title": "Account Executive III",
-      "company": "Sumo Logic",
+      "title": "Compliance Officer/MLRO",
+      "company": "Bybit",
       "source": "We Work Remotely"
     },
     {
-      "title": "Technical Support Engineer II - Costa Rica, Colombia, Mexico",
-      "company": "Storyblok",
-      "source": "We Work Remotely"
-    },
-    {
-      "title": "Manager Security Engineer, Operations",
-      "company": "Fivetran",
-      "source": "We Work Remotely"
-    },
-    {
-      "title": "Front-End Engineer, UX/UI",
+      "title": "Field & Partner Marketing Manager, Public Sector",
       "company": "BeyondTrust",
       "source": "We Work Remotely"
     },
     {
-      "title": "Senior Security Engineer",
-      "company": "Squarespace",
+      "title": "Affirm Bank Strategic Finance Lead",
+      "company": "Affirm",
+      "source": "We Work Remotely"
+    },
+    {
+      "title": "Accounting Manager",
+      "company": "Affirm",
+      "source": "We Work Remotely"
+    },
+    {
+      "title": "Senior Customer Success Manager",
+      "company": "Wrike",
+      "source": "We Work Remotely"
+    },
+    {
+      "title": "Senior CloudOps Engineer (Network Engineer)",
+      "company": "Wrike",
+      "source": "We Work Remotely"
+    },
+    {
+      "title": "Customer Service Agent",
+      "company": "Sezzle",
+      "source": "We Work Remotely"
+    },
+    {
+      "title": "Data Analyst",
+      "company": "Talkspace",
+      "source": "We Work Remotely"
+    },
+    {
+      "title": "A.I. Engineering Intern (Remote)",
+      "company": "Sezzle",
       "source": "We Work Remotely"
     }
   ],
-  "freshLast48h": 33,
-  "contract": 56,
+  "freshLast48h": 31,
+  "contract": 53,
   "modes": {
     "writing": 16,
-    "reviewing": 96
+    "reviewing": 103
   },
   "technical": 3,
   "industries": {
-    "Media & publishing": 13,
-    "Marketing & advertising": 12,
-    "Healthcare & life sciences": 10,
-    "Education & training": 5,
+    "Marketing & advertising": 15,
+    "Media & publishing": 15,
+    "Healthcare & life sciences": 8,
+    "Legal": 7,
     "AI training & data annotation": 5,
-    "Finance & insurance": 4,
-    "Legal": 4,
+    "Nonprofit & government": 4,
+    "Education & training": 4,
     "Software & technology": 4,
-    "Nonprofit & government": 3,
+    "Finance & insurance": 2,
     "Retail & e-commerce": 2,
     "Real estate & construction": 2,
     "Travel & hospitality": 2,
@@ -579,7 +577,7 @@
         "us-remote \"content auditor\": 0 results (Adzuna reports 0 total matches)",
         "us-remote \"quality editor\": 0 results (Adzuna reports 0 total matches)"
       ],
-      "ms": 7847
+      "ms": 10552
     },
     {
       "id": "jooble",
@@ -587,25 +585,25 @@
       "status": "ok",
       "fetched": 200,
       "warnings": [],
-      "ms": 1928
+      "ms": 2578
     },
     {
       "id": "remotive",
       "label": "Remotive",
       "status": "ok",
-      "fetched": 720,
+      "fetched": 768,
       "warnings": [],
-      "ms": 1853
+      "ms": 2148
     },
     {
       "id": "weworkremotely",
       "label": "We Work Remotely",
       "status": "ok",
-      "fetched": 254,
+      "fetched": 274,
       "warnings": [
         "remote-marketing-jobs.rss: HTTP 301 Moved Permanently"
       ],
-      "ms": 1810
+      "ms": 1401
     },
     {
       "id": "himalayas",
@@ -613,15 +611,15 @@
       "status": "ok",
       "fetched": 240,
       "warnings": [],
-      "ms": 575
+      "ms": 420
     },
     {
       "id": "jobicy",
       "label": "Jobicy",
       "status": "ok",
-      "fetched": 226,
+      "fetched": 232,
       "warnings": [],
-      "ms": 39112
+      "ms": 38681
     },
     {
       "id": "remoteok",
@@ -629,15 +627,15 @@
       "status": "ok",
       "fetched": 98,
       "warnings": [],
-      "ms": 836
+      "ms": 442
     },
     {
       "id": "workingnomads",
       "label": "Working Nomads",
       "status": "ok",
-      "fetched": 36,
+      "fetched": 35,
       "warnings": [],
-      "ms": 410
+      "ms": 121
     },
     {
       "id": "arbeitnow",
@@ -645,7 +643,7 @@
       "status": "ok",
       "fetched": 300,
       "warnings": [],
-      "ms": 303
+      "ms": 251
     }
   ]
 }
