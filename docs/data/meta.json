@@ -1,6 +1,6 @@
 {
-  "generatedAt": "2026-11-21T14:34:32.443Z",
-  "durationMs": 52309,
+  "generatedAt": "2026-11-21T21:37:30.419Z",
+  "durationMs": 52799,
   "candidate": {
     "name": "Emily Griffioen",
     "headline": "Content & editorial QA — 10 years reviewing customer-facing marketing content",
@@ -148,40 +148,41 @@
     "maxAgeDays": 60
   },
   "counts": {
-    "fetched": 2448,
-    "unique": 1308,
-    "published": 73,
+    "fetched": 2480,
+    "unique": 1332,
+    "published": 72,
     "dropped": {
-      "location": 511,
+      "location": 518,
       "stale": 0,
-      "noTermMatch": 724
+      "noTermMatch": 742
     }
   },
   "terms": {
-    "editor": 24,
+    "editor": 23,
     "content reviewer": 5,
     "content specialist": 4,
     "qa analyst": 4,
     "copywriter": 3,
-    "content operations": 3,
     "quality assurance specialist": 2,
     "email marketing specialist": 2,
     "proofreader": 2,
-    "quality analyst": 2,
     "editorial specialist": 2,
+    "content operations": 2,
+    "technical writer": 2,
     "copy editor": 2,
+    "quality assurance analyst": 1,
     "catalog specialist": 1,
     "editorial operations": 1,
     "freelance writer": 1,
-    "quality assurance analyst": 1,
+    "quality analyst": 1,
     "content writer": 1,
-    "content designer": 1,
     "production editor": 1,
+    "content designer": 1,
     "content producer": 1,
     "campaign qa": 1,
     "managing editor": 1,
     "associate editor": 1,
-    "content moderator": 1,
+    "campaign operations specialist": 1,
     "qa reviewer": 1,
     "content developer": 1,
     "technical editor": 1,
@@ -190,9 +191,9 @@
     "content quality": 1
   },
   "matchedIn": {
-    "title": 68,
-    "tags": 1,
-    "description": 4
+    "title": 67,
+    "tags": 2,
+    "description": 3
   },
   "unmatched": [
     {
@@ -266,12 +267,7 @@
       "source": "Adzuna"
     },
     {
-      "title": "Web Content Manager",
-      "company": "The Steve Fund",
-      "source": "Adzuna"
-    },
-    {
-      "title": "Creator Sales, Senior Manager",
+      "title": "Sales Development Representative, Creator Partnerships",
       "company": "AC Lion Digital Executive Search",
       "source": "Adzuna"
     },
@@ -291,8 +287,18 @@
       "source": "Adzuna"
     },
     {
+      "title": "Director, Head of Editorial & Content",
+      "company": "Agility Robotics",
+      "source": "Jooble"
+    },
+    {
       "title": "Operations Associate",
       "company": "Virtual Vocations Inc",
+      "source": "Jooble"
+    },
+    {
+      "title": "Operations Associate",
+      "company": "High Road Hiring",
       "source": "Jooble"
     },
     {
@@ -346,8 +352,28 @@
       "source": "Jooble"
     },
     {
+      "title": "Information Security Analyst II",
+      "company": "CSG",
+      "source": "Jooble"
+    },
+    {
       "title": "Information Security Analyst",
       "company": "Chimes",
+      "source": "Jooble"
+    },
+    {
+      "title": "Information Security Analyst",
+      "company": "Forward Financing",
+      "source": "Jooble"
+    },
+    {
+      "title": "Information Security Analyst",
+      "company": "Harvard University",
+      "source": "Jooble"
+    },
+    {
+      "title": "Information Systems Security Engineer",
+      "company": "Second Front Systems",
       "source": "Jooble"
     },
     {
@@ -356,8 +382,18 @@
       "source": "Jooble"
     },
     {
-      "title": "Information Systems Security Engineer",
-      "company": "Second Front Systems",
+      "title": "Product Analyst",
+      "company": "Infobase",
+      "source": "Jooble"
+    },
+    {
+      "title": "Product Analyst",
+      "company": "Ford Motor Company",
+      "source": "Jooble"
+    },
+    {
+      "title": "Production Analyst",
+      "company": "Sunday",
       "source": "Jooble"
     },
     {
@@ -371,13 +407,8 @@
       "source": "Jooble"
     },
     {
-      "title": "Production Analyst",
-      "company": "Sunday",
-      "source": "Jooble"
-    },
-    {
-      "title": "Product Analyst",
-      "company": "Infobase",
+      "title": "Product Development Intern",
+      "company": "MooreCo Inc",
       "source": "Jooble"
     },
     {
@@ -396,23 +427,13 @@
       "source": "Jooble"
     },
     {
-      "title": "Product Owner",
-      "company": "Fidelity & Guaranty Life Insurance Company",
-      "source": "Jooble"
-    },
-    {
-      "title": "Product Manager",
-      "company": "Office Hours",
-      "source": "Jooble"
-    },
-    {
-      "title": "Product Manager",
-      "company": "eSimplicity",
-      "source": "Jooble"
-    },
-    {
       "title": "Product Manager",
       "company": "Digitalzone, Inc.",
+      "source": "Jooble"
+    },
+    {
+      "title": "Product Owner",
+      "company": "Fidelity & Guaranty Life Insurance Company",
       "source": "Jooble"
     },
     {
@@ -421,27 +442,12 @@
       "source": "Jooble"
     },
     {
-      "title": "Product Engineer",
-      "company": "Jobgether",
+      "title": "Product Manager",
+      "company": "Endava",
       "source": "Jooble"
     },
     {
-      "title": "Production Specialist",
-      "company": "Hearst",
-      "source": "Jooble"
-    },
-    {
-      "title": "Senior Product Manager",
-      "company": "Caregentic",
-      "source": "Jooble"
-    },
-    {
-      "title": "Product Marketing Manager",
-      "company": "SPECTRIO LLC",
-      "source": "Jooble"
-    },
-    {
-      "title": "Email Marketing Manager- REMOTE POSITION",
+      "title": "Email Marketing Manager - REMOTE is OK",
       "company": "3 Little Birds Interactive",
       "source": "Jooble"
     },
@@ -451,13 +457,13 @@
       "source": "Jooble"
     },
     {
-      "title": "Remote Programmatic Coordinator: Campaigns & Optimization",
-      "company": "AXM (Ars X Machina)",
+      "title": "Programmatic Campaigns Specialist — Remote",
+      "company": "Ars X Machina",
       "source": "Jooble"
     },
     {
-      "title": "Programmatic Campaigns Specialist — Remote",
-      "company": "Ars X Machina",
+      "title": "Remote Programmatic Coordinator: Campaigns & Optimization",
+      "company": "AXM (Ars X Machina)",
       "source": "Jooble"
     },
     {
@@ -476,11 +482,6 @@
       "source": "Jooble"
     },
     {
-      "title": "Systems Designer for Scaled Social Campaigns (Remote)",
-      "company": "Sway Creative Labs",
-      "source": "Jooble"
-    },
-    {
       "title": "Marketing Coordinator (REMOTE)",
       "company": "The Diabetes Link",
       "source": "Jooble"
@@ -496,24 +497,25 @@
       "source": "Jooble"
     }
   ],
-  "freshLast48h": 16,
+  "freshLast48h": 15,
   "contract": 29,
   "modes": {
-    "writing": 10,
-    "reviewing": 63
+    "writing": 12,
+    "reviewing": 60
   },
   "technical": 2,
   "industries": {
     "Marketing & advertising": 14,
-    "Media & publishing": 10,
+    "Media & publishing": 9,
     "Healthcare & life sciences": 4,
+    "Education & training": 4,
     "AI training & data annotation": 4,
-    "Retail & e-commerce": 3,
-    "Travel & hospitality": 3,
     "Legal": 3,
-    "Education & training": 3,
+    "Retail & e-commerce": 3,
     "Manufacturing & logistics": 2,
+    "Travel & hospitality": 2,
     "Finance & insurance": 1,
+    "Nonprofit & government": 1,
     "Real estate & construction": 1
   },
   "sources": [
@@ -543,13 +545,13 @@
         "reserve": 12,
         "reason": "188 spendable across ~1 runs left — full budget available"
       },
-      "ms": 0
+      "ms": 1
     },
     {
       "id": "adzuna",
       "label": "Adzuna",
       "status": "ok",
-      "fetched": 215,
+      "fetched": 211,
       "warnings": [
         "michigan-remote \"freelance proofreader\": 0 results (Adzuna reports 0 total matches)",
         "michigan-remote \"contract editor\": 0 results (Adzuna reports 0 total matches)",
@@ -573,7 +575,7 @@
         "us-remote \"content auditor\": 0 results (Adzuna reports 0 total matches)",
         "us-remote \"quality editor\": 0 results (Adzuna reports 0 total matches)"
       ],
-      "ms": 8423
+      "ms": 6776
     },
     {
       "id": "jooble",
@@ -581,7 +583,7 @@
       "status": "ok",
       "fetched": 200,
       "warnings": [],
-      "ms": 1841
+      "ms": 2552
     },
     {
       "id": "remotive",
@@ -589,17 +591,17 @@
       "status": "ok",
       "fetched": 768,
       "warnings": [],
-      "ms": 1381
+      "ms": 1560
     },
     {
       "id": "weworkremotely",
       "label": "We Work Remotely",
       "status": "ok",
-      "fetched": 273,
+      "fetched": 302,
       "warnings": [
         "remote-marketing-jobs.rss: HTTP 301 Moved Permanently"
       ],
-      "ms": 1932
+      "ms": 2097
     },
     {
       "id": "himalayas",
@@ -607,15 +609,15 @@
       "status": "ok",
       "fetched": 240,
       "warnings": [],
-      "ms": 510
+      "ms": 584
     },
     {
       "id": "jobicy",
       "label": "Jobicy",
       "status": "ok",
-      "fetched": 320,
+      "fetched": 327,
       "warnings": [],
-      "ms": 36548
+      "ms": 36609
     },
     {
       "id": "remoteok",
@@ -623,7 +625,7 @@
       "status": "ok",
       "fetched": 100,
       "warnings": [],
-      "ms": 555
+      "ms": 1035
     },
     {
       "id": "workingnomads",
@@ -631,7 +633,7 @@
       "status": "ok",
       "fetched": 35,
       "warnings": [],
-      "ms": 428
+      "ms": 543
     },
     {
       "id": "arbeitnow",
@@ -639,7 +641,7 @@
       "status": "ok",
       "fetched": 300,
       "warnings": [],
-      "ms": 241
+      "ms": 407
     }
   ]
 }
