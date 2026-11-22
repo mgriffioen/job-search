@@ -1,6 +1,6 @@
 {
-  "generatedAt": "2026-11-22T14:29:05.185Z",
-  "durationMs": 48950,
+  "generatedAt": "2026-11-22T21:43:48.589Z",
+  "durationMs": 52260,
   "candidate": {
     "name": "Emily Griffioen",
     "headline": "Content & editorial QA — 10 years reviewing customer-facing marketing content",
@@ -148,51 +148,50 @@
     "maxAgeDays": 60
   },
   "counts": {
-    "fetched": 2513,
-    "unique": 1366,
-    "published": 101,
+    "fetched": 2533,
+    "unique": 1387,
+    "published": 100,
     "dropped": {
-      "location": 515,
+      "location": 549,
       "stale": 0,
-      "noTermMatch": 750
+      "noTermMatch": 738
     }
   },
   "terms": {
     "content reviewer": 14,
     "copy editor": 12,
     "proofreader": 10,
-    "content specialist": 9,
+    "content specialist": 10,
     "editor": 9,
-    "content editor": 7,
-    "content writer": 4,
+    "content editor": 6,
+    "content writer": 5,
     "editorial specialist": 4,
     "content operations": 3,
+    "quality analyst": 3,
     "copywriter": 2,
-    "freelance writer": 2,
     "editorial qa": 2,
     "managing editor": 2,
     "editorial manager": 2,
     "quality specialist": 2,
-    "documentation specialist": 2,
-    "content quality": 2,
-    "web content editor": 1,
     "editorial assistant": 1,
+    "freelance writer": 1,
     "production editor": 1,
     "content producer": 1,
     "e-commerce content specialist": 1,
     "editorial qa specialist": 1,
     "freelance editor": 1,
-    "technical writer": 1,
+    "proposal writer": 1,
+    "content coordinator": 1,
+    "content quality": 1,
     "copyediting specialist": 1,
     "qa specialist": 1,
     "editorial quality": 1,
-    "associate editor": 1,
-    "web content specialist": 1
+    "associate editor": 1
   },
   "matchedIn": {
-    "title": 91,
-    "tags": 4,
-    "description": 6
+    "title": 90,
+    "tags": 7,
+    "description": 3
   },
   "unmatched": [
     {
@@ -203,6 +202,11 @@
     {
       "title": "Paralegal - Remote",
       "company": "YO AI Labs",
+      "source": "Adzuna"
+    },
+    {
+      "title": "Legal Expert, Employment and Labor",
+      "company": "OpenTrain AI",
       "source": "Adzuna"
     },
     {
@@ -301,13 +305,13 @@
       "source": "Jobicy"
     },
     {
-      "title": "Organizational Effectiveness Student",
-      "company": "Dexterra",
+      "title": "Medical Writer II",
+      "company": "EVERSANA",
       "source": "Jooble"
     },
     {
-      "title": "Medical Writer II",
-      "company": "EVERSANA",
+      "title": "Organizational Effectiveness Student",
+      "company": "Dexterra",
       "source": "Jooble"
     },
     {
@@ -331,8 +335,8 @@
       "source": "Jooble"
     },
     {
-      "title": "DRG Validation Clinical Auditor",
-      "company": "Ensemble Health Partners",
+      "title": "Events Auditor Associate",
+      "company": "Access Destination Services",
       "source": "Jooble"
     },
     {
@@ -341,28 +345,18 @@
       "source": "Jooble"
     },
     {
-      "title": "Events Auditor Associate",
-      "company": "Access Destination Services",
-      "source": "Jooble"
-    },
-    {
       "title": "Remote Workers' Compensation Auditor — Elevate Claims Quality",
       "company": "Crawford",
       "source": "Jooble"
     },
     {
+      "title": "Sr. Financial Systems Analyst",
+      "company": "Attain Finance",
+      "source": "Jooble"
+    },
+    {
       "title": "Essay Specialist (FT) - Remote",
       "company": "Vanguard College Prep",
-      "source": "Jooble"
-    },
-    {
-      "title": "Lead Specialist, Learning Scientist (Clinical)",
-      "company": "Pearson",
-      "source": "Jooble"
-    },
-    {
-      "title": "Community Specialist",
-      "company": "YunoJuno",
       "source": "Jooble"
     },
     {
@@ -426,95 +420,100 @@
       "source": "Remotive"
     },
     {
-      "title": "Account Executive - Fed Civilian Healthcare",
-      "company": "Zscaler",
+      "title": "Senior Enterprise AI Account Executive — Deasy Labs",
+      "company": "Collibra",
       "source": "We Work Remotely"
     },
     {
-      "title": "Account Executive - Enterprise, North Carolina",
-      "company": "Zscaler",
+      "title": "Technical Sourcer",
+      "company": "Discord",
       "source": "We Work Remotely"
     },
     {
-      "title": "Applied AI Value Consultant",
-      "company": "Celonis",
+      "title": "Director, Sales (Nordics & Eastern Europe)",
+      "company": "Ping Identity",
       "source": "We Work Remotely"
     },
     {
-      "title": "Manager, Product Design",
-      "company": "Carrot",
+      "title": "Staff Software Engineer, Safety Processing",
+      "company": "Discord",
       "source": "We Work Remotely"
     },
     {
-      "title": "Manager, Accounts Payable",
-      "company": "Datadog",
+      "title": "Executive Assistant",
+      "company": "Maven Clinic",
       "source": "We Work Remotely"
     },
     {
-      "title": "Account Executive - Public Sector Germany - Police (Polizei)",
-      "company": "Celonis",
+      "title": "Director, GTM Operations & Architecture",
+      "company": "Maven Clinic",
       "source": "We Work Remotely"
     },
     {
-      "title": "Communications Generalist",
-      "company": "Coinbase",
+      "title": "AMER Data Analyst - Sales Strategy and Operations",
+      "company": "Stripe",
       "source": "We Work Remotely"
     },
     {
-      "title": "Fraud Analyst, Secured Lending",
-      "company": "Upstart",
+      "title": "Territory Executive (US)",
+      "company": "PagerDuty",
       "source": "We Work Remotely"
     },
     {
-      "title": "Clearing Risk Analyst",
-      "company": "Coinbase",
+      "title": "AI Transformation Lead, Marketing",
+      "company": "Stripe",
       "source": "We Work Remotely"
     },
     {
-      "title": "Senior Deal Desk Manager",
-      "company": "Legion",
+      "title": "Account Executive, Commercial (Westchester County, New York)",
+      "company": "Everpure",
       "source": "We Work Remotely"
     },
     {
-      "title": "Director of Product, Machine Learning & Decisioning Platforms",
-      "company": "Upstart",
+      "title": "Sr. Technical Program Manager (Remote Eligible in Bulgaria)",
+      "company": "Smartsheet",
       "source": "We Work Remotely"
     },
     {
-      "title": "Corporate Counsel, Commercial",
-      "company": "Carrot",
+      "title": "Account Executive, Commercial (Richmond, Virginia)",
+      "company": "Everpure",
       "source": "We Work Remotely"
     },
     {
-      "title": "Sales Development Representative",
-      "company": "Legion",
+      "title": "Analytics Lead, Deposit Fraud Risk",
+      "company": "Affirm",
       "source": "We Work Remotely"
     },
     {
-      "title": "Sales Commissions Analyst",
-      "company": "LaunchDarkly",
+      "title": "AI Engineer, Customer Success",
+      "company": "Samsara",
+      "source": "We Work Remotely"
+    },
+    {
+      "title": "Senior Software Engineer, Data Platform",
+      "company": "Doximity",
       "source": "We Work Remotely"
     }
   ],
-  "freshLast48h": 16,
-  "contract": 39,
+  "freshLast48h": 22,
+  "contract": 34,
   "modes": {
     "writing": 10,
-    "reviewing": 91
+    "reviewing": 90
   },
-  "technical": 4,
+  "technical": 3,
   "industries": {
     "Healthcare & life sciences": 13,
     "Marketing & advertising": 13,
-    "Media & publishing": 11,
-    "Education & training": 5,
-    "Nonprofit & government": 2,
+    "Media & publishing": 8,
+    "Education & training": 7,
+    "Nonprofit & government": 3,
+    "Software & technology": 3,
+    "AI training & data annotation": 3,
     "Legal": 2,
-    "Software & technology": 2,
+    "Travel & hospitality": 2,
     "Retail & e-commerce": 2,
-    "AI training & data annotation": 2,
     "Finance & insurance": 1,
-    "Travel & hospitality": 1,
     "Manufacturing & logistics": 1
   },
   "sources": [
@@ -544,13 +543,13 @@
         "reserve": 12,
         "reason": "188 spendable across ~1 runs left — full budget available"
       },
-      "ms": 0
+      "ms": 1
     },
     {
       "id": "adzuna",
       "label": "Adzuna",
       "status": "ok",
-      "fetched": 142,
+      "fetched": 141,
       "warnings": [
         "michigan-remote \"editorial quality\": 0 results (Adzuna reports 0 total matches)",
         "michigan-remote \"content editor\": 0 results (Adzuna reports 0 total matches)",
@@ -575,7 +574,7 @@
         "us-remote \"quality editor\": 0 results (Adzuna reports 0 total matches)",
         "us-remote \"catalog quality\": 0 results (Adzuna reports 0 total matches)"
       ],
-      "ms": 9433
+      "ms": 9070
     },
     {
       "id": "jooble",
@@ -583,7 +582,7 @@
       "status": "ok",
       "fetched": 200,
       "warnings": [],
-      "ms": 2274
+      "ms": 2213
     },
     {
       "id": "remotive",
@@ -591,17 +590,17 @@
       "status": "ok",
       "fetched": 768,
       "warnings": [],
-      "ms": 1106
+      "ms": 1187
     },
     {
       "id": "weworkremotely",
       "label": "We Work Remotely",
       "status": "ok",
-      "fetched": 315,
+      "fetched": 338,
       "warnings": [
         "remote-marketing-jobs.rss: HTTP 301 Moved Permanently"
       ],
-      "ms": 1170
+      "ms": 1715
     },
     {
       "id": "himalayas",
@@ -609,15 +608,15 @@
       "status": "ok",
       "fetched": 240,
       "warnings": [],
-      "ms": 368
+      "ms": 377
     },
     {
       "id": "jobicy",
       "label": "Jobicy",
       "status": "ok",
-      "fetched": 417,
+      "fetched": 415,
       "warnings": [],
-      "ms": 33320
+      "ms": 36412
     },
     {
       "id": "remoteok",
@@ -625,7 +624,7 @@
       "status": "ok",
       "fetched": 100,
       "warnings": [],
-      "ms": 405
+      "ms": 398
     },
     {
       "id": "workingnomads",
@@ -633,7 +632,7 @@
       "status": "ok",
       "fetched": 35,
       "warnings": [],
-      "ms": 78
+      "ms": 80
     },
     {
       "id": "arbeitnow",
@@ -641,7 +640,7 @@
       "status": "ok",
       "fetched": 300,
       "warnings": [],
-      "ms": 194
+      "ms": 193
     }
   ]
 }
